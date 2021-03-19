@@ -1,0 +1,21 @@
+{
+  "name": "game-board-group-api",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "prisma generate",
+    "dev": "PORT=3000 node src/index.js",
+    "start": "prisma generate & node src/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "2.19.0",
+    "body-parser": "1.19.0",
+    "cors": "^2.8.5",
+    "express": "4.17.1",
+    "prisma": "2.19.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
