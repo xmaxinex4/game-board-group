@@ -17,5 +17,8 @@
   "devDependencies": {},
   "engines": {
     "node": ">=10.0.0"
+  },
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
   }
 }
