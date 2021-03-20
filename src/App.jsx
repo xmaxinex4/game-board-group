@@ -6,7 +6,7 @@ function App() {
   const [response, setResponse] = useState("No response yet");
 
   const getApi = endpoint => {
-    fetch(`http://localhost:9000/api/${endpoint}`)
+    fetch(process.env.PORT ? `https://game-board-group-heroku.herokuapp.com:${process.env.PORT}/api/${endpoint}` : `http://localhost:9000/api/${endpoint}`)
       .then(function (r) {
         r.text().then((value) => {
           setResponse(value);
