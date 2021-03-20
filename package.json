@@ -5,7 +5,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"npm run start:server\"",
     "start:server": "(cd api && npm run start) & npm run start",
-    "build": "react-scripts build & (cd api && npm run build) & npm run build",
+    "build": "react-scripts build & prisma generate --schema=./api/prisma/schema.prisma",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,8 +42,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "prisma": {
-    "schema": "./api/prisma/schema.prisma"
   }
 }

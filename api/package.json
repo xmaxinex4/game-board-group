@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "prisma generate",
     "dev": "PORT=3000 node src/index.js",
-    "start": "prisma generate & node src/index.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "@prisma/client": "2.19.0",
@@ -17,8 +16,5 @@
   "devDependencies": {},
   "engines": {
     "node": ">=10.0.0"
-  },
-  "prisma": {
-    "schema": "./prisma/schema.prisma"
   }
 }
