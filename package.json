@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"npm run start:server\"",
-    "start:server": "(cd api && npm run start) & npm run start",
-    "build": "react-scripts build & prisma generate",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -16,8 +15,6 @@
     "@testing-library/user-event": "^12.8.3",
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
-    "concurrently": "^6.0.0",
-    "prisma": "^2.19.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
