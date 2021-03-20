@@ -5,24 +5,26 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"npm run start:server\"",
     "start:server": "(cd api && npm run start) & npm run start",
-    "build": "react-scripts build & prisma generate --schema=./api/prisma/schema.prisma",
+    "build": "react-scripts build & prisma generate",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@prisma/client": "^2.19.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
     "concurrently": "^6.0.0",
-    "prisma": "2.19.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prisma": "^2.19.0"
+  },
   "engines": {
     "node": ">=10.0.0"
   },
