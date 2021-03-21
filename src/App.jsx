@@ -6,7 +6,7 @@ function App() {
   const [response, setResponse] = useState("No response yet");
 
   const getApi = endpoint => {
-    fetch(`https://game-board-group-heroku-api.herokuapp.com:${process.env.PORT}/api/${endpoint}`)
+    fetch(`https://game-board-group-heroku-api.herokuapp.com/api/${endpoint}`)
       .then(function (r) {
         r.text().then((value) => {
           setResponse(value);
