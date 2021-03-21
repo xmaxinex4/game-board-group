@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
   const [response, setResponse] = useState("No response yet");
 
-  const getApi = (endpoint) => {
+  const getApi = (endpoint: any) => {
     fetch(
       `https://game-board-group-heroku-api.herokuapp.com/api/${endpoint}`
     ).then(function (r) {
@@ -20,7 +19,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.jsx</code> and save to reload.
         </p>
