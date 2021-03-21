@@ -1,20 +1,21 @@
-import React, { useCallback, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   const [response, setResponse] = useState("No response yet");
 
-  const getApi = endpoint => {
-    fetch(`https://game-board-group-heroku-api.herokuapp.com/api/${endpoint}`)
-      .then(function (r) {
-        r.text().then((value) => {
-          setResponse(value);
-        });
-      })
-  }
+  const getApi = (endpoint) => {
+    fetch(
+      `https://game-board-group-heroku-api.herokuapp.com/api/${endpoint}`
+    ).then(function (r) {
+      r.text().then((value) => {
+        setResponse(value);
+      });
+    });
+  };
 
-  const checkStatus = useCallback(() => getApi(''), []);
+  const checkStatus = useCallback(() => getApi(""), []);
 
   return (
     <div className="App">
@@ -32,11 +33,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <button
-        onClick={checkStatus}
-      >
-        Check API status
-      </button>
+      <button onClick={checkStatus}>Check API status</button>
       <div>Status: {response}</div>
     </div>
   );
