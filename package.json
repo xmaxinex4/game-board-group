@@ -7,6 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "eslint": "eslint",
     "postinstall": "npm run tsc",
     "tsc": "tsc"
   },
