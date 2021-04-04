@@ -4,18 +4,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import { Card, CardHeader, CardContent, Grid, IconButton } from "@material-ui/core"
 
-import { CollectionDetails } from "./model";
 import { GridItemInput } from "../common/input/grid-item-input";
-import { UpsertCollectionErrorFormModel } from "./validator";
-import { EditGamesModal, GameCircleListDisplay } from "../game";
-import { UserCircleListDisplay } from "../user";
+import { Collection } from "../../api-types/collection";
+import { UserCircleListDisplay } from "../user/user-circle-list-display";
+import { EditGamesModal } from "../game/edit-games-modal";
+import { GameCircleListDisplay } from "../game/game-circle-list-display";
 
 export interface CollectionCardProps {
-  collection: CollectionDetails;
+  collection: Collection;
 }
 
 export const CollectionCard: React.FunctionComponent<CollectionCardProps> = ({ collection }) => {
-  const [collectionState, setCollectionState] = useState<CollectionDetails>(collection);
+  const [collectionState, setCollectionState] = useState<Collection>(collection);
   const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
   const [editingCollectionName, setEditiingCollectionName] = useState(false);
 

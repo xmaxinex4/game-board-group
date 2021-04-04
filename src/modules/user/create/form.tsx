@@ -10,7 +10,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import { PaletteColors } from "../../../Theme";
 import { LOGIN } from "../../../Common/Login";
 import { FullWidthGridItemInput, FullWidthGridItemPasswordInput, MeepleColorPicker } from "../../../Common/Form";
-import { SiteLink } from "../../../Common/Navigation";
+import { SiteLink } from "../../../common/navigation";
 
 import { CREATE_USER } from "../Mutations";
 import { CreateUserErrorFormModel, validateCreateUserForm } from "../Validators";

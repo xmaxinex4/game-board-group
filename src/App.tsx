@@ -11,12 +11,14 @@ import {
 
 import { useApi } from './hooks/useApi';
 
-import { Login } from './pages/Login';
+import { Login } from './pages/login';
 import { CreateAccount } from './pages/create-account';
 import { ForgotPassword } from './pages/forgot-password';
 import { Backsplash } from './modules/common/backsplash/backsplash';
 
 import { MeepleCircleSiteNameInline } from './images/components/meeple-circle-site-name-inline';
+import { User } from './api-types/user';
+import { Group } from './api-types/group';
 
 // import { Home } from './pages/Home';
 // import { Account } from './pages/Account';
@@ -40,14 +42,6 @@ const useStyles = makeStyles({
   },
 });
 
-type User = undefined | {
-  groupMemberships: any[];
-};
-
-type CurrentUserGroup = undefined | {
-
-};
-
 function App() {
   document.body.style.margin = '0';
 
@@ -56,8 +50,8 @@ function App() {
 
   const { apiGet } = useApi();
 
-  const [activeGroup, setActiveGroup] = React.useState<CurrentUserGroup>(undefined);
-  const [currentUser, setCurrentUser] = React.useState<User>(undefined);
+  const [activeGroup, setActiveGroup] = React.useState<Group | undefined>(undefined);
+  const [currentUser, setCurrentUser] = React.useState<User | undefined>(undefined);
 
   React.useEffect(() => {
     apiGet<{ me: User }>('user/me').then(({ data }) => {

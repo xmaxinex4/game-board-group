@@ -1,4 +1,4 @@
-import { CreateUserFormModel } from "../Components";
+import { CreateUserFormModel } from "../model";
 
 export interface CreateUserErrorFormModel {
   username: string;

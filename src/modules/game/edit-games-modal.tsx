@@ -6,14 +6,14 @@ import { mdiCancel, mdiContentSave } from "@mdi/js";
 import { Button, Card, CardHeader, CardContent, Grid, Modal, Theme, CircularProgress } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/styles";
 
-import { GameDisplayDetails } from "./Types";
 // import { GAME_DISPLAY_DETAILS } from "./Queries";
 
 import { GameSearchTypeahead } from "./game-search-typeahead";
 import { GameCircleListDisplay } from "./game-circle-list-display";
+import { Game } from "../../api-types/game";
 
 export interface EditGamesModalProps {
-  games: GameDisplayDetails[];
+  games: Game[];
   handleClose: () => void;
   loading?: boolean;
   onSave: (bggIds: number[]) => void;
@@ -55,37 +55,37 @@ export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ g
 
   const theme = useTheme<Theme>();
 
-  const onGameDisplayDetailsError = React.useCallback(
-    (error: ApolloError) => {
-      // TODO: show errors in ui
-      console.log("get game display details error: ", error);
-    },
-    []
-  );
+  // const onGameDisplayDetailsError = React.useCallback(
+  //   (error: ApolloError) => {
+  //     // TODO: show errors in ui
+  //     console.log("get game display details error: ", error);
+  //   },
+  //   []
+  // );
 
-  const setNewGamesState = (data: { gameDetails: GameDisplayDetails }) => {
-    const { gameDetails } = data;
-    const newGamesState = gamesState.concat(gameDetails);
+  // const setNewGamesState = (data: { gameDetails: GameDisplayDetails }) => {
+  //   const { gameDetails } = data;
+  //   const newGamesState = gamesState.concat(gameDetails);
 
-    setGamesState(newGamesState);
-  };
+  //   setGamesState(newGamesState);
+  // };
 
-  const [getGameDisplayDetails] = useLazyQuery<{ gameDetails: GameDisplayDetails }>(GAME_DISPLAY_DETAILS, {
-    onError: onGameDisplayDetailsError,
-    onCompleted: setNewGamesState
-  });
+  // const [getGameDisplayDetails] = useLazyQuery<{ gameDetails: GameDisplayDetails }>(GAME_DISPLAY_DETAILS, {
+  //   onError: onGameDisplayDetailsError,
+  //   onCompleted: setNewGamesState
+  // });
 
-  const onSelect = React.useCallback(
-    (bggId: number) => {
-      if (!gamesState.find(g => g.bggId === bggId)) {
-        getGameDisplayDetails({ variables: { bggId } });
-      } else {
-        // TODO: Highlight game thats already in the collection display
-        console.log("Already have that game in list");
-      }
-    },
-    [gamesState]
-  );
+  // const onSelect = React.useCallback(
+  //   (bggId: number) => {
+  //     if (!gamesState.find(g => g.bggId === bggId)) {
+  //       getGameDisplayDetails({ variables: { bggId } });
+  //     } else {
+  //       // TODO: Highlight game thats already in the collection display
+  //       console.log("Already have that game in list");
+  //     }
+  //   },
+  //   [gamesState]
+  // );
 
   const onModalSave = React.useCallback(
     () => {
@@ -120,7 +120,7 @@ export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ g
               <CardContent>
                 <Grid container direction="column" alignItems="center" spacing={8}>
                   <Grid item>
-                    <GameSearchTypeahead onSelect={onSelect} />
+                    {/* <GameSearchTypeahead onSelect={onSelect} /> */}
                   </Grid>
                   <Grid item>
                     <GameCircleListDisplay games={gamesState} />

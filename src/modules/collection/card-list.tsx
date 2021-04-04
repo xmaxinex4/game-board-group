@@ -2,12 +2,12 @@ import * as React from "react"
 
 import { Grid } from "@material-ui/core";
 
-import { CollectionDetails } from "./model";
+import { Collection } from "../../api-types/collection";
+
 import { CollectionCard } from "./card";
 
-
 export interface CollectionCardListProps {
-  collections: CollectionDetails[];
+  collections: Collection[];
 }
 
 export const CollectionCardList: React.FunctionComponent<CollectionCardListProps> = ({ collections }) => {
