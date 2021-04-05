@@ -3,18 +3,19 @@ import { useState } from 'react'
 import { Grid, Button, Typography } from '@material-ui/core';
 import EmailIcon from "@material-ui/icons/Email";
 
-import { FullWidthGridItemInput } from '../common/input';
 import { validateLoginForm } from './validator';
+
 import { FullWidthGridItemPasswordInput } from "../common/input/full-width-grid-item-password-input";
-import { SiteLink } from "../common/navigation";
+import { SiteLink } from '../common/navigation/site-link';
+import { FullWidthGridItemInput } from '../common/input/full-width-grid-item-input';
 import { useApi } from '../../hooks/useApi';
-import { Login } from './model';
+import { User } from '../../api-types/user';
 
 export const LoginForm: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Login>({ email: "", password: "" });
+  const [errors, setErrors] = useState<Partial<User>>({ email: "", password: "" });
 
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });

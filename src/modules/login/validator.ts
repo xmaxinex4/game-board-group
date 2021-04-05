@@ -1,6 +1,9 @@
-import { Login } from "./model";
+import { User } from "../../api-types/user";
 
-export const validateLoginForm = (model: Login, setErrors: (errorState: Login) => void): boolean => {
+export const validateLoginForm = (
+  model: Partial<User>,
+  setErrors: (errorState: Partial<User>) => void
+): boolean => {
   let formIsValid = true;
   let errors = { email: "", password: "" };
 

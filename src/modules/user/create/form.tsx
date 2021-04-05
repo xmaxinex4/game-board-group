@@ -1,6 +1,6 @@
 import * as React from "react"
-import { useMutation } from "react-apollo";
-import { ApolloError } from "apollo-boost";
+// import { useMutation } from "react-apollo";
+// import { ApolloError } from "apollo-boost";
 
 import { Button, Grid, InputLabel, Typography } from "@material-ui/core"
 
@@ -78,7 +78,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
       <Grid container direction="column" spacing={4}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            Create User
+            Create Account
           </Typography>
         </Grid>
 

@@ -4,9 +4,9 @@ import { mdiAccount, mdiLogout } from '@mdi/js';
 import Icon from '@mdi/react'
 
 import { makeStyles, Fab, Theme, Popover, List, ListItem, ListItemText, Link, Grid, Avatar, ListItemIcon } from '@material-ui/core';
+import { User } from '../../../api-types/user';
+import { Meeple } from '../../../images/components/meeple';
 
-import { Meeple, MeepleIcon, MeepleGroupIcon } from "../../Resources";
-import { CurrentUser } from '../../Modules/User';
 
 const useStyles = makeStyles((theme: Theme) => ({
   meepleButton: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface UserNavMenuProps {
-  user: CurrentUser;
+  user: User;
 }
 
 export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ user }) => {
@@ -47,7 +47,7 @@ export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ u
   return (
     <div>
       <Fab color="inherit" size="medium" onClick={handleClick}>
-        <MeepleIcon fill={user.color} />
+        <Meeple size="small" fill={user.color} />
       </Fab>
       <Popover
         id={id}
@@ -84,13 +84,13 @@ export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ u
           </ListItem>
           <ListItem button component={Link} href="/account/collections">
             <ListItemIcon>
-              <MeepleGroupIcon fill={user.color} />
+              <Meeple size="small" fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Collections" />
           </ListItem>
           <ListItem button component={Link} href="/account/groups">
             <ListItemIcon>
-              <MeepleGroupIcon fill={user.color} />
+              <Meeple size="small" fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Groups" />
           </ListItem>

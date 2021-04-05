@@ -6,12 +6,12 @@ import Logo from "../../Images/logo.png";
 import { AppBar, Grid, Toolbar } from '@material-ui/core';
 
 import { UserNavMenuButton } from "./user-nav-menu-button";
-import { ActiveGroupSelector } from "../../Modules/Group";
-import { CurrentUser } from '../../Modules/User';
+import { User } from '../../../api-types/user';
+import { ActiveGroupSelector } from '../../group/active-group-selector';
 
 export interface NavBarProps {
   showGroup?: boolean;
-  user: CurrentUser;
+  user: User;
 }
 
 export const NavBar: React.FunctionComponent<NavBarProps> = ({ showGroup, user }) => {

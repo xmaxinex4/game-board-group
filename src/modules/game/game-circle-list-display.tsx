@@ -2,11 +2,10 @@ import * as React from "react"
 
 import PencilIcon from '@material-ui/icons/Edit';
 import { Avatar, Grid, makeStyles, Tooltip, Typography, IconButton } from "@material-ui/core";
-
-import { GameDisplayDetails } from "../Types";
+import { Game } from "../../api-types/game";
 
 export interface GameCircleListDisplayProps {
-  games: GameDisplayDetails[];
+  games: Game[];
   onEditGames?: () => void;
 }
 

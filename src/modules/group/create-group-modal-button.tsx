@@ -5,7 +5,7 @@ import { Modal, Card, CardContent, makeStyles, Grid } from "@material-ui/core";
 import { ButtonProps } from "@material-ui/core/Button";
 
 import { TextButton } from "../common/button/text-button";
-import { CreateGroupForm } from "./form";
+import { CreateGroupForm } from "../account/form";
 
 export interface CreateGroupModalButtonProps extends ButtonProps {
 

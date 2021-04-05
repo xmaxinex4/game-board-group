@@ -19,7 +19,7 @@ export const CollectionCard: React.FunctionComponent<CollectionCardProps> = ({ c
   const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
   const [editingCollectionName, setEditiingCollectionName] = useState(false);
 
-  const [errors, setErrors] = useState<UpsertCollectionErrorFormModel>({ name: "" });
+  const [errors, setErrors] = useState({ name: "" });
 
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
