@@ -1,9 +1,9 @@
-import * as React from 'react'
+import React from "react";
 
 import { makeStyles } from "@material-ui/styles";
-import { Grid } from '@material-ui/core';
+import { Grid } from "@material-ui/core";
 
-const backgroundImage = require("../../../images/background.png");
+const backgroundImage = require("../../../images/png/background.png");
 
 const useBacksplashStyles = makeStyles({
   backsplash: {
@@ -15,17 +15,18 @@ const useBacksplashStyles = makeStyles({
     "-webkit-background-size": "cover",
     "-moz-background-size": "cover",
     "-o-background-size": "cover",
-    minHeight: "100%"
+    minHeight: "100%",
   },
 
   backsplashContent: {
     display: "block",
-    position: "relative"
-  }
+    position: "relative",
+  },
 });
 
+export function Backsplash(props: { children: React.ReactNode; }): React.ReactElement {
+  const { children } = props;
 
-export const Backsplash: React.FunctionComponent = ({ children }) => {
   const styles = useBacksplashStyles({});
 
   return (
@@ -36,5 +37,5 @@ export const Backsplash: React.FunctionComponent = ({ children }) => {
         </Grid>
       </Grid>
     </div>
-  )
+  );
 }

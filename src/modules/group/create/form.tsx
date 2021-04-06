@@ -1,51 +1,49 @@
 import React, { useState } from "react";
 
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core"
 
 import PersonIcon from "@material-ui/icons/Person";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
-import { CreateCollectionFormModel } from "./model";
-import { validateCreateCollectionForm } from "./validator";
+import { CreateGroupFormModel } from "./model";
+import { validateCreateGroupForm } from "./validator";
 
-export function CreateCollectionForm(): React.ReactElement {
+export const CreateGroupForm: React.FunctionComponent = () => {
   const [name, setName] = useState("");
-  const [ownerIds, setOwnerIds] = useState<string[]>([]);
-  const [gameIds, setGameIds] = useState<string[]>([]);
   const [handlingSubmit, setHandlingSubmit] = React.useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<CreateCollectionFormModel>({ name: "", ownerIds: [], gameIds: [] });
+  const [errors, setErrors] = useState<CreateGroupFormModel>({ name: "" });
 
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const onCreateCollectionCompleted = (data: any) => {
-    console.log("collection created");
+  const onCreateGroupCompleted = (data: any) => {
+    console.log("group created");
   };
 
-  const createCollection = () => console.log("create collection");
+  const createGroup = () => console.log("create group");
 
   const handleSubmit = (e: React.FormEvent) => {
     setHandlingSubmit(true);
     e.preventDefault();
 
-    const formValid = validateCreateCollectionForm({ name, gameIds, ownerIds }, setErrors);
+    const formValid = validateCreateGroupForm({ name }, setErrors);
 
     if (formValid) {
-      createCollection();
+      createGroup();
     }
 
     setHandlingSubmit(false);
-  };
+  }
 
   return (
     <form noValidate onSubmit={handleSubmit}>
       <Grid container direction="column" spacing={4}>
         <Grid item>
           <Typography variant="h5" component="h2">
-            Create Collection
+            Create Group
           </Typography>
         </Grid>
 
@@ -60,9 +58,9 @@ export function CreateCollectionForm(): React.ReactElement {
           onInputChange={clearErrorField} />
 
         <Grid container item alignItems="stretch">
-          <Button fullWidth variant="contained" color="primary" disabled={handlingSubmit} type="submit">Create Collection</Button>
+          <Button fullWidth variant="contained" color="primary" disabled={handlingSubmit} type="submit">Create Group</Button>
         </Grid>
       </Grid>
     </form >
-  );
+  )
 }

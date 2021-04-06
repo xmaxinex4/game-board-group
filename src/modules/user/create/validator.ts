@@ -1,16 +1,16 @@
-import { CreateUserFormModel } from "../model";
+/* eslint-disable no-unused-vars */
 
-export interface CreateUserErrorFormModel {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  color: string;
-}
+import { CreateUserFormModel } from "./model";
 
-export const validateCreateUserForm = (model: CreateUserFormModel, setErrors: (errorState: CreateUserErrorFormModel) => void): boolean => {
+export function validateCreateUserForm(model: CreateUserFormModel, setErrors: (errorState: CreateUserFormModel) => void): boolean {
   let formIsValid = true;
-  let errors = { username: "", email: "", password: "", confirmPassword: "", color: "" };
+  let errors: CreateUserFormModel = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    color: "",
+  };
 
   if (!model.email) {
     errors = { ...errors, email: "Email is required" };

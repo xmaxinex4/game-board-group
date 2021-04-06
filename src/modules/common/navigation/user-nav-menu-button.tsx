@@ -1,16 +1,27 @@
-import * as React from 'react';
+import React from "react";
 
-import { mdiAccount, mdiLogout } from '@mdi/js';
-import Icon from '@mdi/react'
+import { mdiAccount, mdiLogout } from "@mdi/js";
+import Icon from "@mdi/react";
 
-import { makeStyles, Fab, Theme, Popover, List, ListItem, ListItemText, Link, Grid, Avatar, ListItemIcon } from '@material-ui/core';
-import { User } from '../../../api-types/user';
-import { Meeple } from '../../../images/components/meeple';
+import {
+  makeStyles,
+  Fab,
+  Popover,
+  List,
+  ListItem,
+  ListItemText,
+  Link,
+  Grid,
+  Avatar,
+  ListItemIcon,
+} from "@material-ui/core";
 
+import { User } from "../../../api-types/user";
+import { Meeple } from "../../../images/components/meeple";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   meepleButton: {
-    backgroundColor: "none"
+    backgroundColor: "none",
   },
   meepleAvatar: {
     backgroundColor: "#fff",
@@ -24,7 +35,8 @@ export interface UserNavMenuProps {
   user: User;
 }
 
-export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ user }) => {
+export function UserNavMenuButton(props: UserNavMenuProps): React.ReactElement {
+  const { user } = props;
   const classes = useStyles({});
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -42,12 +54,12 @@ export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ u
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <div>
       <Fab color="inherit" size="medium" onClick={handleClick}>
-        <Meeple size="small" fill={user.color} />
+        <Meeple size="icon" fill={user.color} />
       </Fab>
       <Popover
         id={id}
@@ -55,12 +67,12 @@ export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ u
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
       >
         <List component="nav">
@@ -84,13 +96,13 @@ export const UserNavMenuButton: React.FunctionComponent<UserNavMenuProps> = ({ u
           </ListItem>
           <ListItem button component={Link} href="/account/collections">
             <ListItemIcon>
-              <Meeple size="small" fill={user.color} />
+              <Meeple size="icon" fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Collections" />
           </ListItem>
           <ListItem button component={Link} href="/account/groups">
             <ListItemIcon>
-              <Meeple size="small" fill={user.color} />
+              <Meeple size="icon" fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Groups" />
           </ListItem>

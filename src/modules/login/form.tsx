@@ -1,21 +1,22 @@
-import { useState } from 'react'
+import React, { useState } from "react";
 
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 
-import { validateLoginForm } from './validator';
+import { validateLoginForm } from "./validator";
 
 import { FullWidthGridItemPasswordInput } from "../common/input/full-width-grid-item-password-input";
-import { SiteLink } from '../common/navigation/site-link';
-import { FullWidthGridItemInput } from '../common/input/full-width-grid-item-input';
-import { useApi } from '../../hooks/useApi';
-import { User } from '../../api-types/user';
+import { SiteLink } from "../common/navigation/site-link";
+import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-input";
+import { useApi } from "../../hooks/useApi";
+import { LoginFormModel } from "./model";
+// import { User } from "../../api-types/user";
 
 export const LoginForm: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Partial<User>>({ email: "", password: "" });
+  const [errors, setErrors] = useState<LoginFormModel>({ email: "", password: "" });
 
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
@@ -31,7 +32,7 @@ export const LoginForm: React.FunctionComponent = () => {
     if (isFormValid) {
       setIsLoading(true);
       // TODO: Create login response type or get from api (create api type project)
-      apiPost<{ login: { token: string } }>('/login', { email, password })
+      apiPost<{ login: { token: string; }; }>("/user/login", { email, password })
         .then(({ data }) => {
           localStorage.setItem("auth-token", data?.login?.token);
           window.location.href = "/";
@@ -42,7 +43,7 @@ export const LoginForm: React.FunctionComponent = () => {
         })
         .finally(() => setIsLoading(false));
     }
-  }
+  };
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -55,14 +56,16 @@ export const LoginForm: React.FunctionComponent = () => {
           inputLabel="Email"
           setInputState={setEmail}
           error={errors.email}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <FullWidthGridItemPasswordInput
           formControlProps={{ disabled: isLoading, fullWidth: true }}
           input={password}
           setInputState={setPassword}
           error={errors.password}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <Grid container spacing={2} item>
           <Grid container item alignItems="stretch">
@@ -80,10 +83,11 @@ export const LoginForm: React.FunctionComponent = () => {
 
         <Grid container item justify="center">
           <Typography>
-            Don't have an account? <SiteLink text="Signup" to="/create-account" />
+            Don&apos;t have an account?
+            <SiteLink text="Signup" to="/create-account" />
           </Typography>
         </Grid>
       </Grid>
     </form>
-  )
-}
+  );
+};

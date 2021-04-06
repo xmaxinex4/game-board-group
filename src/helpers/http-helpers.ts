@@ -16,16 +16,17 @@ async function get<T>(url: string, axiosRequestConfig?: AxiosRequestConfig): Pro
 async function post<T>(url: string, data: any, axiosRequestConfig?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
   return axios.post(
     url,
-    data && JSON.stringify(data) || undefined,
+    (data && JSON.stringify(data)) || undefined,
     {
       headers: axiosRequestConfig?.headers || { "Content-Type": "application/json" },
       params: axiosRequestConfig?.params || undefined,
-    });
+    },
+  );
 }
 
 const httpHelpers = {
   get,
-  post
+  post,
 };
 
 export default httpHelpers;

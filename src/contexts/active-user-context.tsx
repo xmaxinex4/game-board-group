@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { User } from "../api-types/user";
 
-export interface ActiveUserContext {
+export interface ActiveUserContextProps {
   activeUser?: User;
 }
 
-export const ActiveUserContext = React.createContext<ActiveUserContext>({ activeUser: undefined });
+export const ActiveUserContext = React.createContext<ActiveUserContextProps>({ activeUser: undefined });

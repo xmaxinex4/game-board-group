@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react";
 
 import { Grid } from "@material-ui/core";
 
@@ -10,7 +10,9 @@ export interface CollectionCardListProps {
   collections: Collection[];
 }
 
-export const CollectionCardList: React.FunctionComponent<CollectionCardListProps> = ({ collections }) => {
+export function CollectionCardList(props: CollectionCardListProps): React.ReactElement {
+  const { collections } = props;
+
   return (
     <Grid container direction="column">
       {collections.map((collection) => {
@@ -18,9 +20,8 @@ export const CollectionCardList: React.FunctionComponent<CollectionCardListProps
           <Grid item>
             <CollectionCard collection={collection} />
           </Grid>
-        )
-      })
-      }
+        );
+      })}
     </Grid>
-  )
+  );
 }

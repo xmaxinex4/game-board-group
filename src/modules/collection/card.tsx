@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useState } from "react";
 
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import { Card, CardHeader, CardContent, Grid, IconButton } from "@material-ui/core"
+import { Card, CardHeader, CardContent, Grid, IconButton } from "@material-ui/core";
 
 import { GridItemInput } from "../common/input/grid-item-input";
 import { Collection } from "../../api-types/collection";
@@ -14,7 +14,9 @@ export interface CollectionCardProps {
   collection: Collection;
 }
 
-export const CollectionCard: React.FunctionComponent<CollectionCardProps> = ({ collection }) => {
+export function CollectionCard(props: CollectionCardProps): React.ReactElement {
+  const { collection } = props;
+
   const [collectionState, setCollectionState] = useState<Collection>(collection);
   const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
   const [editingCollectionName, setEditiingCollectionName] = useState(false);
@@ -134,5 +136,5 @@ export const CollectionCard: React.FunctionComponent<CollectionCardProps> = ({ c
         </Grid>
       </CardContent>
     </Card>
-  )
+  );
 }

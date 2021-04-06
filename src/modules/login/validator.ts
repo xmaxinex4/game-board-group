@@ -1,9 +1,8 @@
-import { User } from "../../api-types/user";
+/* eslint-disable no-unused-vars */
 
-export const validateLoginForm = (
-  model: Partial<User>,
-  setErrors: (errorState: Partial<User>) => void
-): boolean => {
+import { LoginFormModel } from "./model";
+
+export function validateLoginForm(model: LoginFormModel, setErrors: (errorState: LoginFormModel) => void): boolean {
   let formIsValid = true;
   let errors = { email: "", password: "" };
 

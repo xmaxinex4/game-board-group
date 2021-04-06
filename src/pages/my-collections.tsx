@@ -1,31 +1,24 @@
-import * as React from 'react'
+import React from "react";
 
-import { ActiveUserContext, ActiveGroupContext } from "../Contexts";
-import { Grid, Typography, Button } from "@material-ui/core";
-import { useQuery, useMutation } from 'react-apollo';
-import { CollectionDetails } from '../modules/collection/Types';
-import { MY_COLLECTIONS } from '../modules/collection/Queries';
-import { UPSERT_COLLECTION } from '../modules/collection/Mutations';
-import { CollectionCardList } from '../modules/collection/card-list';
-import { ApolloError } from 'apollo-boost';
+import { Typography, Button } from "@material-ui/core";
 
 export const MyCollections: React.FunctionComponent = () => {
-  const activeUserContext = React.useContext(ActiveUserContext);
-  const activeGroupContext = React.useContext(ActiveGroupContext);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [data, setData] = useState<Collection[]>([]);
 
-  const { loading, error, data, refetch } = useQuery<{ myCollections: CollectionDetails[] }>(MY_COLLECTIONS);
-  console.log("data: ", data);
+  // const onUpsertCollectionError = () => {
+  //   // TODO: show errors in ui
+  //   console.log("upsert collection error: ", error);
+  // };
+  // const [upsertCollection, upsertCollectionResults] = useMutation<{ upsertCollection: CollectionDetails }>(UPSERT_COLLECTION, {
+  //   onError: onUpsertCollectionError,
+  //   onCompleted: refetch
+  // });
 
-  const onUpsertCollectionError = (error: ApolloError) => {
-    // TODO: show errors in ui
-    console.log("upsert collection error: ", error);
+  const onAddCollection = () => {
+    // upsertCollection({ variables: { name: `${activeUserContext.activeUser.username}"s Collection` } });
+    console.log("onAddCollection");
   };
-  const [upsertCollection, upsertCollectionResults] = useMutation<{ upsertCollection: CollectionDetails }>(UPSERT_COLLECTION, {
-    onError: onUpsertCollectionError,
-    onCompleted: refetch
-  });
-
-  const onAddCollection = () => upsertCollection({ variables: { name: `${activeUserContext.activeUser.username}'s Collection` } });
 
   return (
     <>
@@ -44,20 +37,20 @@ export const MyCollections: React.FunctionComponent = () => {
         }
       </Grid>
    <Grid item xs={12}> */}
-      {!loading &&
-        (data && data.myCollections.length > 0
+      {/* {!isLoading && */}
+      {/* (data.length > 0
           ? (
-            <CollectionCardList collections={data.myCollections} />
-          ) : (
-            <Typography>
-              Looks like you need to add a collection to get started
-              <Button onClick={onAddCollection}>+ Add Collection</Button>
-            </Typography>
-          )
-        )
-      }
+            <CollectionCardList collections={data} />
+          ) : ( */}
+      <Typography>
+        Looks like you need to add a collection to get started
+        <Button onClick={onAddCollection}>+ Add Collection</Button>
+      </Typography>
+      {/* )
+        ) */}
+      {/* } */}
     </>
     //   </Grid>
     // </Grid>
-  )
-}
+  );
+};

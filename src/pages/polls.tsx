@@ -1,32 +1,29 @@
-import * as React from 'react'
-import { useQuery } from "react-apollo";
+import React from "react";
 
-import { mdiPlus } from "@mdi/js";
-import { mdiFilterVariant } from '@mdi/js';
-import { mdiRefresh } from '@mdi/js';
-
-import { ActiveUserContext, ActiveGroupContext } from "../Contexts";
-import { Grid, Typography, Table, TableHead, TableRow, TableCell, TableBody, Tabs, Tab, IconButton } from "@material-ui/core";
-import { GroupPolls, GROUP_POLLS } from "../Queries/GroupPolls.query";
-import { TextButton } from "../Common/Form";
 import Icon from "@mdi/react";
+import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
+import { Grid, Typography, IconButton } from "@material-ui/core";
 
-export const Polls: React.FunctionComponent = () => {
-  const activeUserContext = React.useContext(ActiveUserContext);
+import { ActiveGroupContext } from "../contexts/active-group-context";
+import { TextButton } from "../modules/common/button/text-button";
+
+export function Polls(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);
 
-  const { loading, error, data } = useQuery<GroupPolls>(GROUP_POLLS);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [value, setValue] = useState(0);
 
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  //   setValue(newValue);
+  // };
 
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item>
-        <Typography variant="h6">{activeGroupContext.activeGroup.name} Polls</Typography>
+        <Typography variant="h6">
+          {activeGroupContext?.activeGroup?.name}
+          Polls
+        </Typography>
       </Grid>
       <Grid container item justify="space-between" alignItems="center">
         <Grid item>
@@ -42,5 +39,5 @@ export const Polls: React.FunctionComponent = () => {
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 }

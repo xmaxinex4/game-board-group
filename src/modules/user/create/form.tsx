@@ -1,77 +1,78 @@
-import * as React from "react"
-// import { useMutation } from "react-apollo";
-// import { ApolloError } from "apollo-boost";
+import React, { useState } from "react";
 
-import { Button, Grid, InputLabel, Typography } from "@material-ui/core"
+import {
+  Button,
+  Grid,
+  InputLabel,
+  Typography,
+} from "@material-ui/core";
 
 import PersonIcon from "@material-ui/icons/Person";
 import EmailIcon from "@material-ui/icons/Email";
 
-import { PaletteColors } from "../../../Theme";
-import { LOGIN } from "../../../Common/Login";
-import { FullWidthGridItemInput, FullWidthGridItemPasswordInput, MeepleColorPicker } from "../../../Common/Form";
-import { SiteLink } from "../../../common/navigation";
+import { PaletteColors } from "../../../theme";
 
-import { CREATE_USER } from "../Mutations";
-import { CreateUserErrorFormModel, validateCreateUserForm } from "../Validators";
-
-export interface CreateUserFormModel {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  color: string;
-}
+import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
+import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
+import { MeepleColorPicker } from "../../common/meeple-color-picker";
+import { SiteLink } from "../../common/navigation/site-link";
+import { CreateUserFormModel } from "./model";
+import { validateCreateUserForm } from "./validator";
+import { useApi } from "../../../hooks/useApi";
 
 export const CreateUserForm: React.FunctionComponent = () => {
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [color, setColor] = React.useState(PaletteColors.Red.main);
-  const [handlingSubmit, setHandlingSubmit] = React.useState(false);
-
-  const [errors, setErrors] = React.useState<CreateUserErrorFormModel>({ username: "", email: "", password: "", confirmPassword: "", color: "" });
+  const [color, setColor] = useState(PaletteColors.Red.main);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<CreateUserFormModel>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    color: "",
+  });
 
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const onCreateUserError = (error: ApolloError) => {
-    // TODO: show errors in ui
-    console.log("create account error: ", error);
-  };
-
-  const onCreateUserCompleted = (data: any) => {
-    login({ variables: { email, password } });
-  };
-
-  const onLoginError = (error: ApolloError) => {
-    // TODO: handle error case
-    console.log("login error: ", error);
-  };
-
-  const onLoginCompleted = (data: any) => {
-    // TODO: route user to home page and Alert/Welcome user their account has been created
-    localStorage.setItem("auth-token", data.login.token);
-    window.location.href = "/";
-  };
-
-  const [createUser, createUserResults] = useMutation(CREATE_USER, { onError: onCreateUserError, onCompleted: onCreateUserCompleted });
-  const [login, loginResults] = useMutation(LOGIN, { onError: onLoginError, onCompleted: onLoginCompleted });
+  const { apiPost } = useApi();
 
   const handleSubmit = (e: React.FormEvent) => {
-    setHandlingSubmit(true);
     e.preventDefault();
 
-    const formValid = validateCreateUserForm({ username, email, password, confirmPassword, color }, setErrors);
+    const isFormValid = validateCreateUserForm({
+      username,
+      email,
+      password,
+      confirmPassword,
+      color,
+    }, setErrors);
 
-    if (formValid) {
-      createUser({ variables: { color, password, email, username } });
+    if (isFormValid) {
+      setIsLoading(true);
+      // TODO: Create create response type or get from api (create api type project)
+      apiPost<{ user: { create: { token: string; }; }; }>("/user/create", {
+        color,
+        email,
+        password,
+        username,
+      })
+        .then(({ data }) => {
+          // TODO: Alert/Welcome user their account has been created
+          localStorage.setItem("auth-token", data?.user?.create?.token);
+          window.location.href = "/";
+        })
+        .catch((error) => {
+          // TODO: Better error handling
+          console.log("login error: ", error);
+        })
+        .finally(() => setIsLoading(false));
     }
-
-    setHandlingSubmit(false);
-  }
+  };
 
   return (
     <form noValidate onSubmit={handleSubmit}>
@@ -83,40 +84,44 @@ export const CreateUserForm: React.FunctionComponent = () => {
         </Grid>
 
         <FullWidthGridItemInput
-          formControlProps={{ required: true, disabled: createUserResults.loading, fullWidth: true }}
+          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           outerEndAdornmentIcon={PersonIcon}
           input={username}
           inputProps={{ id: "username" }}
           inputLabel="Username"
           setInputState={setUsername}
           error={errors.username}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <FullWidthGridItemInput
-          formControlProps={{ required: true, disabled: createUserResults.loading, fullWidth: true }}
+          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           outerEndAdornmentIcon={EmailIcon}
           input={email}
           inputProps={{ id: "email" }}
           inputLabel="Email"
           setInputState={setEmail}
           error={errors.email}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <FullWidthGridItemPasswordInput
-          formControlProps={{ required: true, disabled: createUserResults.loading, fullWidth: true }}
+          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           input={password}
           setInputState={setPassword}
           error={errors.password}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <FullWidthGridItemPasswordInput
-          formControlProps={{ required: true, disabled: createUserResults.loading, fullWidth: true }}
+          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           input={confirmPassword}
-          FullWidthGridItemInputId="confirmPassword"
+          fullWidthGridItemInputId="confirmPassword"
           inputLabel="Confirm Password"
           setInputState={setConfirmPassword}
           error={errors.confirmPassword}
-          onInputChange={clearErrorField} />
+          onInputChange={clearErrorField}
+        />
 
         <Grid container item direction="column" spacing={4}>
           <Grid item>
@@ -128,15 +133,16 @@ export const CreateUserForm: React.FunctionComponent = () => {
         </Grid>
 
         <Grid container item alignItems="stretch">
-          <Button fullWidth variant="contained" color="primary" disabled={handlingSubmit} type="submit">Create User</Button>
+          <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create User</Button>
         </Grid>
 
         <Grid container item justify="center">
           <Typography>
-            Already have an account? <SiteLink to="/login" text="Login" />
+            Already have an account?
+            <SiteLink to="/login" text="Login" />
           </Typography>
         </Grid>
       </Grid>
-    </form >
-  )
-}
+    </form>
+  );
+};

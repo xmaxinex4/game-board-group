@@ -1,17 +1,15 @@
-import * as React from "react";
-import { compose } from "recompose";
+import React from "react";
 
 import { Grid, Card, CardContent, Typography } from "@material-ui/core";
 
-import { Poll } from "../../Models/Poll";
-import { PollOptionDisplay } from "../../PollOption/Components/PollOptionDisplay";
+import { Poll } from "../../api-types/poll";
+import { PollOptionDisplay } from "../poll-option/poll-option-display";
 
-export interface IPollDisplayProps {
+export interface PollDisplayProps {
   poll: Poll;
 }
 
-export const PollCard = compose<IPollDisplayProps, IPollDisplayProps>(
-)(({ poll }) => (
+export const PollCard: React.FunctionComponent<PollDisplayProps> = ({ poll }) => (
   <Card>
     <CardContent>
       <Grid container>
@@ -37,4 +35,4 @@ export const PollCard = compose<IPollDisplayProps, IPollDisplayProps>(
       </Grid>
     </CardContent >
   </Card >
-))
+)

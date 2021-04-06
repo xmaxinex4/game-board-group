@@ -1,14 +1,21 @@
-import * as React from "react"
+import React from "react";
 
-import PencilIcon from '@material-ui/icons/Edit';
+import PencilIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Tooltip, Typography, Avatar, Theme, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Tooltip,
+  Typography,
+  Avatar,
+  Theme,
+  IconButton,
+} from "@material-ui/core";
 
-import { MeepleIcon } from "../../../Resources";
-import { CollectionOwner } from "../../collection";
+import { Meeple } from "../../images/components/meeple";
+import { User } from "../../api-types/user";
 
 export interface UserCircleListDisplayProps {
-  users: CollectionOwner[];
+  users: User[];
   onEditUsers?: () => void;
 }
 
@@ -31,11 +38,11 @@ export const UserCircleListDisplay: React.FunctionComponent<UserCircleListDispla
           <Grid item>
             <Tooltip title={user.username} aria-label={user.username}>
               <Avatar className={meeple}>
-                <MeepleIcon fill={user.color} />
+                <Meeple size="icon" fill={user.color} />
               </Avatar>
             </Tooltip>
           </Grid>
-        )
+        );
       })}
       {onEditUsers &&
         <Grid item>
@@ -45,5 +52,5 @@ export const UserCircleListDisplay: React.FunctionComponent<UserCircleListDispla
         </Grid>
       }
     </Grid>
-  )
-}
+  );
+};

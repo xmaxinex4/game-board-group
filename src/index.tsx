@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import App from './modules/App/app';
-import { AppProvider } from './app-provider';
+import App from "./app";
+import { AppProvider } from "./app-provider";
 
-// import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,7 +12,7 @@ ReactDOM.render(
       <App />
     </AppProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,6 +1,6 @@
-import * as React from "react"
+import React from "react";
 
-import PencilIcon from '@material-ui/icons/Edit';
+import PencilIcon from "@material-ui/icons/Edit";
 import { Avatar, Grid, makeStyles, Tooltip, Typography, IconButton } from "@material-ui/core";
 import { Game } from "../../api-types/game";
 
@@ -32,7 +32,7 @@ export const GameCircleListDisplay: React.FunctionComponent<GameCircleListDispla
                 <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
               </Tooltip>
             </Grid>
-          )
+          );
         })}
         {onEditGames &&
           <Grid item>
@@ -42,5 +42,5 @@ export const GameCircleListDisplay: React.FunctionComponent<GameCircleListDispla
           </Grid>
         }
       </Grid>
-    )
+    );
   });

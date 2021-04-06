@@ -1,9 +1,10 @@
-// export interface GameDisplayDetails {
-//   bggId: number;
-//   name: string;
-//   year: string;
-//   urlThumb: string;
-// }
+// uncommented so compilation would succeed, this file needs deletion after converting
+export interface GameDisplayDetails {
+  bggId: number;
+  name: string;
+  year: string;
+  urlThumb: string;
+}
 
 // export interface GameData {
 //   id: string;

@@ -1,11 +1,11 @@
-import * as React from "react";
+import React from "react";
 
 import { mdiPlus } from "@mdi/js";
 import { Modal, Card, CardContent, makeStyles, Grid } from "@material-ui/core";
 import { ButtonProps } from "@material-ui/core/Button";
 
 import { TextButton } from "../common/button/text-button";
-import { CreateGroupForm } from "../account/form";
+import { CreateGroupForm } from "./create/form";
 
 export interface CreateGroupModalButtonProps extends ButtonProps {
 

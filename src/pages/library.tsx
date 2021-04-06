@@ -1,14 +1,17 @@
-import * as React from 'react'
+import React from "react";
 
-import { mdiPlus } from "@mdi/js";
-import { mdiFilterVariant } from '@mdi/js';
-import { mdiRefresh } from '@mdi/js';
+import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
 import Icon from "@mdi/react";
 
-import { Grid, Typography, IconButton, Switch } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  IconButton,
+  Switch,
+} from "@material-ui/core";
 
-import { ActiveGroupContext } from "../Contexts";
-import { TextButton } from "../Common/Form";
+import { ActiveGroupContext } from "../contexts/active-group-context";
+import { TextButton } from "../modules/common/button/text-button";
 
 export const Library: React.FunctionComponent = () => {
   const activeGroupContext = React.useContext(ActiveGroupContext);
@@ -19,7 +22,9 @@ export const Library: React.FunctionComponent = () => {
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item>
-        <Typography variant="h6">{activeGroupContext.activeGroup.name} Library</Typography>
+        <Typography variant="h6">
+          {`${activeGroupContext?.activeGroup?.name} Library`}
+        </Typography>
       </Grid>
       <Grid container item justify="space-between" alignItems="center">
         <Grid item>
@@ -39,5 +44,5 @@ export const Library: React.FunctionComponent = () => {
         </Grid>
       </Grid>
     </Grid>
-  )
-}
+  );
+};

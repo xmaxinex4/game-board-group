@@ -1,16 +1,16 @@
-export interface UpsertCollectionErrorFormModel {
-  name: string;
-}
+import { CreateCollectionFormModel } from "./model";
 
-// TODO: Update validation to check bggIds and ownerIds (no duplicates and current user should be an owner)
-export const validateUpsertCollectionForm = (model: UpsertCollectionErrorFormModel, setErrors: (errorState: UpsertCollectionErrorFormModel) => void): boolean => {
+export const validateCreateCollectionForm = (model: CreateCollectionFormModel, setErrors: (errorState: CreateCollectionFormModel) => void): boolean => {
   let formIsValid = true;
-  let errors = { name: "" };
+  let errors: CreateCollectionFormModel = { name: "", ownerIds: [], gameIds: [] };
 
   if (!model.name) {
     errors = { ...errors, name: "Name is required" };
     formIsValid = false;
   }
+
+  // TODO: Probably need more validation?
+  // TODO: Update validation to check bggIds and ownerIds (no duplicates and current user should be an owner)
 
   setErrors({ ...errors });
   return formIsValid;

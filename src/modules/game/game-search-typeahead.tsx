@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 // import { useLazyQuery } from "react-apollo";
 
-import { Autocomplete, AutocompleteInputChangeReason } from '@material-ui/lab';
+import { Autocomplete, AutocompleteInputChangeReason } from "@material-ui/lab";
 
 import {
   CircularProgress,

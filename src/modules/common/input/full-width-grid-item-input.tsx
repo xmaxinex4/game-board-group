@@ -1,17 +1,26 @@
-import * as React from 'react'
+/* eslint-disable no-unused-vars, react/jsx-props-no-spreading */
 
-import { FormControl, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core'
+import React from "react";
 
-import { GridTypeMap } from '@material-ui/core/Grid';
-import { FormControlProps } from '@material-ui/core/FormControl';
-import { InputProps } from '@material-ui/core/Input';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import {
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@material-ui/core";
+
+import { GridTypeMap } from "@material-ui/core/Grid";
+import { FormControlProps } from "@material-ui/core/FormControl";
+import { InputProps } from "@material-ui/core/Input";
+import { SvgIconProps } from "@material-ui/core/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
 
-export interface IFullWidthGridItemInputProps {
-  innerEndAdornmentIconButton?: ((props: SvgIconProps) => JSX.Element);
+export interface FullWidthGridItemInputProps {
+  innerEndAdornmentIconButton?: ((props: SvgIconProps) => React.ReactElement);
   innerEndAdornmentOnClick?: () => void;
-  outerEndAdornmentIcon?: ((props: SvgIconProps) => JSX.Element);
+  outerEndAdornmentIcon?: ((props: SvgIconProps) => React.ReactElement);
   formControlProps?: FormControlProps;
   error?: string;
   gridItemProps?: Omit<GridTypeMap<{}, "div">, "alignItems">;
@@ -22,8 +31,9 @@ export interface IFullWidthGridItemInputProps {
   setInputState: (input: string) => void;
 }
 
-export const FullWidthGridItemInput: React.FunctionComponent<IFullWidthGridItemInputProps> =
-  ({ formControlProps,
+export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): React.ReactElement {
+  const {
+    formControlProps,
     error,
     gridItemProps,
     input,
@@ -33,61 +43,66 @@ export const FullWidthGridItemInput: React.FunctionComponent<IFullWidthGridItemI
     innerEndAdornmentOnClick,
     outerEndAdornmentIcon: OuterEndAdornmentIcon,
     onInputChange,
-    setInputState
-  }) => {
+    setInputState,
+  } = props;
 
-    const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
-    const [focused, setFocused] = React.useState(false);
+  const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
+  const [focused, setFocused] = React.useState(false);
 
-    const onFocus = () => {
-      setFocused(true);
+  const onFocus = () => {
+    setFocused(true);
+  };
+
+  const onBlur = () => {
+    setFocused(false);
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    e.preventDefault();
+    setInputState(e.target.value);
+
+    if (onInputChange) {
+      onInputChange(e);
     }
+  };
 
-    const onBlur = () => {
-      setFocused(false);
-    }
-
-    const onChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      e.preventDefault();
-      setInputState(e.target.value);
-
-      if (onInputChange) {
-        onInputChange(e);
-      }
-    };
-
-    return (
-      <Grid container item alignItems="stretch" {...gridItemProps}>
-        <FormControl {...formControlProps}>
-          {inputLabel &&
-            <InputLabel error={error ? true : false} variant="outlined">{inputLabel}</InputLabel>
-          }
-          <OutlinedInput
-            error={error ? true : false}
-            labelWidth={labelWidth}
-            value={input}
-            onChange={onChange}
-            {...inputProps}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            endAdornment={
-              <>
-                {InnerEndAdornmentIconButton &&
+  return (
+    <Grid container item alignItems="stretch" {...gridItemProps}>
+      <FormControl {...formControlProps}>
+        {
+          inputLabel && <InputLabel error={!!error} variant="outlined">{inputLabel}</InputLabel>
+        }
+        <OutlinedInput
+          error={!!error}
+          labelWidth={labelWidth}
+          value={input}
+          onChange={onChange}
+          {...inputProps}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          endAdornment={(
+            <>
+              {
+                InnerEndAdornmentIconButton && (
                   <InputAdornment position="end">
                     <IconButton onClick={innerEndAdornmentOnClick}><InnerEndAdornmentIconButton /></IconButton>
                   </InputAdornment>
-                }
-                {OuterEndAdornmentIcon &&
+                )
+              }
+              {
+                OuterEndAdornmentIcon && (
                   <InputAdornment position="end">
-                    <OuterEndAdornmentIcon color={error ? "error" : focused ? "primary" : "inherit"} />
+                    <OuterEndAdornmentIcon color={error || focused ? "primary" : "inherit"} />
                   </InputAdornment>
-                }
-              </>
-            } />
-          {error &&
-            <FormHelperText error>{error}</FormHelperText>
-          }
-        </FormControl>
-      </Grid>
-    )
-  }
+                )
+              }
+            </>
+          )}
+        />
+        {
+          error && <FormHelperText error>{error}</FormHelperText>
+        }
+      </FormControl>
+    </Grid>
+  );
+}

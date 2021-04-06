@@ -1,5 +1,5 @@
-import * as React from 'react'
+import React from "react";
 
-import { LoginForm } from '../modules/login/form';
+import { LoginForm } from "../modules/login/form";
 
 export const Login: React.FunctionComponent = () => <LoginForm />;

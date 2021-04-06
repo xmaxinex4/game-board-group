@@ -1,16 +1,14 @@
-import * as React from "react";
-import { compose } from "recompose";
+import React from "react";
 
 import { Grid, Avatar } from "@material-ui/core";
 
-import { PollOption } from "../../Models/PollOption";
+import { PollOption } from "../../api-types/poll-option";
 
-export interface IPollOptionDisplayProps {
+export interface PollOptionDisplayProps {
   option: PollOption;
 }
 
-export const PollOptionDisplay = compose<IPollOptionDisplayProps, IPollOptionDisplayProps>(
-)(({ option }) => (
+export const PollOptionDisplay: React.FunctionComponent<PollOptionDisplayProps> = ({ option }) => (
   <Grid container direction="column">
     {option.userVotes.map((vote) =>
       <Grid item>
@@ -21,4 +19,4 @@ export const PollOptionDisplay = compose<IPollOptionDisplayProps, IPollOptionDis
       <Avatar>{option.game.name.charAt(0)}</Avatar>
     </Grid>
   </Grid>
-))
+)

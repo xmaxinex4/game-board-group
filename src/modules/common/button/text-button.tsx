@@ -1,7 +1,7 @@
-import * as React from 'react'
-import Icon from "@mdi/react";
+import React from "react";
 
-import { makeStyles, Button } from "@material-ui/core";
+import Icon from "@mdi/react";
+import { Button } from "@material-ui/core";
 
 export interface TextButtonInputProps {
   icon?: string;
@@ -9,28 +9,28 @@ export interface TextButtonInputProps {
   text: string;
 }
 
-const useStyles = makeStyles({
-  button: {
+// const useStyles = makeStyles({
+//   button: {
 
-  }
-});
+//   }
+// });
 
-export const TextButton: React.FunctionComponent<TextButtonInputProps> =
-  ({ icon, onClick, text }) => {
-    const classes = useStyles({});
-    const [showPassword, setShowPassword] = React.useState(false);
+export function TextButton(props: TextButtonInputProps): React.ReactElement {
+  const { icon, onClick, text } = props;
+  // const classes = useStyles({});
+  // const [showPassword, setShowPassword] = React.useState(false);
 
-    const toggleShowPassword = () => {
-      setShowPassword(!showPassword);
-    };
+  // const toggleShowPassword = () => {
+  //   setShowPassword(!showPassword);
+  // };
 
-    return (
-      <Button
-        onClick={onClick}
-        className={classes.button}
-        startIcon={icon ? <Icon path={icon} size={0.5} /> : null}
-      >
-        {text}
-      </Button>
-    )
-  }
+  return (
+    <Button
+      onClick={onClick}
+      // className={classes.button}
+      startIcon={icon ? <Icon path={icon} size={0.5} /> : null}
+    >
+      {text}
+    </Button>
+  );
+}

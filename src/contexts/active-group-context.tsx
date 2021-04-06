@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 import { Group } from "../api-types/group";
 
-export interface ActiveGroupContext {
+export interface ActiveGroupContextProps {
   activeGroup?: Group;
-  setActiveGroup?: React.Dispatch<React.SetStateAction<Group>>;
+  setActiveGroup?: React.Dispatch<React.SetStateAction<Group | undefined>>;
 }
 
-export const ActiveGroupContext = React.createContext<ActiveGroupContext>({ activeGroup: undefined, setActiveGroup: undefined });
+export const ActiveGroupContext = React.createContext<ActiveGroupContextProps>({ activeGroup: undefined, setActiveGroup: undefined });
