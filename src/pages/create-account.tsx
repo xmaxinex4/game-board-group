@@ -2,4 +2,6 @@ import React from "react";
 
 import { CreateUserForm } from "../modules/user/create/form";
 
-export const CreateAccount: React.FunctionComponent = () => <CreateUserForm />;
+export function CreateAccount(): React.ReactElement {
+  return <CreateUserForm />;
+}
