@@ -13,7 +13,10 @@ export function useApi() {
       `https://game-board-group-heroku-api.herokuapp.com/api${endpoint}`,
       {
         params,
-        headers: { Authorization: token ? `Bearer ${token}` : "" },
+        headers: {
+          "Access-Control-Allow-Origin": "https://game-board-group-heroku-api.herokuapp.com/",
+          Authorization: token ? `Bearer ${token}` : ""
+        },
       },
     );
   }
@@ -21,7 +24,7 @@ export function useApi() {
   function apiPost<T>(endpoint: string, data: any): Promise<AxiosResponse<T>> {
     return httpHelpers.post(`https://game-board-group-heroku-api.herokuapp.com/api${endpoint}`, data, {
       headers: {
-        "Access-Control-Allow-Origin": "https://game-board-group-heroku.herokuapp.com/",
+        "Access-Control-Allow-Origin": "https://game-board-group-heroku-api.herokuapp.com/",
         Authorization: token ? `Bearer ${token}` : "",
       },
     });
