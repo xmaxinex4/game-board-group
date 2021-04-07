@@ -14,7 +14,6 @@ export function useApi() {
       {
         params,
         headers: {
-          "Access-Control-Allow-Origin": "https://game-board-group-heroku-api.herokuapp.com/",
           Authorization: token ? `Bearer ${token}` : "",
         },
       },
@@ -24,7 +23,7 @@ export function useApi() {
   function apiPost<T>(endpoint: string, data: any): Promise<AxiosResponse<T>> {
     return httpHelpers.post(`https://game-board-group-heroku-api.herokuapp.com/api${endpoint}`, data, {
       headers: {
-        "Access-Control-Allow-Origin": "https://game-board-group-heroku-api.herokuapp.com/",
+        "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
     });
