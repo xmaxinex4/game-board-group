@@ -32,9 +32,9 @@ export const LoginForm: React.FunctionComponent = () => {
     if (isFormValid) {
       setIsLoading(true);
       // TODO: Create login response type or get from api (create api type project)
-      apiPost<{ login: { token: string; }; }>("/user/login", { email, password })
+      apiPost<{ token: string; }>("/user/login", { email, password })
         .then(({ data }) => {
-          localStorage.setItem("auth-token", data?.login?.token);
+          localStorage.setItem("auth-token", data?.token);
           window.location.href = "/";
         })
         .catch((error) => {
