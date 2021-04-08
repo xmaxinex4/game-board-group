@@ -1,6 +1,11 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import { Redirect, Route, Switch } from "react-router";
+
+import {
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 
 import {
   Card,
@@ -25,6 +30,7 @@ import { Account } from "./pages/account";
 import { NotFound } from "./pages/not-found";
 import { ActiveGroupContext } from "./contexts/active-group-context";
 import { ActiveUserContext } from "./contexts/active-user-context";
+import { GameToolsHome } from "./pages/tools/home";
 
 const useStyles = makeStyles({
   card: {
@@ -88,6 +94,7 @@ function App() {
                 <Card className={classes.card}>
                   <CardContent>
                     <Switch>
+                      <Route path="/game-tools" component={GameToolsHome} />
                       <Route path="/forgot-password" component={ForgotPassword} />
                       <Route path="/create-account" component={CreateAccount} />
                       <Route path="/login" component={Login} />
