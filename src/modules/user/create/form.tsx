@@ -76,71 +76,73 @@ export const CreateUserForm: React.FunctionComponent = () => {
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <Grid container direction="column" spacing={4}>
-        <Grid item>
-          <Typography variant="h5" component="h2">
-            Create Account
-          </Typography>
-        </Grid>
-
-        <FullWidthGridItemInput
-          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-          outerEndAdornmentIcon={PersonIcon}
-          input={username}
-          inputProps={{ id: "username" }}
-          inputLabel="Username"
-          setInputState={setUsername}
-          error={errors.username}
-          onInputChange={clearErrorField}
-        />
-
-        <FullWidthGridItemInput
-          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-          outerEndAdornmentIcon={EmailIcon}
-          input={email}
-          inputProps={{ id: "email" }}
-          inputLabel="Email"
-          setInputState={setEmail}
-          error={errors.email}
-          onInputChange={clearErrorField}
-        />
-
-        <FullWidthGridItemPasswordInput
-          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-          input={password}
-          setInputState={setPassword}
-          error={errors.password}
-          onInputChange={clearErrorField}
-        />
-
-        <FullWidthGridItemPasswordInput
-          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-          input={confirmPassword}
-          fullWidthGridItemInputId="confirmPassword"
-          inputLabel="Confirm Password"
-          setInputState={setConfirmPassword}
-          error={errors.confirmPassword}
-          onInputChange={clearErrorField}
-        />
-
+      <Grid container direction="column" spacing={8}>
         <Grid container item direction="column" spacing={4}>
-          <Grid item>
-            <InputLabel required>Pick Your Color</InputLabel>
+          <FullWidthGridItemInput
+            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+            outerEndAdornmentIcon={PersonIcon}
+            input={username}
+            inputProps={{ id: "username" }}
+            inputLabel="Username"
+            setInputState={setUsername}
+            error={errors.username}
+            onInputChange={clearErrorField}
+          />
+
+          <FullWidthGridItemInput
+            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+            outerEndAdornmentIcon={EmailIcon}
+            input={email}
+            inputProps={{ id: "email" }}
+            inputLabel="Email"
+            setInputState={setEmail}
+            error={errors.email}
+            onInputChange={clearErrorField}
+          />
+
+          <FullWidthGridItemPasswordInput
+            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+            input={password}
+            setInputState={setPassword}
+            error={errors.password}
+            onInputChange={clearErrorField}
+          />
+
+          <FullWidthGridItemPasswordInput
+            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+            input={confirmPassword}
+            fullWidthGridItemInputId="confirmPassword"
+            inputLabel="Confirm Password"
+            setInputState={setConfirmPassword}
+            error={errors.confirmPassword}
+            onInputChange={clearErrorField}
+          />
+
+          <Grid container item direction="column" spacing={4}>
+            <Grid item>
+              <InputLabel required>Pick Your Color</InputLabel>
+            </Grid>
+            <Grid item>
+              <MeepleColorPicker color={color} setColor={setColor} />
+            </Grid>
           </Grid>
-          <Grid item>
-            <MeepleColorPicker color={color} setColor={setColor} />
+
+          <Grid container item alignItems="stretch">
+            <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create User</Button>
           </Grid>
         </Grid>
 
-        <Grid container item alignItems="stretch">
-          <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create User</Button>
-        </Grid>
-
-        <Grid container item justify="center">
-          <Typography>
-            Already have an account?
-            <SiteLink to="/login" text="Login" />
-          </Typography>
+        <Grid container item justify="center" spacing={1}>
+          <Grid item>
+            <Typography>
+              Already have an account?
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              <SiteLink to="/login" text="Login" />
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </form>

@@ -10,7 +10,6 @@ import { SiteLink } from "../common/navigation/site-link";
 import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-input";
 import { useApi } from "../../hooks/useApi";
 import { LoginFormModel } from "./model";
-// import { User } from "../../api-types/user";
 
 export const LoginForm: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
@@ -47,45 +46,52 @@ export const LoginForm: React.FunctionComponent = () => {
 
   return (
     <form noValidate onSubmit={handleSubmit}>
-      <Grid container direction="column" spacing={4}>
-        <FullWidthGridItemInput
-          formControlProps={{ disabled: isLoading, fullWidth: true }}
-          outerEndAdornmentIcon={EmailIcon}
-          input={email}
-          inputProps={{ id: "email" }}
-          inputLabel="Email"
-          setInputState={setEmail}
-          error={errors.email}
-          onInputChange={clearErrorField}
-        />
+      <Grid container direction="column" spacing={8}>
+        <Grid container item direction="column" spacing={4}>
+          <FullWidthGridItemInput
+            formControlProps={{ disabled: isLoading, fullWidth: true }}
+            outerEndAdornmentIcon={EmailIcon}
+            input={email}
+            inputProps={{ id: "email" }}
+            inputLabel="Email"
+            setInputState={setEmail}
+            error={errors.email}
+            onInputChange={clearErrorField}
+          />
 
-        <FullWidthGridItemPasswordInput
-          formControlProps={{ disabled: isLoading, fullWidth: true }}
-          input={password}
-          setInputState={setPassword}
-          error={errors.password}
-          onInputChange={clearErrorField}
-        />
+          <Grid container item spacing={1}>
+            <FullWidthGridItemPasswordInput
+              formControlProps={{ disabled: isLoading, fullWidth: true }}
+              input={password}
+              setInputState={setPassword}
+              error={errors.password}
+              onInputChange={clearErrorField}
+            />
+            <Grid container item justify="flex-end">
+              <Typography>
+                <SiteLink text="Forgot Password?" to="/forgot-password" />
+              </Typography>
+            </Grid>
+          </Grid>
 
-        <Grid container spacing={2} item>
-          <Grid container item alignItems="stretch">
+          <Grid item>
             <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">
               Login
             </Button>
           </Grid>
-
-          <Grid container item justify="flex-end">
-            <Typography>
-              <SiteLink text="Forgot Password?" to="/forgot-password" />
-            </Typography>
-          </Grid>
         </Grid>
 
-        <Grid container item justify="center">
-          <Typography>
-            Don&apos;t have an account?
-            <SiteLink text="Signup" to="/create-account" />
-          </Typography>
+        <Grid container item justify="center" spacing={1}>
+          <Grid item>
+            <Typography>
+              Don&apos;t have an account?
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography>
+              <SiteLink text="Signup" to="/create-account" />
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </form>

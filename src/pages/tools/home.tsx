@@ -1,16 +1,14 @@
 import React from "react";
-import { Route } from "react-router";
 
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import { Typography } from "@material-ui/core";
 
-import { ValeriaCardKingdomsRandomizer } from "./valeria-card-kingdoms/randomizer";
+import valeriaMain from "./images/valeria-card-kingdoms-main.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,37 +39,33 @@ export function GameToolsHome(): React.ReactElement {
     {
       title: "Valeria Card Kingdom Randomizer",
       description: "A card randomizer for Valeria Card Kingdom",
-      imgSrc: "images/valeria-card-kingdoms-main.jpg",
+      imgSrc: valeriaMain,
     },
   ];
 
   return (
-    <>
-      <Typography>Various Board Game Tools are available for free!</Typography>
-      <div className={root}>
-        <GridList cellHeight={180} className={gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
-            <ListSubheader component="div">December</ListSubheader>
-          </GridListTile>
-          {
-            gameTools.map((tool) => (
-              <GridListTile key={tool.imgSrc}>
-                <img src={tool.imgSrc} alt={tool.title} />
-                <GridListTileBar
-                  title={tool.title}
-                  subtitle={tool.description}
-                  actionIcon={(
-                    <IconButton aria-label={`info about ${tool.title}`} className={icon}>
-                      <InfoIcon />
-                    </IconButton>
-                  )}
-                />
-              </GridListTile>
-            ))
-          }
-        </GridList>
-      </div>
-      <Route exact path="/valeria-card-kingdom/randomizer" component={ValeriaCardKingdomsRandomizer} />
-    </>
+    <div className={root}>
+      <GridList cellHeight={180} className={gridList}>
+        <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
+          <Typography>Various Board Game Tools are available for free!</Typography>
+        </GridListTile>
+        {
+          gameTools.map((tool) => (
+            <GridListTile key={tool.imgSrc}>
+              <img src={tool.imgSrc} alt={tool.title} />
+              <GridListTileBar
+                title={tool.title}
+                subtitle={tool.description}
+                actionIcon={(
+                  <IconButton aria-label={`info about ${tool.title}`} className={icon}>
+                    <InfoIcon />
+                  </IconButton>
+                )}
+              />
+            </GridListTile>
+          ))
+        }
+      </GridList>
+    </div>
   );
 }

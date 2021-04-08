@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 
 import {
-  Card,
   CardContent,
   Grid,
   makeStyles,
@@ -19,7 +18,6 @@ import { useApi } from "./hooks/useApi";
 import { Login } from "./pages/login";
 import { CreateAccount } from "./pages/create-account";
 import { ForgotPassword } from "./pages/forgot-password";
-import { Backsplash } from "./modules/common/backsplash/backsplash";
 
 import { MeepleCircleSiteNameInline } from "./images/components/meeple-circle-site-name-inline";
 import { User } from "./api-types/user";
@@ -33,12 +31,6 @@ import { ActiveUserContext } from "./contexts/active-user-context";
 import { GameToolsHome } from "./pages/tools/home";
 
 const useStyles = makeStyles({
-  card: {
-    padding: "24px",
-    maxWidth: "500px",
-    width: "500px",
-  },
-
   div: {
     paddingTop: "50px",
     paddingBottom: "50px",
@@ -84,34 +76,30 @@ function App() {
         </ActiveUserContext.Provider>
       )
       : (
-        <Backsplash>
-          <div className={classes.div}>
-            <Grid container direction="column" alignItems="center" spacing={2}>
-              <Grid item>
-                <MeepleCircleSiteNameInline />
-              </Grid>
-              <Grid item>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <Switch>
-                      <Route path="/game-tools" component={GameToolsHome} />
-                      <Route path="/forgot-password" component={ForgotPassword} />
-                      <Route path="/create-account" component={CreateAccount} />
-                      <Route path="/login" component={Login} />
-                      <Route exact path="*">
-                        <Redirect to={{
-                          pathname: "/login",
-                          state: { from: location },
-                        }}
-                        />
-                      </Route>
-                    </Switch>
-                  </CardContent>
-                </Card>
-              </Grid>
+        <div className={classes.div}>
+          <Grid container direction="column" alignItems="center" justify="center" spacing={2}>
+            <Grid item>
+              <MeepleCircleSiteNameInline />
             </Grid>
-          </div>
-        </Backsplash>
+            <Grid item>
+              <CardContent>
+                <Switch>
+                  <Route path="/game-tools" component={GameToolsHome} />
+                  <Route path="/forgot-password" component={ForgotPassword} />
+                  <Route path="/create-account" component={CreateAccount} />
+                  <Route path="/login" component={Login} />
+                  <Route exact path="*">
+                    <Redirect to={{
+                      pathname: "/login",
+                      state: { from: location },
+                    }}
+                    />
+                  </Route>
+                </Switch>
+              </CardContent>
+            </Grid>
+          </Grid>
+        </div>
       )
   );
 }

@@ -36,7 +36,6 @@ export function Home(): React.ReactElement {
         activeUser && (
           <>
             <NavBar showGroup user={activeUser} />
-
             {
               activeGroup
                 ? (
