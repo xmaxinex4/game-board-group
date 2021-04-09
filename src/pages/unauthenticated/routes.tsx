@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import {
   Switch,
@@ -10,30 +10,19 @@ import {
   CardContent,
   Fab,
   Grid,
-  makeStyles,
   Typography,
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 
 import { MeepleCircleSiteNameInline } from "../../images/components/meeple-circle-site-name-inline";
 
+import { FloatingPageContent, FloatingPageContentStyleProps } from "../../modules/common/layout/floating-page-content";
+
 import { Login } from "./login";
 import { CreateAccount } from "./create-account";
 import { ForgotPassword } from "./forgot-password";
 
-const useStyles = makeStyles((theme) => ({
-  gameToolsButtonLink: {
-    top: "auto",
-    bottom: 0,
-    right: 0,
-    position: "fixed",
-    padding: `${theme.spacing(2)}px`,
-  },
-}));
-
 export function UnAuthenticatedRoutes(): React.ReactElement {
-  const { gameToolsButtonLink } = useStyles({});
-
   const [isGameToolsButtonExtended, setIsGameToolsButtonExtended] = useState(false);
 
   const extendGameToolsButton = useCallback(() => {
@@ -44,9 +33,13 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
     setIsGameToolsButtonExtended(false);
   }, [setIsGameToolsButtonExtended]);
 
+  const floatingContentStyleProps: FloatingPageContentStyleProps = useMemo(() => ({
+    position: "bottom-right",
+  }), []);
+
   return (
     <>
-      <div className={gameToolsButtonLink}>
+      <FloatingPageContent styleProps={floatingContentStyleProps}>
         <Fab
           onMouseEnter={extendGameToolsButton}
           onMouseLeave={collapseGameToolsButton}
@@ -62,7 +55,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
             )
           }
         </Fab>
-      </div>
+      </FloatingPageContent>
       <Grid container direction="column" alignItems="center" justify="center" spacing={2}>
         <Grid item>
           <MeepleCircleSiteNameInline />

@@ -1,33 +1,21 @@
-import React from "react";
-
-import {
-  Switch,
-  Route,
-} from "react-router-dom";
-
-import { makeStyles } from "@material-ui/core";
+import React, { useMemo } from "react";
+import { Switch, Route } from "react-router-dom";
 
 import { useApi } from "./hooks/useApi";
+
 import { User } from "./api-types/user";
 import { Group } from "./api-types/group";
 
 import { ActiveGroupContext } from "./contexts/active-group-context";
 import { ActiveUserContext } from "./contexts/active-user-context";
-import { AuthenticatedRoutes } from "./pages/authenticated/routes";
+
+import { Page, PageStyleProps } from "./modules/common/layout/page";
+
 import { GameToolsRoutes } from "./pages/game-tools/routes";
+import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 
-const useStyles = makeStyles((theme) => ({
-  page: {
-    paddingTop: `${theme.spacing(6)}px`,
-    paddingBottom: `${theme.spacing(6)}px`,
-  },
-}));
-
 function App() {
-  document.body.style.margin = "0";
-
-  const { page } = useStyles({});
   const { apiGet } = useApi();
 
   const [activeGroup, setActiveGroup] = React.useState<Group | undefined>(undefined);
@@ -42,26 +30,32 @@ function App() {
     });
   }, []);
 
+  const pageStyleProps: PageStyleProps = useMemo(() => ({
+    paddingTop: currentUser ? 0 : 6,
+  }), [currentUser]);
+
   return (
-    currentUser
-      ? (
-        <ActiveUserContext.Provider value={{ activeUser: currentUser }}>
-          <ActiveGroupContext.Provider value={{ activeGroup, setActiveGroup }}>
+    <Page styleProps={pageStyleProps}>
+      {
+        currentUser
+          ? (
+            <ActiveUserContext.Provider value={{ activeUser: currentUser }}>
+              <ActiveGroupContext.Provider value={{ activeGroup, setActiveGroup }}>
+                <Switch>
+                  <Route path="/game-tools" component={GameToolsRoutes} />
+                  <Route path="*" component={AuthenticatedRoutes} />
+                </Switch>
+              </ActiveGroupContext.Provider>
+            </ActiveUserContext.Provider>
+          )
+          : (
             <Switch>
               <Route path="/game-tools" component={GameToolsRoutes} />
-              <Route path="*" component={AuthenticatedRoutes} />
+              <Route path="*" component={UnAuthenticatedRoutes} />
             </Switch>
-          </ActiveGroupContext.Provider>
-        </ActiveUserContext.Provider>
-      )
-      : (
-        <div className={page}>
-          <Switch>
-            <Route path="/game-tools" component={GameToolsRoutes} />
-            <Route path="*" component={UnAuthenticatedRoutes} />
-          </Switch>
-        </div>
-      )
+          )
+      }
+    </Page>
   );
 }
 

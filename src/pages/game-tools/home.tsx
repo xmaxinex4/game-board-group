@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,19 +11,14 @@ import {
   Typography,
 } from "@material-ui/core";
 
+import ArrowBack from "@material-ui/icons/ArrowBack";
+
+import { FloatingPageContent, FloatingPageContentStyleProps } from "../../modules/common/layout/floating-page-content";
+import { SiteLink, SiteLinkStyleProps } from "../../modules/common/navigation/site-link";
+
 import valeriaMain from "./images/valeria-card-kingdoms-main.jpg";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.paper,
-  },
-  card: {
-    maxWidth: 500,
-  },
+const useStyles = makeStyles(() => ({
   cardMedia: {
     height: 140,
   },
@@ -37,7 +32,7 @@ type GameTool = {
 };
 
 export function GameToolsHome(): React.ReactElement {
-  const { root, card, cardMedia } = useStyles();
+  const { cardMedia } = useStyles();
 
   const gameTools: GameTool[] = [
     {
@@ -48,46 +43,44 @@ export function GameToolsHome(): React.ReactElement {
     },
   ];
 
-  // TODO: Put in a "<- Back to GameBoardGroup" button
+  const floatingContentStyleProps: FloatingPageContentStyleProps = useMemo(() => ({
+    position: "top-left",
+  }), []);
+
+  const siteLinkStyleProps: SiteLinkStyleProps = useMemo(() => ({
+    noUnderline: true,
+  }), []);
 
   return (
-    <div className={root}>
-      <Grid container direction="column" justify="center" alignItems="center" spacing={4}>
-        {/* <Grid container justify="center" alignItems="center" item xs={8}>
-          <Grid item>
-            <MeepleCircle />
-          </Grid>
-          <Grid item>
-            <Typography variant="h6">Various Board Game Tools are available for free!</Typography>
-          </Grid>
-        </Grid> */}
-
-        <Grid container item xs={8} spacing={2}>
-          {
-            gameTools.map((tool) => (
-              <Grid item xs={6}>
-                <Card className={card}>
-                  <Link to={tool.appLink} component={CardActionArea}>
-                    <CardMedia
-                      className={cardMedia}
-                      image={tool.imgSrc}
-                      title={tool.title}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {tool.title}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary" component="p">
-                        {tool.description}
-                      </Typography>
-                    </CardContent>
-                  </Link>
-                </Card>
-              </Grid>
-            ))
-          }
-        </Grid>
+    <>
+      <FloatingPageContent styleProps={floatingContentStyleProps}>
+        <SiteLink styleProps={siteLinkStyleProps} to="/" text="Back to Home" icon={ArrowBack} />
+      </FloatingPageContent>
+      <Grid container xs={12} md={8} spacing={2} justify="center">
+        {
+          gameTools.map((tool) => (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <Link to={tool.appLink} component={CardActionArea}>
+                  <CardMedia
+                    className={cardMedia}
+                    image={tool.imgSrc}
+                    title={tool.title}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {tool.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {tool.description}
+                    </Typography>
+                  </CardContent>
+                </Link>
+              </Card>
+            </Grid>
+          ))
+        }
       </Grid>
-    </div>
+    </>
   );
 }

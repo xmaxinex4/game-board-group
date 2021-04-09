@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  Switch,
-  Route,
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+
 import { NotFound } from "../error/not-found";
 
 import { GameToolsHome } from "./home";

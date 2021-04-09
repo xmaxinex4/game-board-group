@@ -2,14 +2,14 @@ import React, { useCallback, useState } from "react";
 
 import {
   Button,
-  Card,
   Checkbox,
   FormControlLabel,
   FormGroup,
   Grid,
-  Modal,
   Typography,
 } from "@material-ui/core";
+
+import { Modal } from "../../../modules/common/modal/modal";
 
 import { ValeriaCardKingdomsCard, ValeriaCardKingdomsSetFilters } from "./data";
 import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
@@ -21,10 +21,6 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
 
   const openOptionsModal = () => {
     setIsOptionsModalOpen(true);
-  };
-
-  const closeOptionsModal = () => {
-    setIsOptionsModalOpen(false);
   };
 
   const [cards, setCards] = useState<ValeriaCardKingdomsCard[]>([]);
@@ -89,49 +85,40 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
           </Grid>
         ))}
       </Grid>
-      <Modal
-        open={isOptionsModalOpen}
-        onClose={closeOptionsModal}
-        aria-labelledby="filter options"
-        aria-describedby="options to set filter"
-        id="options-modal"
-        title="Options"
-      >
-        <Card>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Typography variant="h4">Filter By Sets</Typography>
-            </Grid>
-            <Grid item>
-              <FormGroup row>
-                <FormControlLabel
-                  control={<Checkbox checked={base} onChange={handleCardSetFiltersChange} name="base" />}
-                  label="Base"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
-                  label="Crimson Seas"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
-                  label="Flames And Frost"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
-                  label="Peasants And Knights"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
-                  label="Shadowvale"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
-                  label="Undead Samurai"
-                />
-              </FormGroup>
-            </Grid>
+      <Modal isModalOpen={isOptionsModalOpen} setIsModalOpen={setIsOptionsModalOpen}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Typography variant="h4">Filter By Sets</Typography>
           </Grid>
-        </Card>
+          <Grid item>
+            <FormGroup row>
+              <FormControlLabel
+                control={<Checkbox checked={base} onChange={handleCardSetFiltersChange} name="base" />}
+                label="Base"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
+                label="Crimson Seas"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
+                label="Flames And Frost"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
+                label="Peasants And Knights"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
+                label="Shadowvale"
+              />
+              <FormControlLabel
+                control={<Checkbox checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
+                label="Undead Samurai"
+              />
+            </FormGroup>
+          </Grid>
+        </Grid>
       </Modal>
     </>
   );
