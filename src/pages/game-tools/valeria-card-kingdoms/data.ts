@@ -15,7 +15,30 @@ import Alchemist from "./images/alchemist.jpg";
 import Bandit from "./images/bandit.png";
 import Mercenary from "./images/mercenary.jpg";
 
+import MonsterBarrens from "./images/monster-barrens.jpg";
 import MonsterCavern from "./images/monster-cavern.jpg";
+import MonsterCrypt from "./images/monster-crypt.png";
+import MonsterCutthroats from "./images/monster-cutthroats.png";
+import MonsterDarkWaters from "./images/monster-dark-waters.png";
+import MonsterDen from "./images/monster-den.png";
+import MonsterDesert from "./images/monster-desert.jpg";
+import MonsterForest from "./images/monster-forest.jpg";
+import MonsterGlacier from "./images/monster-glacier.jpg";
+import MonsterGloomGyre from "./images/monster-gloom-gyre.png";
+import MonsterHills from "./images/monster-hills.jpg";
+import MonsterMountains from "./images/monster-mountains.jpg";
+import MonsterNecropolis from "./images/monster-necropolis.png";
+import MonsterOasis from "./images/monster-oasis.jpg";
+import MonsterRuins from "./images/monster-ruins.jpg";
+import MonsterSewer from "./images/monster-sewer.png";
+import MonsterSkerry from "./images/monster-skerry.png";
+import MonsterSwamp from "./images/monster-swamp.jpg";
+import MonsterTheDeep from "./images/monster-the-deep.png";
+import MonsterTundra from "./images/monster-tundra.jpg";
+import MonsterUndeadSamurai from "./images/monster-undead-samurai.jpg";
+import MonsterValley from "./images/monster-valley.jpg";
+import MonsterValcano from "./images/monster-volcano.jpg";
+import MonsterWoods from "./images/monster-woods.png";
 
 export type ValeriaCardKingdomsSetFilters = {
   base: boolean;
@@ -54,7 +77,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Barrens",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 1,
-    imgSrc: Cleric,
+    imgSrc: MonsterBarrens,
   },
   {
     set: "base",
@@ -68,84 +91,84 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Desert",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.2,
-    imgSrc: "images/monster-desert.jpg",
+    imgSrc: MonsterDesert,
   },
   {
     set: "base",
     name: "Forest",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
-    imgSrc: "images/monster-forest.jpg",
+    imgSrc: MonsterForest,
   },
   {
     set: "flamesAndFrost",
     name: "Glacier",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 7.1,
-    imgSrc: "images/monster-glacier.jpg",
+    imgSrc: MonsterGlacier,
   },
   {
     set: "base",
     name: "Hills",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 1,
-    imgSrc: "images/monster-hills.jpg",
+    imgSrc: MonsterHills,
   },
   {
     set: "base",
     name: "Mountains",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5,
-    imgSrc: "images/monster-mountains.jpg",
+    imgSrc: MonsterMountains,
   },
   {
     set: "flamesAndFrost",
     name: "Oasis",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
-    imgSrc: "images/monster-oasis.jpg",
+    imgSrc: MonsterOasis,
   },
   {
     set: "base",
     name: "Ruins",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2,
-    imgSrc: "images/monster-ruins.jpg",
+    imgSrc: MonsterRuins,
   },
   {
     set: "base",
     name: "Swamp",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5.1,
-    imgSrc: "images/monster-swamp.jpg",
+    imgSrc: MonsterSwamp,
   },
   {
     set: "flamesAndFrost",
     name: "Tundra",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5.2,
-    imgSrc: "images/monster-tundra.jpg",
+    imgSrc: MonsterTundra,
   },
   {
     set: "base",
     name: "Valley",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
-    imgSrc: "images/monster-valley.jpg",
+    imgSrc: MonsterValley,
   },
   {
     set: "undeadSamurai",
     name: "Undead Samurai",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
-    imgSrc: "images/monster-undead-samurai.jpg",
+    imgSrc: MonsterUndeadSamurai,
   },
   {
     set: "flamesAndFrost",
     name: "Volcano",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 8.1,
-    imgSrc: "images/monster-volcano.jpg",
+    imgSrc: MonsterValcano,
   },
   {
     set: "base",
@@ -348,35 +371,35 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Crypt",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5,
-    imgSrc: "images/monster-crypt.png",
+    imgSrc: MonsterCrypt,
   },
   {
     set: "shadowvale",
     name: "Den",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
-    imgSrc: "images/monster-den.png",
+    imgSrc: MonsterDen,
   },
   {
     set: "shadowvale",
     name: "Necropolis",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2,
-    imgSrc: "images/monster-necropolis.png",
+    imgSrc: MonsterNecropolis,
   },
   {
     set: "shadowvale",
     name: "Sewer",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2.1,
-    imgSrc: "images/monster-sewer.png",
+    imgSrc: MonsterSewer,
   },
   {
     set: "shadowvale",
     name: "Woods",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.1,
-    imgSrc: "images/monster-woods.png",
+    imgSrc: MonsterWoods,
   },
   {
     set: "shadowvale",
@@ -523,35 +546,35 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Cutthroats",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3.1,
-    imgSrc: "images/monster-cutthroats.png",
+    imgSrc: MonsterCutthroats,
   },
   {
     set: "crimsonSeas",
     name: "Dark Waters",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
-    imgSrc: "images/monster-dark-waters.png",
+    imgSrc: MonsterDarkWaters,
   },
   {
     set: "crimsonSeas",
     name: "Gloom Gyre",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3.2,
-    imgSrc: "images/monster-gloom-gyre.png",
+    imgSrc: MonsterGloomGyre,
   },
   {
     set: "crimsonSeas",
     name: "Skerry",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.1,
-    imgSrc: "images/monster-skerry.png",
+    imgSrc: MonsterSkerry,
   },
   {
     set: "crimsonSeas",
     name: "The Deep",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2.1,
-    imgSrc: "images/monster-the-deep.png",
+    imgSrc: MonsterTheDeep,
   },
 ];
 
