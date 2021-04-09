@@ -1,6 +1,22 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
+import Cleric from "./images/cleric.jpg";
+import Exorcist from "./images/exorcist.png";
+import Hydromancer from "./images/hydromancer.png";
+import Monk from "./images/monk.jpg";
+import Summoner from "./images/summoner.jpg";
+import Bard from "./images/bard.jpg";
+import Blacksmith from "./images/blacksmith.jpg";
+import Engineer from "./images/engineer.png";
+import Lumberjack from "./images/lumberjack.png";
+import Merchant from "./images/merchant.jpg";
+import Alchemist from "./images/alchemist.jpg";
+import Bandit from "./images/bandit.png";
+import Mercenary from "./images/mercenary.jpg";
+
+import MonsterCavern from "./images/monster-cavern.jpg";
+
 export type ValeriaCardKingdomsSetFilters = {
   base: boolean;
   crimsonSeas: boolean;
@@ -38,14 +54,14 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Barrens",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 1,
-    imgSrc: "images/monster-barrens.jpg",
+    imgSrc: Cleric,
   },
   {
     set: "base",
     name: "Cavern",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 6.1,
-    imgSrc: "images/monster-cavern.jpg",
+    imgSrc: MonsterCavern,
   },
   {
     set: "flamesAndFrost",
@@ -136,56 +152,56 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Cleric",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
-    imgSrc: "images/cleric.jpg",
+    imgSrc: Cleric,
   },
   {
     set: "base",
     name: "Monk",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
-    imgSrc: "images/01-monk.jpg",
+    imgSrc: Monk,
   },
   {
     set: "flamesAndFrost",
     name: "Summoner",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
-    imgSrc: "images/01-summoner.jpg",
+    imgSrc: Summoner,
   },
   {
     set: "flamesAndFrost",
     name: "Bard",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
-    imgSrc: "images/02-bard.jpg",
+    imgSrc: Bard,
   },
   {
     set: "base",
     name: "Blacksmith",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
-    imgSrc: "images/02-blacksmith.jpg",
+    imgSrc: Blacksmith,
   },
   {
     set: "base",
     name: "Merchant",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
-    imgSrc: "images/02-merchant.jpg",
+    imgSrc: Merchant,
   },
   {
     set: "base",
     name: "Alchemist",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
-    imgSrc: "images/03-alchemist.jpg",
+    imgSrc: Alchemist,
   },
   {
     set: "base",
     name: "Mercenary",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
-    imgSrc: "images/03-mercenary.jpg",
+    imgSrc: Mercenary,
   },
   {
     set: "flamesAndFrost",
@@ -367,21 +383,21 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Exorcist",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
-    imgSrc: "images/01-exorcist.png",
+    imgSrc: Exorcist,
   },
   {
     set: "shadowvale",
     name: "Lumberjack",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
-    imgSrc: "images/02-lumberjack.png",
+    imgSrc: Lumberjack,
   },
   {
     set: "shadowvale",
     name: "Bandit",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
-    imgSrc: "images/03-bandit.png",
+    imgSrc: Bandit,
   },
   {
     set: "shadowvale",
@@ -437,14 +453,14 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Hydromancer",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
-    imgSrc: "images/01-hydromancer.png",
+    imgSrc: Hydromancer,
   },
   {
     set: "crimsonSeas",
     name: "Engineer",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
-    imgSrc: "images/02-engineer.png",
+    imgSrc: Engineer,
   },
   {
     set: "crimsonSeas",
