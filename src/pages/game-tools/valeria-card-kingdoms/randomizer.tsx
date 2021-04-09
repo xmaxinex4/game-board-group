@@ -2,25 +2,27 @@ import React, { useCallback, useState } from "react";
 
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Grid,
   Typography,
 } from "@material-ui/core";
 
-import { Modal } from "../../../modules/common/modal/modal";
+import { Dialog } from "../../../modules/common/dialog/dialog";
 
 import { ValeriaCardKingdomsCard, ValeriaCardKingdomsSetFilters } from "./data";
 import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
 import { getRandomizedCards } from "./helpers/get-randomized-cards";
+import { ValeriaCardKingdomsFilterOptionsCard } from "./components/filter-options-card";
 
 export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
   const setStorageKey = "valeria-card-kingdon-tool:sets";
-  const [isOptionsModalOpen, setIsOptionsModalOpen] = React.useState(false);
+  const [isOptionsDialogOpen, setIsOptionsDialogOpen] = React.useState(false);
 
-  const openOptionsModal = () => {
-    setIsOptionsModalOpen(true);
+  const openOptionsDialog = () => {
+    setIsOptionsDialogOpen(true);
+  };
+
+  const closeOptionsDialog = () => {
+    setIsOptionsDialogOpen(false);
   };
 
   const [cards, setCards] = useState<ValeriaCardKingdomsCard[]>([]);
@@ -40,31 +42,18 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
       : emptyCardSetFilters,
   );
 
-  const {
-    base,
-    crimsonSeas,
-    flamesAndFrost,
-    peasantsAndKnights,
-    shadowvale,
-    undeadSamurai,
-  } = cardSetFilters;
-
-  const randomize = useCallback(() => setCards(getRandomizedCards(cardSetFilters)), []);
-  const saveSetFilters = useCallback(() => {
+  const saveSetFiltersToLocalStorage = useCallback(() => {
     localStorage[setStorageKey] = JSON.stringify(cardSetFilters);
   }, [cardSetFilters]);
 
-  const handleCardSetFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setCardSetFilters({ ...cardSetFilters, [event.target.name]: checked });
-    saveSetFilters();
-  };
+  const randomize = useCallback(() => setCards(getRandomizedCards(cardSetFilters)), []);
 
   return (
     <>
       <Typography>Valeria Card Kingdom Randomizer</Typography>
       <Button
         color="secondary"
-        onClick={openOptionsModal}
+        onClick={openOptionsDialog}
       >
         Options
       </Button>
@@ -85,41 +74,14 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
           </Grid>
         ))}
       </Grid>
-      <Modal isModalOpen={isOptionsModalOpen} setIsModalOpen={setIsOptionsModalOpen}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <Typography variant="h4">Filter By Sets</Typography>
-          </Grid>
-          <Grid item>
-            <FormGroup row>
-              <FormControlLabel
-                control={<Checkbox checked={base} onChange={handleCardSetFiltersChange} name="base" />}
-                label="Base"
-              />
-              <FormControlLabel
-                control={<Checkbox checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
-                label="Crimson Seas"
-              />
-              <FormControlLabel
-                control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
-                label="Flames And Frost"
-              />
-              <FormControlLabel
-                control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
-                label="Peasants And Knights"
-              />
-              <FormControlLabel
-                control={<Checkbox checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
-                label="Shadowvale"
-              />
-              <FormControlLabel
-                control={<Checkbox checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
-                label="Undead Samurai"
-              />
-            </FormGroup>
-          </Grid>
-        </Grid>
-      </Modal>
+      <Dialog isDialogOpen={isOptionsDialogOpen} setIsDialogOpen={setIsOptionsDialogOpen}>
+        <ValeriaCardKingdomsFilterOptionsCard
+          cardSetFilters={cardSetFilters}
+          setCardSetFilters={setCardSetFilters}
+          onChange={saveSetFiltersToLocalStorage}
+          onClose={closeOptionsDialog}
+        />
+      </Dialog>
     </>
   );
 }
