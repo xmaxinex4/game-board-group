@@ -9,11 +9,11 @@ import { Stats } from "./stats";
 import { Library } from "./library";
 import { ManageGroup } from "./manage-group";
 
-import { ActiveGroupContext } from "../contexts/active-group-context";
-import { ActiveUserContext } from "../contexts/active-user-context";
-import { SideNav } from "../modules/common/navigation/side-nav";
-import { NoActiveGroup } from "../modules/group/no-active-group";
-import { NavBar } from "../modules/common/navigation/nav-bar";
+import { ActiveGroupContext } from "../../contexts/active-group-context";
+import { ActiveUserContext } from "../../contexts/active-user-context";
+import { SideNav } from "../../modules/common/navigation/side-nav";
+import { NoActiveGroup } from "../../modules/group/no-active-group";
+import { NavBar } from "../../modules/common/navigation/nav-bar";
 
 const useStyles = makeStyles({
   sideNav: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function Home(): React.ReactElement {
+export function AuthenticatedHome(): React.ReactElement {
   const { activeUser } = React.useContext(ActiveUserContext);
   const { activeGroup } = React.useContext(ActiveGroupContext);
 

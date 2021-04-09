@@ -223,8 +223,8 @@ export function MeepleCircle(): React.ReactElement {
         <defs>
           <mask id="mask-p.19" maskUnits="userSpaceOnUse" x="291.4609461942257" y="337.9972509186352" width="161.976" height="185.76600000000002">
             <linearGradient gradientUnits="userSpaceOnUse" id="gradient-p.19" x1="297.46094619619106" y1="345.9967080070035" x2="297.46075748623525" y2="398.12667295126846">
-              <stop offset="0%" stopColor="#ffffff" stop-opacity="1.0" />
-              <stop offset="100%" stopColor="#ffffff" stop-opacity="0.0" />
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="1.0" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.0" />
             </linearGradient>
             <rect fill="url(#gradient-p.19)" x="291.4609461942257" y="337.9972509186352" width="161.976" height="185.76600000000002" />
           </mask>

@@ -2,15 +2,16 @@ import React from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 
-import { ActiveGroupContext } from "../contexts/active-group-context";
+import { ActiveGroupContext } from "../../contexts/active-group-context";
 
-export const ManageGroup: React.FunctionComponent = () => {
+export const Stats: React.FunctionComponent = () => {
   const activeGroupContext = React.useContext(ActiveGroupContext);
 
   return (
     <Grid container>
       <Typography>
-        {`Managing ${activeGroupContext?.activeGroup?.name}`}
+        {activeGroupContext?.activeGroup?.name}
+        Stats
       </Typography>
     </Grid>
   );

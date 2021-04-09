@@ -6,8 +6,8 @@ import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { MyGroups } from "./my-groups";
 import { MyCollections } from "./my-collections";
 
-import { ActiveUserContext } from "../contexts/active-user-context";
-import { NavBar } from "../modules/common/navigation/nav-bar";
+import { ActiveUserContext } from "../../contexts/active-user-context";
+import { NavBar } from "../../modules/common/navigation/nav-bar";
 
 const useStyles = makeStyles({
   fullWidth: {

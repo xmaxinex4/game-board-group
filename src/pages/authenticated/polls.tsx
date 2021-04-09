@@ -4,8 +4,8 @@ import Icon from "@mdi/react";
 import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
 import { Grid, Typography, IconButton } from "@material-ui/core";
 
-import { ActiveGroupContext } from "../contexts/active-group-context";
-import { TextButton } from "../modules/common/button/text-button";
+import { ActiveGroupContext } from "../../contexts/active-group-context";
+import { TextButton } from "../../modules/common/button/text-button";
 
 export function Polls(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);

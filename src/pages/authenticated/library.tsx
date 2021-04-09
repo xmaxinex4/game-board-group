@@ -10,8 +10,8 @@ import {
   Switch,
 } from "@material-ui/core";
 
-import { ActiveGroupContext } from "../contexts/active-group-context";
-import { TextButton } from "../modules/common/button/text-button";
+import { ActiveGroupContext } from "../../contexts/active-group-context";
+import { TextButton } from "../../modules/common/button/text-button";
 
 export const Library: React.FunctionComponent = () => {
   const activeGroupContext = React.useContext(ActiveGroupContext);
