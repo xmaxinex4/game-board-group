@@ -2,20 +2,21 @@ import React, { useCallback, useState } from "react";
 
 import {
   Button,
+  Card,
   Checkbox,
   FormControlLabel,
   FormGroup,
+  Grid,
   Modal,
   Typography,
 } from "@material-ui/core";
 
-import { ValeriaCardKingdomsCard, ValeriaCardKingdomsCardSet } from "./data";
+import { ValeriaCardKingdomsCard, ValeriaCardKingdomsSetFilters } from "./data";
 import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
 import { getRandomizedCards } from "./helpers/get-randomized-cards";
 
 export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
   const setStorageKey = "valeria-card-kingdon-tool:sets";
-
   const [isOptionsModalOpen, setIsOptionsModalOpen] = React.useState(false);
 
   const openOptionsModal = () => {
@@ -26,19 +27,31 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
     setIsOptionsModalOpen(false);
   };
 
-  const cardSetKeys = Object.keys(ValeriaCardKingdomsCardSet);
   const [cards, setCards] = useState<ValeriaCardKingdomsCard[]>([]);
 
-  const emptyCardSetFilters = cardSetKeys.reduce(
-    (o, key) => Object.assign(o, { [key]: false }),
-    {},
-  );
+  const emptyCardSetFilters: ValeriaCardKingdomsSetFilters = {
+    base: false,
+    crimsonSeas: false,
+    flamesAndFrost: false,
+    peasantsAndKnights: false,
+    shadowvale: false,
+    undeadSamurai: false,
+  };
 
-  const [cardSetFilters, setCardSetFilters] = useState(
+  const [cardSetFilters, setCardSetFilters] = useState<ValeriaCardKingdomsSetFilters>(
     localStorage[setStorageKey]
       ? JSON.parse(localStorage[setStorageKey])
       : emptyCardSetFilters,
   );
+
+  const {
+    base,
+    crimsonSeas,
+    flamesAndFrost,
+    peasantsAndKnights,
+    shadowvale,
+    undeadSamurai,
+  } = cardSetFilters;
 
   const randomize = useCallback(() => setCards(getRandomizedCards(cardSetFilters)), []);
   const saveSetFilters = useCallback(() => {
@@ -65,15 +78,17 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
       >
         Randomize
       </Button>
-      <div className="card-list">
+      <Grid container spacing={2}>
         {cards.map((card) => (
-          <ValeriaCardKingdomsCardDisplay
-            key={card.name}
-            title={card.name}
-            imgSrc={card.imgSrc}
-          />
+          <Grid item>
+            <ValeriaCardKingdomsCardDisplay
+              key={card.name}
+              title={card.name}
+              imgSrc={card.imgSrc}
+            />
+          </Grid>
         ))}
-      </div>
+      </Grid>
       <Modal
         open={isOptionsModalOpen}
         onClose={closeOptionsModal}
@@ -81,25 +96,42 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
         aria-describedby="options to set filter"
         id="options-modal"
         title="Options"
-        className="options-modal"
       >
-        <div className="custom-controls-stacked">
-          <Typography>Sets</Typography>
-          <FormGroup row>
-            {cardSetKeys.map((key) => (
-              <FormControlLabel
-                label={key}
-                control={(
-                  <Checkbox
-                    checked={cardSetFilters[key]}
-                    onChange={handleCardSetFiltersChange}
-                    name={key}
-                  />
-                )}
-              />
-            ))}
-          </FormGroup>
-        </div>
+        <Card>
+          <Grid container spacing={2}>
+            <Grid item>
+              <Typography variant="h4">Filter By Sets</Typography>
+            </Grid>
+            <Grid item>
+              <FormGroup row>
+                <FormControlLabel
+                  control={<Checkbox checked={base} onChange={handleCardSetFiltersChange} name="base" />}
+                  label="Base"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
+                  label="Crimson Seas"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
+                  label="Flames And Frost"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
+                  label="Peasants And Knights"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
+                  label="Shadowvale"
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
+                  label="Undead Samurai"
+                />
+              </FormGroup>
+            </Grid>
+          </Grid>
+        </Card>
       </Modal>
     </>
   );
