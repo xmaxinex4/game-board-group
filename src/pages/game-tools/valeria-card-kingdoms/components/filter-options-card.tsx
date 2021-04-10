@@ -23,9 +23,6 @@ import {
 import { ValeriaCardKingdomsSetFilters } from "../data";
 
 const useStyles = makeStyles<Theme>((theme) => ({
-  card: {
-    width: "500px",
-  },
   padding: {
     padding: `${theme.spacing(1)}px`,
   },

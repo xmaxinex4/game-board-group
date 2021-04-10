@@ -1,6 +1,11 @@
 import React, { ReactNode } from "react";
 
-import { Card, Dialog as MuiDialog } from "@material-ui/core";
+import { Dialog as MuiDialog } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles(() => ({
+  viewPortWidth: { width: "50vw" },
+}));
 
 export interface DialogProps {
   isDialogOpen: boolean,
@@ -10,18 +15,19 @@ export interface DialogProps {
 export function Dialog(props: DialogProps & { children: ReactNode; }): React.ReactElement {
   const { isDialogOpen, setIsDialogOpen, children } = props;
 
+  const { viewPortWidth } = useStyles();
+
   const closeOptionsDialog = () => {
     setIsDialogOpen(false);
   };
 
   return (
     <MuiDialog
+      classes={{ paper: viewPortWidth }}
       onClose={closeOptionsDialog}
       open={isDialogOpen}
     >
-      <Card>
-        {children}
-      </Card>
+      {children}
     </MuiDialog>
   );
 }

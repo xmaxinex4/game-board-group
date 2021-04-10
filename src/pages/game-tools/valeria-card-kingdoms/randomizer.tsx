@@ -31,7 +31,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
   const [cards, setCards] = useState<ValeriaCardKingdomsCard[]>([]);
 
   const emptyCardSetFilters: ValeriaCardKingdomsSetFilters = {
-    base: false,
+    base: true,
     crimsonSeas: false,
     flamesAndFrost: false,
     gnollMonsterPack: false,
