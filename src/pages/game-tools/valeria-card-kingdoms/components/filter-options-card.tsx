@@ -52,6 +52,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
     base,
     crimsonSeas,
     flamesAndFrost,
+    gnollMonsterPack,
     peasantsAndKnights,
     shadowvale,
     undeadSamurai,
@@ -91,6 +92,10 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <FormControlLabel
             control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
             label="Flames And Frost"
+          />
+          <FormControlLabel
+            control={<Checkbox checked={gnollMonsterPack} onChange={handleCardSetFiltersChange} name="gnollMonsterPack" />}
+            label="Gnoll Monster Pack"
           />
           <FormControlLabel
             control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}

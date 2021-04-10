@@ -29,7 +29,27 @@ import AltKnight from "./images/alt-knight.jpg";
 import KnightCS from "./images/knight-cs.png";
 import KnightGold from "./images/knight-gold.png";
 import Knight from "./images/knight.jpg";
-import KingsGuard from "./images/kings-guard.jpg";
+// import KingsGuard from "./images/kings-guard.jpg";
+import Condottiere from "./images/condottiere.jpg";
+import Necromancer from "./images/necromancer.png";
+import Rogue from "./images/rogue.jpg";
+import Smuggler from "./images/smuggler.png";
+import Thief from "./images/thief.jpg";
+import Bogatyr from "./images/bogatyr.jpg";
+import Champion from "./images/champion.jpg";
+import Dreadnaught from "./images/dreadnaught.png";
+import Guardian from "./images/guardian.png";
+import Warlord from "./images/warlord.jpg";
+import Conjurer from "./images/conjurer.png";
+import Dragoon from "./images/dragoon.png";
+import Paladin from "./images/paladin.jpg";
+import Priestess from "./images/priestess.jpg";
+import Templar from "./images/templar.jpg";
+import Baker from "./images/baker.jpg";
+import Butcher from "./images/butcher.jpg";
+import Inventor from "./images/inventor.png";
+import Miner from "./images/miner.jpg";
+import Purser from "./images/purser.png";
 
 import MonsterBarrens from "./images/monster-barrens.jpg";
 import MonsterCavern from "./images/monster-cavern.jpg";
@@ -55,11 +75,13 @@ import MonsterUndeadSamurai from "./images/monster-undead-samurai.jpg";
 import MonsterValley from "./images/monster-valley.jpg";
 import MonsterValcano from "./images/monster-volcano.jpg";
 import MonsterWoods from "./images/monster-woods.png";
+import MonsterKnolls from "./images/monster-knolls.png";
 
 export type ValeriaCardKingdomsSetFilters = {
   base: boolean;
   crimsonSeas: boolean;
   flamesAndFrost: boolean;
+  gnollMonsterPack: boolean;
   peasantsAndKnights: boolean; // exp04
   shadowvale: boolean;
   undeadSamurai: boolean; // exp
@@ -303,84 +325,84 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Condottiere",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
-    imgSrc: "images/07-condottiere.jpg",
+    imgSrc: Condottiere,
   },
   {
     set: "base",
     name: "Rogue",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
-    imgSrc: "images/07-rogue.jpg",
+    imgSrc: Rogue,
   },
   {
     set: "base",
     name: "Thief",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
-    imgSrc: "images/07-thief.jpg",
+    imgSrc: Thief,
   },
   {
     set: "flamesAndFrost",
     name: "Bogatyr",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
-    imgSrc: "images/08-bogatyr.jpg",
+    imgSrc: Bogatyr,
   },
   {
     set: "base",
     name: "Champion",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
-    imgSrc: "images/08-champion.jpg",
+    imgSrc: Champion,
   },
   {
     set: "base",
     name: "Warlord",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
-    imgSrc: "images/08-warlord.jpg",
+    imgSrc: Warlord,
   },
   {
     set: "base",
     name: "Paladin",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
-    imgSrc: "images/09-10-paladin.jpg",
+    imgSrc: Paladin,
   },
   {
     set: "base",
     name: "Priestess",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
-    imgSrc: "images/09-10-priestess.jpg",
+    imgSrc: Priestess,
   },
   {
     set: "flamesAndFrost",
     name: "Templar",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
-    imgSrc: "images/09-10-templar.jpg",
+    imgSrc: Templar,
   },
   {
     set: "flamesAndFrost",
     name: "Baker",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
-    imgSrc: "images/11-12-baker.jpg",
+    imgSrc: Baker,
   },
   {
     set: "base",
     name: "Butcher",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
-    imgSrc: "images/11-12-butcher.jpg",
+    imgSrc: Butcher,
   },
   {
     set: "base",
     name: "Miner",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
-    imgSrc: "images/11-12-miner.jpg",
+    imgSrc: Miner,
   },
   {
     set: "shadowvale",
@@ -464,28 +486,28 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Necromancer",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
-    imgSrc: "images/07-necromancer.png",
+    imgSrc: Necromancer,
   },
   {
     set: "shadowvale",
     name: "Guardian",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
-    imgSrc: "images/08-guardian.png",
+    imgSrc: Guardian,
   },
   {
     set: "shadowvale",
     name: "Dragoon",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
-    imgSrc: "images/09-10-dragoon.png",
+    imgSrc: Dragoon,
   },
   {
     set: "shadowvale",
     name: "Inventor",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
-    imgSrc: "images/11-12-inventor.png",
+    imgSrc: Inventor,
   },
   {
     set: "crimsonSeas",
@@ -534,28 +556,28 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Smuggler",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
-    imgSrc: "images/07-smuggler.png",
+    imgSrc: Smuggler,
   },
   {
     set: "crimsonSeas",
     name: "Dreadnaught",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
-    imgSrc: "images/08-dreadnaught.png",
+    imgSrc: Dreadnaught,
   },
   {
     set: "crimsonSeas",
     name: "Conjurer",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
-    imgSrc: "images/09-10-conjurer.png",
+    imgSrc: Conjurer,
   },
   {
     set: "crimsonSeas",
     name: "Purser",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
-    imgSrc: "images/11-12-purser.png",
+    imgSrc: Purser,
   },
   {
     set: "crimsonSeas",
@@ -592,6 +614,27 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     sortOrder: 2.1,
     imgSrc: MonsterTheDeep,
   },
+  {
+    set: "gnollMonsterPack",
+    name: "Knolls",
+    bucket: ValeriaCardKingdomsCardBucket.MONSTER,
+    sortOrder: 7.1,
+    imgSrc: MonsterKnolls,
+  },
+];
+
+export const ValeriaCardKingdomsCardBucketKeys = [
+  "MONSTER",
+  "ONE",
+  "TWO",
+  "THREE",
+  "FOUR",
+  "FIVE",
+  "SIX",
+  "SEVEN",
+  "EIGHT",
+  "NINE",
+  "ELEVEN",
 ];
 
 export const ValeriaCardKingdomsCardBuckets: { [key: string]: ValeriaCardKingdomsCard[]; } = {

@@ -34,6 +34,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
     base: false,
     crimsonSeas: false,
     flamesAndFrost: false,
+    gnollMonsterPack: false,
     peasantsAndKnights: false,
     shadowvale: false,
     undeadSamurai: false,
@@ -49,7 +50,13 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
     localStorage[setStorageKey] = JSON.stringify(cardSetFilters);
   }, [cardSetFilters]);
 
-  const randomize = useCallback(() => setCards(getRandomizedCards(cardSetFilters)), []);
+  const randomize = useCallback(
+    () => {
+      console.log("randomizing. cardSetFilters are: ", cardSetFilters);
+      setCards(getRandomizedCards(cardSetFilters));
+    },
+    [cardSetFilters, setCards],
+  );
 
   const { firstRowCards, secondRowCards, thirdRowCards } = useMemo(() => ({
     firstRowCards: cards.slice(0, 5),
@@ -59,23 +66,35 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
 
   return (
     <>
-      <Typography>Valeria Card Kingdom Randomizer</Typography>
-      <Button
-        color="secondary"
-        onClick={openOptionsDialog}
-      >
-        Options
-      </Button>
-      <Button
-        color="primary"
-        onClick={() => randomize()}
-      >
-        Randomize
-      </Button>
       <Grid container spacing={2}>
         <Grid container justify="center" alignItems="center" item spacing={2}>
+          <Grid container item direction="column" alignItems="center" spacing={2} xs={12}>
+            <Grid item>
+              <Typography variant="h6">Valeria Card Kingdoms Randomizer</Typography>
+            </Grid>
+            <Grid container justify="center" spacing={2} item>
+              <Grid item>
+                <Button
+                  color="secondary"
+                  variant="outlined"
+                  onClick={openOptionsDialog}
+                >
+                  Filters
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => randomize()}
+                >
+                  Randomize
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
           {firstRowCards.map((card) => (
-            <Grid item xs={2}>
+            <Grid key={card.name} item xs={2}>
               <Card>
                 <CardHeader title={card.name} />
                 <CardMedia
@@ -89,7 +108,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
         </Grid>
         <Grid container justify="center" alignItems="center" item spacing={2}>
           {secondRowCards.map((card) => (
-            <Grid item xs={2}>
+            <Grid key={card.name} item xs={2}>
               <Card>
                 <CardHeader title={card.name} />
                 <CardMedia
@@ -103,7 +122,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
         </Grid>
         <Grid container justify="center" alignItems="center" item spacing={2}>
           {thirdRowCards.map((card) => (
-            <Grid item xs={2}>
+            <Grid key={card.name} item xs={2}>
               <Card>
                 <CardHeader title={card.name} />
                 <CardMedia

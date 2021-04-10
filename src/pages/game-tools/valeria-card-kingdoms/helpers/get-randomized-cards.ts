@@ -1,4 +1,9 @@
-import { ValeriaCardKingdomsCardBuckets, ValeriaCardKingdomsCard, ValeriaCardKingdomsSetFilters } from "../data";
+import {
+  ValeriaCardKingdomsCardBuckets,
+  ValeriaCardKingdomsCard,
+  ValeriaCardKingdomsSetFilters,
+  ValeriaCardKingdomsCardBucketKeys,
+} from "../data";
 
 // Fisher-Yates shuffle via https://bost.ocks.org/mike/shuffle/
 function shuffle(array: ValeriaCardKingdomsCard[]) {
@@ -27,7 +32,7 @@ export function getRandomizedCards(filters: ValeriaCardKingdomsSetFilters) {
   const cards: ValeriaCardKingdomsCard[] = [];
 
   const shuffledMonsters: ValeriaCardKingdomsCard[] = shuffle(ValeriaCardKingdomsCardBuckets.MONSTER.filter(
-    (card) => Object.keys(filters).includes(card.set),
+    (card) => filters[card.set],
   ));
 
   shuffledMonsters
@@ -35,11 +40,9 @@ export function getRandomizedCards(filters: ValeriaCardKingdomsSetFilters) {
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .forEach((card) => cards.push(card));
 
-  const bucketKeys = Object.keys(ValeriaCardKingdomsCardBuckets);
-
-  bucketKeys.forEach((key) => {
+  ValeriaCardKingdomsCardBucketKeys.forEach((key) => {
     if (key !== "MONSTER") {
-      const list: ValeriaCardKingdomsCard[] = ValeriaCardKingdomsCardBuckets[key].filter((card) => Object.keys(filters).includes(card.set));
+      const list: ValeriaCardKingdomsCard[] = ValeriaCardKingdomsCardBuckets[key].filter((card) => filters[card.set]);
       if (list?.length) {
         cards.push(list[Math.floor(Math.random() * list.length)]);
       }
