@@ -14,6 +14,22 @@ import Merchant from "./images/merchant.jpg";
 import Alchemist from "./images/alchemist.jpg";
 import Bandit from "./images/bandit.png";
 import Mercenary from "./images/mercenary.jpg";
+import Sorceress from "./images/sorceress.jpg";
+import Vitki from "./images/vitki.png";
+import Archer from "./images/archer.jpg";
+import Barbarian from "./images/barbarian.jpg";
+import Hunter from "./images/hunter.png";
+import Marauder from "./images/marauder.png";
+import Wizard from "./images/wizard.jpg";
+import AltPeasant from "./images/alt-peasant.jpg";
+import PeasantCS from "./images/peasant-cs.png";
+import PeasantMagic from "./images/peasant-magic.png";
+import Peasant from "./images/peasant.jpg";
+import AltKnight from "./images/alt-knight.jpg";
+import KnightCS from "./images/knight-cs.png";
+import KnightGold from "./images/knight-gold.png";
+import Knight from "./images/knight.jpg";
+import KingsGuard from "./images/kings-guard.jpg";
 
 import MonsterBarrens from "./images/monster-barrens.jpg";
 import MonsterCavern from "./images/monster-cavern.jpg";
@@ -231,56 +247,56 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Sorceress",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
-    imgSrc: "images/03-sorceress.jpg",
+    imgSrc: Sorceress,
   },
   {
     set: "base",
     name: "Archer",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
-    imgSrc: "images/04-archer.jpg",
+    imgSrc: Archer,
   },
   {
     set: "flamesAndFrost",
     name: "Barbarian",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
-    imgSrc: "images/04-barbarian.jpg",
+    imgSrc: Barbarian,
   },
   {
     set: "base",
     name: "Wizard",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
-    imgSrc: "images/04-wizard.jpg",
+    imgSrc: Wizard,
   },
   {
     set: "peasantsAndKnights",
     name: "Alt. Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
-    imgSrc: "images/05-alt-peasant.jpg",
+    imgSrc: AltPeasant,
   },
   {
     set: "base",
     name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
-    imgSrc: "images/05-peasant.jpg",
+    imgSrc: Peasant,
   },
   {
     set: "peasantsAndKnights",
     name: "Alt. Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
-    imgSrc: "images/06-alt-knight.jpg",
+    imgSrc: AltKnight,
   },
   {
     set: "base",
     name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
-    imgSrc: "images/06-knight.jpg",
+    imgSrc: Knight,
   },
   {
     set: "flamesAndFrost",
@@ -427,21 +443,21 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Hunter",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
-    imgSrc: "images/04-hunter.png",
+    imgSrc: Hunter,
   },
   {
     set: "shadowvale",
     name: "Peasant (magic)",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
-    imgSrc: "images/05-peasant-magic.png",
+    imgSrc: PeasantMagic,
   },
   {
     set: "shadowvale",
     name: "Knight (gold)",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
-    imgSrc: "images/06-knight-gold.png",
+    imgSrc: KnightGold,
   },
   {
     set: "shadowvale",
@@ -490,28 +506,28 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
     name: "Vitki",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
-    imgSrc: "images/03-vitki.png",
+    imgSrc: Vitki,
   },
   {
     set: "crimsonSeas",
     name: "Marauder",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
-    imgSrc: "images/04-marauder.png",
+    imgSrc: Marauder,
   },
   {
     set: "crimsonSeas",
     name: "Peasant (CS)",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
-    imgSrc: "images/05-peasant-cs.png",
+    imgSrc: PeasantCS,
   },
   {
     set: "crimsonSeas",
     name: "Knight (CS)",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
-    imgSrc: "images/06-knight-cs.png",
+    imgSrc: KnightCS,
   },
   {
     set: "crimsonSeas",
