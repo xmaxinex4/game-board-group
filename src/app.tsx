@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 import { useApi } from "./hooks/useApi";
@@ -9,7 +9,7 @@ import { Group } from "./api-types/group";
 import { ActiveGroupContext } from "./contexts/active-group-context";
 import { ActiveUserContext } from "./contexts/active-user-context";
 
-import { Page, PageStyleProps } from "./modules/common/layout/page";
+import { Page } from "./modules/common/layout/page";
 
 import { GameToolsRoutes } from "./pages/game-tools/routes";
 import { AuthenticatedRoutes } from "./pages/authenticated/routes";
@@ -30,12 +30,8 @@ function App() {
     });
   }, []);
 
-  const pageStyleProps: PageStyleProps = useMemo(() => ({
-    paddingTop: currentUser ? 0 : 6,
-  }), [currentUser]);
-
   return (
-    <Page styleProps={pageStyleProps}>
+    <Page>
       {
         currentUser
           ? (

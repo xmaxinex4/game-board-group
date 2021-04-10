@@ -6,7 +6,7 @@ import { CirclePicker, ColorResult } from "react-color";
 import { Grid, makeStyles } from "@material-ui/core";
 
 import { Meeple } from "../../images/components/meeple";
-import { MeepleColorStringArray } from "../../theme";
+import { MeepleColorStringArray } from "../../theme/meeple-palettes";
 
 interface MeepleColorPickerProps {
   color: string;

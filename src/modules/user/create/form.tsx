@@ -10,7 +10,7 @@ import {
 import PersonIcon from "@material-ui/icons/Person";
 import EmailIcon from "@material-ui/icons/Email";
 
-import { PaletteColors } from "../../../theme";
+import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
@@ -25,7 +25,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [color, setColor] = useState(PaletteColors.Red.main);
+  const [color, setColor] = useState(MeeplePaletteColors.Red.main);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<CreateUserFormModel>({
     username: "",
