@@ -1,20 +1,13 @@
 import React, { useCallback, useMemo, useState } from "react";
 
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardMedia,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 
 import { Dialog } from "../../../modules/common/dialog/dialog";
 
 import { ValeriaCardKingdomsCard, ValeriaCardKingdomsSetFilters } from "./data";
-// import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
 import { getRandomizedCards } from "./helpers/get-randomized-cards";
 import { ValeriaCardKingdomsFilterOptionsCard } from "./components/filter-options-card";
+import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
 
 export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
   const setStorageKey = "valeria-card-kingdon-tool:sets";
@@ -95,42 +88,21 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
           </Grid>
           {firstRowCards.map((card) => (
             <Grid key={card.name} item xs={2}>
-              <Card>
-                <CardHeader title={card.name} />
-                <CardMedia
-                  style={{ height: "250px" }}
-                  image={card.imgSrc}
-                  title={card.name}
-                />
-              </Card>
+              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
             </Grid>
           ))}
         </Grid>
         <Grid container justify="center" alignItems="center" item spacing={2}>
           {secondRowCards.map((card) => (
             <Grid key={card.name} item xs={2}>
-              <Card>
-                <CardHeader title={card.name} />
-                <CardMedia
-                  style={{ height: "250px" }}
-                  image={card.imgSrc}
-                  title={card.name}
-                />
-              </Card>
+              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
             </Grid>
           ))}
         </Grid>
         <Grid container justify="center" alignItems="center" item spacing={2}>
           {thirdRowCards.map((card) => (
             <Grid key={card.name} item xs={2}>
-              <Card>
-                <CardHeader title={card.name} />
-                <CardMedia
-                  style={{ height: "250px" }}
-                  image={card.imgSrc}
-                  title={card.name}
-                />
-              </Card>
+              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
             </Grid>
           ))}
         </Grid>
