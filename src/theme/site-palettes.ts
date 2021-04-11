@@ -13,9 +13,9 @@ export const SitePaletteColors: SitePaletteColorTheme = {
     contrastText: "",
   },
   Secondary: {
-    light: "#b84a2b",
-    dark: "#510000",
-    main: "#821a00",
+    light: "#db6d39",
+    dark: "#6f0d00",
+    main: "#a43f0c",
     contrastText: "",
   },
 };

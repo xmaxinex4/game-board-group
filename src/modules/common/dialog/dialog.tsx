@@ -4,7 +4,7 @@ import { Dialog as MuiDialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(() => ({
-  viewPortWidth: { width: "50vw" },
+  viewPortWidth: { width: "75vw" },
 }));
 
 export interface DialogProps {
