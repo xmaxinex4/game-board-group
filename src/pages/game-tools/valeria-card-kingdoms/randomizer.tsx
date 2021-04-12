@@ -59,8 +59,8 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid container justify="center" alignItems="center" item spacing={2}>
+      <Grid container spacing={4}>
+        <Grid container justify="center" alignItems="center" item spacing={1}>
           <Grid container item direction="column" alignItems="center" spacing={2} xs={12}>
             <Grid item>
               <Typography variant="h6">Valeria Card Kingdoms Randomizer</Typography>
@@ -69,7 +69,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
               <Grid item>
                 <Button
                   color="secondary"
-                  variant="outlined"
+                  variant="contained"
                   onClick={openOptionsDialog}
                 >
                   Filters
@@ -78,7 +78,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
               <Grid item>
                 <Button
                   color="primary"
-                  variant="outlined"
+                  variant="contained"
                   onClick={() => randomize()}
                 >
                   Randomize
@@ -86,25 +86,29 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
               </Grid>
             </Grid>
           </Grid>
-          {firstRowCards.map((card) => (
-            <Grid key={card.name} item xs={2}>
-              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
-            </Grid>
-          ))}
         </Grid>
-        <Grid container justify="center" alignItems="center" item spacing={2}>
-          {secondRowCards.map((card) => (
-            <Grid key={card.name} item xs={2}>
-              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
-            </Grid>
-          ))}
-        </Grid>
-        <Grid container justify="center" alignItems="center" item spacing={2}>
-          {thirdRowCards.map((card) => (
-            <Grid key={card.name} item xs={2}>
-              <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
-            </Grid>
-          ))}
+        <Grid container item spacing={2}>
+          <Grid container justify="center" alignItems="center" item spacing={1}>
+            {firstRowCards.map((card) => (
+              <Grid key={card.name} item xs={2}>
+                <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid container justify="center" alignItems="center" item spacing={1}>
+            {secondRowCards.map((card) => (
+              <Grid key={card.name} item xs={2}>
+                <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid container justify="center" alignItems="center" item spacing={1}>
+            {thirdRowCards.map((card) => (
+              <Grid key={card.name} item xs={2}>
+                <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
       <Dialog isDialogOpen={isOptionsDialogOpen} setIsDialogOpen={setIsOptionsDialogOpen}>

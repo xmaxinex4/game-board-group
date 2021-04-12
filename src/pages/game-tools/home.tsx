@@ -39,30 +39,32 @@ export function GameToolsHome(): React.ReactElement {
   ];
 
   return (
-    <Grid container xs={12} md={8} spacing={2} justify="center">
-      {
-        gameTools.map((tool) => (
-          <Grid item xs={12} md={6}>
-            <Card>
-              <Link to={tool.appLink} component={CardActionArea}>
-                <CardMedia
-                  className={cardMedia}
-                  image={tool.imgSrc}
-                  title={tool.title}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {tool.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {tool.description}
-                  </Typography>
-                </CardContent>
-              </Link>
-            </Card>
-          </Grid>
-        ))
-      }
+    <Grid container justify="center" alignItems="center">
+      <Grid container item xs={12} md={8} spacing={2}>
+        {
+          gameTools.map((tool) => (
+            <Grid item xs={12} md={6}>
+              <Card>
+                <Link to={tool.appLink} component={CardActionArea}>
+                  <CardMedia
+                    className={cardMedia}
+                    image={tool.imgSrc}
+                    title={tool.title}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {tool.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {tool.description}
+                    </Typography>
+                  </CardContent>
+                </Link>
+              </Card>
+            </Grid>
+          ))
+        }
+      </Grid>
     </Grid>
   );
 }

@@ -469,14 +469,14 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
-    name: "Peasant (magic)",
+    name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
     imgSrc: PeasantMagic,
   },
   {
     set: "shadowvale",
-    name: "Knight (gold)",
+    name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
     imgSrc: KnightGold,
@@ -539,14 +539,14 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
-    name: "Peasant (CS)",
+    name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
     imgSrc: PeasantCS,
   },
   {
     set: "crimsonSeas",
-    name: "Knight (CS)",
+    name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
     imgSrc: KnightCS,

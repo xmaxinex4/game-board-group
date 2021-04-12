@@ -2,7 +2,7 @@ import React from "react";
 
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import { CardContent, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 import { MeepleCircleSiteNameInline } from "../../images/components/meeple-circle-site-name-inline";
 
@@ -20,14 +20,12 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
           <MeepleCircleSiteNameInline />
         </Grid>
         <Grid item>
-          <CardContent>
-            <Switch>
-              <Route path="/forgot-password" component={ForgotPassword} />
-              <Route path="/create-account" component={CreateAccount} />
-              <Route path="/login" component={Login} />
-              <Route exact path="*" component={() => <Redirect to="/login" />} />
-            </Switch>
-          </CardContent>
+          <Switch>
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/create-account" component={CreateAccount} />
+            <Route path="/login" component={Login} />
+            <Route exact path="*" component={() => <Redirect to="/login" />} />
+          </Switch>
         </Grid>
       </Grid>
     </>

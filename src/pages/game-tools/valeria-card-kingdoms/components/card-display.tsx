@@ -1,7 +1,12 @@
 import React from "react";
 
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Theme, Typography } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   image: {
@@ -25,7 +30,9 @@ export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardPro
   return (
     <Grid container justify="center">
       <Grid item>
-        <Typography>{title}</Typography>
+        <Typography variant="caption">
+          <Box fontWeight="fontWeightBold">{title}</Box>
+        </Typography>
       </Grid>
       <Grid item>
         <img className={image} src={imgSrc} alt="" />
