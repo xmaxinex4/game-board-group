@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 });
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "../client", "build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.get(`/api`, async (req, res) => {
   res.json({ up: true });
@@ -36,7 +36,7 @@ initializeUserApi(app, prisma);
 // Redirect back to index.html if urls do not match
 if (process.env.NODE_ENV === 'production') {
   app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
 }
 
