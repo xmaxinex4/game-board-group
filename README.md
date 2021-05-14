@@ -1,23 +1,31 @@
-# Heroku deployment example
+# Prod deployment steps
 
-[Deployment guide](https://www.prisma.io/docs/guides/deployment/deploying-to-heroku)
+git fetch and pull latest
+npm run build that runs prisma generate
+root npm install -> will autorun postinstall
+cd to client and run npm install
+pm2 start dist/app.js -i max
 
-## Download manually
+# Helpful Linux Instance & NGINX Commands:
+debug: systemctl statis nginx.service
+cd location: cd /etc/nginx
+edit conf: nano nginx.conf
+start: sudo systemctl start nginx
+restart: sudo systemctl restart nginx
+stop: sudo systemctl stop nginx
+check running apps on http(80): netstat -na | grep ':80.*LISTEN'
+pm2 start app:
+become root user: sudo su -
 
-```bash
-curl https://codeload.github.com/prisma/prisma-examples/tar.gz/latest | tar -xz --strip=2 prisma-examples-latest/deployment-platforms/heroku
-cd heroku
-```
 
 ## Description
 
-An app tool for board game groups.
+An app tool for board game groups
 
 ## Stack
 
 - Prisma
 - React
-- Uses concurrently library to run server and client
 
 ## Frontend
 

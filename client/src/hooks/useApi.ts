@@ -11,7 +11,7 @@ export function useApi() {
   ): Promise<AxiosResponse<T>> {
     return httpHelpers.get<T>(
       // `http://localhost:9000/api${endpoint}`,
-      `https://game-board-group-heroku-api.herokuapp.com/api${endpoint}`,
+      `https://gameboardgroup.com/api${endpoint}`,
       {
         params,
         headers: {
@@ -24,7 +24,7 @@ export function useApi() {
   function apiPost<T>(endpoint: string, data: any): Promise<AxiosResponse<T>> {
     return httpHelpers.post<T>(
       // `http://localhost:9000/api${endpoint}`,
-      `https://game-board-group-heroku-api.herokuapp.com/api${endpoint}`,
+      `https://gameboardgroup.com/api${endpoint}`,
       data,
       {
         headers: {
