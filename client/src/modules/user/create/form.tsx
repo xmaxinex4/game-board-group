@@ -35,6 +35,12 @@ export const CreateUserForm: React.FunctionComponent = () => {
     color: "",
   });
 
+  const [showPassword, setShowPassword] = React.useState(false);
+  const showPasswordOverrideControl = {
+    showPassword,
+    setShowPassword,
+  };
+
   const clearErrorField = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
@@ -106,6 +112,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
             setInputState={setPassword}
             error={errors.password}
             onInputChange={clearErrorField}
+            showPasswordOverrideControl={showPasswordOverrideControl}
           />
 
           <FullWidthGridItemPasswordInput
@@ -116,6 +123,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
             setInputState={setConfirmPassword}
             error={errors.confirmPassword}
             onInputChange={clearErrorField}
+            showPasswordOverrideControl={showPasswordOverrideControl}
           />
 
           <Grid container item direction="column" spacing={4}>

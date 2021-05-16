@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, react/jsx-props-no-spreading */
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import {
   FormControl,
@@ -47,6 +47,7 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
   } = props;
 
   const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
+  const hasError = useMemo(() => !!error, [error]);
   const [focused, setFocused] = React.useState(false);
 
   const onFocus = () => {
@@ -65,6 +66,14 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
       onInputChange(e);
     }
   };
+
+  const outerEndIconColor = useMemo(() => {
+    if (hasError) {
+      return "error";
+    }
+
+    return focused ? "primary" : "inherit";
+  }, [hasError, focused]);
 
   return (
     <Grid container item alignItems="stretch" {...gridItemProps}>
@@ -92,7 +101,7 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
               {
                 OuterEndAdornmentIcon && (
                   <InputAdornment position="end">
-                    <OuterEndAdornmentIcon color={error || focused ? "primary" : "inherit"} />
+                    <OuterEndAdornmentIcon color={outerEndIconColor} />
                   </InputAdornment>
                 )
               }

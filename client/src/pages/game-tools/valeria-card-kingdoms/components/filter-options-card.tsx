@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import React from "react";
+import React, { useCallback } from "react";
 
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 export interface ValeriaCardKingdomsFilterOptionsCardProps {
   cardSetFilters: ValeriaCardKingdomsSetFilters,
   setCardSetFilters: React.Dispatch<React.SetStateAction<ValeriaCardKingdomsSetFilters>>;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  cardSetFilterStorageKey: string;
   onClose: () => void;
 }
 
@@ -39,7 +39,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
   const {
     cardSetFilters,
     setCardSetFilters,
-    onChange,
+    cardSetFilterStorageKey,
     onClose,
   } = props;
 
@@ -55,13 +55,12 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
     undeadSamurai,
   } = cardSetFilters;
 
-  const handleCardSetFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setCardSetFilters({ ...cardSetFilters, [event.target.name]: checked });
+  const handleCardSetFiltersChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    const newSetFilters = { ...cardSetFilters, [event.target.name]: checked };
 
-    if (onChange) {
-      onChange(event, checked);
-    }
-  };
+    setCardSetFilters(newSetFilters);
+    localStorage[cardSetFilterStorageKey] = JSON.stringify(newSetFilters);
+  }, [cardSetFilters, setCardSetFilters, cardSetFilterStorageKey]);
 
   return (
     <Card className={card}>

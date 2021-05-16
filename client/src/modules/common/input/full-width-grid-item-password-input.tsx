@@ -11,24 +11,35 @@ import { FullWidthGridItemInput, FullWidthGridItemInputProps } from "./full-widt
 export interface FullWidthGridItemPasswordInputProps
   extends Omit<FullWidthGridItemInputProps, "outerEndAdornmentIcon" | "inputProps" | "innerEndAdornmentIconButton" | "innerEndAdornmentOnClick"> {
   fullWidthGridItemInputId?: string;
+  showPasswordOverrideControl?: {
+    showPassword: boolean;
+    setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 }
 
 export function FullWidthGridItemPasswordInput(props: FullWidthGridItemPasswordInputProps): React.ReactElement {
-  const { fullWidthGridItemInputId, inputLabel, ...gridItemProps } = props;
+  const {
+    fullWidthGridItemInputId,
+    inputLabel,
+    showPasswordOverrideControl,
+    ...gridItemProps
+  } = props;
+
   const [showPassword, setShowPassword] = React.useState(false);
+  const showPasswordControl = showPasswordOverrideControl || { showPassword, setShowPassword };
 
   const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
+    showPasswordControl.setShowPassword(!showPasswordControl.showPassword);
   };
 
   return (
     <FullWidthGridItemInput
       {...gridItemProps}
-      innerEndAdornmentIconButton={showPassword ? EyeClosedIcon : EyeOpenIcon}
+      innerEndAdornmentIconButton={showPasswordControl.showPassword ? EyeClosedIcon : EyeOpenIcon}
       innerEndAdornmentOnClick={toggleShowPassword}
       outerEndAdornmentIcon={LockIcon}
       inputLabel={inputLabel || "Password"}
-      inputProps={{ type: showPassword ? "text" : "password", id: fullWidthGridItemInputId || "password" }}
+      inputProps={{ type: showPasswordControl.showPassword ? "text" : "password", id: fullWidthGridItemInputId || "password" }}
     />
   );
 }

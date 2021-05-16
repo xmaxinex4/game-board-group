@@ -10,7 +10,7 @@ import { ValeriaCardKingdomsFilterOptionsCard } from "./components/filter-option
 import { ValeriaCardKingdomsCardDisplay } from "./components/card-display";
 
 export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
-  const setStorageKey = "valeria-card-kingdon-tool:sets";
+  const cardSetFilterStorageKey = "valeria-card-kingdon-tool:sets";
   const [isOptionsDialogOpen, setIsOptionsDialogOpen] = React.useState(false);
 
   const openOptionsDialog = () => {
@@ -34,20 +34,13 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
   };
 
   const [cardSetFilters, setCardSetFilters] = useState<ValeriaCardKingdomsSetFilters>(
-    localStorage[setStorageKey]
-      ? JSON.parse(localStorage[setStorageKey])
+    localStorage[cardSetFilterStorageKey]
+      ? JSON.parse(localStorage[cardSetFilterStorageKey])
       : emptyCardSetFilters,
   );
 
-  const saveSetFiltersToLocalStorage = useCallback(() => {
-    localStorage[setStorageKey] = JSON.stringify(cardSetFilters);
-  }, [cardSetFilters]);
-
   const randomize = useCallback(
-    () => {
-      console.log("randomizing. cardSetFilters are: ", cardSetFilters);
-      setCards(getRandomizedCards(cardSetFilters));
-    },
+    () => setCards(getRandomizedCards(cardSetFilters)),
     [cardSetFilters, setCards],
   );
 
@@ -115,7 +108,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
         <ValeriaCardKingdomsFilterOptionsCard
           cardSetFilters={cardSetFilters}
           setCardSetFilters={setCardSetFilters}
-          onChange={saveSetFiltersToLocalStorage}
+          cardSetFilterStorageKey={cardSetFilterStorageKey}
           onClose={closeOptionsDialog}
         />
       </Dialog>

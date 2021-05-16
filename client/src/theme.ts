@@ -7,6 +7,10 @@ export const muiTheme = createMuiTheme({
   palette: {
     primary: SitePaletteColors.Primary,
     secondary: SitePaletteColors.Secondary,
+    error: SitePaletteColors.Error,
+    success: SitePaletteColors.Success,
+    info: SitePaletteColors.Info,
+    warning: SitePaletteColors.Warning,
   },
   // typography: {
   // fontFamily: "\"Open Sans\", sans-serif",
