@@ -23,7 +23,7 @@ function App() {
 
   React.useEffect(() => {
     apiGet<User>("/user/me").then(({ data }) => {
-      setCurrentUser(data || undefined);
+      setCurrentUser(data?.id ? data : undefined);
       if (!activeGroup) {
         setActiveGroup(data?.groupMemberships?.[0]?.group);
       }
