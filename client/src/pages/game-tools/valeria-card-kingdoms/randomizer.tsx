@@ -81,21 +81,21 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
           </Grid>
         </Grid>
         <Grid container item spacing={2}>
-          <Grid container justify="center" alignItems="center" item spacing={1}>
+          <Grid container justify="center" alignItems="flex-end" item spacing={1}>
             {firstRowCards.map((card) => (
               <Grid key={card.name} item xs={2}>
                 <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
               </Grid>
             ))}
           </Grid>
-          <Grid container justify="center" alignItems="center" item spacing={1}>
+          <Grid container justify="center" alignItems="flex-end" item spacing={1}>
             {secondRowCards.map((card) => (
               <Grid key={card.name} item xs={2}>
                 <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
               </Grid>
             ))}
           </Grid>
-          <Grid container justify="center" alignItems="center" item spacing={1}>
+          <Grid container justify="center" alignItems="flex-end" item spacing={1}>
             {thirdRowCards.map((card) => (
               <Grid key={card.name} item xs={2}>
                 <ValeriaCardKingdomsCardDisplay title={card.name} imgSrc={card.imgSrc} />
