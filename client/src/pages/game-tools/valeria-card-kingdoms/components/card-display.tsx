@@ -1,21 +1,14 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/styles";
+import useResizeObserver from "@react-hook/resize-observer";
+
 import {
   Box,
   Grid,
-  Theme,
   Typography,
 } from "@material-ui/core";
 
-const useStyles = makeStyles<Theme>((theme) => ({
-  image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: `${theme.spacing(0.5)}px`,
-    boxShadow: theme.shadows[1],
-  },
-}));
+import { ImageLoader } from "../../../../modules/common/image/image-loader";
 
 export interface ValeriaCardKingdomsCardProps {
   title: string;
@@ -25,17 +18,19 @@ export interface ValeriaCardKingdomsCardProps {
 export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardProps): React.ReactElement {
   const { title, imgSrc } = props;
 
-  const { image } = useStyles();
+  const gridContainerRef = React.useRef(null);
+  const [imageDimensions, setImageDimensions] = React.useState<{ height: number, width: number; }>({ height: 0, width: 0 });
+  useResizeObserver(gridContainerRef, (entry) => setImageDimensions({ height: (1.4) * entry.contentRect.width, width: entry.contentRect.width }));
 
   return (
-    <Grid container justify="center">
+    <Grid container direction="column" justify="flex-end" alignItems="center" ref={gridContainerRef}>
       <Grid item>
         <Typography variant="caption">
           <Box fontWeight="fontWeightBold">{title}</Box>
         </Typography>
       </Grid>
       <Grid item>
-        <img className={image} src={imgSrc} alt="" />
+        <ImageLoader imgSrc={imgSrc} imageDimensions={imageDimensions} />
       </Grid>
     </Grid>
   );
