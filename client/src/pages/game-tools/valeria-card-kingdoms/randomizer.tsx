@@ -39,7 +39,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
       : emptyCardSetFilters,
   );
 
-  const randomize = useCallback(
+  const onRandomize = useCallback(
     () => setCards(getRandomizedCards(cardSetFilters)),
     [cardSetFilters, setCards],
   );
@@ -72,7 +72,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
                 <Button
                   color="primary"
                   variant="contained"
-                  onClick={() => randomize()}
+                  onClick={onRandomize}
                 >
                   Randomize
                 </Button>
@@ -110,6 +110,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
           setCardSetFilters={setCardSetFilters}
           cardSetFilterStorageKey={cardSetFilterStorageKey}
           onClose={closeOptionsDialog}
+          onRandomize={onRandomize}
         />
       </Dialog>
     </>

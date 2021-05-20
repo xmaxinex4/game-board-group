@@ -7,24 +7,29 @@ import CloseIcon from "@material-ui/icons/Close";
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
-  CardHeader,
-  Checkbox,
-  Divider,
   FormControlLabel,
-  FormGroup,
   Grid,
   IconButton,
+  List,
+  ListItem,
+  ListSubheader,
   makeStyles,
+  Switch,
   Theme,
 } from "@material-ui/core";
 
 import { ValeriaCardKingdomsSetFilters } from "../data";
 
 const useStyles = makeStyles<Theme>((theme) => ({
-  padding: {
-    padding: `${theme.spacing(1)}px`,
+  modalCard: {
+    overflowY: "auto",
+  },
+  modalSwitchControls: {
+
+  },
+  modalActionButton: {
+    paddingRight: `${theme.spacing(2)}px`,
   },
 }));
 
@@ -33,6 +38,7 @@ export interface ValeriaCardKingdomsFilterOptionsCardProps {
   setCardSetFilters: React.Dispatch<React.SetStateAction<ValeriaCardKingdomsSetFilters>>;
   cardSetFilterStorageKey: string;
   onClose: () => void;
+  onRandomize: () => void;
 }
 
 export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsFilterOptionsCardProps): React.ReactElement {
@@ -41,9 +47,10 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
     setCardSetFilters,
     cardSetFilterStorageKey,
     onClose,
+    onRandomize,
   } = props;
 
-  const { card, padding } = useStyles();
+  const { modalCard, modalSwitchControls, modalActionButton } = useStyles();
 
   const {
     base,
@@ -55,6 +62,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
     undeadSamurai,
   } = cardSetFilters;
 
+  const onRandomizeActionButton = useCallback(() => {
+    onRandomize();
+    onClose();
+  }, [onRandomize, onClose]);
+
   const handleCardSetFiltersChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const newSetFilters = { ...cardSetFilters, [event.target.name]: checked };
 
@@ -63,60 +75,86 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
   }, [cardSetFilters, setCardSetFilters, cardSetFilterStorageKey]);
 
   return (
-    <Card className={card}>
-      <CardHeader
-        action={(
-          <IconButton onClick={onClose} aria-label="close">
-            <CloseIcon />
-          </IconButton>
-        )}
-        title="Filter by Set"
-      />
-
-      <Divider />
-
+    <Card className={modalCard}>
       <CardContent>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={base} onChange={handleCardSetFiltersChange} name="base" />}
-            label="Base"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
-            label="Crimson Seas"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
-            label="Flames And Frost"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={gnollMonsterPack} onChange={handleCardSetFiltersChange} name="gnollMonsterPack" />}
-            label="Gnoll Monster Pack"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
-            label="Peasants And Knights"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
-            label="Shadowvale"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
-            label="Undead Samurai"
-          />
-        </FormGroup>
-      </CardContent>
-
-      <Divider />
-
-      <CardActions>
+        <List subheader={
+          (
+            <Grid container alignItems="center" justify="space-between">
+              <Grid item>
+                <ListSubheader>Filter By Set</ListSubheader>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={onClose} aria-label="close">
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          )
+        }
+        >
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={base} onChange={handleCardSetFiltersChange} name="base" />}
+              label="Base"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
+              label="Crimson Seas"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
+              label="Flames And Frost"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={gnollMonsterPack} onChange={handleCardSetFiltersChange} name="gnollMonsterPack" />}
+              label="Gnoll Monster Pack"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
+              label="Peasants And Knights"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
+              label="Shadowvale"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+          <ListItem>
+            <FormControlLabel
+              control={<Switch checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
+              label="Undead Samurai"
+              labelPlacement="start"
+              className={modalSwitchControls}
+            />
+          </ListItem>
+        </List>
         <Grid container justify="flex-end">
-          <Grid item className={padding}>
-            <Button variant="contained" color="primary" onClick={onClose}>Ok</Button>
+          <Grid item className={modalActionButton}>
+            <Button variant="contained" color="primary" onClick={onRandomizeActionButton}>Randomize</Button>
           </Grid>
         </Grid>
-      </CardActions>
+      </CardContent>
     </Card>
   );
 }
