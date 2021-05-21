@@ -96,56 +96,42 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
             <FormControlLabel
               control={<Switch checked={base} onChange={handleCardSetFiltersChange} name="base" />}
               label="Base"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
               label="Crimson Seas"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
               label="Flames And Frost"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={gnollMonsterPack} onChange={handleCardSetFiltersChange} name="gnollMonsterPack" />}
               label="Gnoll Monster Pack"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
               label="Peasants And Knights"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
               label="Shadowvale"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
             <FormControlLabel
               control={<Switch checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
               label="Undead Samurai"
-              labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
         </List>
