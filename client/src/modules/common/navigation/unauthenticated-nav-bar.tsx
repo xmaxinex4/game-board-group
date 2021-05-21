@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AppBar, Grid, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import Logo from "../../../images/png/logo.png";
+import { MeepleCircleSiteNameInline } from "../../../images/components/meeple-circle-site-name-inline";
 
 import { GameToolsLink } from "./game-tools-link";
 
@@ -16,6 +16,8 @@ const useStyles = makeStyles(() => ({
   logo: {
     width: "100%",
     height: "100%",
+    maxWidth: "150px",
+    maxHeight: "75px",
   },
 }));
 
@@ -32,11 +34,11 @@ export function UnauthenticatedNavBar(props: UnauthenticatedNavBarProps): React.
       <AppBar position="static" className={navBar}>
         <Toolbar>
           <Grid container alignItems="center" justify="space-between">
-            <Grid item>
+            <Grid item className={logo}>
               {
                 homeLogo && (
                   <Link to="/">
-                    <img className={logo} alt="" src={Logo} />
+                    <MeepleCircleSiteNameInline />
                   </Link>
                 )
               }

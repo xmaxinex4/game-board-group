@@ -56,7 +56,7 @@ export function ValeriaCardKingdomsRandomizer(): React.ReactElement {
         <Grid container justify="center" alignItems="center" item spacing={1}>
           <Grid container item direction="column" alignItems="center" spacing={2} xs={12}>
             <Grid item>
-              <Typography variant="h6">Valeria Card Kingdoms Randomizer</Typography>
+              <Typography align="center" variant="h6">Valeria Card Kingdoms Randomizer</Typography>
             </Grid>
             <Grid container justify="center" spacing={2} item>
               <Grid item>

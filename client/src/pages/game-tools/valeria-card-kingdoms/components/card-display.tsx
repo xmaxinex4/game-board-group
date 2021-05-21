@@ -7,8 +7,15 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 import { ImageLoader } from "../../../../modules/common/image/image-loader";
+
+const useStyles = makeStyles(() => ({
+  fullWidth: {
+    width: "100%",
+  },
+}));
 
 export interface ValeriaCardKingdomsCardProps {
   title: string;
@@ -17,6 +24,7 @@ export interface ValeriaCardKingdomsCardProps {
 
 export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardProps): React.ReactElement {
   const { title, imgSrc } = props;
+  const { fullWidth } = useStyles({});
 
   const gridContainerRef = React.useRef(null);
   const [imageDimensions, setImageDimensions] = React.useState<{ height: number, width: number; }>({ height: 0, width: 0 });
@@ -24,12 +32,12 @@ export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardPro
 
   return (
     <Grid container direction="column" justify="flex-end" alignItems="center" ref={gridContainerRef}>
-      <Grid item>
-        <Typography variant="caption">
+      <Grid className={fullWidth} item>
+        <Typography display="block" align="center" noWrap variant="caption">
           <Box fontWeight="fontWeightBold">{title}</Box>
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid className={fullWidth} item>
         <ImageLoader imgSrc={imgSrc} imageDimensions={imageDimensions} />
       </Grid>
     </Grid>
