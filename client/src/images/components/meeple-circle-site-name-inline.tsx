@@ -4,7 +4,7 @@ import React from "react";
 
 export function MeepleCircleSiteNameInline(): React.ReactElement {
   return (
-    <svg width="400px" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0.0 0.0 227.48556430446195 103.97112860892389" fill="none" stroke="none" strokeLinecap="square" strokeMiterlimit="10">
+    <svg width="100%" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0.0 0.0 227.48556430446195 103.97112860892389" fill="none" stroke="none" strokeLinecap="square" strokeMiterlimit="10">
       <clipPath id="p.0">
         <path d="m0 0l227.48557 0l0 103.97113l-227.48557 0l0 -103.97113z" clipRule="nonzero" />
       </clipPath>

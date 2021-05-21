@@ -5,12 +5,17 @@ import { AppBar, Grid, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 import Logo from "../../../images/png/logo.png";
+
 import { GameToolsLink } from "./game-tools-link";
 
 const useStyles = makeStyles(() => ({
   navBar: {
     background: "transparent",
     boxShadow: "none",
+  },
+  logo: {
+    width: "100%",
+    height: "100%",
   },
 }));
 
@@ -20,18 +25,18 @@ export interface UnauthenticatedNavBarProps {
 
 export function UnauthenticatedNavBar(props: UnauthenticatedNavBarProps): React.ReactElement {
   const { homeLogo } = props;
-  const { navBar } = useStyles();
+  const { navBar, logo } = useStyles();
 
   return (
     <Grid container>
       <AppBar position="static" className={navBar}>
         <Toolbar>
-          <Grid container xs={12} alignItems="center" justify="space-between">
+          <Grid container alignItems="center" justify="space-between">
             <Grid item>
               {
                 homeLogo && (
                   <Link to="/">
-                    <img alt="" src={Logo} />
+                    <img className={logo} alt="" src={Logo} />
                   </Link>
                 )
               }

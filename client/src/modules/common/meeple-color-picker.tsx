@@ -14,27 +14,29 @@ interface MeepleColorPickerProps {
 }
 
 const useStyles = makeStyles({
-  gridHeight: {
-    height: "250px",
+  circlePicker: {
+    maxWidth: "355px", // width of 8 color icon (42x42) row
+    minWidth: "275px", // width of 5 color icon (42x42) row
   },
 });
 
 export function MeepleColorPicker(props: MeepleColorPickerProps): React.ReactElement {
   const { color, setColor } = props;
-  const classes = useStyles({});
+  const { circlePicker } = useStyles({});
 
   const onColorChange = useCallback((colorResult: ColorResult) => {
     setColor(colorResult.hex);
   }, [setColor]);
 
   return (
-    <Grid container className={classes.gridHeight} direction="column" alignItems="center" justify="space-between">
+    <Grid container spacing={2} justify="center" alignItems="center">
       <Grid item>
         <Meeple fill={color} />
       </Grid>
-      <Grid item>
+      <Grid item className={circlePicker}>
         <CirclePicker
-          width="350px"
+          width="100%"
+          className={circlePicker}
           color={color}
           colors={MeepleColorStringArray}
           onChangeComplete={onColorChange}

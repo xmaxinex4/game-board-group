@@ -126,7 +126,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
             showPasswordOverrideControl={showPasswordOverrideControl}
           />
 
-          <Grid container item direction="column" spacing={4}>
+          <Grid container item direction="column" spacing={2}>
             <Grid item>
               <InputLabel required>Pick Your Color</InputLabel>
             </Grid>
