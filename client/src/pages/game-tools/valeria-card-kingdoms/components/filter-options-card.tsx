@@ -10,7 +10,6 @@ import {
   CardContent,
   FormControlLabel,
   Grid,
-  Hidden,
   IconButton,
   ListSubheader,
   makeStyles,
@@ -120,11 +119,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <BaseSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Base</Typography>
                     </Grid>
@@ -146,11 +145,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <CrimsonSeasSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Crimson Seas</Typography>
                     </Grid>
@@ -172,11 +171,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <FlamesAndFrostSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Flames And Frost</Typography>
                     </Grid>
@@ -198,11 +197,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <GnollMonsterPackSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Gnoll Monster Pack</Typography>
                     </Grid>
@@ -224,11 +223,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <PeasantsAndKnightsSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Peasants And Knights</Typography>
                     </Grid>
@@ -250,11 +249,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <ShadowvaleSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Shadowvale</Typography>
                     </Grid>
@@ -276,11 +275,11 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 className={noMargin}
                 label={(
                   <Grid container alignItems="center" spacing={1}>
-                    <Hidden xsDown>
+                    {smUp && (
                       <Grid item>
                         <UndeadSamuraiSetIndicator />
                       </Grid>
-                    </Hidden>
+                    )}
                     <Grid item>
                       <Typography>Undead Samurai</Typography>
                     </Grid>
