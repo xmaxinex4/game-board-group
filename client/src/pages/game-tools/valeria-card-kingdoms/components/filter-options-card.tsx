@@ -114,7 +114,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -132,7 +132,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -150,7 +150,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -168,7 +168,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -186,7 +186,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -204,7 +204,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
           <ListItem>
@@ -222,7 +222,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                   </Grid>
                 </Grid>
               )}
-              labelPlacement="start"
+              labelPlacement="end"
             />
           </ListItem>
         </List>
