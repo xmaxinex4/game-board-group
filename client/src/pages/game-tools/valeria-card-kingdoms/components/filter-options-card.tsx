@@ -34,9 +34,6 @@ const useStyles = makeStyles<Theme>((theme) => ({
   modalCard: {
     overflowY: "auto",
   },
-  modalSwitchControls: {
-
-  },
   modalActionButton: {
     paddingRight: `${theme.spacing(2)}px`,
   },
@@ -59,7 +56,7 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
     onRandomize,
   } = props;
 
-  const { modalCard, modalSwitchControls, modalActionButton } = useStyles();
+  const { modalCard, modalActionButton } = useStyles();
 
   const {
     base,
@@ -118,7 +115,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -137,7 +133,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -156,7 +151,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -175,7 +169,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -194,7 +187,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -213,7 +205,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
           <ListItem>
@@ -232,7 +223,6 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
                 </Grid>
               )}
               labelPlacement="start"
-              className={modalSwitchControls}
             />
           </ListItem>
         </List>
