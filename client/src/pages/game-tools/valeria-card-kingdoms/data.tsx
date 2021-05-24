@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 
+import React from "react";
+
 import Cleric from "./images/cleric.jpg";
 import Exorcist from "./images/exorcist.png";
 import Hydromancer from "./images/hydromancer.png";
@@ -77,6 +79,14 @@ import MonsterValcano from "./images/monster-volcano.jpg";
 import MonsterWoods from "./images/monster-woods.png";
 import MonsterKnolls from "./images/monster-knolls.png";
 
+import { CrimsonSeasSetIndicator } from "./images/set-indicators/crimson-seas";
+import { FlamesAndFrostSetIndicator } from "./images/set-indicators/flames-and-frost";
+import { UndeadSamuraiSetIndicator } from "./images/set-indicators/undead-samurai";
+import { ShadowvaleSetIndicator } from "./images/set-indicators/shadowvale";
+import { GnollMonsterPackSetIndicator } from "./images/set-indicators/gnoll-monster-pack";
+import { BaseSetIndicator } from "./images/set-indicators/base";
+import { PeasantsAndKnightsSetIndicator } from "./images/set-indicators/peasants-and-knights";
+
 export type ValeriaCardKingdomsSetFilters = {
   base: boolean;
   crimsonSeas: boolean;
@@ -104,6 +114,7 @@ export enum ValeriaCardKingdomsCardBucket {
 export type ValeriaCardKingdomsCard = {
   name: string;
   imgSrc: string;
+  setIndicator: () => React.ReactElement;
   sortOrder: number;
   set: keyof ValeriaCardKingdomsSetFilters;
   bucket: ValeriaCardKingdomsCardBucket;
@@ -112,6 +123,7 @@ export type ValeriaCardKingdomsCard = {
 export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Barrens",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 1,
@@ -119,6 +131,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Cavern",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 6.1,
@@ -126,6 +139,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Desert",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.2,
@@ -133,6 +147,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Forest",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
@@ -140,6 +155,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Glacier",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 7.1,
@@ -147,6 +163,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Hills",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 1,
@@ -154,6 +171,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Mountains",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5,
@@ -161,6 +179,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Oasis",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
@@ -168,6 +187,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Ruins",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2,
@@ -175,6 +195,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Swamp",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5.1,
@@ -182,6 +203,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Tundra",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5.2,
@@ -189,6 +211,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Valley",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
@@ -196,6 +219,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "undeadSamurai",
+    setIndicator: UndeadSamuraiSetIndicator,
     name: "Undead Samurai",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
@@ -203,6 +227,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Volcano",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 8.1,
@@ -210,6 +235,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Cleric",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
@@ -217,6 +243,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Monk",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
@@ -224,6 +251,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Summoner",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
@@ -231,6 +259,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Bard",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
@@ -238,6 +267,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Blacksmith",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
@@ -245,6 +275,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Merchant",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
@@ -252,6 +283,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Alchemist",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
@@ -259,6 +291,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Mercenary",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
@@ -266,6 +299,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Sorceress",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
@@ -273,6 +307,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Archer",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
@@ -280,6 +315,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Barbarian",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
@@ -287,6 +323,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Wizard",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
@@ -294,6 +331,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "peasantsAndKnights",
+    setIndicator: PeasantsAndKnightsSetIndicator,
     name: "Alt. Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
@@ -301,6 +339,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
@@ -308,6 +347,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "peasantsAndKnights",
+    setIndicator: PeasantsAndKnightsSetIndicator,
     name: "Alt. Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
@@ -315,6 +355,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
@@ -322,6 +363,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Condottiere",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
@@ -329,6 +371,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Rogue",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
@@ -336,6 +379,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Thief",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
@@ -343,6 +387,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Bogatyr",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
@@ -350,6 +395,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Champion",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
@@ -357,6 +403,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Warlord",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
@@ -364,6 +411,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Paladin",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
@@ -371,6 +419,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Priestess",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
@@ -378,6 +427,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Templar",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
@@ -385,6 +435,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "flamesAndFrost",
+    setIndicator: FlamesAndFrostSetIndicator,
     name: "Baker",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
@@ -392,6 +443,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Butcher",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
@@ -399,6 +451,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "base",
+    setIndicator: BaseSetIndicator,
     name: "Miner",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
@@ -406,6 +459,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Crypt",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 5,
@@ -413,6 +467,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Den",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4,
@@ -420,6 +475,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Necropolis",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2,
@@ -427,6 +483,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Sewer",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2.1,
@@ -434,6 +491,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Woods",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.1,
@@ -441,6 +499,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Exorcist",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
@@ -448,6 +507,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Lumberjack",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
@@ -455,6 +515,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Bandit",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
@@ -462,6 +523,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Hunter",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
@@ -469,6 +531,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
@@ -476,6 +539,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
@@ -483,6 +547,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Necromancer",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
@@ -490,6 +555,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Guardian",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
@@ -497,6 +563,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Dragoon",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
@@ -504,6 +571,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "shadowvale",
+    setIndicator: ShadowvaleSetIndicator,
     name: "Inventor",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
@@ -511,6 +579,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Hydromancer",
     bucket: ValeriaCardKingdomsCardBucket.ONE,
     sortOrder: 0,
@@ -518,6 +587,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Engineer",
     bucket: ValeriaCardKingdomsCardBucket.TWO,
     sortOrder: 0,
@@ -525,6 +595,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Vitki",
     bucket: ValeriaCardKingdomsCardBucket.THREE,
     sortOrder: 0,
@@ -532,6 +603,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Marauder",
     bucket: ValeriaCardKingdomsCardBucket.FOUR,
     sortOrder: 0,
@@ -539,6 +611,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Peasant",
     bucket: ValeriaCardKingdomsCardBucket.FIVE,
     sortOrder: 0,
@@ -546,6 +619,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Knight",
     bucket: ValeriaCardKingdomsCardBucket.SIX,
     sortOrder: 0,
@@ -553,6 +627,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Smuggler",
     bucket: ValeriaCardKingdomsCardBucket.SEVEN,
     sortOrder: 0,
@@ -560,6 +635,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Dreadnaught",
     bucket: ValeriaCardKingdomsCardBucket.EIGHT,
     sortOrder: 0,
@@ -567,6 +643,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Conjurer",
     bucket: ValeriaCardKingdomsCardBucket.NINE,
     sortOrder: 0,
@@ -574,6 +651,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Purser",
     bucket: ValeriaCardKingdomsCardBucket.ELEVEN,
     sortOrder: 0,
@@ -581,6 +659,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Cutthroats",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3.1,
@@ -588,6 +667,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Dark Waters",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3,
@@ -595,6 +675,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Gloom Gyre",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 3.2,
@@ -602,6 +683,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "Skerry",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 4.1,
@@ -609,6 +691,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "crimsonSeas",
+    setIndicator: CrimsonSeasSetIndicator,
     name: "The Deep",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 2.1,
@@ -616,6 +699,7 @@ export const ValeriaCardKingdomsCardData: ValeriaCardKingdomsCard[] = [
   },
   {
     set: "gnollMonsterPack",
+    setIndicator: GnollMonsterPackSetIndicator,
     name: "Knolls",
     bucket: ValeriaCardKingdomsCardBucket.MONSTER,
     sortOrder: 7.1,

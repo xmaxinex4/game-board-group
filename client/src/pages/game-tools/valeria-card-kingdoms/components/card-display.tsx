@@ -5,11 +5,13 @@ import useResizeObserver from "@react-hook/resize-observer";
 import {
   Box,
   Grid,
+  Hidden,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 import { ImageLoader } from "../../../../modules/common/image/image-loader";
+import { ValeriaCardKingdomsCard } from "../data";
 
 const useStyles = makeStyles(() => ({
   fullWidth: {
@@ -18,12 +20,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 export interface ValeriaCardKingdomsCardProps {
-  title: string;
-  imgSrc: string;
+  card: ValeriaCardKingdomsCard;
 }
 
 export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardProps): React.ReactElement {
-  const { title, imgSrc } = props;
+  const { card } = props;
+  const { name, imgSrc, setIndicator: SetIndicator } = card;
   const { fullWidth } = useStyles({});
 
   const gridContainerRef = React.useRef(null);
@@ -34,7 +36,16 @@ export function ValeriaCardKingdomsCardDisplay(props: ValeriaCardKingdomsCardPro
     <Grid container direction="column" justify="flex-end" alignItems="center" ref={gridContainerRef}>
       <Grid className={fullWidth} item>
         <Typography display="block" align="center" noWrap variant="caption">
-          <Box fontWeight="fontWeightBold">{title}</Box>
+          <Grid container spacing={1} justify="center" alignItems="center">
+            <Hidden xsDown>
+              <Grid item>
+                <SetIndicator />
+              </Grid>
+            </Hidden>
+            <Grid item>
+              <Box fontWeight="fontWeightBold">{name}</Box>
+            </Grid>
+          </Grid>
         </Typography>
       </Grid>
       <Grid className={fullWidth} item>

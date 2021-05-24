@@ -10,6 +10,7 @@ import {
   CardContent,
   FormControlLabel,
   Grid,
+  Hidden,
   IconButton,
   List,
   ListItem,
@@ -17,9 +18,17 @@ import {
   makeStyles,
   Switch,
   Theme,
+  Typography,
 } from "@material-ui/core";
 
 import { ValeriaCardKingdomsSetFilters } from "../data";
+import { BaseSetIndicator } from "../images/set-indicators/base";
+import { CrimsonSeasSetIndicator } from "../images/set-indicators/crimson-seas";
+import { GnollMonsterPackSetIndicator } from "../images/set-indicators/gnoll-monster-pack";
+import { PeasantsAndKnightsSetIndicator } from "../images/set-indicators/peasants-and-knights";
+import { UndeadSamuraiSetIndicator } from "../images/set-indicators/undead-samurai";
+import { ShadowvaleSetIndicator } from "../images/set-indicators/shadowvale";
+import { FlamesAndFrostSetIndicator } from "../images/set-indicators/flames-and-frost";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   modalCard: {
@@ -93,9 +102,21 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
         }
         >
           <ListItem>
+
             <FormControlLabel
               control={<Switch checked={base} onChange={handleCardSetFiltersChange} name="base" />}
-              label="Base"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <BaseSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Base</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -103,7 +124,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={crimsonSeas} onChange={handleCardSetFiltersChange} name="crimsonSeas" />}
-              label="Crimson Seas"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <CrimsonSeasSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Crimson Seas</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -111,7 +143,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={flamesAndFrost} onChange={handleCardSetFiltersChange} name="flamesAndFrost" />}
-              label="Flames And Frost"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <FlamesAndFrostSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Flames And Frost</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -119,7 +162,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={gnollMonsterPack} onChange={handleCardSetFiltersChange} name="gnollMonsterPack" />}
-              label="Gnoll Monster Pack"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <GnollMonsterPackSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Gnoll Monster Pack</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -127,7 +181,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={peasantsAndKnights} onChange={handleCardSetFiltersChange} name="peasantsAndKnights" />}
-              label="Peasants And Knights"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <PeasantsAndKnightsSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Peasants And Knights</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -135,7 +200,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={shadowvale} onChange={handleCardSetFiltersChange} name="shadowvale" />}
-              label="Shadowvale"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <ShadowvaleSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Shadowvale</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
@@ -143,7 +219,18 @@ export function ValeriaCardKingdomsFilterOptionsCard(props: ValeriaCardKingdomsF
           <ListItem>
             <FormControlLabel
               control={<Switch checked={undeadSamurai} onChange={handleCardSetFiltersChange} name="undeadSamurai" />}
-              label="Undead Samurai"
+              label={(
+                <Grid container justify="center" alignItems="center" spacing={1}>
+                  <Hidden xsDown>
+                    <Grid item>
+                      <UndeadSamuraiSetIndicator />
+                    </Grid>
+                  </Hidden>
+                  <Grid item>
+                    <Typography>Undead Samurai</Typography>
+                  </Grid>
+                </Grid>
+              )}
               labelPlacement="start"
               className={modalSwitchControls}
             />
