@@ -9,6 +9,7 @@
   ],
   "compilerOptions": {
     "noEmit": true,
-    "outDir": "build"
+    "outDir": "build",
+    "skipLibCheck": true
   }
 }
