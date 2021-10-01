@@ -11,7 +11,6 @@ import { ActiveUserContext } from "./contexts/active-user-context";
 
 import { Page } from "./modules/common/layout/page";
 
-import { GameToolsRoutes } from "./pages/game-tools/routes";
 import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 
@@ -38,7 +37,6 @@ function App() {
             <ActiveUserContext.Provider value={{ activeUser: currentUser }}>
               <ActiveGroupContext.Provider value={{ activeGroup, setActiveGroup }}>
                 <Switch>
-                  <Route path="/game-tools" component={GameToolsRoutes} />
                   <Route path="*" component={AuthenticatedRoutes} />
                 </Switch>
               </ActiveGroupContext.Provider>
@@ -46,7 +44,6 @@ function App() {
           )
           : (
             <Switch>
-              <Route path="/game-tools" component={GameToolsRoutes} />
               <Route path="*" component={UnAuthenticatedRoutes} />
             </Switch>
           )

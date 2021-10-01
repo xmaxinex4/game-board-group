@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import {
   Button,
   Grid,
+  Link,
   makeStyles,
   SvgIcon,
   Theme,
@@ -28,7 +28,7 @@ export function GameToolsLink(): React.ReactElement {
 
   return (
     <Button className={muiButtonRoot} variant="text" color="primary">
-      <Link to="/game-tools" className={link}>
+      <Link href="https://gameboardtools.com" className={link}>
         <Grid direction="column" alignItems="center" justify="center" container>
           <Grid item>
             <SvgIcon>

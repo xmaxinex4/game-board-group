@@ -7,7 +7,7 @@ cd to client and run npm install
 pm2 start dist/app.js -i max
 
 # Helpful Linux Instance & NGINX Commands:
-debug: systemctl statis nginx.service
+debug: systemctl status nginx.service
 cd location: cd /etc/nginx
 edit conf: nano nginx.conf
 start: sudo systemctl start nginx

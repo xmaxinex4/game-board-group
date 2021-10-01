@@ -24,16 +24,6 @@
       "type": "image/png"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Game Tools",
-      "url": "/game-tools"
-    },
-    {
-      "name": "Valeria Card Kingdoms Randomizer",
-      "url": "/game-tools/valeria-card-kingdoms-randomizer"
-    }
-  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#ffffff",
