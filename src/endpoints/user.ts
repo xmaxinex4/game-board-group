@@ -1,6 +1,6 @@
 import { Express } from "express";
-import { compare, hash } from 'bcrypt'
-import { sign } from 'jsonwebtoken'
+import { compare, hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
 import { PrismaClient } from ".prisma/client";
 
@@ -23,8 +23,9 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
 
       const { password, ...userResultWithoutPassword } = result;
 
-      return res.status(200).json(userResultWithoutPassword)
+      return res.status(200).json(userResultWithoutPassword);
     } catch (error) {
+      console.error("Error getting current user: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
@@ -48,6 +49,8 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
       return res.status(401).json({ error: `Missing username` });
     }
 
+    // TODO: check if email is available
+
     try {
       const hashedPassword = await hash(password, 10);
       const user = await prisma.user.create({
@@ -62,7 +65,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
       const token = sign({ userId: user.id }, process.env.APP_SECRET);
       return res.status(201).json({ token });
     } catch (error) {
-      // log error to server
+      console.error("Error on user create: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
@@ -89,7 +92,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
         return res.status(401).json({ error: `Invalid email or password` });
       }
 
-      const passwordValid = await compare(password, user.password)
+      const passwordValid = await compare(password, user.password);
 
       if (!passwordValid) {
         return res.status(401).json({ error: `Invalid email or password` });
@@ -100,8 +103,8 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
 
       return res.status(200).json({ token });
     } catch (error) {
-      // TODO: log error to server
+      console.error("Error on sign in: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
-}
+};

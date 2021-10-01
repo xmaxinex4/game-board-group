@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "prisma generate",
+    "migrate": "prisma migrate dev",
     "dev": "npm run tsc && SET PORT=9000 && node dist/app.js",
     "start": "node dist/app.js",
     "format": "npx prettier --write . & npx eslint",
@@ -12,7 +13,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@prisma/client": "2.19.0",
+    "@prisma/client": "^3.1.1",
     "@types/express": "^4.17.11",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -20,7 +21,7 @@
     "express": "4.17.1",
     "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
-    "prisma": "2.19.0"
+    "prisma": "^3.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
