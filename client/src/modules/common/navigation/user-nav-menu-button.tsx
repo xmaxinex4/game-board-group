@@ -5,7 +5,6 @@ import Icon from "@mdi/react";
 
 import {
   makeStyles,
-  Fab,
   Popover,
   List,
   ListItem,
@@ -14,10 +13,12 @@ import {
   Grid,
   Avatar,
   ListItemIcon,
+  IconButton,
 } from "@material-ui/core";
 
 import { User } from "../../../api-types/user";
 import { Meeple } from "../../../images/components/meeple";
+import { MeepleMenu } from "../../../images/components/meeple-menu";
 
 const useStyles = makeStyles(() => ({
   meepleButton: {
@@ -58,9 +59,9 @@ export function UserNavMenuButton(props: UserNavMenuProps): React.ReactElement {
 
   return (
     <div>
-      <Fab color="inherit" size="medium" onClick={handleClick}>
-        <Meeple size="icon" fill={user.color} />
-      </Fab>
+      <IconButton color="inherit" size="medium" onClick={handleClick}>
+        <MeepleMenu size={32} fill={user.color} />
+      </IconButton>
       <Popover
         id={id}
         open={open}
@@ -90,25 +91,25 @@ export function UserNavMenuButton(props: UserNavMenuProps): React.ReactElement {
           </ListItem>
           <ListItem button component={Link} href="/account">
             <ListItemIcon>
-              <Icon path={mdiAccount} size={1} />
+              <Icon path={mdiAccount} size={1} color={user.color} />
             </ListItemIcon>
             <ListItemText primary="Account" />
           </ListItem>
           <ListItem button component={Link} href="/account/collections">
             <ListItemIcon>
-              <Meeple size="icon" fill={user.color} />
+              <Meeple size={16} fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Collections" />
           </ListItem>
           <ListItem button component={Link} href="/account/groups">
             <ListItemIcon>
-              <Meeple size="icon" fill={user.color} />
+              <Meeple size={16} fill={user.color} />
             </ListItemIcon>
             <ListItemText primary="My Groups" />
           </ListItem>
           <ListItem button onClick={logout}>
             <ListItemIcon>
-              <Icon path={mdiLogout} size={1} />
+              <Icon path={mdiLogout} color={user.color} size={1} />
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>

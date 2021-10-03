@@ -4,7 +4,7 @@ import React from "react";
 
 export interface MeepleProps {
   fill?: string;
-  size?: "icon";
+  size?: number | "icon";
 }
 
 export function Meeple(props: MeepleProps): React.ReactElement {
@@ -12,8 +12,8 @@ export function Meeple(props: MeepleProps): React.ReactElement {
 
   return (
     <svg
-      height={size === "icon" ? "25px" : "100px"}
-      width={size === "icon" ? "25px" : "100%"}
+      height={size ? `${size === "icon" ? 25 : size}px` : "100px"}
+      width={size ? `${size === "icon" ? 25 : size}px` : "100px"}
       fill={fill || "#000000"}
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
