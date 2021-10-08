@@ -3,6 +3,7 @@ import React from "react";
 import { mdiAccount, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
 
+import { generateFilter } from "colorize-filter";
 import {
   makeStyles,
   Popover,
@@ -57,10 +58,12 @@ export function UserNavMenuButton(props: UserNavMenuProps): React.ReactElement {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const meepleCustomColorFilter = generateFilter(user.color);
+
   return (
     <div>
       <IconButton color="inherit" size="medium" onClick={handleClick}>
-        <MeepleMenu size={32} fill={user.color} />
+        <MeepleMenu colorFilter={meepleCustomColorFilter} size={32} fill={user.color} />
       </IconButton>
       <Popover
         id={id}
