@@ -2,9 +2,12 @@
 
 import { CreateUserFormModel } from "./model";
 
-export function validateCreateUserForm(model: CreateUserFormModel, setErrors: (errorState: CreateUserFormModel) => void): boolean {
+export function validateCreateUserForm(
+  model: CreateUserFormModel,
+  setErrors: (errorState: Omit<CreateUserFormModel, "color"> & { color: string; }) => void,
+): boolean {
   let formIsValid = true;
-  let errors: CreateUserFormModel = {
+  let errors: Omit<CreateUserFormModel, "color"> & { color: string; } = {
     username: "",
     email: "",
     password: "",

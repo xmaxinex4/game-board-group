@@ -26,7 +26,7 @@ export const Account: React.FunctionComponent = () => {
       {
         activeUser && (
           <>
-            <NavBar user={activeUser} />
+            <NavBar />
             <Grid container item className={fullWidth}>
               <Switch>
                 <Route exact path="/account">

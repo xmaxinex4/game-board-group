@@ -14,13 +14,13 @@ export const SitePaletteColors: SitePaletteColorTheme = {
     light: "#4ab298",
     dark: "#00543f",
     main: "#00826a",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Secondary: {
     light: "#db6d39",
     dark: "#6f0d00",
     main: "#a43f0c",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Error: {
     light: "#ff503a",

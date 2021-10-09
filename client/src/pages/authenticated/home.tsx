@@ -35,7 +35,7 @@ export function AuthenticatedHome(): React.ReactElement {
       {
         activeUser && (
           <>
-            <NavBar showGroup user={activeUser} />
+            <NavBar showGroup />
             {
               activeGroup
                 ? (

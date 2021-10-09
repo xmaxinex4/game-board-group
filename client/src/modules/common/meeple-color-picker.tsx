@@ -7,11 +7,16 @@ import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import { Meeple } from "../../images/components/meeple";
-import { MeepleColorStringArray } from "../../theme/meeple-palettes";
+import {
+  getMappedHexToPaletteColor,
+  MeepleColorStringArray,
+  MeeplePaletteColors,
+  MeeplePaletteColorTheme,
+} from "../../theme/meeple-palettes";
 
 interface MeepleColorPickerProps {
-  color: string;
-  setColor: (newColor: string) => void;
+  color: keyof MeeplePaletteColorTheme;
+  setColor: (newColor: keyof MeeplePaletteColorTheme) => void;
 }
 
 const useStyles = makeStyles({
@@ -26,19 +31,19 @@ export function MeepleColorPicker(props: MeepleColorPickerProps): React.ReactEle
   const { circlePicker } = useStyles();
 
   const onColorChange = useCallback((colorResult: ColorResult) => {
-    setColor(colorResult.hex);
+    setColor(getMappedHexToPaletteColor(colorResult.hex));
   }, [setColor]);
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
       <Grid item>
-        <Meeple fill={color} />
+        <Meeple fill={MeeplePaletteColors[color].main} />
       </Grid>
       <Grid item className={circlePicker}>
         <CirclePicker
           width="100%"
           className={circlePicker}
-          color={color}
+          color={MeeplePaletteColors[color].main}
           colors={MeepleColorStringArray}
           onChangeComplete={onColorChange}
         />

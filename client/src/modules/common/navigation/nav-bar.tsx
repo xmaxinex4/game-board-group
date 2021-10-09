@@ -9,7 +9,6 @@ import {
 import { makeStyles } from "@mui/styles";
 
 import { UserNavMenuButton } from "./user-nav-menu-button";
-import { User } from "../../../api-types/user";
 import { ActiveGroupSelector } from "../../group/active-group-selector";
 
 import Logo from "../../../images/png/logo.png";
@@ -25,11 +24,10 @@ const useStyles = makeStyles(() => ({
 
 export interface NavBarProps {
   showGroup?: boolean;
-  user: User;
 }
 
 export function NavBar(props: NavBarProps): React.ReactElement {
-  const { showGroup, user } = props;
+  const { showGroup } = props;
 
   const { appBar, appBarContainer } = useStyles();
 
@@ -53,7 +51,7 @@ export function NavBar(props: NavBarProps): React.ReactElement {
                   )
                 }
                 <Grid item>
-                  <UserNavMenuButton user={user} />
+                  <UserNavMenuButton />
                 </Grid>
               </Grid>
             </Grid>

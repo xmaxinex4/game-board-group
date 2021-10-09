@@ -1,6 +1,6 @@
 import { PaletteColor } from "@mui/material/styles/createPalette";
 
-interface MeeplePaletteColorTheme {
+export interface MeeplePaletteColorTheme {
   Red: PaletteColor;
   LightPink: PaletteColor;
   Pink: PaletteColor;
@@ -200,3 +200,34 @@ export const MeepleColorStringArray: string[] = [
   MeeplePaletteColors.DarkGrey.main,
   MeeplePaletteColors.BlueGrey.main,
 ];
+
+const hashTableOfMainToMeeplePaletteColor = new Map<string, keyof MeeplePaletteColorTheme>([
+  ["#d50000", "Red"],
+  ["#ff94c0", "LightPink"],
+  ["#ff6090", "Pink"],
+  ["#ffc32b", "LightOrange"],
+  ["#ff8418", "Orange"],
+  ["#c55500", "DarkOrange"],
+  ["#ffff9d", "LightYellow"],
+  ["#fff82f", "Yellow"],
+  ["#76fa0a", "LightGreen"],
+  ["#4CAF50", "Green"],
+  ["#065535", "DarkGreen"],
+  ["#B3E5FC", "LightBlue"],
+  ["#00BCD4", "Cyan"],
+  ["#2196F3", "Blue"],
+  ["#009688", "Teal"],
+  ["#003366", "DarkBlue"],
+  ["#CE93D8", "LightPurple"],
+  ["#9C27B0", "Purple"],
+  ["#6a0080", "DarkPurple"],
+  ["#6a4f4b", "Brown"],
+  ["#3E2723", "DarkBrown"],
+  ["#9E9E9E", "Grey"],
+  ["#666666", "DarkGrey"],
+  ["#607D8B", "BlueGrey"],
+]);
+
+export const getMappedHexToPaletteColor = (
+  mainHexColor: string,
+): keyof MeeplePaletteColorTheme => hashTableOfMainToMeeplePaletteColor.get(mainHexColor) || "Red";

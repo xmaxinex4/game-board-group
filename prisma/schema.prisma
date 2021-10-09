@@ -9,23 +9,29 @@ datasource db {
 
 enum Color {
   Red
+  LightPink
   Pink
+  LightOrange
   Orange
+  DarkOrange
+  LightYellow
   Yellow
+  LightGreen
   Green
-  Teal
+  DarkGreen
   LightBlue
+  Cyan
   Blue
+  Teal
+  DarkBlue
+  LightPurple
   Purple
-  PastelRed
-  PastelPink
-  PastelOrange
-  PastelYellow
-  PastelGreen
-  PastelTeal
-  PastelLightblue
-  PastelBlue
-  PastelPurple
+  DarkPurple
+  Brown
+  DarkBrown
+  Grey
+  DarkGrey
+  BlueGrey
 }
 
 enum Permission {
@@ -158,7 +164,7 @@ model User {
   username         String       
   password         String
   polls            Poll[]
-  color            String
+  color            Color
   gameCollections  Collection[]
   groupMemberships GroupMember[]
   resetToken       String?

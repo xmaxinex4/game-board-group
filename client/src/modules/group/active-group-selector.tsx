@@ -1,10 +1,15 @@
 import React, { useContext } from "react";
 import { mdiPlus } from "@mdi/js";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import Icon from "@mdi/react";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { ActiveUserContext } from "../../contexts/active-user-context";
-import { TextButton } from "../common/button/text-button";
 
 export function ActiveGroupSelector(): React.ReactElement {
   const { activeGroup } = useContext(ActiveGroupContext);
@@ -52,7 +57,7 @@ export function ActiveGroupSelector(): React.ReactElement {
                 <MenuItem value={20}>Twenty</MenuItem>
               </Select>
             </FormControl>
-          ) : <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
+          ) : <Button variant="outlined" onClick={onAddGroup} startIcon={<Icon path={mdiPlus} size={0.5} />}>Add Group</Button>
       }
     </>
   );
