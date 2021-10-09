@@ -211,23 +211,26 @@ const hashTableOfMainToMeeplePaletteColor = new Map<string, keyof MeeplePaletteC
   ["#ffff9d", "LightYellow"],
   ["#fff82f", "Yellow"],
   ["#76fa0a", "LightGreen"],
-  ["#4CAF50", "Green"],
+  ["#4caf50", "Green"],
   ["#065535", "DarkGreen"],
-  ["#B3E5FC", "LightBlue"],
-  ["#00BCD4", "Cyan"],
-  ["#2196F3", "Blue"],
+  ["#b3e5fc", "LightBlue"],
+  ["#00bcd4", "Cyan"],
+  ["#2196f3", "Blue"],
   ["#009688", "Teal"],
   ["#003366", "DarkBlue"],
-  ["#CE93D8", "LightPurple"],
-  ["#9C27B0", "Purple"],
+  ["#ce93d8", "LightPurple"],
+  ["#9c27b0", "Purple"],
   ["#6a0080", "DarkPurple"],
   ["#6a4f4b", "Brown"],
-  ["#3E2723", "DarkBrown"],
-  ["#9E9E9E", "Grey"],
+  ["#3e2723", "DarkBrown"],
+  ["#9e9e9e", "Grey"],
   ["#666666", "DarkGrey"],
-  ["#607D8B", "BlueGrey"],
+  ["#607d8b", "BlueGrey"],
 ]);
 
 export const getMappedHexToPaletteColor = (
   mainHexColor: string,
-): keyof MeeplePaletteColorTheme => hashTableOfMainToMeeplePaletteColor.get(mainHexColor) || "Red";
+): keyof MeeplePaletteColorTheme => {
+  console.log("mainHexColor: ", mainHexColor);
+  return hashTableOfMainToMeeplePaletteColor.get(mainHexColor) || "Red";
+};
