@@ -18,6 +18,13 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
       const result = await prisma.user.findUnique({
         where: {
           id: userId
+        },
+        include: {
+          groupMemberships: {
+            include: {
+              group: true
+            }
+          },
         }
       });
 

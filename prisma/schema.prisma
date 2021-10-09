@@ -99,6 +99,8 @@ model GroupMember {
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   String
   isAdmin   Boolean
+  // A group can't have the same user member
+  @@unique([userId, groupId])
 }
 
 model Play {

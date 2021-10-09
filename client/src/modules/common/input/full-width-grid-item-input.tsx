@@ -83,6 +83,7 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
           inputLabel && <InputLabel error={!!error} variant="outlined">{inputLabel}</InputLabel>
         }
         <OutlinedInput
+          autoComplete="off"
           error={!!error}
           // labelWidth={labelWidth}
           label={inputLabel}

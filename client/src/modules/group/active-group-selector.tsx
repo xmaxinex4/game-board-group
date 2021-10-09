@@ -54,7 +54,6 @@ export function ActiveGroupSelector(): React.ReactElement {
                 {activeUser.groupMemberships.map((groupMembership) => (
                   <MenuItem value={groupMembership.group.id}>{groupMembership.group.name}</MenuItem>
                 ))}
-                <MenuItem value={20}>Twenty</MenuItem>
               </Select>
             </FormControl>
           ) : <Button variant="outlined" onClick={onAddGroup} startIcon={<Icon path={mdiPlus} size={0.5} />}>Add Group</Button>

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { CreateGroupFormModel } from "./model";
 
 export const validateCreateGroupForm = (model: CreateGroupFormModel, setErrors: (errorState: CreateGroupFormModel) => void): boolean => {
@@ -13,4 +15,4 @@ export const validateCreateGroupForm = (model: CreateGroupFormModel, setErrors: 
 
   setErrors({ ...errors });
   return formIsValid;
-}
+};

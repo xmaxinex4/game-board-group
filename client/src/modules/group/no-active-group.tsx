@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
@@ -10,6 +10,7 @@ import {
   Grid,
   Container,
 } from "@mui/material";
+import { CreateGroupForm } from "./create/form";
 
 const useStyles = makeStyles({
   gridContainerPadding: {
@@ -20,20 +21,32 @@ const useStyles = makeStyles({
 export function NoActiveGroup(): React.ReactElement {
   const { gridContainerPadding } = useStyles();
 
+  const [showAddGroupForm, setShowAddGroupForm] = useState(false);
+
+  const showForm = useCallback(() => setShowAddGroupForm(true), [setShowAddGroupForm]);
+
   return (
     <Container maxWidth="sm">
       <Grid container className={gridContainerPadding} justifyContent="center" alignItems="center" direction="column" spacing={4}>
-        <Grid container item direction="column" alignItems="center" spacing={1}>
+        {showAddGroupForm ? (
           <Grid item>
-            <Typography>It looks like you don&apos;t have any groups.</Typography>
+            <CreateGroupForm />
           </Grid>
-          <Grid item>
-            <Typography>Let&apos;s add a new group to get started!</Typography>
-          </Grid>
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" startIcon={<Icon path={mdiPlus} size={0.5} />}>Add Group</Button>
-        </Grid>
+        ) : (
+          <>
+            <Grid container item direction="column" alignItems="center" spacing={1}>
+              <Grid item>
+                <Typography>No Groups?</Typography>
+              </Grid>
+              <Grid item>
+                <Typography>Add a new group to get started!</Typography>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Button onClick={showForm} variant="outlined" startIcon={<Icon path={mdiPlus} size={0.5} />}>Add Group</Button>
+            </Grid>
+          </>
+        )}
       </Grid>
     </Container>
   );
