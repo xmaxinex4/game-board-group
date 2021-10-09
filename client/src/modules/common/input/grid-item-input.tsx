@@ -1,12 +1,12 @@
 import React from "react";
 
-import { FormControl, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput } from "@material-ui/core";
+import { FormControl, FormHelperText, Grid, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 
-import { GridTypeMap } from "@material-ui/core/Grid";
-import { FormControlProps } from "@material-ui/core/FormControl";
-import { InputProps } from "@material-ui/core/Input";
-import { SvgIconProps } from "@material-ui/core/SvgIcon";
-import IconButton from "@material-ui/core/IconButton";
+import { GridTypeMap } from "@mui/material/Grid";
+import { FormControlProps } from "@mui/material/FormControl";
+import { InputProps } from "@mui/material/Input";
+import { SvgIconProps } from "@mui/material/SvgIcon";
+import IconButton from "@mui/material/IconButton";
 
 export interface GridItemInputProps {
   innerEndAdornmentIconButton?: ((props: SvgIconProps) => JSX.Element);
@@ -20,7 +20,7 @@ export interface GridItemInputProps {
   inputProps?: InputProps;
   onInputChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onRightAction?: (e: React.MouseEvent) => void;
-  rightActionIcon?: (props: SvgIconProps) => JSX.Element;
+  rightActionIcon?: any; // TODO: Fix typing
   setInputState: (input: string) => void;
 }
 
@@ -41,7 +41,7 @@ export function GridItemInput(props: GridItemInputProps): React.ReactElement {
     setInputState,
   } = props;
 
-  const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
+  // const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
 
   const [focused, setFocused] = React.useState(false);
 
@@ -71,7 +71,8 @@ export function GridItemInput(props: GridItemInputProps): React.ReactElement {
           }
           <OutlinedInput
             error={error ? true : false}
-            labelWidth={labelWidth}
+            label={inputLabel}
+            // labelWidth={labelWidth}
             value={input}
             onChange={onChange}
             {...inputProps}

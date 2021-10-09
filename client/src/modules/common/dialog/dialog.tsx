@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
-import { Dialog as MuiDialog } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Dialog as MuiDialog } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   viewPortWidth: { width: "75vw" },

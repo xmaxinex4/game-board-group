@@ -4,8 +4,8 @@ import { mdiAccount, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
 
 import { generateFilter } from "colorize-filter";
+
 import {
-  makeStyles,
   Popover,
   List,
   ListItem,
@@ -15,7 +15,8 @@ import {
   Avatar,
   ListItemIcon,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { User } from "../../../api-types/user";
 import { Meeple } from "../../../images/components/meeple";
@@ -81,7 +82,7 @@ export function UserNavMenuButton(props: UserNavMenuProps): React.ReactElement {
       >
         <List component="nav">
           <ListItem>
-            <Grid container justify="center" alignItems="center" spacing={2}>
+            <Grid container justifyContent="center" alignItems="center" spacing={2}>
               <Grid item>
                 <Avatar className={classes.meepleAvatar}>
                   <Meeple fill={user.color} />

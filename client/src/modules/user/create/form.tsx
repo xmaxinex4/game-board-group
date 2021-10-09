@@ -5,10 +5,10 @@ import {
   Grid,
   InputLabel,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import PersonIcon from "@material-ui/icons/Person";
-import EmailIcon from "@material-ui/icons/Email";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
 
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
@@ -140,7 +140,7 @@ export const CreateUserForm: React.FunctionComponent = () => {
           </Grid>
         </Grid>
 
-        <Grid container item justify="center" spacing={1}>
+        <Grid container item justifyContent="center" spacing={1}>
           <Grid item>
             <Typography>
               Already have an account?

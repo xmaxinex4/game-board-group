@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Redirect, Route } from "react-router";
 
-import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { Polls } from "./polls";
 import { Stats } from "./stats";

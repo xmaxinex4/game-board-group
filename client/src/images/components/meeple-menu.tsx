@@ -20,7 +20,6 @@ export function MeepleMenu(props: MeepleProps): React.ReactElement {
       fill={fill || "#000000"}
       version="1.1"
       viewBox="0.0 0.0 9.601049868766404 9.601049868766404"
-      // fill="none"
       stroke="none"
       strokeLinecap="square"
       strokeMiterlimit="10"

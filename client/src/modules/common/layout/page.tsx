@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
 
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Theme } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
+import { Grid } from "@mui/material";
 
 const useStyles = makeStyles<Theme, PageStyleProps>((theme: Theme) => ({
   root: ({ paddingTop }) => ({

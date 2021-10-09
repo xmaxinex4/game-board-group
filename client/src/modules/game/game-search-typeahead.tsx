@@ -1,7 +1,7 @@
 import React from "react";
 // import { useLazyQuery } from "react-apollo";
 
-import { Autocomplete, AutocompleteInputChangeReason } from "@material-ui/lab";
+import { Autocomplete, AutocompleteInputChangeReason, Theme } from "@mui/material";
 
 import {
   CircularProgress,
@@ -9,17 +9,17 @@ import {
   Grid,
   ListItem,
   ListItemText,
-  makeStyles,
   TextField,
   Switch
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import useDebounce from "../../hooks/useDebounce";
 
 // import { GAME_SEARCH } from "../Queries";
 // import { GameSearchQueryResult, GameSearchResult } from "../Types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme>(theme => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
@@ -81,7 +81,7 @@ export const GameSearchTypeahead: React.FunctionComponent<GameSearchTypeaheadPro
     if (onSelect) {
       onSelect(bggId);
     }
-  }
+  };
 
   return (
     <Grid container alignItems="flex-end" direction="column">
@@ -102,7 +102,7 @@ export const GameSearchTypeahead: React.FunctionComponent<GameSearchTypeaheadPro
         <Grid item>
           <Autocomplete
             style={{ width: 300 }}
-            getOptionLabel={option => option.name}
+            getOptionLabel={(option: any) => option.name}
             filterOptions={x => x}
             options={options}
             autoComplete
@@ -132,4 +132,4 @@ export const GameSearchTypeahead: React.FunctionComponent<GameSearchTypeaheadPro
       </Grid>
     </Grid>
   );
-}
+};

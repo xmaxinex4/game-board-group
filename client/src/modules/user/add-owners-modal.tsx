@@ -2,8 +2,8 @@ import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiCancel, mdiContentSave } from "@mdi/js";
-import { Button, Card, CardHeader, CardContent, Grid, Modal } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Button, Card, CardHeader, CardContent, Grid, Modal } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { User } from "../../api-types/user";
 import { Game } from "../../api-types/game";
@@ -94,7 +94,7 @@ export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
       open={open}
       onClose={handleClose}
     >
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item>
           <div className={classes.div}>
             <Card className={classes.card}>

@@ -3,7 +3,8 @@
 import React, { useCallback } from "react";
 import { CirclePicker, ColorResult } from "react-color";
 
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { Meeple } from "../../images/components/meeple";
 import { MeepleColorStringArray } from "../../theme/meeple-palettes";
@@ -22,14 +23,14 @@ const useStyles = makeStyles({
 
 export function MeepleColorPicker(props: MeepleColorPickerProps): React.ReactElement {
   const { color, setColor } = props;
-  const { circlePicker } = useStyles({});
+  const { circlePicker } = useStyles();
 
   const onColorChange = useCallback((colorResult: ColorResult) => {
     setColor(colorResult.hex);
   }, [setColor]);
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center">
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
       <Grid item>
         <Meeple fill={color} />
       </Grid>

@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from "react";
 
-import { makeStyles } from "@material-ui/styles";
-import { Skeleton } from "@material-ui/lab";
-import { Theme } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
+import { Theme, Skeleton } from "@mui/material";
 
 export type ImageDimensions = { width: number; height: number; };
 
@@ -38,7 +37,7 @@ export function ImageLoader(props: ImageLoaderProps): React.ReactElement {
   return (
     <>
       {imgIsLoading && (
-        <Skeleton component="div" className={skeleton} variant="rect" />
+        <Skeleton component="div" className={skeleton} variant="rectangular" />
       )}
       <img className={image} onLoad={onLoad} src={imgSrc} alt="" />
     </>

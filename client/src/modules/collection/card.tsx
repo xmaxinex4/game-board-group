@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
-import { Card, CardHeader, CardContent, Grid, IconButton } from "@material-ui/core";
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from "@mui/icons-material/";
+import { Card, CardHeader, CardContent, Grid, IconButton } from "@mui/material";
 
 import { GridItemInput } from "../common/input/grid-item-input";
 import { Collection } from "../../api-types/collection";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { Grid, Button, Typography } from "@material-ui/core";
-import EmailIcon from "@material-ui/icons/Email";
+import { Grid, Button, Typography } from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
 
 import { validateLoginForm } from "./validator";
 
@@ -67,7 +67,7 @@ export const LoginForm: React.FunctionComponent = () => {
               error={errors.password}
               onInputChange={clearErrorField}
             />
-            <Grid container item justify="flex-end">
+            <Grid container item justifyContent="flex-end">
               <Typography>
                 <SiteLink text="Forgot Password?" to="/forgot-password" />
               </Typography>
@@ -81,7 +81,7 @@ export const LoginForm: React.FunctionComponent = () => {
           </Grid>
         </Grid>
 
-        <Grid container item justify="center" spacing={1}>
+        <Grid container item justifyContent="center" spacing={1}>
           <Grid item>
             <Typography>
               Don&apos;t have an account?

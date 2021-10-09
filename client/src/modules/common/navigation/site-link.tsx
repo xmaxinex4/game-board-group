@@ -5,12 +5,12 @@ import { Link, LinkProps } from "react-router-dom";
 
 import {
   Grid,
-  makeStyles,
   SvgIcon,
   SvgIconProps,
   Theme,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 export interface SiteLinkStyleProps {
   noUnderline?: boolean;

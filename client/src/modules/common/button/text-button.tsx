@@ -1,7 +1,7 @@
 import React from "react";
 
 import Icon from "@mdi/react";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 export interface TextButtonProps {
   icon?: string;

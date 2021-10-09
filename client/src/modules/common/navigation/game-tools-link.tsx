@@ -4,13 +4,13 @@ import {
   Button,
   Grid,
   Link,
-  makeStyles,
   SvgIcon,
   Theme,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-import Casino from "@material-ui/icons/Casino";
+import Casino from "@mui/icons-material/Casino";
 
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
   link: {
@@ -29,7 +29,7 @@ export function GameToolsLink(): React.ReactElement {
   return (
     <Button className={muiButtonRoot} variant="text" color="primary">
       <Link href="https://gameboardtools.com" className={link}>
-        <Grid direction="column" alignItems="center" justify="center" container>
+        <Grid direction="column" alignItems="center" justifyContent="center" container>
           <Grid item>
             <SvgIcon>
               <Casino />

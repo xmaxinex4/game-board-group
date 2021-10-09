@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Avatar } from "@material-ui/core";
+import { Grid, Avatar } from "@mui/material";
 
 import { PollOption } from "../../api-types/poll-option";
 
@@ -19,4 +19,4 @@ export const PollOptionDisplay: React.FunctionComponent<PollOptionDisplayProps> 
       <Avatar>{option.game.name.charAt(0)}</Avatar>
     </Grid>
   </Grid>
-)
+);

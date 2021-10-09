@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Card, CardContent, Typography } from "@material-ui/core";
+import { Grid, Card, CardContent, Typography } from "@mui/material";
 
 import { Poll } from "../../api-types/poll";
 import { PollOptionDisplay } from "../poll-option/poll-option-display";
@@ -13,7 +13,7 @@ export const PollCard: React.FunctionComponent<PollDisplayProps> = ({ poll }) =>
   <Card>
     <CardContent>
       <Grid container>
-        <Grid item container justify="space-between">
+        <Grid item container justifyContent="space-between">
           <Grid item>
             <Typography variant="h6">
               {poll.title}
@@ -25,7 +25,7 @@ export const PollCard: React.FunctionComponent<PollDisplayProps> = ({ poll }) =>
             </Typography>
           </Grid>
         </Grid>
-        <Grid item container justify="space-between">
+        <Grid item container justifyContent="space-between">
           {poll.pollOptions.map((option) =>
             <Grid item>
               <PollOptionDisplay option={option} />
@@ -35,4 +35,4 @@ export const PollCard: React.FunctionComponent<PollDisplayProps> = ({ poll }) =>
       </Grid>
     </CardContent >
   </Card >
-)
+);

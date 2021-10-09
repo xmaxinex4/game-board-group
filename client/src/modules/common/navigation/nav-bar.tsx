@@ -5,8 +5,8 @@ import {
   AppBar,
   Grid,
   Toolbar,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { UserNavMenuButton } from "./user-nav-menu-button";
 import { User } from "../../../api-types/user";
@@ -37,14 +37,14 @@ export function NavBar(props: NavBarProps): React.ReactElement {
     <Grid container>
       <AppBar className={appBar} color="transparent" position="static">
         <Toolbar>
-          <Grid container xs={12} alignItems="center" justify="space-between" className={appBarContainer}>
+          <Grid container xs={12} alignItems="center" justifyContent="space-between" className={appBarContainer}>
             <Grid item>
               <Link to="/">
                 <img alt="" src={Logo} />
               </Link>
             </Grid>
             <Grid item>
-              <Grid container alignItems="center" justify="space-between" spacing={2}>
+              <Grid container alignItems="center" justifyContent="space-between" spacing={2}>
                 {
                   showGroup && (
                     <Grid item>

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { mdiPlus } from "@mdi/js";
-import { FormControl, MenuItem, Select } from "@material-ui/core";
+import { FormControl, MenuItem, Select } from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { ActiveUserContext } from "../../contexts/active-user-context";
@@ -23,7 +23,7 @@ export function ActiveGroupSelector(): React.ReactElement {
 
   // const [createGroup, createGroupResults] = useMutation(CREATE_GROUP, { onError: onCreateGroupError, onCompleted: onCreateGroupCompleted });
 
-  const onActiveGroupChanged = (event: React.ChangeEvent<{ name?: string; value: unknown; }>) => {
+  const onActiveGroupChanged = (event: any) => {
     console.log("event: ", event);
   };
 

@@ -3,8 +3,9 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiCancel, mdiContentSave } from "@mdi/js";
 
-import { Button, Card, CardHeader, CardContent, Grid, Modal, Theme, CircularProgress } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { Button, Card, CardHeader, CardContent, Grid, Modal, Theme, CircularProgress } from "@mui/material";
+import { useTheme } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 // import { GAME_DISPLAY_DETAILS } from "./Queries";
 
@@ -110,7 +111,7 @@ export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ g
       open={open}
       onClose={handleClose}
     >
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid item>
           <div className={classes.div}>
             <Card className={classes.card}>
@@ -125,7 +126,7 @@ export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ g
                   <Grid item>
                     <GameCircleListDisplay games={gamesState} />
                   </Grid>
-                  <Grid container item justify="space-between">
+                  <Grid container item justifyContent="space-between">
                     <Grid item className={classes.wrapper}>
                       <Button
                         variant="outlined"
@@ -155,5 +156,5 @@ export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ g
         </Grid>
       </Grid>
     </Modal>
-  )
-}
+  );
+};

@@ -2,7 +2,7 @@ import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
-import { Grid, Typography, IconButton } from "@material-ui/core";
+import { Grid, Typography, IconButton } from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
@@ -25,7 +25,7 @@ export function Polls(): React.ReactElement {
           Polls
         </Typography>
       </Grid>
-      <Grid container item justify="space-between" alignItems="center">
+      <Grid container item justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("create new poll")} icon={mdiPlus} text="Create Poll" />
         </Grid>

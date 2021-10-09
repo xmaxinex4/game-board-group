@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Theme } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
-// import Typography from "@material-ui/core/Typography";
-// import Box from "@material-ui/core/Box";
+// import Typography from "@mui/material/Typography";
+// import Box from "@mui/material/Box";
 
 // import { HexIcon } from "../../../images/components/hex";
 

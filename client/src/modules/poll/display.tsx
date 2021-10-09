@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid } from "@mui/material";
 
 import { Poll } from "../../api-types/poll";
 
@@ -26,4 +26,4 @@ export const PollDisplay: React.FunctionComponent<PollDisplayProps> = ({ onDelet
       </Button>
     </div>
   </Grid>
-)
+);

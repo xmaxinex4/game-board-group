@@ -1,7 +1,7 @@
 import React from "react";
 
-import PencilIcon from "@material-ui/icons/Edit";
-import { makeStyles } from "@material-ui/styles";
+import PencilIcon from "@mui/icons-material/Edit";
+import { makeStyles } from "@mui/styles";
 import {
   Grid,
   Tooltip,
@@ -9,7 +9,7 @@ import {
   Avatar,
   Theme,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Meeple } from "../../images/components/meeple";
 import { User } from "../../api-types/user";

@@ -1,7 +1,8 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router";
 
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { MyGroups } from "./my-groups";
 import { MyCollections } from "./my-collections";

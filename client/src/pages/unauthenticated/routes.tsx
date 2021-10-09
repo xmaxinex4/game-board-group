@@ -2,8 +2,8 @@ import React from "react";
 
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { MeepleCircleSiteNameInline } from "../../images/components/meeple-circle-site-name-inline";
 
@@ -25,11 +25,11 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
   const { gridContainer, logo } = useStyles();
 
   return (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <Grid xs={12} item>
         <UnauthenticatedNavBar />
       </Grid>
-      <Grid xs={12} item container className={gridContainer} alignItems="center" justify="center" spacing={2}>
+      <Grid xs={12} item container className={gridContainer} alignItems="center" justifyContent="center" spacing={2}>
         <Grid xs={12} className={logo} item>
           <MeepleCircleSiteNameInline />
         </Grid>

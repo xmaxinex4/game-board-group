@@ -1,8 +1,9 @@
 import React from "react";
 
 import { mdiPlus } from "@mdi/js";
-import { Modal, Card, CardContent, makeStyles, Grid } from "@material-ui/core";
-import { ButtonProps } from "@material-ui/core/Button";
+import { Modal, Card, CardContent, Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { ButtonProps } from "@mui/material/Button";
 
 import { TextButton } from "../common/button/text-button";
 import { CreateGroupForm } from "./create/form";
@@ -32,7 +33,7 @@ export const CreateGroupModalButton: React.FunctionComponent<CreateGroupModalBut
 
     const onAddGroup = () => {
       setOpen(true);
-    }
+    };
 
     const handleClose = () => {
       setOpen(false);
@@ -43,7 +44,7 @@ export const CreateGroupModalButton: React.FunctionComponent<CreateGroupModalBut
         <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
         <Modal open={open} onClose={handleClose}>
           <div className={classes.div}>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               <Grid item>
                 <Card className={classes.card}>
                   <CardContent>
@@ -55,5 +56,5 @@ export const CreateGroupModalButton: React.FunctionComponent<CreateGroupModalBut
           </div>
         </Modal>
       </>
-    )
-  }
+    );
+  };

@@ -9,18 +9,19 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { GridTypeMap } from "@material-ui/core/Grid";
-import { FormControlProps } from "@material-ui/core/FormControl";
-import { InputProps } from "@material-ui/core/Input";
-import { SvgIconProps } from "@material-ui/core/SvgIcon";
-import IconButton from "@material-ui/core/IconButton";
+import { GridTypeMap } from "@mui/material/Grid";
+import { FormControlProps } from "@mui/material/FormControl";
+import { InputProps } from "@mui/material/Input";
+import { SvgIconProps } from "@mui/material/SvgIcon";
+
+import IconButton from "@mui/material/IconButton";
 
 export interface FullWidthGridItemInputProps {
   innerEndAdornmentIconButton?: ((props: SvgIconProps) => React.ReactElement);
   innerEndAdornmentOnClick?: () => void;
-  outerEndAdornmentIcon?: ((props: SvgIconProps) => React.ReactElement);
+  outerEndAdornmentIcon?: any; // TODO: Fix typing
   formControlProps?: FormControlProps;
   error?: string;
   gridItemProps?: Omit<GridTypeMap<{}, "div">, "alignItems">;
@@ -46,7 +47,7 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
     setInputState,
   } = props;
 
-  const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
+  // const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
   const hasError = useMemo(() => !!error, [error]);
   const [focused, setFocused] = React.useState(false);
 
@@ -83,7 +84,8 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
         }
         <OutlinedInput
           error={!!error}
-          labelWidth={labelWidth}
+          // labelWidth={labelWidth}
+          label={inputLabel}
           value={input}
           onChange={onChange}
           {...inputProps}

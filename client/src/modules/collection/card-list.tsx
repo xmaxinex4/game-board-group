@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 
 import { Collection } from "../../api-types/collection";
 

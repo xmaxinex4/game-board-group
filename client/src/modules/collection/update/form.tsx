@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@mui/material";
 
-import PersonIcon from "@material-ui/icons/Person";
+import PersonIcon from "@mui/icons-material/Person";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { UpdateCollectionFormModel } from "./model";

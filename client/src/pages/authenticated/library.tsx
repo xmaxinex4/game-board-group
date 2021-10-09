@@ -8,7 +8,7 @@ import {
   Typography,
   IconButton,
   Switch,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
@@ -26,7 +26,7 @@ export const Library: React.FunctionComponent = () => {
           {`${activeGroupContext?.activeGroup?.name} Library`}
         </Typography>
       </Grid>
-      <Grid container item justify="space-between" alignItems="center">
+      <Grid container item justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("add new Game")} icon={mdiPlus} text="Add Game" />
         </Grid>

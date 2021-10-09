@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { AppBar, Grid, Toolbar } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { AppBar, Grid, Toolbar } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { MeepleCircleSiteNameInline } from "../../../images/components/meeple-circle-site-name-inline";
 
@@ -33,7 +33,7 @@ export function UnauthenticatedNavBar(props: UnauthenticatedNavBarProps): React.
     <Grid container>
       <AppBar position="static" className={navBar}>
         <Toolbar>
-          <Grid container alignItems="center" justify="space-between">
+          <Grid container alignItems="center" justifyContent="space-between">
             <Grid item className={logo}>
               {
                 homeLogo && (

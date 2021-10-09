@@ -1,9 +1,9 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@mui/material/styles";
 
 import { SitePaletteColors } from "./theme/site-palettes";
 
 // https://material-ui.com/customization/themes/
-export const muiTheme = createMuiTheme({
+export const muiTheme = createTheme({
   palette: {
     primary: SitePaletteColors.Primary,
     secondary: SitePaletteColors.Secondary,

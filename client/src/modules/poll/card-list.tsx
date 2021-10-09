@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 
 import { Poll } from "../../api-types/poll";
 
@@ -18,4 +18,4 @@ export const PollCardList: React.FunctionComponent<PollCardListProps> = ({ polls
       </Grid>
     )}
   </Grid>
-)
+);

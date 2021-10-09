@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 
-import { makeStyles, Theme } from "@material-ui/core";
+import { Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles<Theme, FloatingPageContentStyleProps>((theme) => ({
   floatingContent: ({ position }) => ({

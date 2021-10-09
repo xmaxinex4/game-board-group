@@ -1,7 +1,9 @@
 import React from "react";
 
-import PencilIcon from "@material-ui/icons/Edit";
-import { Avatar, Grid, makeStyles, Tooltip, Typography, IconButton } from "@material-ui/core";
+import PencilIcon from "@mui/icons-material/Edit";
+import { Avatar, Grid, Tooltip, Typography, IconButton, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import { Game } from "../../api-types/game";
 
 export interface GameCircleListDisplayProps {
@@ -9,7 +11,7 @@ export interface GameCircleListDisplayProps {
   onEditGames?: () => void;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme>((theme) => ({
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),

@@ -2,7 +2,7 @@ import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 // import { ActiveGroupContext } from "../../contexts/active-group-context";
 // import { ActiveUserContext } from "../../contexts/active-user-context";

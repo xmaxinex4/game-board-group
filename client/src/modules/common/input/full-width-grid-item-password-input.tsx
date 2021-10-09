@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import LockIcon from "@material-ui/icons/Lock";
-import EyeOpenIcon from "@material-ui/icons/Visibility";
-import EyeClosedIcon from "@material-ui/icons/VisibilityOff";
+import LockIcon from "@mui/icons-material/Lock";
+import EyeOpenIcon from "@mui/icons-material/Visibility";
+import EyeClosedIcon from "@mui/icons-material/VisibilityOff";
 
 import { FullWidthGridItemInput, FullWidthGridItemInputProps } from "./full-width-grid-item-input";
 
