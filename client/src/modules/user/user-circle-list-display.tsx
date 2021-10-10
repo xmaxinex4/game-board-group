@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function Library(props: UserCircleListDisplayProps): React.ReactElement {
+export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.ReactElement {
   const { users, onEditUsers } = props;
   const { meeple } = useStyles({});
 
