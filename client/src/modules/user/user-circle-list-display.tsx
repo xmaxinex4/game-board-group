@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const UserCircleListDisplay: React.FunctionComponent<UserCircleListDisplayProps> = ({ users, onEditUsers }) => {
+export function Library(props: UserCircleListDisplayProps): React.ReactElement {
+  const { users, onEditUsers } = props;
   const { meeple } = useStyles({});
 
   return (
@@ -53,4 +54,4 @@ export const UserCircleListDisplay: React.FunctionComponent<UserCircleListDispla
       }
     </Grid>
   );
-};
+}

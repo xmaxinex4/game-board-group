@@ -37,7 +37,8 @@ export interface GameSearchTypeaheadProps {
   onSelect?: (bggId: number) => void;
 }
 
-export const GameSearchTypeahead: React.FunctionComponent<GameSearchTypeaheadProps> = ({ onSelect }) => {
+export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.ReactElement {
+  const { onSelect } = props;
   const { exactMatchSwitchClass, loadingIndicatorClass } = useStyles({});
   const [options, setOptions] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");

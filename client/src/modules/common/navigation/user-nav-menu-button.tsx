@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 import { mdiAccount, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -10,7 +11,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Link,
   Grid,
   Avatar,
   ListItemIcon,
@@ -67,6 +67,7 @@ export function UserNavMenuButton(): React.ReactElement {
     if (activeUser) return MeeplePaletteColors[activeUser.color].main;
     return SitePaletteColors.Primary.main;
   }, [activeUser]);
+
   const meepleCustomColorFilter = generateFilter(userColor);
 
   return (
@@ -101,19 +102,19 @@ export function UserNavMenuButton(): React.ReactElement {
               </Grid>
             </Grid>
           </ListItem>
-          <ListItem button component={Link} href="/account">
+          <ListItem component={Link} to="/account">
             <ListItemIcon>
               <Icon path={mdiAccount} color={theme.palette.primary.main} size={1} />
             </ListItemIcon>
             <ListItemText primary="Account" />
           </ListItem>
-          <ListItem button component={Link} href="/account/collections">
+          <ListItem component={Link} to="/account/collections">
             <ListItemIcon>
               <Meeple size={16} fill={userColor} />
             </ListItemIcon>
             <ListItemText primary="My Collections" />
           </ListItem>
-          <ListItem button component={Link} href="/account/groups">
+          <ListItem component={Link} to="/account/groups">
             <ListItemIcon>
               <Meeple size={16} fill={userColor} />
             </ListItemIcon>

@@ -11,7 +11,7 @@ import { useApi } from "../../../hooks/useApi";
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
 
-export const CreateGroupForm: React.FunctionComponent = () => {
+export function CreateGroupForm(): React.ReactElement {
   const { apiPost } = useApi();
 
   const [name, setName] = useState("");
@@ -65,4 +65,4 @@ export const CreateGroupForm: React.FunctionComponent = () => {
       </Grid>
     </form>
   );
-};
+}

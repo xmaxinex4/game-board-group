@@ -18,31 +18,31 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export const GameCircleListDisplay: React.FunctionComponent<GameCircleListDisplayProps> = React.memo(
-  ({ games, onEditGames }) => {
-    const classes = useStyles({});
+export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.ReactElement {
+  const { games, onEditGames } = props;
+  const classes = useStyles({});
 
-    return (
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          <Typography>Games:</Typography>
-        </Grid>
-        {games && games.map((game) => {
-          return (
-            <Grid item>
-              <Tooltip title={game.name} aria-label={game.name}>
-                <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
-              </Tooltip>
-            </Grid>
-          );
-        })}
-        {onEditGames &&
-          <Grid item>
-            <IconButton onClick={onEditGames} color="primary" aria-label="edit games" component="span">
-              <PencilIcon />
-            </IconButton>
-          </Grid>
-        }
+  return (
+    <Grid container spacing={2} alignItems="center">
+      <Grid item>
+        <Typography>Games:</Typography>
       </Grid>
-    );
-  });
+      {games && games.map((game) => {
+        return (
+          <Grid item>
+            <Tooltip title={game.name} aria-label={game.name}>
+              <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
+            </Tooltip>
+          </Grid>
+        );
+      })}
+      {onEditGames &&
+        <Grid item>
+          <IconButton onClick={onEditGames} color="primary" aria-label="edit games" component="span">
+            <PencilIcon />
+          </IconButton>
+        </Grid>
+      }
+    </Grid>
+  );
+}

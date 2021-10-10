@@ -50,7 +50,8 @@ const useStyles = makeStyles({
   }
 });
 
-export const EditGamesModal: React.FunctionComponent<EditGamesModalProps> = ({ games, handleClose, loading, onSave, open, title }) => {
+export function EditGamesModal(props: EditGamesModalProps): React.ReactElement {
+  const { games, handleClose, loading, onSave, open, title } = props;
   const classes = useStyles({});
   const [gamesState, setGamesState] = React.useState((games && games.length > 0) && games || []);
 

@@ -11,7 +11,7 @@ import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-inp
 import { useApi } from "../../hooks/useApi";
 import { LoginFormModel } from "./model";
 
-export const LoginForm: React.FunctionComponent = () => {
+export function LoginForm(): React.ReactElement {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,4 +96,4 @@ export const LoginForm: React.FunctionComponent = () => {
       </Grid>
     </form>
   );
-};
+}

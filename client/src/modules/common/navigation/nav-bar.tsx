@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -12,6 +12,7 @@ import { UserNavMenuButton } from "./user-nav-menu-button";
 import { ActiveGroupSelector } from "../../group/active-group-selector";
 
 import Logo from "../../../images/png/logo.png";
+import { ActiveUserContext } from "../../../contexts/active-user-context";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -22,14 +23,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export interface NavBarProps {
-  showGroup?: boolean;
-}
-
-export function NavBar(props: NavBarProps): React.ReactElement {
-  const { showGroup } = props;
-
+export function NavBar(): React.ReactElement {
   const { appBar, appBarContainer } = useStyles();
+  const { activeUser } = useContext(ActiveUserContext);
 
   return (
     <Grid container>
@@ -44,7 +40,7 @@ export function NavBar(props: NavBarProps): React.ReactElement {
             <Grid item>
               <Grid container alignItems="center" justifyContent="space-between" spacing={2}>
                 {
-                  showGroup && (
+                  activeUser?.groupMemberships && activeUser?.groupMemberships?.length > 0 && (
                     <Grid item>
                       <ActiveGroupSelector />
                     </Grid>

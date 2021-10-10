@@ -11,11 +11,6 @@ import Tab from "@mui/material/Tab";
 
 // import { HexIcon } from "../../../images/components/hex";
 
-const blueHex = require("../../../images/svg/HexBlue.svg");
-const darkGreenHex = require("../../../images/svg/HexDarkGreen.svg");
-const lightBlueHex = require("../../../images/svg/HexLightBlue.svg");
-const lightGreenHex = require("../../../images/svg/HexLightGreen.svg");
-
 // interface TabPanelProps {
 //   children?: React.ReactNode;
 //   index: any;
@@ -32,61 +27,34 @@ const useStyles = makeStyles((theme: Theme) => ({
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
-  blueTab: {
-    backgroundImage: `url(${blueHex})`,
-    backgroundRepeat: "no-repeat",
-    height: 200,
-    width: 200,
-  },
-  darkGreenTab: {
-    backgroundImage: `url(${darkGreenHex})`,
-    backgroundRepeat: "no-repeat",
-    height: 200,
-    width: 200,
-  },
-  lightBlueTab: {
-    backgroundImage: `url(${lightBlueHex})`,
-    backgroundRepeat: "no-repeat",
-    height: 200,
-    width: 200,
-  },
-  lightGreenTab: {
-    backgroundImage: `url(${lightGreenHex})`,
-    backgroundRepeat: "no-repeat",
-    height: 200,
-    width: 200,
-  },
 }));
 
-export const SideNav: React.FunctionComponent = () => {
-  const classes = useStyles({});
-  const [value, setValue] = React.useState(0);
+export function SideNav(): React.ReactElement {
+  const { tabs, root } = useStyles({});
+  const [currentTab, setCurrentTab] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const onTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setCurrentTab(newValue);
   };
 
-  // const onTabClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-  //   // event.preventDefault();
-  // };
+  // import HowToVoteIcon from '@mui/icons-material/HowToVote'; // for Polls
+  // import PieChartIcon from '@mui/icons-material/PieChart'; // for Stats
+  // import LibraryBooksIcon from '@mui/icons-material/LibraryBooks'; // for Library
+  // Meeple Group for manage group
 
   return (
-    <div className={classes.root}>
+    <div className={root}>
       <Tabs
         orientation="vertical"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        className={classes.tabs}
+        value={currentTab}
+        onChange={onTabChange}
+        className={tabs}
       >
-        <Tab className={classes.blueTab} component={Link} label="Polls" to="/polls" />
-
-        <Tab className={classes.darkGreenTab} component={Link} label="Stats" to="/stats" />
-
-        <Tab className={classes.lightBlueTab} component={Link} label="Library" to="/library" />
-
-        <Tab className={classes.lightGreenTab} component={Link} label="Manage Group" to="/manage-group" />
+        <Tab component={Link} label="Polls" to="/polls" />
+        <Tab component={Link} label="Stats" to="/stats" />
+        <Tab component={Link} label="Library" to="/library" />
+        <Tab component={Link} label="Manage Group" to="/manage-group" />
       </Tabs>
     </div>
   );
-};
+}

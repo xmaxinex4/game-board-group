@@ -26,35 +26,34 @@ const useStyles = makeStyles({
   }
 });
 
-export const CreateGroupModalButton: React.FunctionComponent<CreateGroupModalButtonProps> =
-  (props) => {
-    const classes = useStyles({});
-    const [open, setOpen] = React.useState(false);
+export function CreateGroupModalButton(): React.ReactElement {
+  const classes = useStyles({});
+  const [open, setOpen] = React.useState(false);
 
-    const onAddGroup = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-    return (
-      <>
-        <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
-        <Modal open={open} onClose={handleClose}>
-          <div className={classes.div}>
-            <Grid container justifyContent="center" alignItems="center">
-              <Grid item>
-                <Card className={classes.card}>
-                  <CardContent>
-                    <CreateGroupForm />
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </div>
-        </Modal>
-      </>
-    );
+  const onAddGroup = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
+      <Modal open={open} onClose={handleClose}>
+        <div className={classes.div}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <Card className={classes.card}>
+                <CardContent>
+                  <CreateGroupForm />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </div>
+      </Modal>
+    </>
+  );
+};

@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 
-export const Stats: React.FunctionComponent = () => {
+export function Stats(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);
 
   return (
@@ -15,4 +15,4 @@ export const Stats: React.FunctionComponent = () => {
       </Typography>
     </Grid>
   );
-};
+}

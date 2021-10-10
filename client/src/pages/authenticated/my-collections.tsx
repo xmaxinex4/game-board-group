@@ -2,7 +2,7 @@ import React from "react";
 
 import { Typography, Button } from "@mui/material";
 
-export const MyCollections: React.FunctionComponent = () => {
+export function MyCollections(): React.ReactElement {
   // const [isLoading, setIsLoading] = useState(false);
   // const [data, setData] = useState<Collection[]>([]);
 
@@ -53,4 +53,4 @@ export const MyCollections: React.FunctionComponent = () => {
     //   </Grid>
     // </Grid>
   );
-};
+}

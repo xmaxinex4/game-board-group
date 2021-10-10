@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const NotFound: React.FunctionComponent = () => {
+export function NotFound(): React.ReactElement {
   const classes = useStyles({});
 
   return (
@@ -18,4 +18,4 @@ export const NotFound: React.FunctionComponent = () => {
       <Typography>Not Found</Typography>
     </div>
   );
-};
+}

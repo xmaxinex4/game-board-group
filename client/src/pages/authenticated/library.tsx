@@ -13,7 +13,7 @@ import {
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
 
-export const Library: React.FunctionComponent = () => {
+export function Library(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);
   const [myGamesOnly, setMyGamesOnly] = React.useState(false);
 
@@ -45,4 +45,4 @@ export const Library: React.FunctionComponent = () => {
       </Grid>
     </Grid>
   );
-};
+}

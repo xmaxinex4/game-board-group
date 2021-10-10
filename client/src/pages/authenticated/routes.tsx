@@ -3,20 +3,18 @@ import {
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
+} from "react-router";
 
-import { Account } from "./account";
-import { AuthenticatedHome } from "./home";
+import { AuthenticatedHomeRoutes } from "./home/routes";
 
 import { NotFound } from "../error/not-found";
 
 export function AuthenticatedRoutes(): React.ReactElement {
   return (
     <Switch>
-      <Route exact path="/" component={AuthenticatedHome} />
       <Route exact path="/login" component={() => <Redirect to="/" />} />
-      <Route path="/account" component={Account} />
-      <Route exact path="*" component={NotFound} />
+      <Route path="/" component={AuthenticatedHomeRoutes} />
+      <Route path="*" component={NotFound} />
     </Switch>
   );
 }

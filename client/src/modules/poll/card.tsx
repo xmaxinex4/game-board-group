@@ -9,30 +9,34 @@ export interface PollDisplayProps {
   poll: Poll;
 }
 
-export const PollCard: React.FunctionComponent<PollDisplayProps> = ({ poll }) => (
-  <Card>
-    <CardContent>
-      <Grid container>
-        <Grid item container justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h6">
-              {poll.title}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h6">
-              Created By: {poll.author.username}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid item container justifyContent="space-between">
-          {poll.pollOptions.map((option) =>
+export function PollCard(props: PollDisplayProps): React.ReactElement {
+  const { poll } = props;
+
+  return (
+    <Card>
+      <CardContent>
+        <Grid container>
+          <Grid item container justifyContent="space-between">
             <Grid item>
-              <PollOptionDisplay option={option} />
+              <Typography variant="h6">
+                {poll.title}
+              </Typography>
             </Grid>
-          )}
+            <Grid item>
+              <Typography variant="h6">
+                Created By: {poll.author.username}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item container justifyContent="space-between">
+            {poll.pollOptions.map((option) =>
+              <Grid item>
+                <PollOptionDisplay option={option} />
+              </Grid>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-    </CardContent >
-  </Card >
-);
+      </CardContent >
+    </Card>
+  );
+}

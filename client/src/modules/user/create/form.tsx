@@ -20,7 +20,7 @@ import { CreateUserFormModel } from "./model";
 import { validateCreateUserForm } from "./validator";
 import { useApi } from "../../../hooks/useApi";
 
-export const CreateUserForm: React.FunctionComponent = () => {
+export function CreateUserForm(): React.ReactElement {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -155,4 +155,4 @@ export const CreateUserForm: React.FunctionComponent = () => {
       </Grid>
     </form>
   );
-};
+}

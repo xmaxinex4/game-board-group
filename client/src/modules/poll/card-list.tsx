@@ -10,12 +10,16 @@ export interface PollCardListProps {
   polls: Poll[];
 }
 
-export const PollCardList: React.FunctionComponent<PollCardListProps> = ({ polls }) => (
-  <Grid spacing={4} direction="column" container>
-    {polls.map((poll) =>
-      <Grid item>
-        <PollCard poll={poll} />
-      </Grid>
-    )}
-  </Grid>
-);
+export function CreateGroupForm(props: PollCardListProps): React.ReactElement {
+  const { polls } = props;
+
+  return (
+    <Grid spacing={4} direction="column" container>
+      {polls.map((poll) =>
+        <Grid item>
+          <PollCard poll={poll} />
+        </Grid>
+      )}
+    </Grid>
+  );
+}

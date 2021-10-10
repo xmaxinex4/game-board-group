@@ -9,21 +9,25 @@ export interface PollDisplayProps {
   onDelete: () => void;
 }
 
-export const PollDisplay: React.FunctionComponent<PollDisplayProps> = ({ onDelete, poll }) => (
-  <Grid container>
-    <div
-      className="w-100"
-      style={{
-        // backgroundImage: `url(${this.props.poll.imageUrl})`,
-        backgroundSize: 'cover',
-        paddingBottom: '100%',
-      }}
-    />
-    <div className="pt3">
-      {poll}
-      <Button onClick={onDelete}>
-        Delete
-      </Button>
-    </div>
-  </Grid>
-);
+export function PollDisplay(props: PollDisplayProps): React.ReactElement {
+  const { onDelete, poll } = props;
+
+  return (
+    <Grid container>
+      <div
+        className="w-100"
+        style={{
+          // backgroundImage: `url(${this.props.poll.imageUrl})`,
+          backgroundSize: 'cover',
+          paddingBottom: '100%',
+        }}
+      />
+      <div className="pt3">
+        {poll}
+        <Button onClick={onDelete}>
+          Delete
+        </Button>
+      </div>
+    </Grid>
+  );
+};
