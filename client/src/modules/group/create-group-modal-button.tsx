@@ -1,6 +1,5 @@
 import React from "react";
 
-import { mdiPlus } from "@mdi/js";
 import { Modal, Card, CardContent, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ButtonProps } from "@mui/material/Button";
@@ -27,7 +26,7 @@ const useStyles = makeStyles({
 });
 
 export function CreateGroupModalButton(): React.ReactElement {
-  const classes = useStyles({});
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const onAddGroup = () => {
@@ -40,7 +39,7 @@ export function CreateGroupModalButton(): React.ReactElement {
 
   return (
     <>
-      <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
+      <TextButton text="+ Add Group" onClick={onAddGroup} />
       <Modal open={open} onClose={handleClose}>
         <div className={classes.div}>
           <Grid container justifyContent="center" alignItems="center">

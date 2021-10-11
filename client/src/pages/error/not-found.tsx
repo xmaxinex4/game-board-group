@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 });
 
 export function NotFound(): React.ReactElement {
-  const classes = useStyles({});
+  const classes = useStyles();
 
   return (
     <div className={classes.span}>

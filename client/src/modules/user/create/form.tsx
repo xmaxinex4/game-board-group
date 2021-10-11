@@ -61,7 +61,7 @@ export function CreateUserForm(): React.ReactElement {
     if (isFormValid) {
       setIsLoading(true);
       // TODO: Create create response type or get from api (create api type project)
-      apiPost<{ user: { create: { token: string; }; }; }>("/user/create", {
+      apiPost<{ token: string; }>("/user/create", {
         color,
         email,
         password,
@@ -69,7 +69,7 @@ export function CreateUserForm(): React.ReactElement {
       })
         .then(({ data }) => {
           // TODO: Alert/Welcome user their account has been created
-          localStorage.setItem("auth-token", data?.user?.create?.token);
+          localStorage.setItem("auth-token", data?.token);
           window.location.href = "/";
         })
         .catch((error) => {

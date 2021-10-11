@@ -50,30 +50,12 @@ model Collection {
 
 model Game {
   id                  String       @id @default(cuid())
+  bggId               String       @unique
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
   name                String
-  description         String
-  noPoints            Boolean?
-  highestWins         Boolean?
-  cooperative         Boolean?
-  usesTeams           Boolean?
-  urlThumb            String
-  year                Int
-  bggId               Int          @unique
   urlImage            String
-  designers           String[]
-  publishers          String[]
-  artists             String[]
-  categories          String[]
-  families            String[]
-  minPlayers          Int
-  maxPlayers          Int
-  age                 Int
-  minPlaytime         Int
-  maxPlaytime         Int
-  mechanics           String[]
-  bggComplexityRating Float
+  urlThumb            String
   Collection          Collection?  @relation(fields: [collectionId], references: [id])
   collectionId        String?
   play                Play[]

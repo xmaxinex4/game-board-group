@@ -5,7 +5,7 @@ import {
   Redirect,
 } from "react-router";
 
-import { AuthenticatedHomeRoutes } from "./home/routes";
+import { AuthenticatedHomeRoutes } from "./home-routes";
 
 import { NotFound } from "../error/not-found";
 

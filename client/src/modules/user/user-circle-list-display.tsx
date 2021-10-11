@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.ReactElement {
   const { users, onEditUsers } = props;
-  const { meeple } = useStyles({});
+  const { meeple } = useStyles();
 
   return (
     <Grid container spacing={2} alignItems="center">

@@ -1,8 +1,5 @@
 import React, { useCallback, useState } from "react";
 
-import Icon from "@mdi/react";
-import { mdiPlus } from "@mdi/js";
-
 import {
   Button,
   Typography,
@@ -31,11 +28,11 @@ export function NoActiveGroup(): React.ReactElement {
               <Typography>No Groups?</Typography>
             </Grid>
             <Grid item>
-              <Typography>Add a new group to get started!</Typography>
+              <Typography>Add a New Group to Get Started!</Typography>
             </Grid>
           </Grid>
           <Grid item>
-            <Button onClick={showForm} variant="outlined" startIcon={<Icon path={mdiPlus} size={0.5} />}>Add Group</Button>
+            <Button onClick={showForm} variant="outlined">+ Add Group</Button>
           </Grid>
         </>
       )}

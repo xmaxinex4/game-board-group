@@ -1,7 +1,5 @@
 import React from "react";
 
-import Icon from "@mdi/react";
-import { mdiPlus } from "@mdi/js";
 import { Button } from "@mui/material";
 
 // import { ActiveGroupContext } from "../../contexts/active-group-context";
@@ -37,7 +35,7 @@ export function AddGroupButton(props: AddGroupButtonProps): React.ReactElement {
 
   return (
     (variant === "text")
-      ? <TextButton text="Add Group" icon={mdiPlus} onClick={onAddGroup} />
-      : <Button startIcon={<Icon path={mdiPlus} />} onClick={onAddGroup}>Add Group</Button>
+      ? <TextButton text="+ Add Group" onClick={onAddGroup} />
+      : <Button onClick={onAddGroup}>+ Add Group</Button>
   );
 }

@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
-import { Typography, Button } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
+import { CreateCollectionForm } from "../../modules/collection/create/form";
 
 export function MyCollections(): React.ReactElement {
+  const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
+
+  const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
+
   // const [isLoading, setIsLoading] = useState(false);
   // const [data, setData] = useState<Collection[]>([]);
 
@@ -15,42 +21,31 @@ export function MyCollections(): React.ReactElement {
   //   onCompleted: refetch
   // });
 
-  const onAddCollection = () => {
-    // upsertCollection({ variables: { name: `${activeUserContext.activeUser.username}"s Collection` } });
-    console.log("onAddCollection");
-  };
+  // const onAddCollection = () => {
+  //   // upsertCollection({ variables: { name: `${activeUserContext.activeUser.username}"s Collection` } });
+  //   console.log("onAddCollection");
+  // };
 
   return (
-    <>
-      {/* <Grid container direction="column">
-       <Grid item xs={12}> */}
-      <Typography>My Collections</Typography>
-      {/* </Grid>
-      <Grid item>
-        {loading &&
-          <Typography>Loading...</Typography>
-        }
+    <TabContentContainer subTitle="My Game Collections">
+      <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
+        {showAddCollectionForm ? (
+          <Grid item>
+            <CreateCollectionForm />
+          </Grid>
+        ) : (
+          <>
+            <Grid item>
+              <Typography>
+                Add a New Game Collection to Get Started!
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button onClick={showForm} variant="outlined">+ Add Collection</Button>
+            </Grid>
+          </>
+        )}
       </Grid>
-  <Grid item>
-        {error &&
-          <Typography>Error: {error}</Typography>
-        }
-      </Grid>
-   <Grid item xs={12}> */}
-      {/* {!isLoading && */}
-      {/* (data.length > 0
-          ? (
-            <CollectionCardList collections={data} />
-          ) : ( */}
-      <Typography>
-        Looks like you need to add a collection to get started
-        <Button onClick={onAddCollection}>+ Add Collection</Button>
-      </Typography>
-      {/* )
-        ) */}
-      {/* } */}
-    </>
-    //   </Grid>
-    // </Grid>
+    </TabContentContainer>
   );
 }

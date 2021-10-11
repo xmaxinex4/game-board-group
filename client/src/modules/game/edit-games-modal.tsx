@@ -17,7 +17,7 @@ export interface EditGamesModalProps {
   games: Game[];
   handleClose: () => void;
   loading?: boolean;
-  onSave: (bggIds: number[]) => void;
+  onSave: (bggIds: string[]) => void;
   open: boolean;
   title?: string;
 }
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 
 export function EditGamesModal(props: EditGamesModalProps): React.ReactElement {
   const { games, handleClose, loading, onSave, open, title } = props;
-  const classes = useStyles({});
+  const classes = useStyles();
   const [gamesState, setGamesState] = React.useState((games && games.length > 0) && games || []);
 
   const theme = useTheme<Theme>();

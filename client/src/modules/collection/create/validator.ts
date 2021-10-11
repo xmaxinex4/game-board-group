@@ -1,6 +1,11 @@
+/* eslint-disable no-unused-vars */
+
 import { CreateCollectionFormModel } from "./model";
 
-export const validateCreateCollectionForm = (model: CreateCollectionFormModel, setErrors: (errorState: CreateCollectionFormModel) => void): boolean => {
+export const validateCreateCollectionForm = (
+  model: CreateCollectionFormModel,
+  setErrors: (errorState: CreateCollectionFormModel) => void,
+): boolean => {
   let formIsValid = true;
   let errors: CreateCollectionFormModel = { name: "", ownerIds: [], gameIds: [] };
 
@@ -14,4 +19,4 @@ export const validateCreateCollectionForm = (model: CreateCollectionFormModel, s
 
   setErrors({ ...errors });
   return formIsValid;
-}
+};

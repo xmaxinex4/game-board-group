@@ -2,10 +2,11 @@ import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
-import { Grid, Typography, IconButton } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
+import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 
 export function Polls(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);
@@ -18,14 +19,8 @@ export function Polls(): React.ReactElement {
   // };
 
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <Typography variant="h6">
-          {activeGroupContext?.activeGroup?.name}
-          Polls
-        </Typography>
-      </Grid>
-      <Grid container item justifyContent="space-between" alignItems="center">
+    <TabContentContainer title={activeGroupContext?.activeGroup?.name} subTitle="Group Polls">
+      <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("create new poll")} icon={mdiPlus} text="Create Poll" />
         </Grid>
@@ -38,6 +33,6 @@ export function Polls(): React.ReactElement {
           </IconButton>
         </Grid>
       </Grid>
-    </Grid>
+    </TabContentContainer>
   );
 }

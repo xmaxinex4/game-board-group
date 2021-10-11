@@ -5,13 +5,13 @@ import Icon from "@mdi/react";
 
 import {
   Grid,
-  Typography,
   IconButton,
   Switch,
 } from "@mui/material";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
+import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 
 export function Library(): React.ReactElement {
   const activeGroupContext = React.useContext(ActiveGroupContext);
@@ -20,13 +20,8 @@ export function Library(): React.ReactElement {
   const toggleMyGamesOnly = () => setMyGamesOnly(!myGamesOnly);
 
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <Typography variant="h6">
-          {`${activeGroupContext?.activeGroup?.name} Library`}
-        </Typography>
-      </Grid>
-      <Grid container item justifyContent="space-between" alignItems="center">
+    <TabContentContainer title={activeGroupContext?.activeGroup?.name} subTitle="Group Library">
+      <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("add new Game")} icon={mdiPlus} text="Add Game" />
         </Grid>
@@ -43,6 +38,6 @@ export function Library(): React.ReactElement {
           </IconButton>
         </Grid>
       </Grid>
-    </Grid>
+    </TabContentContainer>
   );
 }

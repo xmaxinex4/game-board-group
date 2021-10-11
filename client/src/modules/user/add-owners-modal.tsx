@@ -2,13 +2,10 @@ import React from "react";
 
 import Icon from "@mdi/react";
 import { mdiCancel, mdiContentSave } from "@mdi/js";
-import { Button, Card, CardHeader, CardContent, Grid, Modal } from "@mui/material";
+import { Button, Card, CardHeader, CardContent, Grid, Modal, ModalProps } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import { User } from "../../api-types/user";
-import { Game } from "../../api-types/game";
-import { GameCircleListDisplay } from "../game/game-circle-list-display";
-import { GameSearchTypeahead } from "../game/game-search-typeahead";
 
 const useStyles = makeStyles({
   card: {
@@ -23,95 +20,75 @@ const useStyles = makeStyles({
   },
 });
 
-export interface AddGamesModalProps {
-  games: Game[];
+export interface AddOwnersModalProps extends Pick<ModalProps, "open"> {
+  closeModal: () => void;
   owners: User[];
-  handleClose: () => void;
-  onSave: (bggIds: number[]) => void;
-  open: boolean;
-  title?: string;
+  setOwners: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
-export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
-  const { games, handleClose, onSave, open, title } = props;
+export function AddOwnersModal(props: AddOwnersModalProps): React.ReactElement {
+  const {
+    owners,
+    setOwners,
+    open,
+    closeModal,
+  } = props;
 
-  const classes = useStyles({});
-  const [gamesState, setGamesState] = React.useState((games && games.length > 0) && games || []);
+  const { card, div } = useStyles();
 
-  const onGameDisplayDetailsError = React.useCallback(
+  const onModalCancel = React.useCallback(
     () => {
-      // TODO: show errors in ui
-      console.log("get game display details error: ");
+      closeModal();
     },
-    []
-  );
-
-  // const setNewGamesState = (data: { gameDetails: GameDisplayDetails }) => {
-  //   const { gameDetails } = data;
-  //   const newGamesState = gamesState.concat(gameDetails);
-
-  //   setGamesState(newGamesState);
-  // };
-
-  // const [getGameDisplayDetails] = useLazyQuery<{ gameDetails: GameDisplayDetails }>(GAME_DISPLAY_DETAILS, {
-  //   onError: onGameDisplayDetailsError,
-  //   onCompleted: setNewGamesState
-  // });
-
-  const onSelect = React.useCallback(
-    (bggId: number) => {
-      // if (!gamesState.find(g => g.bggId === bggId)) {
-      //   getGameDisplayDetails({ variables: { bggId } });
-      // } else {
-      // TODO: Highlight game thats already in the collection display
-      console.log("Already have that game in list");
-      // }
-    },
-    []
+    [closeModal],
   );
 
   const onModalSave = React.useCallback(
     () => {
       console.log("Save modal");
-      // onSave(gamesState.map((game) => game.bggId));
     },
-    [onSave, gamesState]
-  );
-
-  const savedGames = React.useMemo(() => games, [games]);
-  const onModalCancel = React.useCallback(
-    () => {
-      setGamesState(savedGames);
-      handleClose();
-    },
-    []
+    [],
   );
 
   return (
     <Modal
-      aria-labelledby="add-games-modal"
-      aria-describedby={title || "adding-games"}
+      aria-labelledby="add-owners-modal"
+      aria-describedby="adding-owners"
       open={open}
-      onClose={handleClose}
+      onClose={closeModal}
     >
       <Grid container justifyContent="center">
         <Grid item>
-          <div className={classes.div}>
-            <Card className={classes.card}>
-              {title && <CardHeader title={title} />}
+          <div className={div}>
+            <Card className={card}>
+              <CardHeader title="Add Game" />
               <CardContent>
                 <Grid container direction="column" spacing={2}>
                   <Grid item>
-                    <GameSearchTypeahead onSelect={onSelect} />
+                    OWNER TYPEAHEAD HERE
                   </Grid>
                   <Grid item>
-                    <GameCircleListDisplay games={gamesState} />
+                    OWNER CIRCLE DISPLAY HERE
                   </Grid>
                   <Grid item>
-                    <Button variant="outlined" color="primary" startIcon={<Icon path={mdiContentSave} size={0.5} />} onClick={onModalSave}>Save</Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<Icon path={mdiContentSave} size={0.5} />}
+                      onClick={onModalSave}
+                    >
+                      Save
+                    </Button>
                   </Grid>
                   <Grid item>
-                    <Button variant="outlined" color="primary" startIcon={<Icon path={mdiCancel} size={0.5} />} onClick={onModalCancel}>Cancel</Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<Icon path={mdiCancel} size={0.5} />}
+                      onClick={onModalCancel}
+                    >
+                      Cancel
+                    </Button>
                   </Grid>
                 </Grid>
               </CardContent>

@@ -44,7 +44,7 @@ export function UserNavMenuButton(): React.ReactElement {
   const { activeUser } = React.useContext(ActiveUserContext);
   const theme = useTheme<Theme>();
 
-  const classes = useStyles({});
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -107,18 +107,6 @@ export function UserNavMenuButton(): React.ReactElement {
               <Icon path={mdiAccount} color={theme.palette.primary.main} size={1} />
             </ListItemIcon>
             <ListItemText primary="Account" />
-          </ListItem>
-          <ListItem component={Link} to="/account/collections">
-            <ListItemIcon>
-              <Meeple size={16} fill={userColor} />
-            </ListItemIcon>
-            <ListItemText primary="My Collections" />
-          </ListItem>
-          <ListItem component={Link} to="/account/groups">
-            <ListItemIcon>
-              <Meeple size={16} fill={userColor} />
-            </ListItemIcon>
-            <ListItemText primary="My Groups" />
           </ListItem>
           <ListItem button onClick={logout}>
             <ListItemIcon>

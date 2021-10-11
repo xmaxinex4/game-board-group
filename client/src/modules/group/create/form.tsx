@@ -30,12 +30,12 @@ export function CreateGroupForm(): React.ReactElement {
     if (formValid) {
       setIsLoading(true);
       // TODO: Create create response type or get from api (create api type project)
-      apiPost<{ group: { create: { group: Group; }; }; }>("/group/create", {
+      apiPost<{ group: Group; }>("/group/create", {
         name,
       })
         .then(({ data }) => {
           // TODO: Alert user their group has been created
-          console.log("created group: ", data?.group?.create?.group);
+          console.log("created group: ", data?.group);
         })
         .catch((error) => {
           // TODO: Better error handling

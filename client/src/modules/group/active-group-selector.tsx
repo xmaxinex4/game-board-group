@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
 
 import {
-  ListItemIcon,
   FormControl,
   MenuItem,
   Select,
 } from "@mui/material";
-import Plus from "@mui/icons-material/PlusOne";
 
 import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { ActiveUserContext } from "../../contexts/active-user-context";
@@ -50,12 +48,7 @@ export function ActiveGroupSelector(): React.ReactElement {
         {activeUser?.groupMemberships && activeUser?.groupMemberships?.map((groupMembership) => (
           <MenuItem onClick={onActiveGroupChanged} value={groupMembership.group.id}>{groupMembership.group.name}</MenuItem>
         ))}
-        <MenuItem onClick={onAddGroup}>
-          <ListItemIcon>
-            <Plus />
-          </ListItemIcon>
-          Add Group
-        </MenuItem>
+        <MenuItem onClick={onAddGroup}>+ Add Group</MenuItem>
       </Select>
     </FormControl>
   );
