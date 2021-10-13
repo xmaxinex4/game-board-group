@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading, no-unused-vars */
 
-import React, { useCallback } from "react";
-import xmlConverter from "xml-js";
+import React, { useCallback, useState } from "react";
+import axios, { CancelTokenSource } from "axios";
 
 import {
   Autocomplete,
@@ -47,6 +47,9 @@ export interface GameSearchTypeaheadProps {
 export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.ReactElement {
   const { games, setGames } = props;
   const { exactMatchSwitchClass, loadingIndicatorClass } = useStyles();
+
+  const { CancelToken } = axios;
+  const [activeRequestCancelToken, setActiveRequestCancelToken] = useState<CancelTokenSource>();
 
   const [options, setOptions] = React.useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -100,12 +103,43 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
     () => {
       if (debouncedSearchTerm) {
         setIsSearching(true);
-        bggApiGet(`/search?query=${debouncedSearchTerm}&exact=${exactMatch ? 1 : 0}&type=boardgame`).then(({ data }) => {
+
+        // BGG does not let you return a specified number of results, so it takes a long time for searches with short query lengths
+        // For performance improvement, set exact match to true for queries length < 4 to avoid long load times
+        let optimizedExactMatch = exactMatch;
+
+        if (debouncedSearchTerm as string && (debouncedSearchTerm as string).split("")?.length < 4) {
+          optimizedExactMatch = true;
+        }
+
+        // Cancel active requests no longer relevent
+        if (activeRequestCancelToken) {
+          activeRequestCancelToken.cancel();
+        }
+
+        const newCancelToken = CancelToken.source();
+        setActiveRequestCancelToken(newCancelToken);
+
+        bggApiGet(
+          `/search?query=${debouncedSearchTerm}&exact=${optimizedExactMatch ? 1 : 0}&type=boardgame`,
+          newCancelToken?.token,
+        ).then(({ data }) => {
           if (data as string) {
+            console.log("Result returned, setting active token to undefined.");
+            setActiveRequestCancelToken(undefined);
             const result = getGamesFromBggXmlResult(data as string);
             setOptions(result);
+            setIsSearching(false);
           }
-        }).finally(() => setIsSearching(false));
+        }).catch((thrown) => {
+          if (axios.isCancel(thrown)) {
+            console.log("Request canceled", thrown.message);
+          } else {
+            setActiveRequestCancelToken(undefined);
+            console.log("Request failed", thrown.message);
+            setIsSearching(false);
+          }
+        });
       } else {
         setOptions([]);
       }

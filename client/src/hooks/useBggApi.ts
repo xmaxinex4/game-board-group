@@ -1,14 +1,19 @@
-import { AxiosResponse } from "axios";
+import {
+  AxiosResponse,
+  CancelToken,
+} from "axios";
 
 import httpHelpers from "../helpers/http-helpers";
 
 export function useBggApi() {
-  function bggApiGet<T>(
+  async function bggApiGet<T>(
     endpoint: string,
+    cancelToken?: CancelToken,
   ): Promise<AxiosResponse<T>> {
     return httpHelpers.get<T>(
       `https://boardgamegeek.com/xmlapi2${endpoint}`,
       { headers: { "Content-Type": "application/xml" } },
+      cancelToken,
     );
   }
 

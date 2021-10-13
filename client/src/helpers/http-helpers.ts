@@ -1,12 +1,21 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  CancelToken,
+} from "axios";
 
 /**
  * A helper function which gets the specified endpoint.
  */
-async function get<T>(url: string, axiosRequestConfig?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+async function get<T>(
+  url: string,
+  axiosRequestConfig?: AxiosRequestConfig,
+  cancelToken?: CancelToken,
+): Promise<AxiosResponse<T>> {
   return axios.get(url, {
     headers: axiosRequestConfig?.headers || { "Content-Type": "application/json" },
     params: axiosRequestConfig?.params || undefined,
+    cancelToken,
   });
 }
 
