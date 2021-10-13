@@ -55,7 +55,6 @@ export const groupSlice = createSlice<GroupState, GroupStateReducers>({
 
 export const { addUserGroup, setActiveGroupId, setUserGroups } = groupSlice.actions;
 export const selectActiveGroup = (state: { groupState: GroupState; }) => {
-  console.log("groupState: ", state);
   const activeGroup = state.groupState?.userGroups?.find((group) => group.id === state.groupState.activeGroupId);
   return activeGroup || undefined;
 };

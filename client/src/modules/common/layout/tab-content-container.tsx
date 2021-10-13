@@ -12,8 +12,8 @@ const useStyles = makeStyles<Theme>((theme) => ({
   gridContainerPadding: {
     paddingTop: theme.spacing(8),
   },
-  gridItemPadding: {
-    paddingTop: theme.spacing(4),
+  fullWidth: {
+    width: "100%",
   },
 }));
 
@@ -25,13 +25,13 @@ export interface TabContentContainerProps {
 export function TabContentContainer(props: TabContentContainerProps & { children: ReactNode; }): React.ReactElement {
   const { children, title, subTitle } = props;
 
-  const { gridContainerPadding, gridItemPadding } = useStyles();
+  const { gridContainerPadding, fullWidth } = useStyles();
 
   return (
     <Container maxWidth="sm">
       <Grid container className={gridContainerPadding} justifyContent="center" alignItems="center" direction="column">
         {title && (
-          <Grid container item className={gridItemPadding} direction="column" alignItems="center" justifyContent="center">
+          <Grid container item direction="column" alignItems="center" justifyContent="center">
             <Grid item>
               <Typography align="center" variant="h6">
                 {title}
@@ -46,7 +46,7 @@ export function TabContentContainer(props: TabContentContainerProps & { children
             </Grid>
           </Grid>
         )}
-        <Grid item className={gridItemPadding}>
+        <Grid item className={fullWidth}>
           {children}
         </Grid>
       </Grid>

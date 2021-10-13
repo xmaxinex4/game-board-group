@@ -1,39 +1,33 @@
 import React, { useCallback, useState } from "react";
 
+import { makeStyles } from "@mui/styles";
 import { Button, Grid, Typography } from "@mui/material";
+
+import { Game } from ".prisma/client";
+
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { CreateCollectionForm } from "../../modules/collection/create/form";
 import { GamesStateContext } from "../../contexts/games-state-context";
-import { Game } from ".prisma/client";
+
+const useStyles = makeStyles(() => ({
+  createFormContainer: {
+    width: "100%",
+    maxWidth: "500px",
+  },
+}));
 
 export function MyCollections(): React.ReactElement {
   const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
   const [games, setGames] = useState<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage">[]>([]);
+  const { createFormContainer } = useStyles();
 
   const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
-
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [data, setData] = useState<Collection[]>([]);
-
-  // const onUpsertCollectionError = () => {
-  //   // TODO: show errors in ui
-  //   console.log("upsert collection error: ", error);
-  // };
-  // const [upsertCollection, upsertCollectionResults] = useMutation<{ upsertCollection: CollectionDetails }>(UPSERT_COLLECTION, {
-  //   onError: onUpsertCollectionError,
-  //   onCompleted: refetch
-  // });
-
-  // const onAddCollection = () => {
-  //   // upsertCollection({ variables: { name: `${activeUserContext.activeUser.username}"s Collection` } });
-  //   console.log("onAddCollection");
-  // };
 
   return (
     <TabContentContainer subTitle="My Game Collections">
       <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
         {showAddCollectionForm ? (
-          <Grid item>
+          <Grid item className={createFormContainer}>
             <GamesStateContext.Provider value={{ games, setGames }}>
               <CreateCollectionForm />
             </GamesStateContext.Provider>

@@ -28,13 +28,8 @@ export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.
   const { games } = useContext(GamesStateContext);
   const classes = useStyles();
 
-  console.log("Starting new display for game: ", games);
-
   return (
     <Grid container spacing={2} alignItems="center">
-      {/* <Grid item>
-        <Typography>Games:</Typography>
-      </Grid> */}
       {games && games.map((game) => (
         <Grid item key={`game-circle-display-game-id-${game.bggId}`}>
           <Tooltip title={game.name} aria-label={game.name}>

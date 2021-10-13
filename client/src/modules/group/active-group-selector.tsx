@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -28,17 +28,15 @@ export function ActiveGroupSelector(): React.ReactElement {
 
   // const [createGroup, createGroupResults] = useMutation(CREATE_GROUP, { onError: onCreateGroupError, onCompleted: onCreateGroupCompleted });
 
-  const onActiveGroupChanged = (event: any) => {
-    // TODO: dont do this if add group was selected
-    dispatch(setActiveGroupId({
-      id: event.target.value,
-    }));
-  };
-
-  const onAddGroup = () => {
-    console.log("open add group form");
-    // createGroup({ variables: { name: `${activeUser.username}"s game group`, userId: activeUser.id } });
-  };
+  const onActiveGroupChanged = useCallback((event: any) => {
+    if (event.target.value === "Add Group") {
+      console.log("open add group form");
+    } else {
+      dispatch(setActiveGroupId({
+        id: event.target.value,
+      }));
+    }
+  }, []);
 
   return (
     <FormControl variant="outlined">
@@ -58,7 +56,7 @@ export function ActiveGroupSelector(): React.ReactElement {
             {groupMembership.group.name}
           </MenuItem>
         ))}
-        <MenuItem onClick={onAddGroup}>+ Add Group</MenuItem>
+        <MenuItem value="Add Group">+ Add Group</MenuItem>
       </Select>
     </FormControl>
   );

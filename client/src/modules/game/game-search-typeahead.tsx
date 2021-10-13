@@ -42,11 +42,18 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export function GameSearchTypeahead(): React.ReactElement {
+export interface GameSearchTypeaheadProps {
+  isFocused: boolean;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.ReactElement {
+  const { CancelToken } = axios;
+
+  const { setIsFocused, isFocused } = props;
   const { games, setGames } = useContext(GamesStateContext);
   const { exactMatchSwitchClass, loadingIndicatorClass, leftAlign } = useStyles();
 
-  const { CancelToken } = axios;
   const [activeRequestCancelToken, setActiveRequestCancelToken] = useState<CancelTokenSource>();
 
   const [options, setOptions] = React.useState<Pick<Game, "bggId" | "name" | "year">[]>([]);
@@ -62,16 +69,13 @@ export function GameSearchTypeahead(): React.ReactElement {
 
   const addNewGameToSelectedGames = useCallback(async (bggId: string) => {
     const { data } = await bggApiGet(`/thing?id=${bggId}`); // this does not wait long enough :(
-    // .then(({ data }) => {
+
     if (data as string) {
       const result = getGameDetailsFromBggXmlResult(data as string, bggId);
       const newGamesState = games?.concat(result);
       if (newGamesState && setGames) setGames(newGamesState);
     }
-    // }).catch(() => {
-    //   console.log("Failed to add new game to list");
-    // });
-  }, []);
+  }, [games, setGames]);
 
   React.useEffect(
     () => {
@@ -141,6 +145,9 @@ export function GameSearchTypeahead(): React.ReactElement {
     }
   };
 
+  const onSetIsFocused = useCallback(() => setIsFocused(true), [setIsFocused]);
+  const onBlurSetNotIsFocused = useCallback(() => setIsFocused(false), [setIsFocused]);
+
   return (
     <Grid container alignItems="flex-end" direction="column">
       <Grid item>
@@ -159,6 +166,8 @@ export function GameSearchTypeahead(): React.ReactElement {
         </Grid>
         <Grid item>
           <Autocomplete
+            onFocus={onSetIsFocused}
+            onBlur={onBlurSetNotIsFocused}
             style={{ width: 300 }}
             getOptionLabel={(option: any) => option.name}
             filterOptions={(x) => x}
@@ -180,12 +189,12 @@ export function GameSearchTypeahead(): React.ReactElement {
                   />
                 </Grid>
                 <Grid item className={leftAlign}>
-                  <Typography variant="caption" color="GrayText">Powered by BoardGameGeek</Typography>
+                  <Typography variant="caption" color={isFocused ? "primary.main" : "GrayText"}>Powered by BoardGameGeek</Typography>
                 </Grid>
               </Grid>
             )}
-            renderOption={(optionProps, option: any, { selected }) => (
-              <ListItem onClick={(e) => onGameSelect(e, option.bggId)}>
+            renderOption={(optionProps, option: any) => (
+              <ListItem key={`game-typeahead-option-bggid-${option.bggId}`} onClick={(e) => onGameSelect(e, option.bggId)}>
                 <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
               </ListItem>
             )}
