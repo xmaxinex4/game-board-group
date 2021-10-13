@@ -1,3 +1,3 @@
-import { User } from "../../api-types/user";
+import { User } from ".prisma/client";
 
 export type LoginFormModel = Pick<User, "email" | "password">;

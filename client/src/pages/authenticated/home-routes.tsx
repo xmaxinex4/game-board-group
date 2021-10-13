@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router";
+import { useSelector } from "react-redux";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -10,14 +11,14 @@ import { Library } from "./library";
 import { ManageGroup } from "./manage-group";
 import { Home } from "./home";
 
-import { ActiveGroupContext } from "../../contexts/active-group-context";
-import { ActiveUserContext } from "../../contexts/active-user-context";
 import { SideNav } from "../../modules/common/navigation/side-nav";
 import { NoActiveGroup } from "../../modules/group/no-active-group";
 import { NavBar } from "../../modules/common/navigation/nav-bar";
 import { MyCollections } from "./my-collections";
 import { AccountSettings } from "./account-settings";
 import { NotFound } from "../error/not-found";
+import { selectActiveUser } from "../../modules/user/redux/slice";
+import { selectActiveGroup } from "../../modules/group/redux/slice";
 
 const useStyles = makeStyles({
   sideNav: {
@@ -29,8 +30,8 @@ const useStyles = makeStyles({
 });
 
 export function AuthenticatedHomeRoutes(): React.ReactElement {
-  const { activeUser } = React.useContext(ActiveUserContext);
-  const { activeGroup } = React.useContext(ActiveGroupContext);
+  const activeUser = useSelector(selectActiveUser);
+  const activeGroup = useSelector(selectActiveGroup);
 
   const { sideNav, sideNavContent } = useStyles();
 

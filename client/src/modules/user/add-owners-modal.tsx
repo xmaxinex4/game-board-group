@@ -5,7 +5,7 @@ import { mdiCancel, mdiContentSave } from "@mdi/js";
 import { Button, Card, CardHeader, CardContent, Grid, Modal, ModalProps } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import { User } from "../../api-types/user";
+import { User } from ".prisma/client";
 
 const useStyles = makeStyles({
   card: {

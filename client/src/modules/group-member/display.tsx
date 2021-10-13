@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-import { GroupMember } from "../../api-types/group-member";
+import { GroupMember } from ".prisma/client";
 
 export interface GroupMemberDisplayProps {
   groupMember: GroupMember;

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-import { Score } from "../../api-types/score";
+import { Score } from ".prisma/client";
 
 export interface ScoreDisplayProps {
   score: Score;

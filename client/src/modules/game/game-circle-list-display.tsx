@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import PencilIcon from "@mui/icons-material/Edit";
 import {
@@ -10,10 +10,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import { Game } from "../../api-types/game";
+import { GamesStateContext } from "../../contexts/games-state-context";
 
 export interface GameCircleListDisplayProps {
-  games: Game[];
   onEditGames?: () => void;
 }
 
@@ -25,7 +24,8 @@ const useStyles = makeStyles<Theme>((theme) => ({
 }));
 
 export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.ReactElement {
-  const { games, onEditGames } = props;
+  const { onEditGames } = props;
+  const { games } = useContext(GamesStateContext);
   const classes = useStyles();
 
   console.log("Starting new display for game: ", games);
@@ -36,7 +36,7 @@ export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.
         <Typography>Games:</Typography>
       </Grid> */}
       {games && games.map((game) => (
-        <Grid item>
+        <Grid item key={`game-circle-display-game-id-${game.bggId}`}>
           <Tooltip title={game.name} aria-label={game.name}>
             <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
           </Tooltip>

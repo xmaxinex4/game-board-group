@@ -3,9 +3,12 @@ import React, { useCallback, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { CreateCollectionForm } from "../../modules/collection/create/form";
+import { GamesStateContext } from "../../contexts/games-state-context";
+import { Game } from ".prisma/client";
 
 export function MyCollections(): React.ReactElement {
   const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
+  const [games, setGames] = useState<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage">[]>([]);
 
   const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
 
@@ -31,7 +34,9 @@ export function MyCollections(): React.ReactElement {
       <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
         {showAddCollectionForm ? (
           <Grid item>
-            <CreateCollectionForm />
+            <GamesStateContext.Provider value={{ games, setGames }}>
+              <CreateCollectionForm />
+            </GamesStateContext.Provider>
           </Grid>
         ) : (
           <>

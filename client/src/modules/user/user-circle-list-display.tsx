@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 
 import { Meeple } from "../../images/components/meeple";
-import { User } from "../../api-types/user";
+
+import { User } from ".prisma/client";
 
 export interface UserCircleListDisplayProps {
   users: User[];
@@ -36,7 +37,7 @@ export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.
       </Grid>
       {(users && users.length > 0) && users.map((user) => {
         return (
-          <Grid item>
+          <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
             <Tooltip title={user.username} aria-label={user.username}>
               <Avatar className={meeple}>
                 <Meeple size="icon" fill={user.color} />

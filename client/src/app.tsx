@@ -2,39 +2,48 @@
 
 import React, { useState } from "react";
 import { Switch, Route } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { Theme } from "@mui/material";
 
 import { defaultTheme, getMuiTheme } from "./theme";
+
 import { useApi } from "./hooks/useApi";
-
-import { User } from "./api-types/user";
-import { Group } from "./api-types/group";
-
-import { ActiveGroupContext } from "./contexts/active-group-context";
-import { ActiveUserContext } from "./contexts/active-user-context";
 
 import { Page } from "./modules/common/layout/page";
 
 import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 import { PageLoadingSpinner } from "./modules/common/progress/page-loading-spinner";
+import { selectActiveUser, setActiveUser } from "./modules/user/redux/slice";
+import { setActiveGroupId, setUserGroups } from "./modules/group/redux/slice";
+import { UserMeResponse } from "./api-types/response-types";
 
 function App() {
   const { apiGet } = useApi();
+  const dispatch = useDispatch();
 
-  const [activeGroup, setActiveGroup] = useState<Group | undefined>(undefined);
-  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
   const [userTheme, setUserTheme] = useState<Theme>(defaultTheme);
   const [isLoading, setIsLoading] = useState(true);
 
+  const activeUser = useSelector(selectActiveUser);
+
   React.useEffect(() => {
-    apiGet<User>("/user/me").then(({ data }) => {
-      setCurrentUser(data?.id ? data : undefined);
+    apiGet<UserMeResponse>("/user/me").then(({ data }) => {
+      dispatch(setActiveUser({
+        user: data?.id ? data : undefined,
+      }));
+
+      dispatch(setActiveGroupId({
+        id: data?.groupMemberships?.[0]?.group?.id,
+      }));
+
+      dispatch(setUserGroups({
+        groups: data?.groupMemberships?.map((groupMembership) => groupMembership.group),
+      }));
+
       setUserTheme(data?.color ? getMuiTheme(data.color) : defaultTheme);
-      if (!activeGroup) {
-        setActiveGroup(data?.groupMemberships?.[0]?.group);
-      }
     }).finally(() => setIsLoading(false));
   }, []); // empty array to run effect and clean it up only once (on mount and unmount), don't rerun
 
@@ -47,15 +56,11 @@ function App() {
               ? (
                 <PageLoadingSpinner />
               )
-              : currentUser
+              : activeUser
                 ? (
-                  <ActiveUserContext.Provider value={{ activeUser: currentUser }}>
-                    <ActiveGroupContext.Provider value={{ activeGroup, setActiveGroup }}>
-                      <Switch>
-                        <Route path="*" component={AuthenticatedRoutes} />
-                      </Switch>
-                    </ActiveGroupContext.Provider>
-                  </ActiveUserContext.Provider>
+                  <Switch>
+                    <Route path="*" component={AuthenticatedRoutes} />
+                  </Switch>
                 )
                 : (
                   <Switch>

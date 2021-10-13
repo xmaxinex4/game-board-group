@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-import { Play } from "../../api-types/play";
+import { Play } from ".prisma/client";
 
 export interface PlayDisplayProps {
   play: Play;

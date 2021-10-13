@@ -5,10 +5,10 @@ import SaveIcon from "@mui/icons-material/";
 import { Card, CardHeader, CardContent, Grid, IconButton } from "@mui/material";
 
 import { GridItemInput } from "../common/input/grid-item-input";
-import { Collection } from "../../api-types/collection";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { EditGamesModal } from "../game/edit-games-modal";
 import { GameCircleListDisplay } from "../game/game-circle-list-display";
+import { Collection } from ".prisma/client";
 
 export interface CollectionCardProps {
   collection: Collection;
@@ -120,7 +120,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       }
       <CardContent>
         <Grid container direction="column" spacing={2}>
-          <Grid item>
+          {/* <Grid item>
             <GameCircleListDisplay games={collectionState.games} onEditGames={openEditGamesModal} />
             <EditGamesModal
               title={`Editing Games in ${collectionState.name}`}
@@ -132,7 +132,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
           </Grid>
           <Grid item>
             <UserCircleListDisplay users={collectionState.owners} />
-          </Grid>
+          </Grid> */}
         </Grid>
       </CardContent>
     </Card>

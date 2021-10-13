@@ -20,7 +20,6 @@ import { makeStyles } from "@mui/styles";
 
 import { GameCircleListDisplay } from "./game-circle-list-display";
 import { GameSearchTypeahead } from "./game-search-typeahead";
-import { Game } from "../../api-types/game";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   card: {
@@ -46,18 +45,13 @@ const useStyles = makeStyles<Theme>((theme) => ({
 
 export interface AddGamesModalProps extends Pick<ModalProps, "open"> {
   closeModal: () => void;
-  games: Game[];
-  setGames: React.Dispatch<React.SetStateAction<Game[]>>;
 }
 
 export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
   const {
-    games,
-    setGames,
     open,
     closeModal,
   } = props;
-
   const { card, modal, saveButton } = useStyles();
 
   const onModalCancel = React.useCallback(
@@ -98,10 +92,10 @@ export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
             <Grid item>
               <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
                 <Grid item>
-                  <GameSearchTypeahead games={games} setGames={setGames} />
+                  <GameSearchTypeahead />
                 </Grid>
                 <Grid item>
-                  <GameCircleListDisplay games={games} />
+                  <GameCircleListDisplay />
                 </Grid>
               </Grid>
             </Grid>

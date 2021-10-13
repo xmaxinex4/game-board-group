@@ -58,6 +58,7 @@ model Game {
   urlThumb            String
   Collection          Collection?  @relation(fields: [collectionId], references: [id])
   collectionId        String?
+  year                String?
   play                Play[]
   pollOption          PollOption[]
 }

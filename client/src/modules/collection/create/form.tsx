@@ -1,23 +1,25 @@
-import React, { useCallback, useState } from "react";
-
-import { Button, Grid, Typography } from "@mui/material";
+import React, { useCallback, useContext, useState } from "react";
 
 import PersonIcon from "@mui/icons-material/Person";
+import { Button, Grid, Typography } from "@mui/material";
+
+import { Collection } from ".prisma/client";
 
 import { useApi } from "../../../hooks/useApi";
+
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
+import { AddGamesModal } from "../../game/add-games-modal";
+
 import { CreateCollectionFormModel } from "./model";
 import { validateCreateCollectionForm } from "./validator";
-import { Collection } from "../../../api-types/collection";
-import { AddGamesModal } from "../../game/add-games-modal";
-import { Game } from "../../../api-types/game";
+import { GamesStateContext } from "../../../contexts/games-state-context";
 
 export function CreateCollectionForm(): React.ReactElement {
   const { apiPost } = useApi();
 
   const [name, setName] = useState("");
+  const { games } = useContext(GamesStateContext);
   // const [ownerIds, setOwnerIds] = useState<string[]>([]);
-  const [games, setGames] = React.useState<Game[]>([]);
 
   const [showAddGamesModal, setShowAddGamesModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +35,7 @@ export function CreateCollectionForm(): React.ReactElement {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const gameIds = games.map((game) => game.bggId);
+    const gameIds = games?.map((game) => game.bggId) || [];
 
     const formValid = validateCreateCollectionForm({ name, gameIds, ownerIds: [] }, setErrors);
 
@@ -78,7 +80,7 @@ export function CreateCollectionForm(): React.ReactElement {
         />
 
         <Button onClick={openAddGamesModal}>+ Game</Button>
-        <AddGamesModal closeModal={closeAddGamesModal} open={showAddGamesModal} setGames={setGames} games={games} />
+        <AddGamesModal closeModal={closeAddGamesModal} open={showAddGamesModal} />
         {/* <AddOwnersModal closeModal={closeAddGamesModal} open={showAddGamesModal} setGameIds={setGameIds} /> */}
 
         <Grid container item alignItems="stretch">

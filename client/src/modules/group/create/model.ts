@@ -1,3 +1,3 @@
-import { Group } from "../../../api-types/group";
+import { Group } from ".prisma/client";
 
 export type CreateGroupFormModel = Partial<Group>;

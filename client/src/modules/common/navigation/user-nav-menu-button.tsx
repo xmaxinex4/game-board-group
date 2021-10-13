@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { mdiAccount, mdiLogout } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -22,8 +23,8 @@ import { makeStyles, useTheme } from "@mui/styles";
 import { Meeple } from "../../../images/components/meeple";
 import { MeepleMenu } from "../../../images/components/meeple-menu";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
-import { ActiveUserContext } from "../../../contexts/active-user-context";
 import { SitePaletteColors } from "../../../theme/site-palettes";
+import { selectActiveUser } from "../../user/redux/slice";
 
 const useStyles = makeStyles(() => ({
   meepleButton: {
@@ -41,7 +42,7 @@ export interface UserNavMenuProps {
 }
 
 export function UserNavMenuButton(): React.ReactElement {
-  const { activeUser } = React.useContext(ActiveUserContext);
+  const activeUser = useSelector(selectActiveUser);
   const theme = useTheme<Theme>();
 
   const classes = useStyles();

@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   FormControl,
@@ -6,12 +7,13 @@ import {
   Select,
 } from "@mui/material";
 
-import { ActiveGroupContext } from "../../contexts/active-group-context";
-import { ActiveUserContext } from "../../contexts/active-user-context";
+import { selectActiveUser } from "../user/redux/slice";
+import { selectActiveGroup, setActiveGroupId } from "./redux/slice";
 
 export function ActiveGroupSelector(): React.ReactElement {
-  const { activeGroup } = useContext(ActiveGroupContext);
-  const { activeUser } = useContext(ActiveUserContext);
+  const activeUser = useSelector(selectActiveUser);
+  const activeGroup = useSelector(selectActiveGroup);
+  const dispatch = useDispatch();
 
   // const onCreateGroupError = (error: ApolloError) => {
   //   // TODO: Handle error
@@ -27,7 +29,10 @@ export function ActiveGroupSelector(): React.ReactElement {
   // const [createGroup, createGroupResults] = useMutation(CREATE_GROUP, { onError: onCreateGroupError, onCompleted: onCreateGroupCompleted });
 
   const onActiveGroupChanged = (event: any) => {
-    console.log("change active group: ", event);
+    // TODO: dont do this if add group was selected
+    dispatch(setActiveGroupId({
+      id: event.target.value,
+    }));
   };
 
   const onAddGroup = () => {
@@ -46,7 +51,12 @@ export function ActiveGroupSelector(): React.ReactElement {
         }}
       >
         {activeUser?.groupMemberships && activeUser?.groupMemberships?.map((groupMembership) => (
-          <MenuItem onClick={onActiveGroupChanged} value={groupMembership.group.id}>{groupMembership.group.name}</MenuItem>
+          <MenuItem
+            key={`menu-item-group-id-${groupMembership.group.id}`}
+            value={groupMembership.group.id}
+          >
+            {groupMembership.group.name}
+          </MenuItem>
         ))}
         <MenuItem onClick={onAddGroup}>+ Add Group</MenuItem>
       </Select>

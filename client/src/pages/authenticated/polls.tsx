@@ -1,15 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import Icon from "@mdi/react";
 import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
 import { Grid, IconButton } from "@mui/material";
 
-import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
+import { selectActiveGroup } from "../../modules/group/redux/slice";
 
 export function Polls(): React.ReactElement {
-  const activeGroupContext = React.useContext(ActiveGroupContext);
+  const activeGroup = useSelector(selectActiveGroup);
 
   // const [isLoading, setIsLoading] = useState(false);
   // const [value, setValue] = useState(0);
@@ -19,7 +20,7 @@ export function Polls(): React.ReactElement {
   // };
 
   return (
-    <TabContentContainer title={activeGroupContext?.activeGroup?.name} subTitle="Group Polls">
+    <TabContentContainer title={activeGroup?.name} subTitle="Group Polls">
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("create new poll")} icon={mdiPlus} text="Create Poll" />

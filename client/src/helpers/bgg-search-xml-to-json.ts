@@ -1,11 +1,12 @@
 import xmlConverter from "xml-js";
-import { Game } from "../api-types/game";
+
+import { Game } from ".prisma/client";
 
 /**
  * A helper function which converts bgg game search results to a game object.
  */
-export function getGamesFromBggXmlResult(xml: string): Game[] {
-  const games: Game[] = [];
+export function getGamesFromBggXmlResult(xml: string): Pick<Game, "bggId" | "name" | "year">[] {
+  const games: Pick<Game, "bggId" | "name" | "year">[] = [];
 
   const convertedJson = JSON.parse(xmlConverter.xml2json(xml, { compact: true }));
 
@@ -45,7 +46,7 @@ export function getGamesFromBggXmlResult(xml: string): Game[] {
   return games;
 }
 
-export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Game {
+export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage"> {
   const convertedJson = JSON.parse(xmlConverter.xml2json(xml, { compact: true }));
 
   if (!convertedJson && !convertedJson?.items) {

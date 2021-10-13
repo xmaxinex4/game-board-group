@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {
   AppBar,
@@ -12,7 +13,7 @@ import { UserNavMenuButton } from "./user-nav-menu-button";
 import { ActiveGroupSelector } from "../../group/active-group-selector";
 
 import Logo from "../../../images/png/logo.png";
-import { ActiveUserContext } from "../../../contexts/active-user-context";
+import { selectActiveUser } from "../../user/redux/slice";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -25,13 +26,13 @@ const useStyles = makeStyles(() => ({
 
 export function NavBar(): React.ReactElement {
   const { appBar, appBarContainer } = useStyles();
-  const { activeUser } = useContext(ActiveUserContext);
+  const activeUser = useSelector(selectActiveUser);
 
   return (
     <Grid container>
       <AppBar className={appBar} color="transparent" position="static">
         <Toolbar>
-          <Grid container xs={12} alignItems="center" justifyContent="space-between" className={appBarContainer}>
+          <Grid item container xs={12} alignItems="center" justifyContent="space-between" className={appBarContainer}>
             <Grid item>
               <Link to="/">
                 <img alt="" src={Logo} />

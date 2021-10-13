@@ -1,4 +1,4 @@
-import { Collection } from "../../../api-types/collection";
+import { Collection } from ".prisma/client";
 
 export type UpdateCollectionFormModel = Partial<Collection> & {
   gameIds: string[];

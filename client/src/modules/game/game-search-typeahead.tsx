@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading, no-unused-vars */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import axios, { CancelTokenSource } from "axios";
 
 import {
@@ -18,11 +18,12 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import useDebounce from "../../hooks/useDebounce";
+import { Game } from ".prisma/client";
 
-import { Game } from "../../api-types/game";
+import useDebounce from "../../hooks/useDebounce";
 import { useBggApi } from "../../hooks/useBggApi";
 import { getGameDetailsFromBggXmlResult, getGamesFromBggXmlResult } from "../../helpers/bgg-search-xml-to-json";
+import { GamesStateContext } from "../../contexts/games-state-context";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   icon: {
@@ -41,19 +42,14 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export interface GameSearchTypeaheadProps {
-  games: Game[];
-  setGames: React.Dispatch<React.SetStateAction<Game[]>>;
-}
-
-export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.ReactElement {
-  const { games, setGames } = props;
+export function GameSearchTypeahead(): React.ReactElement {
+  const { games, setGames } = useContext(GamesStateContext);
   const { exactMatchSwitchClass, loadingIndicatorClass, leftAlign } = useStyles();
 
   const { CancelToken } = axios;
   const [activeRequestCancelToken, setActiveRequestCancelToken] = useState<CancelTokenSource>();
 
-  const [options, setOptions] = React.useState<Game[]>([]);
+  const [options, setOptions] = React.useState<Pick<Game, "bggId" | "name" | "year">[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isSearching, setIsSearching] = React.useState(false);
   const [exactMatch, setExactMatch] = React.useState(false);
@@ -69,9 +65,8 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
     // .then(({ data }) => {
     if (data as string) {
       const result = getGameDetailsFromBggXmlResult(data as string, bggId);
-      const newGames = games.concat(result);
-      console.log("newGames: ", newGames);
-      setGames(newGames);
+      const newGamesState = games?.concat(result);
+      if (newGamesState && setGames) setGames(newGamesState);
     }
     // }).catch(() => {
     //   console.log("Failed to add new game to list");
@@ -138,7 +133,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
 
     console.log("Selecting bggId: ", bggId);
 
-    if (!games.some((game) => game.bggId === bggId)) {
+    if (!games?.some((game) => game.bggId === bggId)) {
       addNewGameToSelectedGames(bggId);
     } else {
       // TODO: Highlight game thats already in the collection display

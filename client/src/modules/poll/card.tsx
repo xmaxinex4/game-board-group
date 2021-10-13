@@ -2,8 +2,8 @@ import React from "react";
 
 import { Grid, Card, CardContent, Typography } from "@mui/material";
 
-import { Poll } from "../../api-types/poll";
-import { PollOptionDisplay } from "../poll-option/poll-option-display";
+// import { PollOptionDisplay } from "../poll-option/poll-option-display";
+import { Poll } from ".prisma/client";
 
 export interface PollDisplayProps {
   poll: Poll;
@@ -22,19 +22,19 @@ export function PollCard(props: PollDisplayProps): React.ReactElement {
                 {poll.title}
               </Typography>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Typography variant="h6">
                 Created By: {poll.author.username}
               </Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
-          <Grid item container justifyContent="space-between">
+          {/* <Grid item container justifyContent="space-between">
             {poll.pollOptions.map((option) =>
-              <Grid item>
+              <Grid item key={`poll-card-option-display-poll-id-${option.id}`}>
                 <PollOptionDisplay option={option} />
               </Grid>
             )}
-          </Grid>
+          </Grid> */}
         </Grid>
       </CardContent >
     </Card>

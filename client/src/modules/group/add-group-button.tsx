@@ -1,10 +1,11 @@
 import React from "react";
+// import { useSelector } from "react-redux";
 
 import { Button } from "@mui/material";
 
-// import { ActiveGroupContext } from "../../contexts/active-group-context";
-// import { ActiveUserContext } from "../../contexts/active-user-context";
 import { TextButton } from "../common/button/text-button";
+// import { selectActiveGroup } from "./redux/slice";
+// import { selectActiveUser } from "../user/redux/slice";
 
 export interface AddGroupButtonProps {
   variant?: "text" | null;
@@ -12,8 +13,8 @@ export interface AddGroupButtonProps {
 
 export function AddGroupButton(props: AddGroupButtonProps): React.ReactElement {
   const { variant } = props;
-  // const { activeGroup, setActiveGroup } = React.useContext(ActiveGroupContext);
-  // const { activeUser } = React.useContext(ActiveUserContext);
+  // const activeUser = useSelector(selectActiveUser);
+  // const activeGroup = useSelector(selectActiveGroup);
 
   // const onCreateGroupError = (error: ApolloError) => {
   //   // TODO: Handle error

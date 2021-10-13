@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid } from "@mui/material";
 
-import { Collection } from "../../api-types/collection";
+import { Collection } from ".prisma/client";
 
 import { CollectionCard } from "./card";
 
@@ -17,7 +17,7 @@ export function CollectionCardList(props: CollectionCardListProps): React.ReactE
     <Grid container direction="column">
       {collections.map((collection) => {
         return (
-          <Grid item>
+          <Grid key={`collection-card-collection-id-${collection.id}`} item>
             <CollectionCard collection={collection} />
           </Grid>
         );

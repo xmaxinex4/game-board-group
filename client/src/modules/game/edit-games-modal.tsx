@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import Icon from "@mdi/react";
 import { mdiCancel, mdiContentSave } from "@mdi/js";
@@ -7,21 +7,17 @@ import { Button, Card, CardHeader, CardContent, Grid, Modal, Theme, CircularProg
 import { useTheme } from "@mui/styles";
 import { makeStyles } from "@mui/styles";
 
-// import { GAME_DISPLAY_DETAILS } from "./Queries";
-
-import { GameSearchTypeahead } from "./game-search-typeahead";
+// import { GameSearchTypeahead } from "./game-search-typeahead";
 import { GameCircleListDisplay } from "./game-circle-list-display";
-import { Game } from "../../api-types/game";
+import { GamesStateContext } from "../../contexts/games-state-context";
 
 export interface EditGamesModalProps {
-  games: Game[];
   handleClose: () => void;
   loading?: boolean;
   onSave: (bggIds: string[]) => void;
   open: boolean;
   title?: string;
 }
-
 
 const useStyles = makeStyles({
   card: {
@@ -51,11 +47,12 @@ const useStyles = makeStyles({
 });
 
 export function EditGamesModal(props: EditGamesModalProps): React.ReactElement {
-  const { games, handleClose, loading, onSave, open, title } = props;
+  const { handleClose, loading, onSave, open, title } = props;
   const classes = useStyles();
-  const [gamesState, setGamesState] = React.useState((games && games.length > 0) && games || []);
 
   const theme = useTheme<Theme>();
+
+  const { games } = useContext(GamesStateContext);
 
   // const onGameDisplayDetailsError = React.useCallback(
   //   (error: ApolloError) => {
@@ -91,15 +88,15 @@ export function EditGamesModal(props: EditGamesModalProps): React.ReactElement {
 
   const onModalSave = React.useCallback(
     () => {
-      onSave(gamesState.map((game) => game.bggId));
+      onSave(games?.map((game) => game.bggId) || []);
     },
-    [onSave, gamesState]
+    [onSave, games]
   );
 
   const savedGames = React.useMemo(() => games, [games]);
   const onModalCancel = React.useCallback(
     () => {
-      setGamesState(savedGames);
+      console.log("Modal Cancel, Delete added games");
       handleClose();
     },
     []
@@ -125,7 +122,7 @@ export function EditGamesModal(props: EditGamesModalProps): React.ReactElement {
                     {/* <GameSearchTypeahead onSelect={onSelect} /> */}
                   </Grid>
                   <Grid item>
-                    <GameCircleListDisplay games={gamesState} />
+                    <GameCircleListDisplay />
                   </Grid>
                   <Grid container item justifyContent="space-between">
                     <Grid item className={classes.wrapper}>

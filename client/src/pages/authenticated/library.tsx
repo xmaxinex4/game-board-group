@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -9,18 +10,19 @@ import {
   Switch,
 } from "@mui/material";
 
-import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TextButton } from "../../modules/common/button/text-button";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
+import { selectActiveGroup } from "../../modules/group/redux/slice";
 
 export function Library(): React.ReactElement {
-  const activeGroupContext = React.useContext(ActiveGroupContext);
+  const activeGroup = useSelector(selectActiveGroup);
+
   const [myGamesOnly, setMyGamesOnly] = React.useState(false);
 
   const toggleMyGamesOnly = () => setMyGamesOnly(!myGamesOnly);
 
   return (
-    <TabContentContainer title={activeGroupContext?.activeGroup?.name} subTitle="Group Library">
+    <TabContentContainer title={activeGroup?.name} subTitle="Group Library">
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <TextButton onClick={() => console.log("add new Game")} icon={mdiPlus} text="Add Game" />

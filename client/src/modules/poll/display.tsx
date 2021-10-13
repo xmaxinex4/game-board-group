@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Grid } from "@mui/material";
 
-import { Poll } from "../../api-types/poll";
+import { Poll } from ".prisma/client";
 
 export interface PollDisplayProps {
   poll: Poll;

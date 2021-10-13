@@ -1,5 +1,5 @@
-import { User } from "../../../api-types/user";
+import { User } from ".prisma/client";
 
 export type CreateUserFormModel = Partial<User> & {
   confirmPassword: string;
-}
+};

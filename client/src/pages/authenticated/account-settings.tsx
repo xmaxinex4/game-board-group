@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import { Typography } from "@mui/material";
-import { ActiveUserContext } from "../../contexts/active-user-context";
+import { selectActiveUser } from "../../modules/user/redux/slice";
 
 export function AccountSettings(): React.ReactElement {
-  const { activeUser } = useContext(ActiveUserContext);
+  const activeUser = useSelector(selectActiveUser);
 
   return (
     <Typography>

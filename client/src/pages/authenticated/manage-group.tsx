@@ -1,13 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-import { ActiveGroupContext } from "../../contexts/active-group-context";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
+import { selectActiveGroup } from "../../modules/group/redux/slice";
 
 export function ManageGroup(): React.ReactElement {
-  const activeGroupContext = React.useContext(ActiveGroupContext);
+  const activeGroup = useSelector(selectActiveGroup);
 
   return (
-    <TabContentContainer title={`Managing ${activeGroupContext?.activeGroup?.name} Group`}>
+    <TabContentContainer title={`Managing ${activeGroup?.name} Group`}>
       MANAGE GROUP CONTENT
     </TabContentContainer>
   );

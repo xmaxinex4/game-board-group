@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Typography } from "@mui/material";
 
-import { UserVote } from "../../api-types/user-vote";
+import { UserVote } from ".prisma/client";
 
 export interface UserVoteDisplayProps {
   userVote: UserVote;
