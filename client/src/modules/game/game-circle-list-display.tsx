@@ -5,7 +5,6 @@ import {
   Avatar,
   Grid,
   Tooltip,
-  Typography,
   IconButton,
   Theme,
 } from "@mui/material";
@@ -29,11 +28,13 @@ export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.
   const { games, onEditGames } = props;
   const classes = useStyles();
 
+  console.log("Starting new display for game: ", games);
+
   return (
     <Grid container spacing={2} alignItems="center">
-      <Grid item>
+      {/* <Grid item>
         <Typography>Games:</Typography>
-      </Grid>
+      </Grid> */}
       {games && games.map((game) => (
         <Grid item>
           <Tooltip title={game.name} aria-label={game.name}>

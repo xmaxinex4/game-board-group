@@ -44,3 +44,35 @@ export function getGamesFromBggXmlResult(xml: string): Game[] {
 
   return games;
 }
+
+export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Game {
+  const convertedJson = JSON.parse(xmlConverter.xml2json(xml, { compact: true }));
+
+  if (!convertedJson && !convertedJson?.items) {
+    throw Error("Could not convert game xml to json");
+  }
+
+  const gameItem = convertedJson?.items?.item;
+
+  console.log("gameItem: ", gameItem);
+
+  if (!gameItem) {
+    throw Error("Game item was not found");
+  }
+
+  // game name either returns one non-array if only one name
+  // or game name returns an array if multiple names (the first is primary so we use that)
+  let gameName = "";
+  if (gameItem?.name?.length > 0) {
+    gameName = gameItem?.name?.[0]?._attributes?.value;
+  } else {
+    gameName = gameItem?.name?._attributes?.value || "";
+  }
+
+  return {
+    bggId,
+    urlThumb: gameItem?.thumbnail?._text,
+    urlImage: gameItem?.image?._text,
+    name: gameName,
+  };
+}

@@ -14,16 +14,15 @@ import {
   ListItemText,
   TextField,
   Switch,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import useDebounce from "../../hooks/useDebounce";
+
 import { Game } from "../../api-types/game";
 import { useBggApi } from "../../hooks/useBggApi";
-import { getGamesFromBggXmlResult } from "../../helpers/bgg-search-xml-to-json";
-
-// import { GAME_SEARCH } from "../Queries";
-// import { GameSearchQueryResult, GameSearchResult } from "../Types";
+import { getGameDetailsFromBggXmlResult, getGamesFromBggXmlResult } from "../../helpers/bgg-search-xml-to-json";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   icon: {
@@ -37,6 +36,9 @@ const useStyles = makeStyles<Theme>((theme) => ({
     position: "absolute",
     marginLeft: "250px",
   },
+  leftAlign: {
+    marginLeft: "auto",
+  },
 }));
 
 export interface GameSearchTypeaheadProps {
@@ -46,7 +48,7 @@ export interface GameSearchTypeaheadProps {
 
 export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.ReactElement {
   const { games, setGames } = props;
-  const { exactMatchSwitchClass, loadingIndicatorClass } = useStyles();
+  const { exactMatchSwitchClass, loadingIndicatorClass, leftAlign } = useStyles();
 
   const { CancelToken } = axios;
   const [activeRequestCancelToken, setActiveRequestCancelToken] = useState<CancelTokenSource>();
@@ -62,42 +64,19 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  // const setNewGamesState = (data: { gameDetails: GameDisplayDetails }) => {
-  //   const { gameDetails } = data;
-  //   const newGamesState = gamesState.concat(gameDetails);
-
-  //   setGamesState(newGamesState);
-  // };
-
-  const addNewGameToSelectedGames = useCallback((bggId: string) => {
-    // api get to retrieve game details
-    console.log("addNewGameToSelectedGames for: ", bggId);
-    setGames([]); // add found result to game list
+  const addNewGameToSelectedGames = useCallback(async (bggId: string) => {
+    const { data } = await bggApiGet(`/thing?id=${bggId}`); // this does not wait long enough :(
+    // .then(({ data }) => {
+    if (data as string) {
+      const result = getGameDetailsFromBggXmlResult(data as string, bggId);
+      const newGames = games.concat(result);
+      console.log("newGames: ", newGames);
+      setGames(newGames);
+    }
+    // }).catch(() => {
+    //   console.log("Failed to add new game to list");
+    // });
   }, []);
-
-  const onSelect = React.useCallback(
-    (selectedBggId: string) => {
-      console.log("Selecting bggId: ", selectedBggId);
-
-      if (!games.some((game) => game.bggId === selectedBggId)) {
-        addNewGameToSelectedGames(selectedBggId);
-      } else {
-        // TODO: Highlight game thats already in the collection display
-        console.log("Already have that game in list");
-      }
-    },
-    [],
-  );
-
-  // const onSearchCompleted = (result: GameSearchQueryResult) => {
-  //   setIsSearching(false);
-  //   setOptions(result.gameSearch || []);
-  // }
-
-  // const [getGameSearchResults, { loading, data, error }] = useLazyQuery<GameSearchQueryResult>(GAME_SEARCH, {
-  //   variables: { search: debouncedSearchTerm, limit: 5, exact: exactMatch },
-  //   onCompleted: onSearchCompleted
-  // });
 
   React.useEffect(
     () => {
@@ -125,7 +104,6 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           newCancelToken?.token,
         ).then(({ data }) => {
           if (data as string) {
-            console.log("Result returned, setting active token to undefined.");
             setActiveRequestCancelToken(undefined);
             const result = getGamesFromBggXmlResult(data as string);
             setOptions(result);
@@ -155,9 +133,16 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   const onGameSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, bggId: string) => {
     e.preventDefault();
 
+    console.log("Setting search term to blank.");
     setSearchTerm("");
-    if (onSelect) {
-      onSelect(bggId);
+
+    console.log("Selecting bggId: ", bggId);
+
+    if (!games.some((game) => game.bggId === bggId)) {
+      addNewGameToSelectedGames(bggId);
+    } else {
+      // TODO: Highlight game thats already in the collection display
+      console.log("Already have that game in list");
     }
   };
 
@@ -186,25 +171,29 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
             autoComplete
             includeInputInList
             freeSolo
+            selectOnFocus={false}
             onInputChange={handleChange}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Games"
-                variant="outlined"
-                fullWidth
-                value={searchTerm}
-                helperText="Powered by BoardGameGeek"
-              />
+              <Grid container direction="column">
+                <Grid item>
+                  <TextField
+                    {...params}
+                    label="Search Games"
+                    variant="outlined"
+                    fullWidth
+                    value={searchTerm}
+                  />
+                </Grid>
+                <Grid item className={leftAlign}>
+                  <Typography variant="caption" color="GrayText">Powered by BoardGameGeek</Typography>
+                </Grid>
+              </Grid>
             )}
-            renderOption={(test, option: any) => {
-              console.log("option: ", option);
-              return (
-                <ListItem onClick={(e) => onGameSelect(e, option.bggId)}>
-                  <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
-                </ListItem>
-              );
-            }}
+            renderOption={(optionProps, option: any, { selected }) => (
+              <ListItem onClick={(e) => onGameSelect(e, option.bggId)}>
+                <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
+              </ListItem>
+            )}
           />
         </Grid>
       </Grid>

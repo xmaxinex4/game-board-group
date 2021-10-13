@@ -13,6 +13,8 @@ import {
   ModalProps,
   Typography,
   IconButton,
+  Theme,
+  CardActions,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -20,18 +22,27 @@ import { GameCircleListDisplay } from "./game-circle-list-display";
 import { GameSearchTypeahead } from "./game-search-typeahead";
 import { Game } from "../../api-types/game";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles<Theme>((theme) => ({
   card: {
-    padding: "24px",
-    maxWidth: "500px",
-    width: "500px",
+    padding: theme.spacing(3),
+    minWidth: "250px",
+    width: "600px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
-
-  div: {
-    paddingTop: "50px",
-    paddingBottom: "50px",
+  modal: {
+    display: "flex",
+    justifyContent: "center",
+    maxHeight: "500px",
+    minHeight: "500px",
+    padding: "50px",
+    paddingTop: "75px",
   },
-});
+  saveButton: {
+    marginLeft: "auto",
+  },
+}));
 
 export interface AddGamesModalProps extends Pick<ModalProps, "open"> {
   closeModal: () => void;
@@ -47,7 +58,7 @@ export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
     closeModal,
   } = props;
 
-  const { card, div } = useStyles();
+  const { card, modal, saveButton } = useStyles();
 
   const onModalCancel = React.useCallback(
     () => {
@@ -69,21 +80,22 @@ export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
       aria-describedby="adding-games"
       open={open}
       onClose={closeModal}
+      className={modal}
     >
-      <Grid container item justifyContent="center">
-        <div className={div}>
-          <Card className={card}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item>
-                <Typography variant="h6">Add Game</Typography>
+      <Card className={card}>
+        <CardContent>
+          <Grid container direction="column" spacing={2}>
+            <Grid container item alignItems="center">
+              <Grid item xs={11}>
+                <Typography style={{ paddingLeft: "8px", paddingTop: "8px" }} variant="h6">Add Game</Typography>
               </Grid>
-              <Grid item>
+              <Grid item xs={1}>
                 <IconButton size="large" onClick={onModalCancel}>
                   <CloseIcon />
                 </IconButton>
               </Grid>
             </Grid>
-            <CardContent>
+            <Grid item>
               <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
                 <Grid item>
                   <GameSearchTypeahead games={games} setGames={setGames} />
@@ -91,22 +103,22 @@ export function AddGamesModal(props: AddGamesModalProps): React.ReactElement {
                 <Grid item>
                   <GameCircleListDisplay games={games} />
                 </Grid>
-                <Grid item>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    startIcon={<Icon path={mdiContentSave} size={0.5} />}
-                    onClick={onModalSave}
-                  >
-                    Save
-                  </Button>
-                </Grid>
               </Grid>
-            </CardContent>
-          </Card>
-        </div>
-      </Grid>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <CardActions>
+          <Button
+            className={saveButton}
+            variant="contained"
+            color="primary"
+            startIcon={<Icon path={mdiContentSave} size={0.5} />}
+            onClick={onModalSave}
+          >
+            Save
+          </Button>
+        </CardActions>
+      </Card>
     </Modal>
   );
 }
