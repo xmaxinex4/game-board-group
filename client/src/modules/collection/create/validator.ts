@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 
-import { CreateCollectionFormModel } from "./model";
+import { Collection } from ".prisma/client";
+
+export type CreateCollectionValidationFormModel = Pick<Collection, "name">;
 
 export const validateCreateCollectionForm = (
-  model: CreateCollectionFormModel,
-  setErrors: (errorState: CreateCollectionFormModel) => void,
+  model: CreateCollectionValidationFormModel,
+  setErrors: (errorState: CreateCollectionValidationFormModel) => void,
 ): boolean => {
   let formIsValid = true;
-  let errors: CreateCollectionFormModel = { name: "", ownerIds: [], gameIds: [] };
+  let errors: CreateCollectionValidationFormModel = { name: "" };
 
   if (!model.name) {
     errors = { ...errors, name: "Name is required" };

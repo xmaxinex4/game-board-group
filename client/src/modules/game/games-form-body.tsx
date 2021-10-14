@@ -13,7 +13,7 @@ export interface AddGamesFormProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function AddGamesForm(props: AddGamesFormProps): React.ReactElement {
+export function GamesFormBody(props: AddGamesFormProps): React.ReactElement {
   const { isActive, setIsActive } = props;
 
   return (

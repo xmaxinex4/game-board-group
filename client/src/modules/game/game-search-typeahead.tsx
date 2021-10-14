@@ -23,7 +23,7 @@ import { Game } from ".prisma/client";
 import useDebounce from "../../hooks/useDebounce";
 import { useBggApi } from "../../hooks/useBggApi";
 import { getGameDetailsFromBggXmlResult, getGamesFromBggXmlResult } from "../../helpers/bgg-search-xml-to-json";
-import { GamesStateContext } from "../../contexts/games-state-context";
+import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 
 const useStyles = makeStyles<Theme>((theme) => ({
   icon: {

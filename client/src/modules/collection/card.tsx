@@ -1,39 +1,47 @@
-import { useState } from "react";
+import React from "react";
 
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from "@mui/icons-material/";
-import { Card, CardHeader, CardContent, Grid, IconButton } from "@mui/material";
+// import EditIcon from '@mui/icons-material/Edit';
+// import SaveIcon from "@mui/icons-material/";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Grid,
+} from "@mui/material";
 
-import { GridItemInput } from "../common/input/grid-item-input";
-import { UserCircleListDisplay } from "../user/user-circle-list-display";
-import { EditGamesModal } from "../game/edit-games-modal";
+// import { GridItemInput } from "../common/input/grid-item-input";
+// import { UserCircleListDisplay } from "../user/user-circle-list-display";
+// import { GamesFormBody } from "../game/games-form-body";
+// import { GameCircleListDisplay } from "../game/game-circle-list-display";
+import { Collection, Game } from ".prisma/client";
 import { GameCircleListDisplay } from "../game/game-circle-list-display";
-import { Collection } from ".prisma/client";
+import { GamesStateContext } from "../../contexts/upsert-games-state-context";
+// import { GameCircleListDisplay } from "../game/game-circle-list-display";
 
 export interface CollectionCardProps {
-  collection: Collection;
+  collection: Pick<Collection, "name" | "id"> & { games: Game[]; };
 }
 
 export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   const { collection } = props;
 
-  const [collectionState, setCollectionState] = useState<Collection>(collection);
-  const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
-  const [editingCollectionName, setEditiingCollectionName] = useState(false);
+  // const [collectionState, setCollectionState] = useState<Collection>(collection);
+  // const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
+  // const [editingCollectionName, setEditiingCollectionName] = useState(false);
 
-  const [errors, setErrors] = useState({ name: "" });
+  // const [errors, setErrors] = useState({ name: "" });
 
-  const clearErrorField = (e: React.ChangeEvent) => {
-    setErrors({ ...errors, [e.currentTarget.id]: "" });
-  };
+  // const clearErrorField = (e: React.ChangeEvent) => {
+  //   setErrors({ ...errors, [e.currentTarget.id]: "" });
+  // };
 
-  const openEditGamesModal = () => {
-    setEditGamesModalOpen(true);
-  };
+  // const openEditGamesModal = () => {
+  //   setEditGamesModalOpen(true);
+  // };
 
-  const closeEditGamesModal = () => {
-    setEditGamesModalOpen(false);
-  };
+  // const closeEditGamesModal = () => {
+  //   setEditGamesModalOpen(false);
+  // };
 
   // const onGetCollectionError = (error: ApolloError) => {
   //   // TODO: show errors in ui
@@ -53,7 +61,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   //   console.log("upsert collection error: ", error);
   // };
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   // const [upsertCollection, upsertCollectionDetails] = useMutation<{ upsertCollection: CollectionDetails }>(UPSERT_COLLECTION, {
   //   onError: onUpsertCollectionError,
@@ -76,7 +84,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
 
   // const editCollectionName = () => setEditiingCollectionName(true);
 
-  const [nameState, setNameState] = useState(collection.name);
+  // const [nameState, setNameState] = useState(collection.name);
   // const saveCollectionName = (event: React.MouseEvent) => {
   //   if (!nameState) {
   //     setErrors({ name: "Name can't be empty" });
@@ -93,19 +101,24 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
 
   return (
     <Card>
-      {!editingCollectionName &&
-        <Grid container alignItems="center">
-          <Grid item>
-            <CardHeader title={collectionState.name} />
-          </Grid>
-          <Grid item>
+      {/* {!editingCollectionName && */}
+      <Grid container alignItems="center">
+        <Grid item>
+          <CardHeader title={collection.name} />
+        </Grid>
+        <Grid item>
+          <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+            <GameCircleListDisplay />
+          </GamesStateContext.Provider>
+        </Grid>
+        {/* <Grid item>
             <IconButton onClick={() => console.log("editCollectionName")} color="primary" aria-label="edit owners" component="span">
               <EditIcon />
             </IconButton>
-          </Grid>
-        </Grid>
-      }
-      {editingCollectionName &&
+          </Grid> */}
+      </Grid>
+      {/* } */}
+      {/* {editingCollectionName &&
         <GridItemInput
           formControlProps={{ disabled: isLoading }}
           input={nameState}
@@ -117,7 +130,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
           rightActionIcon={SaveIcon}
           onRightAction={() => console.log("saveCollectionName")}
         />
-      }
+      } */}
       <CardContent>
         <Grid container direction="column" spacing={2}>
           {/* <Grid item>

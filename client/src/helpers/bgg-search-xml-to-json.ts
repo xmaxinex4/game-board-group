@@ -46,7 +46,7 @@ export function getGamesFromBggXmlResult(xml: string): Pick<Game, "bggId" | "nam
   return games;
 }
 
-export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage"> {
+export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year"> {
   const convertedJson = JSON.parse(xmlConverter.xml2json(xml, { compact: true }));
 
   if (!convertedJson && !convertedJson?.items) {
@@ -54,8 +54,6 @@ export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Pick
   }
 
   const gameItem = convertedJson?.items?.item;
-
-  console.log("gameItem: ", gameItem);
 
   if (!gameItem) {
     throw Error("Game item was not found");
@@ -75,5 +73,6 @@ export function getGameDetailsFromBggXmlResult(xml: string, bggId: string): Pick
     urlThumb: gameItem?.thumbnail?._text,
     urlImage: gameItem?.image?._text,
     name: gameName,
+    year: gameItem?.yearpublished?._attributes?.value,
   };
 }

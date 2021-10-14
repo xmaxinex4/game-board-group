@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
@@ -10,9 +11,11 @@ import { useApi } from "../../../hooks/useApi";
 
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
+import { addUserGroup, setActiveGroupId } from "../redux/slice";
 
 export function CreateGroupForm(): React.ReactElement {
   const { apiPost } = useApi();
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +39,14 @@ export function CreateGroupForm(): React.ReactElement {
         .then(({ data }) => {
           // TODO: Alert user their group has been created
           console.log("created group: ", data?.group);
+
+          dispatch(addUserGroup({
+            group: data?.group,
+          }));
+
+          dispatch(setActiveGroupId({
+            id: data?.group?.id,
+          }));
         })
         .catch((error) => {
           // TODO: Better error handling

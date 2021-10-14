@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import { GamesStateContext } from "../../contexts/games-state-context";
+import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 
 export interface GameCircleListDisplayProps {
   onEditGames?: () => void;
