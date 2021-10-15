@@ -19,6 +19,7 @@ import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 import Logo from "../../../images/png/logo.png";
 import { selectActiveUser } from "../../user/redux/slice";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
+import { selectActiveGroup } from "../../group/redux/slice";
 
 const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme) => ({
   root: ({ activeUserColor }) => ({
@@ -31,51 +32,52 @@ const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme
   },
 }));
 
-export interface SideNavProps {
-  mobile?: boolean;
+export interface DesktopTabsProps {
 }
 
-export function SideNav(props: SideNavProps): React.ReactElement {
-  const { mobile } = props;
+export function DesktopTabs(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
+  const activeGroup = useSelector(selectActiveGroup);
+
+  const isGroupAdmin = useMemo(() => {
+    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.groupId === activeGroup?.id);
+    return activeUserActiveGroupMembership?.isAdmin || false;
+  }, [activeGroup, activeUser]);
 
   // The last 2 digits on a hex represent the alpha value
   const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
 
   const isPollsRoute = useRouteMatch("/polls");
-  const isStatsRoute = useRouteMatch("/stats");
   const isLibraryRoute = useRouteMatch("/library");
-  const isGroupManageRoute = useRouteMatch("/manage-group");
+  const isStatsRoute = useRouteMatch("/stats");
   const isMyGamesRoute = useRouteMatch("/my-game-collections");
+  const isGroupManageRoute = useRouteMatch("/manage-group");
 
   const pollsTabIndex = 1;
-  const statsTabIndex = 2;
-  const libraryTabIndex = 3;
-  const groupManageTabIndex = 4;
-  const myGamesTabIndex = 5;
+  const libraryTabIndex = 2;
+  const statsTabIndex = 3;
+  const myGamesTabIndex = 4;
+  const groupManageTabIndex = 5;
 
   const currentTab = useMemo(() => {
     if (isPollsRoute?.isExact) return pollsTabIndex;
     if (isStatsRoute?.isExact) return statsTabIndex;
     if (isLibraryRoute?.isExact) return libraryTabIndex;
-    if (isGroupManageRoute?.isExact) return groupManageTabIndex;
+    if (isGroupManageRoute?.isExact && isGroupAdmin) return groupManageTabIndex;
     if (isMyGamesRoute?.isExact) return myGamesTabIndex;
     return 0;
   }, [isPollsRoute, isStatsRoute, isLibraryRoute, isGroupManageRoute]);
 
   return (
-    <Grid container direction="column" className={mobile ? "" : root}>
-      {!mobile && (
-        <Grid item className={logo}>
-          <Link to="/">
-            <img alt="" src={Logo} />
-          </Link>
-        </Grid>
-      )}
+    <Grid container direction="column" className={root}>
+      <Grid item className={logo}>
+        <Link to="/">
+          <img alt="" src={Logo} />
+        </Link>
+      </Grid>
       <Grid item>
         <Tabs
-          className={mobile ? root : ""}
-          orientation={mobile ? "horizontal" : "vertical"}
+          orientation="vertical"
           value={currentTab}
           sx={{
             "& .MuiTabs-flexContainer": {
@@ -86,13 +88,11 @@ export function SideNav(props: SideNavProps): React.ReactElement {
           <Tab
             component={Link}
             label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
                   <HomeIcon />
                 </Grid>
-                <Grid item>
-                  {mobile ? "" : "Home"}
-                </Grid>
+                <Grid item>Home</Grid>
               </Grid>
             )}
             to="/"
@@ -100,13 +100,11 @@ export function SideNav(props: SideNavProps): React.ReactElement {
           <Tab
             component={Link}
             label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
                   <PollIcon />
                 </Grid>
-                <Grid item>
-                  {mobile ? "" : "Polls"}
-                </Grid>
+                <Grid item>Polls</Grid>
               </Grid>
             )}
             to="/polls"
@@ -114,27 +112,11 @@ export function SideNav(props: SideNavProps): React.ReactElement {
           <Tab
             component={Link}
             label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
-                <Grid item>
-                  <StatsIcon />
-                </Grid>
-                <Grid item>
-                  {mobile ? "" : "Stats"}
-                </Grid>
-              </Grid>
-            )}
-            to="/stats"
-          />
-          <Tab
-            component={Link}
-            label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
                   <LibraryIcon />
                 </Grid>
-                <Grid item>
-                  {mobile ? "" : "Library"}
-                </Grid>
+                <Grid item>Library</Grid>
               </Grid>
             )}
             to="/library"
@@ -142,31 +124,41 @@ export function SideNav(props: SideNavProps): React.ReactElement {
           <Tab
             component={Link}
             label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
-                  <GroupIcon />
+                  <StatsIcon />
                 </Grid>
-                <Grid item>
-                  {mobile ? "" : "Group"}
-                </Grid>
+                <Grid item>Stats</Grid>
               </Grid>
             )}
-            to="/manage-group"
+            to="/stats"
           />
           <Tab
             component={Link}
             label={(
-              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
                   <GamesIcon />
                 </Grid>
-                <Grid item>
-                  {mobile ? "" : "Games"}
-                </Grid>
+                <Grid item>Games</Grid>
               </Grid>
             )}
             to="/my-game-collections"
           />
+          {isGroupAdmin && (
+            <Tab
+              component={Link}
+              label={(
+                <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
+                  <Grid item>
+                    <GroupIcon />
+                  </Grid>
+                  <Grid item>Group</Grid>
+                </Grid>
+              )}
+              to="/manage-group"
+            />
+          )}
         </Tabs>
       </Grid>
     </Grid>

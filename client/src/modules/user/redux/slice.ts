@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars, no-param-reassign */
 
+import { PURGE } from "redux-persist";
 import { createSlice } from "@reduxjs/toolkit";
 import { UserMeResponse } from "../../../api-types/response-types";
 
@@ -27,6 +28,9 @@ export const userSlice = createSlice<UserState, UserStateReducers>({
       state.activeUser = action.payload.user;
     },
   },
+  extraReducers: (builder) => builder.addCase(PURGE, (state) => {
+    state.activeUser = undefined;
+  }),
 });
 
 export const { setActiveUser } = userSlice.actions;

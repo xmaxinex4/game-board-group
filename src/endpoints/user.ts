@@ -9,7 +9,12 @@ import { getCurrentUserId } from "../utils/get-current-user-id";
 export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
   app.get('/api/user/me', async (req, res) => {
     try {
-      const userId = getCurrentUserId(req);
+      let userId = null;
+      try {
+        userId = getCurrentUserId(req);
+      } catch {
+        return res.status(401).json({ error: `You are currently not logged in` });
+      }
 
       if (!userId) {
         return res.status(401).json({ error: `You are currently not logged in` });

@@ -25,6 +25,7 @@ import { MeepleMenu } from "../../../images/components/meeple-menu";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 import { SitePaletteColors } from "../../../theme/site-palettes";
 import { selectActiveUser } from "../../user/redux/slice";
+import { persistor } from "../../../redux/store";
 
 const useStyles = makeStyles(() => ({
   meepleButton: {
@@ -58,6 +59,7 @@ export function UserNavMenuButton(): React.ReactElement {
 
   const logout = () => {
     localStorage.removeItem("auth-token");
+    persistor.purge();
     window.location.href = "/";
   };
 

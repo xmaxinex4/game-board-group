@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars, no-param-reassign */
 
+import { PURGE } from "redux-persist";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { Group } from ".prisma/client";
@@ -51,6 +52,10 @@ export const groupSlice = createSlice<GroupState, GroupStateReducers>({
       state.activeGroupId = action.payload.id;
     },
   },
+  extraReducers: (builder) => builder.addCase(PURGE, (state) => {
+    state.userGroups = undefined;
+    state.activeGroupId = "";
+  }),
 });
 
 export const { addUserGroup, setActiveGroupId, setUserGroups } = groupSlice.actions;

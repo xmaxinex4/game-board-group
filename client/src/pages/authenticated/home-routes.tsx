@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Switch, Route } from "react-router";
 import { useSelector } from "react-redux";
 
 import { Drawer, Grid, Box } from "@mui/material";
-// import { makeStyles } from "@mui/styles";
 
 import { Polls } from "./polls";
 import { Stats } from "./stats";
@@ -11,7 +10,6 @@ import { Library } from "./library";
 import { ManageGroup } from "./manage-group";
 import { Home } from "./home";
 
-import { SideNav } from "../../modules/common/navigation/side-nav";
 import { NoActiveGroup } from "../../modules/group/no-active-group";
 import { NavBar } from "../../modules/common/navigation/nav-bar";
 import { MyCollections } from "./my-collections";
@@ -19,11 +17,18 @@ import { AccountSettings } from "./account-settings";
 import { NotFound } from "../error/not-found";
 import { selectActiveUser } from "../../modules/user/redux/slice";
 import { selectActiveGroup } from "../../modules/group/redux/slice";
+import { MobileTabs } from "../../modules/common/navigation/mobile-tabs";
+import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 
 export function AuthenticatedHomeRoutes(): React.ReactElement {
   const drawerWidth = 192;
   const activeUser = useSelector(selectActiveUser);
   const activeGroup = useSelector(selectActiveGroup);
+
+  const isGroupAdmin = useMemo(() => {
+    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.groupId === activeGroup?.id);
+    return activeUserActiveGroupMembership?.isAdmin || false;
+  }, [activeGroup, activeUser]);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -38,7 +43,6 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           anchor="top"
           variant="permanent"
@@ -52,7 +56,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: "100%" },
           }}
         >
-          <SideNav mobile />
+          <MobileTabs />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -62,7 +66,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
           }}
           open
         >
-          <SideNav />
+          <DesktopTabs />
         </Drawer>
       </Box>
       <Box
@@ -90,11 +94,13 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                             <Switch>
                               <Route exact path="/" component={Home} />
                               <Route path="/polls" component={Polls} />
-                              <Route path="/stats" component={Stats} />
                               <Route path="/library" component={Library} />
-                              <Route path="/manage-group" component={ManageGroup} />
-                              <Route exact path="/my-game-collections" component={MyCollections} />
+                              <Route path="/stats" component={Stats} />
+                              <Route path="/my-game-collections" component={MyCollections} />
                               <Route path="/account" component={AccountSettings} />
+                              {isGroupAdmin && (
+                                <Route path="/manage-group" component={ManageGroup} />
+                              )}
                               <Route path="*" component={NotFound} />
                             </Switch>
                           </Grid>
