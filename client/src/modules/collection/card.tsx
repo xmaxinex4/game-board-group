@@ -1,153 +1,75 @@
 import React from "react";
 
-// import EditIcon from '@mui/icons-material/Edit';
-// import SaveIcon from "@mui/icons-material/";
 import {
-  Card,
-  CardHeader,
-  CardContent,
   Grid,
+  IconButton,
+  Typography,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/EditTwoTone";
+import RefreshIcon from "@mui/icons-material/SyncRounded";
+import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
 
-// import { GridItemInput } from "../common/input/grid-item-input";
-// import { UserCircleListDisplay } from "../user/user-circle-list-display";
-// import { GamesFormBody } from "../game/games-form-body";
-// import { GameCircleListDisplay } from "../game/game-circle-list-display";
-import { Collection, Game } from ".prisma/client";
+import { Collection, Game, User } from ".prisma/client";
 import { GameCircleListDisplay } from "../game/game-circle-list-display";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
-// import { GameCircleListDisplay } from "../game/game-circle-list-display";
+import { PaddedCard } from "../common/layout/padded-card";
+import { UserCircleListDisplay } from "../user/user-circle-list-display";
 
 export interface CollectionCardProps {
-  collection: Pick<Collection, "name" | "id"> & { games: Game[]; };
+  collection: Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; };
 }
 
 export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   const { collection } = props;
 
-  // const [collectionState, setCollectionState] = useState<Collection>(collection);
-  // const [editGamesModalOpen, setEditGamesModalOpen] = useState(false);
-  // const [editingCollectionName, setEditiingCollectionName] = useState(false);
-
-  // const [errors, setErrors] = useState({ name: "" });
-
-  // const clearErrorField = (e: React.ChangeEvent) => {
-  //   setErrors({ ...errors, [e.currentTarget.id]: "" });
-  // };
-
-  // const openEditGamesModal = () => {
-  //   setEditGamesModalOpen(true);
-  // };
-
-  // const closeEditGamesModal = () => {
-  //   setEditGamesModalOpen(false);
-  // };
-
-  // const onGetCollectionError = (error: ApolloError) => {
-  //   // TODO: show errors in ui
-  //   console.log("get collection error: ", error);
-  // };
-
-  // const [refreshCollection, refreshCollectionQuery] = useLazyQuery<{ collection: CollectionDetails }>(GET_COLLECTION, {
-  //   variables: { collectionId: collectionState.id },
-  //   onError: onGetCollectionError,
-  //   onCompleted: (result) => {
-  //     setCollectionState(collection);
-  //   }
-  // });
-
-  // const onUpsertCollectionError = (error: ApolloError) => {
-  //   // TODO: show errors in ui
-  //   console.log("upsert collection error: ", error);
-  // };
-
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // const [upsertCollection, upsertCollectionDetails] = useMutation<{ upsertCollection: CollectionDetails }>(UPSERT_COLLECTION, {
-  //   onError: onUpsertCollectionError,
-  //   onCompleted: (result) => {
-  //     setErrors({ name: "" });
-  //     setEditGamesModalOpen(false);
-  //     setCollectionState(result.upsertCollection);
-  //   }
-  // });
-
-  // const addGamesToCollection = (bggIds: number[]) => {
-  //   upsertCollection({
-  //     variables: {
-  //       collectionId: collectionState.id,
-  //       name: collectionState.name,
-  //       bggIds
-  //     }
-  //   });
-  // }
-
-  // const editCollectionName = () => setEditiingCollectionName(true);
-
-  // const [nameState, setNameState] = useState(collection.name);
-  // const saveCollectionName = (event: React.MouseEvent) => {
-  //   if (!nameState) {
-  //     setErrors({ name: "Name can't be empty" });
-  //   } else {
-  //     upsertCollection({
-  //       variables: {
-  //         collectionId: collectionState.id,
-  //         name: nameState
-  //       }
-  //     });
-  //     setEditiingCollectionName(false);
-  //   }
-  // }
-
   return (
-    <Card>
-      {/* {!editingCollectionName && */}
-      <Grid container alignItems="center">
-        <Grid item>
-          <CardHeader title={collection.name} />
-        </Grid>
-        <Grid item>
-          <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
-            <GameCircleListDisplay />
-          </GamesStateContext.Provider>
-        </Grid>
-        {/* <Grid item>
-            <IconButton onClick={() => console.log("editCollectionName")} color="primary" aria-label="edit owners" component="span">
-              <EditIcon />
-            </IconButton>
-          </Grid> */}
-      </Grid>
-      {/* } */}
-      {/* {editingCollectionName &&
-        <GridItemInput
-          formControlProps={{ disabled: isLoading }}
-          input={nameState}
-          inputProps={{ id: "collection-name" }}
-          inputLabel="Collection Name"
-          setInputState={setNameState}
-          error={errors.name}
-          onInputChange={clearErrorField}
-          rightActionIcon={SaveIcon}
-          onRightAction={() => console.log("saveCollectionName")}
-        />
-      } */}
-      <CardContent>
-        <Grid container direction="column" spacing={2}>
-          {/* <Grid item>
-            <GameCircleListDisplay games={collectionState.games} onEditGames={openEditGamesModal} />
-            <EditGamesModal
-              title={`Editing Games in ${collectionState.name}`}
-              games={collectionState.games}
-              open={editGamesModalOpen}
-              handleClose={closeEditGamesModal}
-              onSave={() => console.log("addGamesToCollection")}
-              loading={isLoading} />
-          </Grid>
+    <PaddedCard styleProps={{ innerPadding: 3, outerPadding: 2 }}>
+      <Grid container spacing={2}>
+        <Grid container item alignItems="center" justifyContent="space-between">
           <Grid item>
-            <UserCircleListDisplay users={collectionState.owners} />
-          </Grid> */}
+            <Typography variant="subtitle1">{collection.name}</Typography>
+          </Grid>
+          <Grid container alignItems="flex-end" justifyContent="space-between" item xs={3}>
+            <Grid item>
+              <IconButton color="primary" aria-label="edit collection" component="span">
+                <EditIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton color="primary" aria-label="refresh collection" component="span">
+                <RefreshIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton color="primary" aria-label="delete collection" component="span">
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Grid>
-      </CardContent>
-    </Card>
+        <Grid container item spacing={2}>
+          <Grid container item alignItems="center" spacing={2}>
+            <Grid item>
+              <Typography variant="subtitle2">Games:</Typography>
+            </Grid>
+            <Grid item>
+              <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                <GameCircleListDisplay />
+              </GamesStateContext.Provider>
+            </Grid>
+          </Grid>
+          <Grid container item alignItems="center" spacing={2}>
+            <Grid item>
+              <Typography variant="subtitle2">Owners:</Typography>
+            </Grid>
+            <Grid item>
+              <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                <UserCircleListDisplay users={collection.owners} />
+              </GamesStateContext.Provider>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </PaddedCard>
   );
 }

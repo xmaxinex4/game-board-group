@@ -54,8 +54,8 @@ model Game {
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
   name                String
-  urlImage            String
-  urlThumb            String
+  urlImage            String?
+  urlThumb            String?
   Collection          Collection?  @relation(fields: [collectionId], references: [id])
   collectionId        String?
   year                String?

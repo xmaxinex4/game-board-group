@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   FormControl,
+  InputLabel,
   MenuItem,
   Select,
 } from "@mui/material";
@@ -39,10 +40,13 @@ export function ActiveGroupSelector(): React.ReactElement {
   }, []);
 
   return (
-    <FormControl variant="outlined">
+    <FormControl sx={{ minWidth: "200px" }} variant="outlined">
+      <InputLabel id="active-group-select">Active Group</InputLabel>
       <Select
+        labelId="active-group-select"
         onChange={onActiveGroupChanged}
         value={activeGroup ? activeGroup.id : null}
+        label="Active Group"
         inputProps={{
           name: "active group",
           id: "group-select",

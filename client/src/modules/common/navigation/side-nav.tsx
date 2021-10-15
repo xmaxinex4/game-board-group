@@ -1,26 +1,46 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useRouteMatch } from "react-router";
+import { useSelector } from "react-redux";
 
 import { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { Grid } from "@mui/material";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
+import HomeIcon from "@mui/icons-material/HomeTwoTone";
+import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
+import GroupIcon from "@mui/icons-material/GroupsTwoTone";
+import GamesIcon from "@mui/icons-material/CasinoTwoTone";
+import StatsIcon from "@mui/icons-material/PollTwoTone";
+import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
+
+import Logo from "../../../images/png/logo.png";
+import { selectActiveUser } from "../../user/redux/slice";
+import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
+
+const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme) => ({
+  root: ({ activeUserColor }) => ({
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    height: 800,
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
+    backgroundColor: activeUserColor || theme.palette.background.paper,
+  }),
+  logo: {
+    padding: theme.spacing(2),
+    marginBottom: `-${theme.spacing(3)}`,
   },
 }));
 
-export function SideNav(): React.ReactElement {
-  const { tabs, root } = useStyles();
+export interface SideNavProps {
+  mobile?: boolean;
+}
+
+export function SideNav(props: SideNavProps): React.ReactElement {
+  const { mobile } = props;
+  const activeUser = useSelector(selectActiveUser);
+
+  // The last 2 digits on a hex represent the alpha value
+  const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
 
   const isPollsRoute = useRouteMatch("/polls");
   const isStatsRoute = useRouteMatch("/stats");
@@ -28,11 +48,11 @@ export function SideNav(): React.ReactElement {
   const isGroupManageRoute = useRouteMatch("/manage-group");
   const isMyGamesRoute = useRouteMatch("/my-game-collections");
 
-  const pollsTabIndex = 0;
-  const statsTabIndex = 1;
-  const libraryTabIndex = 2;
-  const groupManageTabIndex = 3;
-  const myGamesTabIndex = 4;
+  const pollsTabIndex = 1;
+  const statsTabIndex = 2;
+  const libraryTabIndex = 3;
+  const groupManageTabIndex = 4;
+  const myGamesTabIndex = 5;
 
   const currentTab = useMemo(() => {
     if (isPollsRoute?.isExact) return pollsTabIndex;
@@ -43,24 +63,112 @@ export function SideNav(): React.ReactElement {
     return 0;
   }, [isPollsRoute, isStatsRoute, isLibraryRoute, isGroupManageRoute]);
 
-  // import HowToVoteIcon from '@mui/icons-material/HowToVote'; // for Polls
-  // import PieChartIcon from '@mui/icons-material/PieChart'; // for Stats
-  // import LibraryBooksIcon from '@mui/icons-material/LibraryBooks'; // for Library
-  // Meeple Group for manage group
-
   return (
-    <div className={root}>
-      <Tabs
-        orientation="vertical"
-        value={currentTab}
-        className={tabs}
-      >
-        <Tab component={Link} label="Polls" to="/polls" />
-        <Tab component={Link} label="Stats" to="/stats" />
-        <Tab component={Link} label="Library" to="/library" />
-        <Tab component={Link} label="Group" to="/manage-group" />
-        <Tab component={Link} label="Games" to="/my-game-collections" />
-      </Tabs>
-    </div>
+    <Grid container direction="column" className={mobile ? "" : root}>
+      {!mobile && (
+        <Grid item className={logo}>
+          <Link to="/">
+            <img alt="" src={Logo} />
+          </Link>
+        </Grid>
+      )}
+      <Grid item>
+        <Tabs
+          className={mobile ? root : ""}
+          orientation={mobile ? "horizontal" : "vertical"}
+          value={currentTab}
+          sx={{
+            "& .MuiTabs-flexContainer": {
+              justifyContent: "space-around",
+            },
+          }}
+        >
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <HomeIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Home"}
+                </Grid>
+              </Grid>
+            )}
+            to="/"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <PollIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Polls"}
+                </Grid>
+              </Grid>
+            )}
+            to="/polls"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <StatsIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Stats"}
+                </Grid>
+              </Grid>
+            )}
+            to="/stats"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <LibraryIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Library"}
+                </Grid>
+              </Grid>
+            )}
+            to="/library"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <GroupIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Group"}
+                </Grid>
+              </Grid>
+            )}
+            to="/manage-group"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent={mobile ? "center" : "flex-end"} spacing={1}>
+                <Grid item>
+                  <GamesIcon />
+                </Grid>
+                <Grid item>
+                  {mobile ? "" : "Games"}
+                </Grid>
+              </Grid>
+            )}
+            to="/my-game-collections"
+          />
+        </Tabs>
+      </Grid>
+    </Grid>
   );
 }

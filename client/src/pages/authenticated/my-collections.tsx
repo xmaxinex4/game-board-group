@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Collection, Game } from ".prisma/client";
+import { Collection, Game, User } from ".prisma/client";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { CreateCollectionForm } from "../../modules/collection/create/form";
@@ -21,23 +21,27 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     maxWidth: "500px",
   },
+  collectionCardList: {
+    width: "100%",
+    maxWidth: "800px !important",
+  },
 }));
 
 export function MyCollections(): React.ReactElement {
-  const [userCollections, setUserCollections] = useState<(Pick<Collection, "name" | "id"> & { games: Game[]; })[]>([]);
+  const [userCollections, setUserCollections] = useState<(Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; })[]>([]);
   const [loadingCollections, setLoadingCollections] = useState(false);
 
   const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
   const [formGames, setFormGames] = useState<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">[]>([]);
 
-  const { createFormContainer } = useStyles();
+  const { createFormContainer, collectionCardList } = useStyles();
 
   const { apiGet } = useApi();
   const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
 
   const getCollections = useCallback(() => {
     setLoadingCollections(true);
-    apiGet<(Pick<Collection, "name" | "id"> & { games: Game[]; })[]>("/collection/mycollections")
+    apiGet<(Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; })[]>("/collection/mycollections")
       .then(({ data }) => setUserCollections(data))
       .finally(() => setLoadingCollections(false));
   }, [setLoadingCollections]);
@@ -47,10 +51,8 @@ export function MyCollections(): React.ReactElement {
     getCollections();
   }, []);
 
-  console.log("collections: ", userCollections);
-
   return (
-    <TabContentContainer subTitle="My Game Collections">
+    <TabContentContainer title="My Game Collections">
       {loadingCollections
         ? (
           <CircularProgress />
@@ -67,7 +69,9 @@ export function MyCollections(): React.ReactElement {
             {!showAddCollectionForm && (
               userCollections?.length > 0
                 ? (
-                  <CollectionCardList collections={userCollections} />
+                  <Grid className={collectionCardList} item>
+                    <CollectionCardList collections={userCollections} />
+                  </Grid>
                 )
                 : (
                   <>

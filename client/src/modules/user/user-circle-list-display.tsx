@@ -5,24 +5,23 @@ import { makeStyles } from "@mui/styles";
 import {
   Grid,
   Tooltip,
-  Typography,
   Avatar,
-  Theme,
   IconButton,
 } from "@mui/material";
 
 import { Meeple } from "../../images/components/meeple";
 
 import { User } from ".prisma/client";
+import { MeeplePaletteColors } from "../../theme/meeple-palettes";
 
 export interface UserCircleListDisplayProps {
   users: User[];
   onEditUsers?: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   meeple: {
-    backgroundColor: "inherit"
+    backgroundColor: "inherit",
   },
 }));
 
@@ -32,27 +31,22 @@ export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.
 
   return (
     <Grid container spacing={2} alignItems="center">
-      <Grid item>
-        <Typography>Owners:</Typography>
-      </Grid>
-      {(users && users.length > 0) && users.map((user) => {
-        return (
-          <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
-            <Tooltip title={user.username} aria-label={user.username}>
-              <Avatar className={meeple}>
-                <Meeple size="icon" fill={user.color} />
-              </Avatar>
-            </Tooltip>
-          </Grid>
-        );
-      })}
-      {onEditUsers &&
+      {(users && users.length > 0) && users.map((user) => (
+        <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
+          <Tooltip title={user.username} aria-label={user.username}>
+            <Avatar className={meeple}>
+              <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
+            </Avatar>
+          </Tooltip>
+        </Grid>
+      ))}
+      {onEditUsers && (
         <Grid item>
           <IconButton onClick={onEditUsers} color="primary" aria-label="edit owners" component="span">
             <PencilIcon />
           </IconButton>
         </Grid>
-      }
+      )}
     </Grid>
   );
 }

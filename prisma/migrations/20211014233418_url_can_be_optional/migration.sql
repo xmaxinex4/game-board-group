@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Game" ALTER COLUMN "urlThumb" DROP NOT NULL,
+ALTER COLUMN "urlImage" DROP NOT NULL;

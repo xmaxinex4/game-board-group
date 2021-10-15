@@ -19,13 +19,14 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         owners: {
           some: {
             id: {
-              equals: userId
+              equals: userId,
             }
           }
         }
       },
       include: {
-        games: true
+        games: true,
+        owners: true,
       }
     });
 
