@@ -6,6 +6,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 
 import { selectActiveUser } from "../user/redux/slice";
@@ -40,7 +41,15 @@ export function ActiveGroupSelector(): React.ReactElement {
   }, []);
 
   return (
-    <FormControl sx={{ minWidth: "200px" }} variant="outlined">
+    <FormControl
+      sx={{
+        maxWidth: {
+          xs: "200px",
+          md: "unset",
+        },
+      }}
+      variant="outlined"
+    >
       <InputLabel id="active-group-select">Active Group</InputLabel>
       <Select
         labelId="active-group-select"
@@ -57,7 +66,9 @@ export function ActiveGroupSelector(): React.ReactElement {
             key={`menu-item-group-id-${groupMembership.group.id}`}
             value={groupMembership.group.id}
           >
-            {groupMembership.group.name}
+            <Typography variant="inherit" noWrap>
+              {groupMembership.group.name}
+            </Typography>
           </MenuItem>
         ))}
         <MenuItem value="Add Group">+ Add Group</MenuItem>

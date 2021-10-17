@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from "react";
+/* eslint-disable no-unused-vars */
+
+import React, { useCallback } from "react";
 
 import {
   Card,
@@ -6,7 +8,6 @@ import {
   CardMedia,
   Grid,
   IconButton,
-  Theme,
   Typography,
 } from "@mui/material";
 import ZoomInTwoToneIcon from "@mui/icons-material/ZoomInTwoTone";
@@ -16,9 +17,10 @@ import { LibraryGame } from "./types";
 
 export interface LibraryCardProps {
   game: LibraryGame;
+  openGameDetails: (game: LibraryGame) => void;
 }
 
-const useStyles = makeStyles<Theme, { flipped: boolean; }>(() => ({
+const useStyles = makeStyles(() => ({
   card: {
     minWidth: "250px",
     minHeight: "250px",
@@ -36,18 +38,17 @@ const useStyles = makeStyles<Theme, { flipped: boolean; }>(() => ({
 }));
 
 export function LibraryCard(props: LibraryCardProps): React.ReactElement {
-  const { game } = props;
+  const { game, openGameDetails } = props;
 
-  const [flipped, setFlipped] = useState(false);
-  const { card, cardText, cardTextContainer } = useStyles({ flipped });
+  const { card, cardText, cardTextContainer } = useStyles();
 
-  const flip = useCallback(() => {
-    setFlipped(!flipped);
-  }, [setFlipped, flipped]);
+  const openGameDetailsDisplay = useCallback(() => {
+    openGameDetails(game);
+  }, [openGameDetails, game]);
 
   return (
     <Card
-      onClick={flip}
+      onClick={openGameDetailsDisplay}
       className={card}
     >
       <CardMedia

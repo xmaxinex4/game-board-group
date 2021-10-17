@@ -40,8 +40,8 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
     <Box sx={{ display: "flex" }}>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+        aria-label="navigation tabs"
       >
         <Drawer
           anchor="top"
@@ -52,7 +52,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: "100%" },
           }}
         >
@@ -61,7 +61,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", md: "block" },
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
           }}
           open
@@ -76,7 +76,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
             flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: { sm: "unset", xs: "50px" },
+            marginTop: { md: "unset", xs: "50px" },
           }
         }
       >

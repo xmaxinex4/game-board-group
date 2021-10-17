@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import { Grid } from "@mui/material";
 
 import { LibraryCard } from "./card";
 import { LibraryGame } from "./types";
+import { GameDetailDialog } from "../game/game-detail-dialog";
 
 export interface LibraryCardListProps {
   games: LibraryGame[];
@@ -12,13 +13,33 @@ export interface LibraryCardListProps {
 export function LibraryCardList(props: LibraryCardListProps): React.ReactElement {
   const { games } = props;
 
+  const [gameDetailDialogOpen, setGameDetailDialogOpen] = useState(false);
+  const [gameDetails, setGameDetails] = useState<LibraryGame>();
+
+  const closeGameDetailDialog = useCallback(
+    () => setGameDetailDialogOpen(false),
+    [setGameDetailDialogOpen],
+  );
+
+  const openGameDetails = useCallback((game: LibraryGame) => {
+    setGameDetails(game);
+    setGameDetailDialogOpen(true);
+  }, [setGameDetails, setGameDetailDialogOpen]);
+
   return (
-    <Grid container spacing={3}>
-      {games.map((game) => (
-        <Grid xs={12} md={6} lg={4} key={`library-card-game-bgg-id-${game.bggId}`} item>
-          <LibraryCard game={game} />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Grid container spacing={3}>
+        {games.map((game) => (
+          <Grid xs={12} md={6} lg={4} key={`library-card-game-bgg-id-${game.bggId}`} item>
+            <LibraryCard openGameDetails={openGameDetails} game={game} />
+          </Grid>
+        ))}
+      </Grid>
+      <GameDetailDialog
+        open={gameDetailDialogOpen}
+        onClose={closeGameDetailDialog}
+        game={gameDetails}
+      />
+    </>
   );
 }

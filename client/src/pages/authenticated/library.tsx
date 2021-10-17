@@ -29,8 +29,6 @@ export function Library(): React.ReactElement {
     getLibrary(activeGroup?.id || "");
   }, [activeGroup]);
 
-  console.log("library response: ", groupLibrary);
-
   return (
     <TabContentContainer title={activeGroup?.name} subTitle="Group Library">
       {loadingCollections && (
