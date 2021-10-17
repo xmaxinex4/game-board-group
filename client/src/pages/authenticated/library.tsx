@@ -30,7 +30,7 @@ export function Library(): React.ReactElement {
   }, [activeGroup]);
 
   return (
-    <TabContentContainer title={activeGroup?.name} subTitle="Group Library">
+    <TabContentContainer title="Group Library">
       {loadingCollections && (
         <PageLoadingSpinner />
       )}

@@ -75,8 +75,9 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
           {
             flexGrow: 1,
             p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: { md: "unset", xs: "50px" },
+            width: { xs: `calc(100% - ${drawerWidth}px)` },
+            marginTop: { md: "unset", xs: "72px" },
+            padding: { md: "24px", xs: "unset" },
           }
         }
       >

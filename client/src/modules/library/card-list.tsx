@@ -30,7 +30,7 @@ export function LibraryCardList(props: LibraryCardListProps): React.ReactElement
     <>
       <Grid container spacing={3}>
         {games.map((game) => (
-          <Grid xs={12} md={6} lg={4} key={`library-card-game-bgg-id-${game.bggId}`} item>
+          <Grid xs={12} sm={6} lg={4} xl={3} key={`library-card-game-bgg-id-${game.bggId}`} item>
             <LibraryCard openGameDetails={openGameDetails} game={game} />
           </Grid>
         ))}
