@@ -90,7 +90,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                     activeGroup
                       ? (
                         <Grid container>
-                          <Grid item>
+                          <Grid item style={{ width: "100%" }}>
                             <Switch>
                               <Route exact path="/" component={Home} />
                               <Route path="/polls" component={Polls} />

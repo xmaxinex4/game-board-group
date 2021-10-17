@@ -5,6 +5,7 @@ import { PrismaClient } from ".prisma/client";
 import { initializeUserApi } from "./src/endpoints/user";
 import { initializeGroupApi } from "./src/endpoints/group";
 import { initializeCollectionApi } from "./src/endpoints/collection";
+import { initializeLibraryApi } from "./src/endpoints/library";
 
 const prisma = new PrismaClient();
 const app = express();
@@ -36,6 +37,7 @@ app.get(`/api`, async (req, res) => {
 initializeUserApi(app, prisma);
 initializeGroupApi(app, prisma);
 initializeCollectionApi(app, prisma);
+initializeLibraryApi(app, prisma);
 
 // Redirect back to index.html if urls do not match
 if (process.env.NODE_ENV === 'production') {

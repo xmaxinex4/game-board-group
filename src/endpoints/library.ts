@@ -3,7 +3,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 import { getCurrentUserId } from "../utils/get-current-user-id";
 
-export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
+export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
   // app.get("/api/collection/:id", async (req, res) => {
   // });
 
@@ -14,9 +14,9 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       return res.status(401).json({ error: `You are currently not logged in` });
     }
 
-    const { groupId } = req.body;
+    const { groupId } = req.query;
 
-    if (!groupId) {
+    if (!groupId || !groupId.toString()) {
       return res.status(400).json({ error: `Missing Group Id` });
     }
 
@@ -28,7 +28,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     const groupMembers = await prisma.groupMember.findMany({
       where: {
         groupId: {
-          equals: groupId,
+          equals: groupId.toString(),
         },
       },
       include: {
@@ -55,9 +55,9 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       distinct: ["id"],
     });
 
-    const library = {};
+    const library = new Map();
 
-    // TODO: Evaluate Complexity
+    // TODO: Evaluate Complexity and test logic
     collections.forEach((collection) => {
       collection.games.forEach((game) => {
         if (library[game.bggId]) {
@@ -71,12 +71,12 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
             urlImage: game.urlImage,
             year: game.year,
             copies: 1,
-            owners: collection.owners,
+            owners: collection.owners.map((owner) => ({ username: owner.username, color: owner.color })),
           };
         }
       });
     });
 
-    res.json(library);
+    res.json({ library });
   });
 };

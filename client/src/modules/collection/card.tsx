@@ -23,7 +23,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   const { collection } = props;
 
   return (
-    <PaddedCard styleProps={{ innerPadding: 3, outerPadding: 2 }}>
+    <PaddedCard styleProps={{ innerPadding: 3 }}>
       <Grid container spacing={2}>
         <Grid container item alignItems="center" justifyContent="space-between">
           <Grid item>

@@ -2,19 +2,19 @@ import React, { ReactNode } from "react";
 
 import { makeStyles } from "@mui/styles";
 import {
-  // Container,
+  Container,
   Grid,
   Theme,
   Typography,
 } from "@mui/material";
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles<Theme, { hasTitle: boolean; }>((theme) => ({
   gridContainerPadding: {
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(4),
   },
-  fullWidth: {
-    width: "100%",
-  },
+  titlePadding: ({ hasTitle }) => ({
+    paddingBottom: hasTitle ? theme.spacing(4) : "",
+  }),
 }));
 
 export interface TabContentContainerProps {
@@ -25,31 +25,31 @@ export interface TabContentContainerProps {
 export function TabContentContainer(props: TabContentContainerProps & { children: ReactNode; }): React.ReactElement {
   const { children, title, subTitle } = props;
 
-  const { gridContainerPadding, fullWidth } = useStyles();
+  const { gridContainerPadding, titlePadding } = useStyles({ hasTitle: (!!title) || (!!subTitle) });
 
   return (
-    // <Container maxWidth="sm">
-    <Grid container className={gridContainerPadding} justifyContent="center" alignItems="center" direction="column">
-      {title && (
-        <Grid container item direction="column" alignItems="center" justifyContent="center">
-          <Grid item>
-            <Typography align="center" variant="h6">
-              {title}
-            </Typography>
-            {subTitle && (
-              <Grid item>
-                <Typography align="center" variant="h6">
-                  {subTitle}
-                </Typography>
-              </Grid>
-            )}
+    <Container maxWidth="xl">
+      <Grid container className={gridContainerPadding} justifyContent="center" alignItems="center" direction="column">
+        {title && (
+          <Grid container item className={titlePadding} direction="column" alignItems="center" justifyContent="center">
+            <Grid item>
+              <Typography align="center" variant="h6">
+                {title}
+              </Typography>
+              {subTitle && (
+                <Grid item>
+                  <Typography align="center" variant="h6">
+                    {subTitle}
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
           </Grid>
+        )}
+        <Grid container item>
+          {children}
         </Grid>
-      )}
-      <Grid item className={fullWidth}>
-        {children}
       </Grid>
-    </Grid>
-    // </Container>
+    </Container>
   );
 }

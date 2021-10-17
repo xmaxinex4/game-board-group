@@ -1,45 +1,44 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { mdiPlus, mdiFilterVariant, mdiRefresh } from "@mdi/js";
-import Icon from "@mdi/react";
-
-import {
-  Grid,
-  IconButton,
-  Switch,
-} from "@mui/material";
-
-import { TextButton } from "../../modules/common/button/text-button";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { selectActiveGroup } from "../../modules/group/redux/slice";
+import { useApi } from "../../hooks/useApi";
+import { LibraryReponse } from "../../api-types/response-types";
+import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
+import { LibraryGame } from "../../modules/library/types";
+import { LibraryCardList } from "../../modules/library/card-list";
 
 export function Library(): React.ReactElement {
   const activeGroup = useSelector(selectActiveGroup);
 
-  const [myGamesOnly, setMyGamesOnly] = React.useState(false);
+  const [groupLibrary, setGroupLibrary] = useState<LibraryGame[]>([]);
+  const [loadingCollections, setLoadingCollections] = useState(false);
 
-  const toggleMyGamesOnly = () => setMyGamesOnly(!myGamesOnly);
+  const { apiGet } = useApi();
+
+  const getLibrary = useCallback((activeGroupId: string) => {
+    setLoadingCollections(true);
+    apiGet<LibraryReponse>("/library", { groupId: activeGroupId })
+      .then(({ data }) => setGroupLibrary(Object.values(data.library)))
+      .finally(() => setLoadingCollections(false));
+  }, [setLoadingCollections]);
+
+  // run once on page load and when active group changes
+  useEffect(() => {
+    getLibrary(activeGroup?.id || "");
+  }, [activeGroup]);
+
+  console.log("library response: ", groupLibrary);
 
   return (
     <TabContentContainer title={activeGroup?.name} subTitle="Group Library">
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <TextButton onClick={() => console.log("add new Game")} icon={mdiPlus} text="Add Game" />
-        </Grid>
-        <Grid item>
-          <Switch
-            checked={myGamesOnly}
-            onChange={toggleMyGamesOnly}
-          />
-          <IconButton onClick={() => console.log("open filter")}>
-            <Icon path={mdiFilterVariant} size={1} />
-          </IconButton>
-          <IconButton onClick={() => console.log("refresh")}>
-            <Icon path={mdiRefresh} size={1} />
-          </IconButton>
-        </Grid>
-      </Grid>
+      {loadingCollections && (
+        <PageLoadingSpinner />
+      )}
+      {!loadingCollections && groupLibrary?.length > 0 && (
+        <LibraryCardList games={groupLibrary} />
+      )}
     </TabContentContainer>
   );
 }
