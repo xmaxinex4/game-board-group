@@ -2,16 +2,16 @@
 
 import { PURGE } from "redux-persist";
 import { createSlice } from "@reduxjs/toolkit";
-import { UserMeResponse } from "../../../api-types/response-types";
+import { MeUserResponse } from "../../../api-types/response-types";
 
 export type UserState = {
-  activeUser: UserMeResponse | undefined,
+  activeUser: MeUserResponse | undefined,
 };
 
 export type UserStateReducers = {
   setActiveUser: (state: UserState, action: {
     type: string,
-    payload: { user: UserMeResponse | undefined; },
+    payload: { user: MeUserResponse | undefined; },
   }) => void;
 };
 
@@ -23,7 +23,7 @@ export const userSlice = createSlice<UserState, UserStateReducers>({
   reducers: {
     setActiveUser: (state, action: {
       type: string,
-      payload: { user: UserMeResponse | undefined; },
+      payload: { user: MeUserResponse | undefined; },
     }) => {
       state.activeUser = action.payload.user;
     },

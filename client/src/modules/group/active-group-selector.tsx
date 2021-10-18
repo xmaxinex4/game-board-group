@@ -45,7 +45,10 @@ export function ActiveGroupSelector(): React.ReactElement {
       sx={{
         maxWidth: {
           xs: "200px",
-          md: "unset",
+          sm: "400px",
+        },
+        minWidth: {
+          xs: "200px",
         },
       }}
       variant="outlined"
@@ -54,7 +57,7 @@ export function ActiveGroupSelector(): React.ReactElement {
       <Select
         labelId="active-group-select"
         onChange={onActiveGroupChanged}
-        value={activeGroup ? activeGroup.id : null}
+        value={activeGroup ? activeGroup.id : ""}
         label="Active Group"
         inputProps={{
           name: "active group",

@@ -40,7 +40,7 @@ export function CreateCollectionForm(): React.ReactElement {
 
     if (formValid) {
       setIsLoading(true);
-      // TODO: Create create response type or get from api (create api type project)
+      // TODO: Create response type or get from api (create api type project)
       apiPost<{ collection: Collection; }>("/collection/upsert", {
         name,
         games,

@@ -8,11 +8,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   // });
 
   app.get("/api/collection/mycollections", async (req, res) => {
-    const userId = getCurrentUserId(req);
-
-    if (!userId) {
-      return res.status(401).json({ error: `You are currently not logged in` });
-    }
+    const userId = getCurrentUserId(req, res);
 
     const result = await prisma.collection.findMany({
       where: {
@@ -34,11 +30,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   });
 
   app.post("/api/collection/upsert", async (req, res) => {
-    const userId = getCurrentUserId(req);
-
-    if (!userId) {
-      return res.status(401).json({ error: `You are currently not logged in` });
-    }
+    const userId = getCurrentUserId(req, res);
 
     const { collectionId, name, ownerIds, games } = req.body;
 

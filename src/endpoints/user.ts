@@ -9,33 +9,45 @@ import { getCurrentUserId } from "../utils/get-current-user-id";
 export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
   app.get('/api/user/me', async (req, res) => {
     try {
-      let userId = null;
-      try {
-        userId = getCurrentUserId(req);
-      } catch {
-        return res.status(401).json({ error: `You are currently not logged in` });
-      }
-
-      if (!userId) {
-        return res.status(401).json({ error: `You are currently not logged in` });
-      }
-
+      const userId = getCurrentUserId(req, res);
       const result = await prisma.user.findUnique({
         where: {
           id: userId
         },
-        include: {
-          groupMemberships: {
-            include: {
-              group: true
+        select: {
+          id: true,
+          username: true,
+          color: true,
+          email: true,
+          groupMemberships: { // my memberships
+            select: {
+              id: true,
+              isAdmin: true,
+              group: {
+                select: {
+                  id: true,
+                  name: true,
+                  members: { // other user's memberships in your groups
+                    select: {
+                      id: true,
+                      isAdmin: true,
+                      user: {
+                        select: {
+                          id: true,
+                          username: true,
+                          color: true,
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
-          },
+          }
         }
       });
 
-      const { password, ...userResultWithoutPassword } = result;
-
-      return res.status(200).json(userResultWithoutPassword);
+      return res.status(200).json(result);
     } catch (error) {
       console.error("Error getting current user: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });

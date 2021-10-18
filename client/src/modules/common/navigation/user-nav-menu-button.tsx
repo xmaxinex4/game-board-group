@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { mdiAccount, mdiLogout } from "@mdi/js";
+import Menu from "@mui/icons-material/Menu";
 import Icon from "@mdi/react";
 
 import { generateFilter } from "colorize-filter";
@@ -28,14 +29,14 @@ import { selectActiveUser } from "../../user/redux/slice";
 import { persistor } from "../../../redux/store";
 
 const useStyles = makeStyles(() => ({
-  meepleButton: {
-    backgroundColor: "none",
-  },
   meepleAvatar: {
     backgroundColor: "#fff",
     margin: 10,
     width: 60,
     height: 60,
+  },
+  listLink: {
+    textDecoration: "none",
   },
 }));
 
@@ -46,7 +47,7 @@ export function UserNavMenuButton(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
   const theme = useTheme<Theme>();
 
-  const classes = useStyles();
+  const { meepleAvatar, listLink } = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -75,8 +76,11 @@ export function UserNavMenuButton(): React.ReactElement {
 
   return (
     <div>
-      <IconButton color="inherit" size="medium" onClick={handleClick}>
+      <IconButton sx={{ display: { xs: "none", md: "block" } }} color="primary" size="medium" onClick={handleClick}>
         <MeepleMenu colorFilter={meepleCustomColorFilter} size={32} fill={userColor} />
+      </IconButton>
+      <IconButton sx={{ display: { xs: "block", md: "none" } }} color="primary" size="medium" onClick={handleClick}>
+        <Menu sx={{ color: "primary.main", fontSize: 32 }} />
       </IconButton>
       <Popover
         id={id}
@@ -96,7 +100,7 @@ export function UserNavMenuButton(): React.ReactElement {
           <ListItem>
             <Grid container justifyContent="center" alignItems="center" spacing={2}>
               <Grid item>
-                <Avatar className={classes.meepleAvatar}>
+                <Avatar className={meepleAvatar}>
                   <Meeple fill={userColor} />
                 </Avatar>
               </Grid>
@@ -105,7 +109,7 @@ export function UserNavMenuButton(): React.ReactElement {
               </Grid>
             </Grid>
           </ListItem>
-          <ListItem component={Link} to="/account">
+          <ListItem button onClick={handleClose} component={Link} className={listLink} to="/account">
             <ListItemIcon>
               <Icon path={mdiAccount} color={theme.palette.primary.main} size={1} />
             </ListItemIcon>

@@ -40,7 +40,7 @@ export function DesktopTabs(): React.ReactElement {
   const activeGroup = useSelector(selectActiveGroup);
 
   const isGroupAdmin = useMemo(() => {
-    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.groupId === activeGroup?.id);
+    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.group.id === activeGroup?.id);
     return activeUserActiveGroupMembership?.isAdmin || false;
   }, [activeGroup, activeUser]);
 

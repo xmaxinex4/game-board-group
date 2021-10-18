@@ -4,14 +4,13 @@ import { useDispatch } from "react-redux";
 import { Button, Grid } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 
-import { Group } from ".prisma/client";
-
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { useApi } from "../../../hooks/useApi";
 
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
 import { addUserGroup, setActiveGroupId } from "../redux/slice";
+import { GroupResponse } from "../../../api-types/response-types";
 
 export function CreateGroupForm(): React.ReactElement {
   const { apiPost } = useApi();
@@ -32,8 +31,7 @@ export function CreateGroupForm(): React.ReactElement {
 
     if (formValid) {
       setIsLoading(true);
-      // TODO: Create create response type or get from api (create api type project)
-      apiPost<{ group: Group; }>("/group/create", {
+      apiPost<{ group: GroupResponse; }>("/group/create", {
         name,
       })
         .then(({ data }) => {

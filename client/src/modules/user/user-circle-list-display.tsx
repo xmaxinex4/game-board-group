@@ -1,22 +1,22 @@
 import React from "react";
 
-import PencilIcon from "@mui/icons-material/Edit";
-import { makeStyles } from "@mui/styles";
 import {
   Grid,
   Tooltip,
   Avatar,
-  IconButton,
+  Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import { Meeple } from "../../images/components/meeple";
 
-import { User } from ".prisma/client";
 import { MeeplePaletteColors } from "../../theme/meeple-palettes";
+import { UserResponse } from "../../api-types/response-types";
 
 export interface UserCircleListDisplayProps {
-  users: User[];
+  users: Omit<UserResponse, "groupMemberships">[];
   onEditUsers?: () => void;
+  showNames?: boolean;
 }
 
 const useStyles = makeStyles(() => ({
@@ -26,27 +26,35 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.ReactElement {
-  const { users, onEditUsers } = props;
+  const { users, showNames } = props;
   const { meeple } = useStyles();
 
   return (
     <Grid container spacing={2} alignItems="center">
-      {(users && users.length > 0) && users.map((user) => (
-        <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
-          <Tooltip title={user.username} aria-label={user.username}>
-            <Avatar className={meeple}>
-              <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
-            </Avatar>
-          </Tooltip>
+      {users.map((user) => (
+        <Grid container item spacing={1} alignItems="center">
+          <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
+            {showNames
+              ? (
+                <Avatar className={meeple}>
+                  <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
+                </Avatar>
+              )
+              : (
+                <Tooltip title={user.username} aria-label={user.username}>
+                  <Avatar className={meeple}>
+                    <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
+                  </Avatar>
+                </Tooltip>
+              )}
+          </Grid>
+          {showNames && (
+            <Grid item>
+              <Typography>{user.username}</Typography>
+            </Grid>
+          )}
         </Grid>
       ))}
-      {onEditUsers && (
-        <Grid item>
-          <IconButton onClick={onEditUsers} color="primary" aria-label="edit owners" component="span">
-            <PencilIcon />
-          </IconButton>
-        </Grid>
-      )}
     </Grid>
   );
 }

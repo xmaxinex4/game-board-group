@@ -16,7 +16,7 @@ import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 import { selectActiveUser, setActiveUser } from "./modules/user/redux/slice";
 import { setActiveGroupId, setUserGroups } from "./modules/group/redux/slice";
-import { UserMeResponse } from "./api-types/response-types";
+import { MeUserResponse } from "./api-types/response-types";
 
 function App() {
   const { apiGet } = useApi();
@@ -25,8 +25,9 @@ function App() {
   const activeUser = useSelector(selectActiveUser);
 
   React.useEffect(() => {
-    if (!activeUser) {
-      apiGet<UserMeResponse>("/user/me").then(({ data }) => {
+    const token = localStorage.getItem("auth-token");
+    if (token && !activeUser) {
+      apiGet<MeUserResponse>("/user/me").then(({ data }) => {
         dispatch(setActiveUser({
           user: data?.id ? data : undefined,
         }));

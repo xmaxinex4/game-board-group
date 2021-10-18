@@ -3,21 +3,21 @@
 import { PURGE } from "redux-persist";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Group } from ".prisma/client";
+import { GroupResponse } from "../../../api-types/response-types";
 
 export type GroupState = {
-  userGroups: Group[] | undefined,
+  userGroups: GroupResponse[] | undefined,
   activeGroupId: string;
 };
 
 export type GroupStateReducers = {
   setUserGroups: (state: GroupState, action: {
     type: string,
-    payload: { groups: Group[]; },
+    payload: { groups: GroupResponse[]; },
   }) => void;
   addUserGroup: (state: GroupState, action: {
     type: string,
-    payload: { group: Group; },
+    payload: { group: GroupResponse; },
   }) => void;
   setActiveGroupId: (state: GroupState, action: {
     type: string,
@@ -34,13 +34,13 @@ export const groupSlice = createSlice<GroupState, GroupStateReducers>({
   reducers: {
     setUserGroups: (state, action: {
       type: string,
-      payload: { groups: Group[]; },
+      payload: { groups: GroupResponse[]; },
     }) => {
       state.userGroups = action.payload.groups;
     },
     addUserGroup: (state, action: {
       type: string,
-      payload: { group: Group; },
+      payload: { group: GroupResponse; },
     }) => {
       const newUserGroup = state.userGroups || [];
       state.userGroups = newUserGroup.concat(action.payload.group);
