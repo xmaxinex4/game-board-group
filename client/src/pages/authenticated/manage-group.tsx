@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { GroupManagementUserListDisplay } from "../../modules/group/group-management-user-list-display";
@@ -13,17 +13,14 @@ export function ManageGroup(): React.ReactElement {
   const activeGroupMemberships = (activeGroup && activeGroup.members?.length > 0) ? activeGroup.members : [];
 
   return (
-    <TabContentContainer title={`Managing ${activeGroup?.name}`}>
-      <Grid container item direction="column" alignItems="center" spacing={1}>
+    <TabContentContainer title="Group Members">
+      <Grid container item direction="column" alignItems="center" spacing={2}>
         <Grid item>
-          <Typography>Group Members</Typography>
+          <GroupManagementUserListDisplay memberships={activeGroupMemberships} />
         </Grid>
-      </Grid>
-      <Grid item>
-        <GroupManagementUserListDisplay memberships={activeGroupMemberships} />
-      </Grid>
-      <Grid item>
-        <Button variant="outlined">+ Member</Button>
+        <Grid item>
+          <Button variant="contained">+ Member</Button>
+        </Grid>
       </Grid>
     </TabContentContainer>
   );
