@@ -14,9 +14,9 @@ import { Page } from "./modules/common/layout/page";
 
 import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
-import { selectActiveUser, setActiveUser } from "./modules/user/redux/slice";
-import { setActiveGroupId, setUserGroups } from "./modules/group/redux/slice";
-import { MeUserResponse } from "./api-types/response-types";
+import { selectActiveUser, setActiveUser } from "./redux/active-user-slice";
+import { ActiveUserGroupMembershipsResponse, ActiveUserResponse } from "./types";
+import { setActiveUserGroupMemberships, setSelectedActiveUserGroupMembershipId } from "./redux/active-user-group-memberships-slice";
 
 function App() {
   const { apiGet } = useApi();
@@ -27,18 +27,32 @@ function App() {
   React.useEffect(() => {
     const token = localStorage.getItem("auth-token");
     if (token && !activeUser) {
-      apiGet<MeUserResponse>("/user/me").then(({ data }) => {
+      apiGet<ActiveUserResponse>("/user/active-user").then(({ data }) => {
         dispatch(setActiveUser({
           user: data?.id ? data : undefined,
         }));
+      });
+    }
+  }, [activeUser]);
 
-        dispatch(setActiveGroupId({
-          id: data?.groupMemberships?.[0]?.group?.id,
+  React.useEffect(() => {
+    if (activeUser) {
+      apiGet<ActiveUserGroupMembershipsResponse>("/user/active-user-group-memberships").then(({ data }) => {
+        dispatch(setActiveUserGroupMemberships({
+          groupMemberships: data?.groupMemberships,
         }));
 
-        dispatch(setUserGroups({
-          groups: data?.groupMemberships?.map((groupMembership) => groupMembership.group),
-        }));
+        const selectedId = localStorage.getItem("gbg-selected-active-user-group-membership");
+
+        if (selectedId && data?.groupMemberships?.some((membership) => membership.id === selectedId)) {
+          dispatch(setSelectedActiveUserGroupMembershipId({
+            id: selectedId,
+          }));
+        } else {
+          dispatch(setSelectedActiveUserGroupMembershipId({
+            id: data?.groupMemberships?.[0]?.id,
+          }));
+        }
       });
     }
   }, [activeUser]);

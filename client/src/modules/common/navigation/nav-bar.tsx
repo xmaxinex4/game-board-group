@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
+import { activeUserGroupMemberships } from "../../../redux/active-user-group-memberships-slice";
+
 import { ActiveGroupSelector } from "../../group/active-group-selector";
-import { selectActiveUser } from "../../user/redux/slice";
 
 import { UserNavMenuButton } from "./user-nav-menu-button";
 
@@ -25,7 +26,7 @@ export function NavBar(): React.ReactElement {
   const {
     appBar,
   } = useStyles();
-  const activeUser = useSelector(selectActiveUser);
+  const userGroupMemberships = useSelector(activeUserGroupMemberships);
 
   return (
     <Grid container>
@@ -33,7 +34,7 @@ export function NavBar(): React.ReactElement {
         <Toolbar>
           <Grid item container alignItems="center" justifyContent="space-between" spacing={2}>
             {
-              activeUser?.groupMemberships && activeUser?.groupMemberships?.length > 0 && (
+              userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 && (
                 <Grid item>
                   <ActiveGroupSelector />
                 </Grid>

@@ -17,9 +17,9 @@ import StatsIcon from "@mui/icons-material/PollTwoTone";
 import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 
 import Logo from "../../../images/png/logo.png";
-import { selectActiveUser } from "../../user/redux/slice";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
-import { selectActiveGroup } from "../../group/redux/slice";
+import { selectActiveUser } from "../../../redux/active-user-slice";
+import { selectedActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
 const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme) => ({
   root: ({ activeUserColor }) => ({
@@ -37,12 +37,7 @@ export interface DesktopTabsProps {
 
 export function DesktopTabs(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
-  const activeGroup = useSelector(selectActiveGroup);
-
-  const isGroupAdmin = useMemo(() => {
-    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.group.id === activeGroup?.id);
-    return activeUserActiveGroupMembership?.isAdmin || false;
-  }, [activeGroup, activeUser]);
+  const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
   // The last 2 digits on a hex represent the alpha value
   const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
@@ -63,7 +58,7 @@ export function DesktopTabs(): React.ReactElement {
     if (isPollsRoute?.isExact) return pollsTabIndex;
     if (isStatsRoute?.isExact) return statsTabIndex;
     if (isLibraryRoute?.isExact) return libraryTabIndex;
-    if (isGroupManageRoute?.isExact && isGroupAdmin) return groupManageTabIndex;
+    if (isGroupManageRoute?.isExact && activeUserGroupMembership?.isAdmin) return groupManageTabIndex;
     if (isMyGamesRoute?.isExact) return myGamesTabIndex;
     return 0;
   }, [isPollsRoute, isStatsRoute, isLibraryRoute, isGroupManageRoute]);
@@ -145,7 +140,7 @@ export function DesktopTabs(): React.ReactElement {
             )}
             to="/my-game-collections"
           />
-          {isGroupAdmin && (
+          {activeUserGroupMembership?.isAdmin && (
             <Tab
               component={Link}
               label={(

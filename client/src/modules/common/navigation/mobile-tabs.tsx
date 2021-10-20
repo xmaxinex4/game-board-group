@@ -13,8 +13,8 @@ import HomeIcon from "@mui/icons-material/HomeTwoTone";
 import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
 import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 
-import { selectActiveUser } from "../../user/redux/slice";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
+import { selectActiveUser } from "../../../redux/active-user-slice";
 
 const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme) => ({
   root: ({ activeUserColor }) => ({

@@ -10,6 +10,7 @@
   "compilerOptions": {
     "noEmit": true,
     "outDir": "build",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true
   }
 }

@@ -40,7 +40,7 @@ redisClient.on('connect', function () {
   console.log('Connected to Redis!');
 });
 
-initializeUserApi(app, prisma);
+initializeUserApi(app, prisma, redisClient);
 initializeGroupApi(app, prisma, redisClient);
 initializeCollectionApi(app, prisma);
 initializeLibraryApi(app, prisma);

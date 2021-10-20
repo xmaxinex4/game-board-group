@@ -9,12 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 
-import { selectActiveUser } from "../user/redux/slice";
-import { selectActiveGroup, setActiveGroupId } from "./redux/slice";
+import {
+  activeUserGroupMemberships,
+  setSelectedActiveUserGroupMembershipId,
+  selectedActiveUserGroupMembership,
+} from "../../redux/active-user-group-memberships-slice";
 
 export function ActiveGroupSelector(): React.ReactElement {
-  const activeUser = useSelector(selectActiveUser);
-  const activeGroup = useSelector(selectActiveGroup);
+  const userGroupMemberships = useSelector(activeUserGroupMemberships);
+  const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
+
+  console.log("activeGroupMembership: ", activeGroupMembership);
+
   const dispatch = useDispatch();
 
   // const onCreateGroupError = (error: ApolloError) => {
@@ -34,7 +40,9 @@ export function ActiveGroupSelector(): React.ReactElement {
     if (event.target.value === "Add Group") {
       console.log("open add group form");
     } else {
-      dispatch(setActiveGroupId({
+      localStorage.setItem("gbg-selected-active-user-group-membership", event.target.value);
+
+      dispatch(setSelectedActiveUserGroupMembershipId({
         id: event.target.value,
       }));
     }
@@ -57,17 +65,17 @@ export function ActiveGroupSelector(): React.ReactElement {
       <Select
         labelId="active-group-select"
         onChange={onActiveGroupChanged}
-        value={activeGroup ? activeGroup.id : ""}
+        value={activeGroupMembership ? activeGroupMembership.id : ""}
         label="Active Group"
         inputProps={{
           name: "active group",
           id: "group-select",
         }}
       >
-        {activeUser?.groupMemberships && activeUser?.groupMemberships?.map((groupMembership) => (
+        {userGroupMemberships && userGroupMemberships?.groupMemberships?.map((groupMembership) => (
           <MenuItem
-            key={`menu-item-group-id-${groupMembership.group.id}`}
-            value={groupMembership.group.id}
+            key={`menu-item-group-id-${groupMembership.id}`}
+            value={groupMembership.id}
           >
             <Typography variant="inherit" noWrap>
               {groupMembership.group.name}

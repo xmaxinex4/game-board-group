@@ -13,17 +13,20 @@ import {
 
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
-import activeUserReducer from "../modules/user/redux/slice";
-import groupStateReducer from "../modules/group/redux/slice";
+import activeUserReducer from "./active-user-slice";
+import activeUserGroupMembershipsStateReducer from "./active-user-group-memberships-slice";
+import activeUserGroupLibraryStateReducer from "./active-user-group-library-slice";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["activeUser"], // only activeUser will be persisted
 };
 
 const rootReducer = combineReducers({
   activeUser: activeUserReducer,
-  groupState: groupStateReducer,
+  activeUserGroupMembershipsState: activeUserGroupMembershipsStateReducer,
+  activeUserGroupLibraryState: activeUserGroupLibraryStateReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Switch, Route } from "react-router";
 import { useSelector } from "react-redux";
 
@@ -15,20 +15,16 @@ import { NavBar } from "../../modules/common/navigation/nav-bar";
 import { MyCollections } from "./my-collections";
 import { AccountSettings } from "./account-settings";
 import { NotFound } from "../error/not-found";
-import { selectActiveUser } from "../../modules/user/redux/slice";
-import { selectActiveGroup } from "../../modules/group/redux/slice";
+
 import { MobileTabs } from "../../modules/common/navigation/mobile-tabs";
 import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
+import { selectActiveUser } from "../../redux/active-user-slice";
+import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 
 export function AuthenticatedHomeRoutes(): React.ReactElement {
   const drawerWidth = 192;
+  const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
-  const activeGroup = useSelector(selectActiveGroup);
-
-  const isGroupAdmin = useMemo(() => {
-    const activeUserActiveGroupMembership = activeUser?.groupMemberships?.find((membership) => membership.group.id === activeGroup?.id);
-    return activeUserActiveGroupMembership?.isAdmin || false;
-  }, [activeGroup, activeUser]);
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -88,7 +84,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                 <Grid container item direction="column" alignItems="center">
                   <NavBar />
                   {
-                    activeGroup
+                    activeUserGroupMembership
                       ? (
                         <Grid container>
                           <Grid item style={{ width: "100%" }}>
@@ -99,7 +95,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                               <Route path="/stats" component={Stats} />
                               <Route path="/my-game-collections" component={MyCollections} />
                               <Route path="/account" component={AccountSettings} />
-                              {isGroupAdmin && (
+                              {activeUserGroupMembership?.isAdmin && (
                                 <Route path="/manage-group" component={ManageGroup} />
                               )}
                               <Route path="*" component={NotFound} />

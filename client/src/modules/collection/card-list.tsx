@@ -2,12 +2,11 @@ import React from "react";
 
 import { Grid } from "@mui/material";
 
-import { Collection, Game, User } from ".prisma/client";
-
 import { CollectionCard } from "./card";
+import { CollectionResponse } from "../../types";
 
 export interface CollectionCardListProps {
-  collections: (Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; })[];
+  collections: CollectionResponse[];
 }
 
 export function CollectionCardList(props: CollectionCardListProps): React.ReactElement {

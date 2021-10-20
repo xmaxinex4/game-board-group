@@ -3,17 +3,19 @@
 import React, { useCallback } from "react";
 
 import {
+  Box,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   IconButton,
   Typography,
 } from "@mui/material";
 import ZoomInTwoToneIcon from "@mui/icons-material/ZoomInTwoTone";
+import HideImageTwoToneIcon from "@mui/icons-material/HideImageTwoTone";
 import { makeStyles } from "@mui/styles";
 
-import { LibraryGame } from "./types";
+import { LibraryGame } from "../../types";
+import { ImageLoader } from "../common/image/image-loader";
 
 export interface LibraryCardProps {
   game: LibraryGame;
@@ -51,12 +53,15 @@ export function LibraryCard(props: LibraryCardProps): React.ReactElement {
       onClick={openGameDetailsDisplay}
       className={card}
     >
-      <CardMedia
-        component="img"
-        height="175"
-        image={game.urlImage || ""}
-        alt="game image"
-      />
+      {game.urlImage
+        ? (
+          <ImageLoader imgSrc={game.urlImage || ""} imageDimensions={{ height: "175px", width: "100%" }} />
+        )
+        : (
+          <Box display="flex" justifyContent="center" alignItems="center" height="175px" width="100%">
+            <HideImageTwoToneIcon color="primary" sx={{ fontSize: 56 }} />
+          </Box>
+        )}
       <CardContent>
         <Grid
           container

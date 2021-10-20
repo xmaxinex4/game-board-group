@@ -1,13 +1,14 @@
 import { Express } from "express";
-import { compare, hash } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { compare, hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
+import redis from "redis";
 
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 
-export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
-  app.get('/api/user/me', async (req, res) => {
+export const initializeUserApi = (app: Express, prisma: PrismaClient, redis: redis.RedisClient) => {
+  app.get("/api/user/active-user", async (req, res) => {
     try {
       const userId = getCurrentUserId(req, res);
       const result = await prisma.user.findUnique({
@@ -19,6 +20,24 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
           username: true,
           color: true,
           email: true,
+        }
+      });
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error getting current user: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.get("/api/user/active-user-group-memberships", async (req, res) => {
+    try {
+      const userId = getCurrentUserId(req, res);
+      const result = await prisma.user.findUnique({
+        where: {
+          id: userId
+        },
+        select: {
           groupMemberships: { // my memberships
             select: {
               id: true,
@@ -47,14 +66,25 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
         }
       });
 
-      return res.status(200).json(result);
+      const groupMembershipsWithActiveInviteLinks = result.groupMemberships?.map((membership) => {
+        let activeInviteLink = "";
+        redis.get(membership.id, function (err, reply) {
+          if (reply) {
+            activeInviteLink = reply;
+          }
+        });
+
+        return { ...membership, activeInvitationLink: activeInviteLink };
+      });
+
+      return res.status(200).json({ groupMemberships: groupMembershipsWithActiveInviteLinks });
     } catch (error) {
       console.error("Error getting current user: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
 
-  app.post('/api/user/create', async (req, res) => {
+  app.post("/api/user/create", async (req, res) => {
     const { color, email, password, username } = req.body;
 
     if (!color) {
@@ -94,7 +124,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
     }
   });
 
-  app.post('/api/user/login', async (req, res) => {
+  app.post("/api/user/login", async (req, res) => {
     const { email, password } = req.body;
 
     if (!email) {
@@ -108,7 +138,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient) => {
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email,
+          email
         },
       });
 

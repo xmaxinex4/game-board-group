@@ -31,6 +31,7 @@
     "colorize-filter": "^1.0.3",
     "history": "^5.0.0",
     "husky": "^7.0.2",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
@@ -71,6 +72,7 @@
   "devDependencies": {
     "@tsconfig/create-react-app": "^1.0.2",
     "@types/express": "^4.17.11",
+    "@types/lodash": "^4.14.175",
     "@types/react": "^17.0.26",
     "@types/react-color": "^3.0.5",
     "@types/react-dom": "^17.0.9",

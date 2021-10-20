@@ -9,8 +9,8 @@ import { useApi } from "../../../hooks/useApi";
 
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
-import { addUserGroup, setActiveGroupId } from "../redux/slice";
-import { GroupResponse } from "../../../api-types/response-types";
+import { GroupMembershipResponse } from "../../../types";
+import { addActiveUserGroupMembership, setSelectedActiveUserGroupMembershipId } from "../../../redux/active-user-group-memberships-slice";
 
 export function CreateGroupForm(): React.ReactElement {
   const { apiPost } = useApi();
@@ -31,19 +31,19 @@ export function CreateGroupForm(): React.ReactElement {
 
     if (formValid) {
       setIsLoading(true);
-      apiPost<{ group: GroupResponse; }>("/group/create", {
+      apiPost<{ groupMembership: GroupMembershipResponse; }>("/group/create", {
         name,
       })
         .then(({ data }) => {
           // TODO: Alert user their group has been created
-          console.log("created group: ", data?.group);
+          console.log("created group membership: ", data?.groupMembership);
 
-          dispatch(addUserGroup({
-            group: data?.group,
+          dispatch(addActiveUserGroupMembership({
+            groupMembership: data?.groupMembership,
           }));
 
-          dispatch(setActiveGroupId({
-            id: data?.group?.id,
+          dispatch(setSelectedActiveUserGroupMembershipId({
+            id: data?.groupMembership?.id,
           }));
         })
         .catch((error) => {

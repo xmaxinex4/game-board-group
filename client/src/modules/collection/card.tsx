@@ -9,14 +9,14 @@ import EditIcon from "@mui/icons-material/EditTwoTone";
 import RefreshIcon from "@mui/icons-material/SyncRounded";
 import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
 
-import { Collection, Game, User } from ".prisma/client";
-import { GameCircleListDisplay } from "../game/game-circle-list-display";
+import { CollectionResponse } from "../../types";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 import { PaddedCard } from "../common/layout/padded-card";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
+import { GameCircleListDisplay } from "../game/game-circle-list-display";
 
 export interface CollectionCardProps {
-  collection: Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; };
+  collection: CollectionResponse;
 }
 
 export function CollectionCard(props: CollectionCardProps): React.ReactElement {

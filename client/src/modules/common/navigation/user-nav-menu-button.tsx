@@ -25,8 +25,8 @@ import { Meeple } from "../../../images/components/meeple";
 import { MeepleMenu } from "../../../images/components/meeple-menu";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 import { SitePaletteColors } from "../../../theme/site-palettes";
-import { selectActiveUser } from "../../user/redux/slice";
 import { persistor } from "../../../redux/store";
+import { selectActiveUser } from "../../../redux/active-user-slice";
 
 const useStyles = makeStyles(() => ({
   meepleAvatar: {

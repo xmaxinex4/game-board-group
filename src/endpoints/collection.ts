@@ -20,13 +20,29 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
           }
         }
       },
-      include: {
-        games: true,
-        owners: true,
+      select: {
+        id: true,
+        name: true,
+        games: {
+          select: {
+            bggId: true,
+            name: true,
+            urlImage: true,
+            urlThumb: true,
+            year: true,
+          }
+        },
+        owners: {
+          select: {
+            id: true,
+            username: true,
+            color: true,
+          }
+        },
       }
     });
 
-    res.json(result);
+    res.json({ collections: result });
   });
 
   app.post("/api/collection/upsert", async (req, res) => {
@@ -98,7 +114,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         }
       });
 
-      res.json(result);
+      res.json({ collection: result });
     } catch (e) {
       console.log(e);
       return res.status(401).json({ error: `Failed to create collection` });

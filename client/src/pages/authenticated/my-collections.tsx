@@ -8,13 +8,14 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Collection, Game, User } from ".prisma/client";
+import { Game } from ".prisma/client";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { CreateCollectionForm } from "../../modules/collection/create/form";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 import { useApi } from "../../hooks/useApi";
 import { CollectionCardList } from "../../modules/collection/card-list";
+import { CollectionResponse, CollectionsResponse } from "../../types";
 
 const useStyles = makeStyles(() => ({
   createFormContainer: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function MyCollections(): React.ReactElement {
-  const [userCollections, setUserCollections] = useState<(Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; })[]>([]);
+  const [userCollections, setUserCollections] = useState<CollectionResponse[]>([]);
   const [loadingCollections, setLoadingCollections] = useState(false);
 
   const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
@@ -41,8 +42,8 @@ export function MyCollections(): React.ReactElement {
 
   const getCollections = useCallback(() => {
     setLoadingCollections(true);
-    apiGet<(Pick<Collection, "name" | "id"> & { games: Game[]; owners: User[]; })[]>("/collection/mycollections")
-      .then(({ data }) => setUserCollections(data))
+    apiGet<CollectionsResponse>("/collection/mycollections")
+      .then(({ data }) => setUserCollections(data.collections))
       .finally(() => setLoadingCollections(false));
   }, [setLoadingCollections]);
 

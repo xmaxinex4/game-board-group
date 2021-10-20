@@ -3,21 +3,19 @@ import React, { useState, useCallback } from "react";
 import { makeStyles } from "@mui/styles";
 import { Theme, Skeleton } from "@mui/material";
 
-export type ImageDimensions = { width: number; height: number; };
+export type ImageDimensions = { width: string; height: string; };
 
-const useStyles = makeStyles<Theme, { imgIsLoading: boolean; imageDimensions?: ImageDimensions; }>((theme) => ({
+const useStyles = makeStyles<Theme, { imgIsLoading: boolean; imageDimensions?: ImageDimensions; }>(() => ({
   skeleton: ({ imageDimensions }) => ({
     width: imageDimensions?.width ?? 0,
     height: imageDimensions?.height ?? 0,
-    borderRadius: `${theme.spacing(0.5)}px`,
-    boxShadow: theme.shadows[1],
+    objectFit: "cover",
   }),
   image: ({ imgIsLoading, imageDimensions }) => ({
     width: imageDimensions?.width ?? 0,
     height: imageDimensions?.height ?? 0,
-    borderRadius: `${theme.spacing(0.5)}px`,
-    boxShadow: theme.shadows[1],
     display: imgIsLoading ? "none" : "block",
+    objectFit: "cover",
   }),
 }));
 

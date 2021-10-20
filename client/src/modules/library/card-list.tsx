@@ -2,9 +2,11 @@ import React, { useCallback, useState } from "react";
 
 import { Grid } from "@mui/material";
 
-import { LibraryCard } from "./card";
-import { LibraryGame } from "./types";
+import { LibraryGame } from "../../types";
+
 import { GameDetailDialog } from "../game/game-detail-dialog";
+
+import { LibraryCard } from "./card";
 
 export interface LibraryCardListProps {
   games: LibraryGame[];

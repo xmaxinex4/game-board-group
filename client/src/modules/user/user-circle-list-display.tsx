@@ -8,9 +8,8 @@ import {
 import { makeStyles } from "@mui/styles";
 
 import { Meeple } from "../../images/components/meeple";
-
+import { UserResponse } from "../../types";
 import { MeeplePaletteColors } from "../../theme/meeple-palettes";
-import { UserResponse } from "../../api-types/response-types";
 
 export interface UserCircleListDisplayProps {
   users: Omit<UserResponse, "groupMemberships">[];
