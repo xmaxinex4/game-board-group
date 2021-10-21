@@ -1,4 +1,3 @@
-import redis from "redis";
 import { v4 as uuidv4 } from "uuid";
 
 import { Express } from "express";
@@ -6,7 +5,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 import { getCurrentUserId } from "../utils/get-current-user-id";
 
-export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: redis.RedisClient) => {
+export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet) => {
   app.post('/api/group/create', async (req, res) => {
     const userId = getCurrentUserId(req, res);
 
@@ -56,7 +55,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: re
         }
       });
 
-      return res.status(201).json({ groupMembership: groupMembership, activeInvitationLink: "" });
+      return res.status(201).json({ ...groupMembership, activeInvitationLink: "" });
     } catch (error) {
       console.error("Error on group create: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
@@ -118,49 +117,46 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: re
         break;
     }
 
-    const groupInvitationKey = uuidv4();
+    // TODO: If there is a key for this groupMembershipId already, delete it and the matching pair
 
-    redis.set(groupInvitationKey, groupMembershipId, "EX", ttl, function (err) {
-      if (err) {
-        console.log("Error setting redis key for invitation link: ", err);
-        return res.status(400).json({ error: `Unable to get new invitation link.` });
+    let uniqueKeyFound = false;
+    let groupInvitationKey = "";
+
+    while (!uniqueKeyFound) {
+      let possibleKey = uuidv4().split("-")[0];
+      let keyInRedis = await redisGet(possibleKey);
+      if (!keyInRedis) { // making sure key is unique
+        groupInvitationKey = possibleKey;
+        uniqueKeyFound = true;
       }
-    });
+    }
 
-    redis.set(groupMembershipId, groupInvitationKey, "EX", ttl, function (err) {
-      if (err) {
-        console.log("Error setting redis key for invitation link: ", err);
-        return res.status(400).json({ error: `Unable to get new invitation link.` });
-      }
-    });
+    const setInviteToGroupKey = await redisSet(groupInvitationKey, groupMembershipId, "EX", ttl);
+    const setGroupToInviteKey = await redisSet(groupMembershipId, groupInvitationKey, "EX", ttl);
 
-    return res.status(200).json({ link: `${process.env.BASEURL}api/group/add-user/${groupInvitationKey}` });
+    if (!setInviteToGroupKey || !setGroupToInviteKey) {
+      console.log("Error setting redis key for invitation link: ");
+      return res.status(400).json({ error: `Unable to get new invitation link.` });
+    }
+
+    return res.status(200).json({ link: `${process.env.BASEURL}group-invite/${groupInvitationKey}` });
   });
 
-  app.post('/api/group/add-user', async (req, res) => {
+  app.post('/api/group/add-user', async (req, res, next) => {
     const userId = getCurrentUserId(req, res);
 
-    const { guid } = req.query;
+    const { guid } = req.body;
 
     if (!guid || !guid.toString()) {
       return res.status(400).json({ error: `Missing invitition code.` });
     }
 
-    let groupMembershipId = null;
-
-    // get redis entry for guid, throw error if not found
-    redis.get(guid.toString(), function (err, reply) {
-      if (err) {
-        console.log("Error getting redis key for invitation link: ", err);
-        return res.status(400).json({ error: `Link Expired` });
-      } else {
-        groupMembershipId = reply;
-      }
-    });
+    const groupMembershipId = await redisGet(guid.toString());
 
     if (!groupMembershipId) {
-      return res.status(400).json({ error: `Unable to verify invitation link.` });
-    }
+      console.log("Failed to get redis key for invitation link; link not found in Redis.");
+      return res.status(400).json({ error: `Link Expired` });
+    };
 
     const group = await prisma.groupMember.findUnique({
       where: {
@@ -175,7 +171,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: re
       return res.status(400).json({ error: `Unable to verify invitation link.` });
     }
 
-    const userHasGroupMembership = await prisma.groupMember.findFirst({
+    const existingUserGroupMembership = await prisma.groupMember.findFirst({
       where: {
         AND: [
           {
@@ -184,16 +180,39 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: re
             }
           },
           {
-            id: {
-              equals: groupMembershipId,
+            groupId: {
+              equals: group.groupId,
             }
           },
         ]
+      },
+      select: {
+        id: true,
+        isAdmin: true,
+        group: {
+          select: {
+            id: true,
+            name: true,
+            members: {
+              select: {
+                id: true,
+                isAdmin: true,
+                user: {
+                  select: {
+                    id: true,
+                    username: true,
+                    color: true,
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     });
 
-    if (userHasGroupMembership) {
-      return res.status(400).json({ error: `User is already in this group.` });
+    if (existingUserGroupMembership) {
+      return res.status(201).json({ ...existingUserGroupMembership, activeInvitationLink: "", alreadyInGroup: true });
     }
 
     try {
@@ -236,7 +255,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redis: re
         }
       });
 
-      return res.status(201).json({ groupMembership: groupMembership, activeInvitationLink: "" });
+      return res.status(201).json({ ...groupMembership, activeInvitationLink: "", alreadyInGroup: false });
     } catch (error) {
       console.error("Error verifying invitation link: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });

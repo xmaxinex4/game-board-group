@@ -43,12 +43,9 @@ function App() {
         }));
 
         const selectedId = localStorage.getItem("gbg-selected-active-user-group-membership");
+        const persistedIdInCurrentGroupMemberships = selectedId && data?.groupMemberships?.some((membership) => membership.id === selectedId);
 
-        if (selectedId && data?.groupMemberships?.some((membership) => membership.id === selectedId)) {
-          dispatch(setSelectedActiveUserGroupMembershipId({
-            id: selectedId,
-          }));
-        } else {
+        if (!persistedIdInCurrentGroupMemberships) {
           dispatch(setSelectedActiveUserGroupMembershipId({
             id: data?.groupMemberships?.[0]?.id,
           }));

@@ -74,18 +74,20 @@ export function ManageGroup(): React.ReactElement {
   return (
     <TabContentContainer title="Group Members">
       <Grid container direction="column" spacing={4}>
-        {activeGroupMembership?.activeInvitationLink
-          ? (
-            <Grid item sx={{ marginLeft: "auto" }}>
-              <Typography>{activeGroupMembership.activeInvitationLink}</Typography>
-              <Typography>Copy button and Genenerate new button</Typography>
-            </Grid>
-          )
-          : (
-            <Grid item sx={{ marginLeft: "auto" }}>
-              <Button onClick={openGameDetails} variant="contained">+ Member</Button>
-            </Grid>
-          )}
+        {activeGroupMembership?.isAdmin && (
+          activeGroupMembership?.activeInvitationLink
+            ? (
+              <Grid item sx={{ marginLeft: "auto" }}>
+                <Typography>{activeGroupMembership.activeInvitationLink}</Typography>
+                <Typography>Copy button and Genenerate new button</Typography>
+              </Grid>
+            )
+            : (
+              <Grid item sx={{ marginLeft: "auto" }}>
+                <Button onClick={openGameDetails} variant="contained">+ Member</Button>
+              </Grid>
+            )
+        )}
         <Grid item>
           <ActiveGroupMembershipTable />
         </Grid>

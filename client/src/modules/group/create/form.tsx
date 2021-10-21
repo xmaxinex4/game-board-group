@@ -31,19 +31,19 @@ export function CreateGroupForm(): React.ReactElement {
 
     if (formValid) {
       setIsLoading(true);
-      apiPost<{ groupMembership: GroupMembershipResponse; }>("/group/create", {
+      apiPost<GroupMembershipResponse>("/group/create", {
         name,
       })
         .then(({ data }) => {
           // TODO: Alert user their group has been created
-          console.log("created group membership: ", data?.groupMembership);
+          console.log("created group membership: ", data);
 
           dispatch(addActiveUserGroupMembership({
-            groupMembership: data?.groupMembership,
+            groupMembership: data,
           }));
 
           dispatch(setSelectedActiveUserGroupMembershipId({
-            id: data?.groupMembership?.id,
+            id: data?.id,
           }));
         })
         .catch((error) => {

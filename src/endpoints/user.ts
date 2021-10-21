@@ -1,13 +1,12 @@
 import { Express } from "express";
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import redis from "redis";
 
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 
-export const initializeUserApi = (app: Express, prisma: PrismaClient, redis: redis.RedisClient) => {
+export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) => {
   app.get("/api/user/active-user", async (req, res) => {
     try {
       const userId = getCurrentUserId(req, res);
@@ -66,16 +65,23 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redis: red
         }
       });
 
-      const groupMembershipsWithActiveInviteLinks = result.groupMemberships?.map((membership) => {
-        let activeInviteLink = "";
-        redis.get(membership.id, function (err, reply) {
-          if (reply) {
-            activeInviteLink = reply;
-          }
-        });
+      const groupMembershipsWithActiveInviteLinks = [];
 
-        return { ...membership, activeInvitationLink: activeInviteLink };
-      });
+
+      await Promise.all(
+        result.groupMemberships?.map(async (membership) => {
+          let activeInviteLink = "";
+
+          if (membership.isAdmin) {
+            const codeFromRedis = await redisGet(membership.id);
+            if (codeFromRedis) {
+              activeInviteLink = `${process.env.BASEURL}group-invite/${codeFromRedis}`;
+            }
+          }
+
+          groupMembershipsWithActiveInviteLinks.push({ ...membership, activeInvitationLink: activeInviteLink });
+        })
+      );
 
       return res.status(200).json({ groupMemberships: groupMembershipsWithActiveInviteLinks });
     } catch (error) {

@@ -22,7 +22,7 @@ export function Library(): React.ReactElement {
   const [loadingLibrary, setLoadingLibrary] = useState(false);
 
   useEffect(() => {
-    if (isEmpty(activeLibrary.library) && activeGroupMembership?.group.id) {
+    if (activeGroupMembership?.group.id) {
       setLoadingLibrary(true);
       apiGet<LibraryReponse>("/library", { groupId: activeGroupMembership.group.id })
         .then(({ data }) => {
@@ -30,7 +30,7 @@ export function Library(): React.ReactElement {
         })
         .finally(() => setLoadingLibrary(false));
     }
-  }, [activeLibrary, activeGroupMembership]);
+  }, [activeGroupMembership]);
 
   return (
     <TabContentContainer title="Group Library">

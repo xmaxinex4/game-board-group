@@ -32,7 +32,7 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
   name: "activeUserGroupMemberships",
   initialState: {
     activeUserGroupMemberships: { groupMemberships: [] },
-    selectedActiveUserGroupMembershipId: "",
+    selectedActiveUserGroupMembershipId: localStorage.getItem("gbg-selected-active-user-group-membership") || "",
   },
   reducers: {
     setActiveUserGroupMemberships: (state, action: {
@@ -47,6 +47,9 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
     }) => {
       const newUserGroup = state.activeUserGroupMemberships.groupMemberships;
       state.activeUserGroupMemberships = { groupMemberships: newUserGroup.concat(action.payload.groupMembership) };
+
+      localStorage.setItem("gbg-selected-active-user-group-membership", action.payload.groupMembership.id);
+      state.selectedActiveUserGroupMembershipId = action.payload.groupMembership.id;
     },
     updateActiveUserGroupMembershipActiveInviteLink: (state, action: {
       type: string,
@@ -64,6 +67,7 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
       type: string,
       payload: { id: string; },
     }) => {
+      localStorage.setItem("gbg-selected-active-user-group-membership", action.payload.id);
       state.selectedActiveUserGroupMembershipId = action.payload.id;
     },
   },

@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import redis from "redis";
+import { promisify } from "util";
 
 import { PrismaClient } from ".prisma/client";
 import { initializeUserApi } from "./src/endpoints/user";
@@ -10,6 +11,8 @@ import { initializeLibraryApi } from "./src/endpoints/library";
 
 const prisma = new PrismaClient();
 const redisClient = redis.createClient();
+const redisGet = promisify(redisClient.get).bind(redisClient);
+const redisSet = promisify(redisClient.set).bind(redisClient);
 const app = express();
 var cors = require("cors");
 
@@ -21,9 +24,7 @@ app.use(express.urlencoded());
 app.use(express.static("public"));
 
 app.use(function (req, res, next) {
-  // Uncomment for local development
-  res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Origin", "https://gameboardgroup.com");
+  res.header("Access-Control-Allow-Origin", process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
   next();
@@ -40,8 +41,8 @@ redisClient.on('connect', function () {
   console.log('Connected to Redis!');
 });
 
-initializeUserApi(app, prisma, redisClient);
-initializeGroupApi(app, prisma, redisClient);
+initializeUserApi(app, prisma, redisGet);
+initializeGroupApi(app, prisma, redisGet, redisSet);
 initializeCollectionApi(app, prisma);
 initializeLibraryApi(app, prisma);
 

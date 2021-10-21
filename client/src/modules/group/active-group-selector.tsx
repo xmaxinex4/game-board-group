@@ -40,8 +40,6 @@ export function ActiveGroupSelector(): React.ReactElement {
     if (event.target.value === "Add Group") {
       console.log("open add group form");
     } else {
-      localStorage.setItem("gbg-selected-active-user-group-membership", event.target.value);
-
       dispatch(setSelectedActiveUserGroupMembershipId({
         id: event.target.value,
       }));

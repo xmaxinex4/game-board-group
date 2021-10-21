@@ -140,20 +140,18 @@ export function DesktopTabs(): React.ReactElement {
             )}
             to="/my-game-collections"
           />
-          {activeUserGroupMembership?.isAdmin && (
-            <Tab
-              component={Link}
-              label={(
-                <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
-                  <Grid item>
-                    <GroupIcon />
-                  </Grid>
-                  <Grid item>Group</Grid>
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
+                <Grid item>
+                  <GroupIcon />
                 </Grid>
-              )}
-              to="/manage-group"
-            />
-          )}
+                <Grid item>Group</Grid>
+              </Grid>
+            )}
+            to="/manage-group"
+          />
         </Tabs>
       </Grid>
     </Grid>

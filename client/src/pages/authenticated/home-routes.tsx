@@ -20,6 +20,7 @@ import { MobileTabs } from "../../modules/common/navigation/mobile-tabs";
 import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
+import { GroupInvite } from "./group-invite";
 
 export function AuthenticatedHomeRoutes(): React.ReactElement {
   const drawerWidth = 192;
@@ -95,9 +96,8 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                               <Route path="/stats" component={Stats} />
                               <Route path="/my-game-collections" component={MyCollections} />
                               <Route path="/account" component={AccountSettings} />
-                              {activeUserGroupMembership?.isAdmin && (
-                                <Route path="/manage-group" component={ManageGroup} />
-                              )}
+                              <Route path="/manage-group" component={ManageGroup} />
+                              <Route path="/group-invite/:inviteCode" component={GroupInvite} />
                               <Route path="*" component={NotFound} />
                             </Switch>
                           </Grid>
