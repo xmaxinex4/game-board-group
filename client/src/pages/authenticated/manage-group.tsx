@@ -154,7 +154,11 @@ export function ManageGroup(): React.ReactElement {
         </Grid>
       </Grid>
       {activeGroupMembership?.isAdmin && (
-        <Dialog onClose={closeGenerateInviteLinkDialog} open={generateLinkDialogOpen} sx={{ width: "none", marginTop: "64px" }}>
+        <Dialog
+          onClose={closeGenerateInviteLinkDialog}
+          open={generateLinkDialogOpen}
+          sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        >
           <DialogContent>
             <Grid container alignItems="center" justifyContent="center" spacing={4}>
               <Grid item xs={12}>
@@ -185,9 +189,15 @@ export function ManageGroup(): React.ReactElement {
               </Grid>
             </Grid>
           </DialogContent>
-          <DialogActions sx={{ padding: "24px" }}>
-            <Button variant="outlined" onClick={closeGenerateInviteLinkDialog} disabled={generatingLink}>Cancel</Button>
-            <Button variant="contained" onClick={generateNewLink} disabled={generatingLink}>Generate Invite Link</Button>
+          <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
+            <Grid container justifyContent="right" spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <Button fullWidth variant="outlined" onClick={closeGenerateInviteLinkDialog} disabled={generatingLink}>Cancel</Button>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button fullWidth variant="contained" onClick={generateNewLink} disabled={generatingLink}>Generate Invite Link</Button>
+              </Grid>
+            </Grid>
           </DialogActions>
         </Dialog>
       )}
