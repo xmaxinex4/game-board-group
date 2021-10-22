@@ -75,7 +75,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
           if (membership.isAdmin) {
             const codeFromRedis = await redisGet(membership.id);
             if (codeFromRedis) {
-              activeInviteLink = `${process.env.BASEURL}group-invite/${codeFromRedis}`;
+              activeInviteLink = `${process.env.BASEURL}invite/${codeFromRedis}`;
             }
           }
 

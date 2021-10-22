@@ -5,7 +5,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 import { getCurrentUserId } from "../utils/get-current-user-id";
 
-export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet) => {
+export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
     const userId = getCurrentUserId(req, res);
 
@@ -117,7 +117,13 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         break;
     }
 
-    // TODO: If there is a key for this groupMembershipId already, delete it and the matching pair
+    // If there is a key for this groupMembershipId already, delete it and the matching pair
+    const existingCode = await redisGet(groupMembershipId);
+
+    if (existingCode) {
+      await redisDelete(groupMembershipId);
+      await redisDelete(existingCode);
+    }
 
     let uniqueKeyFound = false;
     let groupInvitationKey = "";
@@ -139,7 +145,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(400).json({ error: `Unable to get new invitation link.` });
     }
 
-    return res.status(200).json({ link: `${process.env.BASEURL}group-invite/${groupInvitationKey}` });
+    return res.status(200).json({ link: `${process.env.BASEURL}invite/${groupInvitationKey}` });
   });
 
   app.post('/api/group/add-user', async (req, res, next) => {

@@ -1,19 +1,26 @@
 import React, { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import ContentCopyTwoToneIcon from "@mui/icons-material/ContentCopyTwoTone";
+
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogContentText,
   FormControl,
+  FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
-  Typography,
+  Tooltip,
+  TooltipProps,
 } from "@mui/material";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
@@ -31,15 +38,19 @@ export function ManageGroup(): React.ReactElement {
   const [generatingLink, setGeneratingLink] = useState(false);
   const [generateLinkDialogOpen, setGenerateLinkDialogOpen] = useState(false);
   const [linkTimeout, setLinkTimeout] = useState("1WEEK");
+  const [inviteLink, setInviteLink] = useState(activeGroupMembership?.activeInvitationLink || "");
+  const [tooltipState, setTooltipState] = useState<{ text: string, placement: TooltipProps["placement"]; }>(
+    { text: "Copy to Clipboard", placement: "bottom" },
+  );
 
   const dispatch = useDispatch();
 
-  const closeGameDetailDialog = useCallback(
+  const closeGenerateInviteLinkDialog = useCallback(
     () => setGenerateLinkDialogOpen(false),
     [setGenerateLinkDialogOpen],
   );
 
-  const openGameDetails = useCallback(() => {
+  const openGenerateInviteLink = useCallback(() => {
     setGenerateLinkDialogOpen(true);
   }, [setGenerateLinkDialogOpen]);
 
@@ -59,6 +70,8 @@ export function ManageGroup(): React.ReactElement {
             groupMembershipId: activeGroupMembership.id,
             link: data.link,
           }));
+
+          setInviteLink(data.link);
         })
         .catch((error) => {
           // TODO: Better error handling
@@ -66,25 +79,73 @@ export function ManageGroup(): React.ReactElement {
         })
         .finally(() => {
           setGeneratingLink(false);
-          closeGameDetailDialog();
+          closeGenerateInviteLinkDialog();
         });
     }
-  }, [activeGroupMembership, setGeneratingLink, linkTimeout]);
+  }, [activeGroupMembership, setGeneratingLink, linkTimeout, closeGenerateInviteLinkDialog, setInviteLink]);
+
+  const copyLinkToClipboard = useCallback(() => {
+    navigator.clipboard.writeText(inviteLink || "");
+    setTooltipState({ text: "Copied", placement: "top" });
+    setTimeout(() => {
+      setTooltipState({ text: "Copy to Clipboard", placement: "bottom" });
+    }, 1000);
+  }, [setTooltipState, inviteLink]);
 
   return (
     <TabContentContainer title="Group Members">
       <Grid container direction="column" spacing={4}>
         {activeGroupMembership?.isAdmin && (
-          activeGroupMembership?.activeInvitationLink
+          inviteLink
             ? (
-              <Grid item sx={{ marginLeft: "auto" }}>
-                <Typography>{activeGroupMembership.activeInvitationLink}</Typography>
-                <Typography>Copy button and Genenerate new button</Typography>
+              <Grid container item direction="column" alignItems="center" justifyContent="center" spacing={3}>
+                <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
+                  <FormControl
+                    variant="outlined"
+                    sx={{
+                      width: {
+                        xs: "100%",
+                        sm: "550px",
+                      },
+                    }}
+                  >
+                    <InputLabel htmlFor="outlined-adornment-password">Invite Link</InputLabel>
+                    <OutlinedInput
+                      readOnly
+                      id="invite-link"
+                      value={inviteLink}
+                      inputProps={{ sx: { textOverflow: "ellipsis" } }}
+                      endAdornment={(
+                        <InputAdornment position="end">
+                          <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
+                            <IconButton
+                              color="primary"
+                              aria-label="copy invite link to clipboard"
+                              onClick={copyLinkToClipboard}
+                              edge="end"
+                            >
+                              <ContentCopyTwoToneIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </InputAdornment>
+                      )}
+                      label="Invite Link"
+                    />
+                    <FormHelperText id="invite-link-helper-text">
+                      Send link to a friend to join this group
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item>
+                  <Button onClick={openGenerateInviteLink} variant="contained">
+                    Generate New Link
+                  </Button>
+                </Grid>
               </Grid>
             )
             : (
               <Grid item sx={{ marginLeft: "auto" }}>
-                <Button onClick={openGameDetails} variant="contained">+ Member</Button>
+                <Button onClick={openGenerateInviteLink} variant="contained">+ Member</Button>
               </Grid>
             )
         )}
@@ -92,33 +153,44 @@ export function ManageGroup(): React.ReactElement {
           <ActiveGroupMembershipTable />
         </Grid>
       </Grid>
-      <Dialog onClose={closeGameDetailDialog} open={generateLinkDialogOpen}>
-        <DialogTitle>
-          <Typography>Generate Link</Typography>
-        </DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Expire After</InputLabel>
-            <Select
-              labelId="set-link-expire-time"
-              id="link-expire-time-select"
-              value={linkTimeout}
-              label="Expire After"
-              onChange={onTimeoutChange}
-            >
-              <MenuItem value="30MIN">30 minutes</MenuItem>
-              <MenuItem value="1HR">1 hour</MenuItem>
-              <MenuItem value="6HR">6 hours</MenuItem>
-              <MenuItem value="12HR">12 hours</MenuItem>
-              <MenuItem value="1DAY">1 day</MenuItem>
-              <MenuItem value="1WEEK">1 week</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={generateNewLink} disabled={generatingLink}>Generate Invitation Link</Button>
-        </DialogActions>
-      </Dialog>
+      {activeGroupMembership?.isAdmin && (
+        <Dialog onClose={closeGenerateInviteLinkDialog} open={generateLinkDialogOpen} sx={{ width: "none", marginTop: "64px" }}>
+          <DialogContent>
+            <Grid container alignItems="center" justifyContent="center" spacing={4}>
+              <Grid item xs={12}>
+                <DialogContentText>
+                  Send an invite link to a friend to join this group
+                </DialogContentText>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="invite-link-expire-time">Expire After</InputLabel>
+                  <Select
+                    labelId="set-link-expire-time"
+                    id="link-expire-time-select"
+                    value={linkTimeout}
+                    label="Expire After"
+                    sx={{ width: "100%" }}
+                    fullWidth
+                    onChange={onTimeoutChange}
+                  >
+                    <MenuItem value="30MIN">30 minutes</MenuItem>
+                    <MenuItem value="1HR">1 hour</MenuItem>
+                    <MenuItem value="6HR">6 hours</MenuItem>
+                    <MenuItem value="12HR">12 hours</MenuItem>
+                    <MenuItem value="1DAY">1 day</MenuItem>
+                    <MenuItem value="1WEEK">1 week</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions sx={{ padding: "24px" }}>
+            <Button variant="outlined" onClick={closeGenerateInviteLinkDialog} disabled={generatingLink}>Cancel</Button>
+            <Button variant="contained" onClick={generateNewLink} disabled={generatingLink}>Generate Invite Link</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </TabContentContainer>
   );
 }

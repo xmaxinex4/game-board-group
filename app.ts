@@ -13,6 +13,7 @@ const prisma = new PrismaClient();
 const redisClient = redis.createClient();
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
+const redisDelete = promisify(redisClient.del).bind(redisClient);
 const app = express();
 var cors = require("cors");
 
@@ -42,7 +43,7 @@ redisClient.on('connect', function () {
 });
 
 initializeUserApi(app, prisma, redisGet);
-initializeGroupApi(app, prisma, redisGet, redisSet);
+initializeGroupApi(app, prisma, redisGet, redisSet, redisDelete);
 initializeCollectionApi(app, prisma);
 initializeLibraryApi(app, prisma);
 

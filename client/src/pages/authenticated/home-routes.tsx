@@ -97,7 +97,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                               <Route path="/my-game-collections" component={MyCollections} />
                               <Route path="/account" component={AccountSettings} />
                               <Route path="/manage-group" component={ManageGroup} />
-                              <Route path="/group-invite/:inviteCode" component={GroupInvite} />
+                              <Route path="/invite/:inviteCode" component={GroupInvite} />
                               <Route path="*" component={NotFound} />
                             </Switch>
                           </Grid>
