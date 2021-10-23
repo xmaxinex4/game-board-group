@@ -38,7 +38,6 @@ export function ManageGroup(): React.ReactElement {
   const [generatingLink, setGeneratingLink] = useState(false);
   const [generateLinkDialogOpen, setGenerateLinkDialogOpen] = useState(false);
   const [linkTimeout, setLinkTimeout] = useState("1WEEK");
-  const [inviteLink, setInviteLink] = useState(activeGroupMembership?.activeInvitationLink || "");
   const [tooltipState, setTooltipState] = useState<{ text: string, placement: TooltipProps["placement"]; }>(
     { text: "Copy to Clipboard", placement: "bottom" },
   );
@@ -70,8 +69,6 @@ export function ManageGroup(): React.ReactElement {
             groupMembershipId: activeGroupMembership.id,
             link: data.link,
           }));
-
-          setInviteLink(data.link);
         })
         .catch((error) => {
           // TODO: Better error handling
@@ -82,21 +79,21 @@ export function ManageGroup(): React.ReactElement {
           closeGenerateInviteLinkDialog();
         });
     }
-  }, [activeGroupMembership, setGeneratingLink, linkTimeout, closeGenerateInviteLinkDialog, setInviteLink]);
+  }, [activeGroupMembership, setGeneratingLink, linkTimeout, closeGenerateInviteLinkDialog, activeGroupMembership]);
 
   const copyLinkToClipboard = useCallback(() => {
-    navigator.clipboard.writeText(inviteLink || "");
+    navigator.clipboard.writeText(activeGroupMembership?.activeInvitationLink || "");
     setTooltipState({ text: "Copied", placement: "top" });
     setTimeout(() => {
       setTooltipState({ text: "Copy to Clipboard", placement: "bottom" });
     }, 1000);
-  }, [setTooltipState, inviteLink]);
+  }, [setTooltipState, activeGroupMembership]);
 
   return (
     <TabContentContainer title="Group Members">
       <Grid container direction="column" spacing={4}>
         {activeGroupMembership?.isAdmin && (
-          inviteLink
+          activeGroupMembership?.activeInvitationLink
             ? (
               <Grid container item direction="column" alignItems="center" justifyContent="center" spacing={3}>
                 <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
@@ -109,11 +106,11 @@ export function ManageGroup(): React.ReactElement {
                       },
                     }}
                   >
-                    <InputLabel htmlFor="outlined-adornment-password">Invite Link</InputLabel>
+                    <InputLabel>Invite Link</InputLabel>
                     <OutlinedInput
                       readOnly
                       id="invite-link"
-                      value={inviteLink}
+                      value={activeGroupMembership?.activeInvitationLink}
                       inputProps={{ sx: { textOverflow: "ellipsis" } }}
                       endAdornment={(
                         <InputAdornment position="end">

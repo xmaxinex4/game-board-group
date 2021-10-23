@@ -8,6 +8,7 @@ import { initializeUserApi } from "./src/endpoints/user";
 import { initializeGroupApi } from "./src/endpoints/group";
 import { initializeCollectionApi } from "./src/endpoints/collection";
 import { initializeLibraryApi } from "./src/endpoints/library";
+import { initializeAccountApi } from "./src/endpoints/account";
 
 const prisma = new PrismaClient();
 const redisClient = redis.createClient();
@@ -46,6 +47,7 @@ initializeUserApi(app, prisma, redisGet);
 initializeGroupApi(app, prisma, redisGet, redisSet, redisDelete);
 initializeCollectionApi(app, prisma);
 initializeLibraryApi(app, prisma);
+initializeAccountApi(app, prisma);
 
 // Redirect back to index.html if urls do not match
 if (process.env.NODE_ENV === 'production') {

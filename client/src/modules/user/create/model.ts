@@ -1,5 +1,9 @@
-import { User } from ".prisma/client";
+import { Color } from ".prisma/client";
 
-export type CreateUserFormModel = Partial<User> & {
+export type CreateUserFormModel = {
+  email: string;
+  username: string;
+  password: string;
   confirmPassword: string;
+  color: Color;
 };

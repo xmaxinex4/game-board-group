@@ -1,5 +1,7 @@
 import React from "react";
 
+import CircleIcon from "@mui/icons-material/Circle";
+
 import {
   Grid,
   Tooltip,
@@ -29,13 +31,38 @@ export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.
   return (
     <Grid container spacing={2} alignItems="center">
       {users.map((user) => (
-        <Grid item key={`user-cirlce-display-user-id-${user.id}`}>
-          <Tooltip title={user.username} aria-label={user.username}>
-            <Avatar className={meeple}>
-              <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
-            </Avatar>
-          </Tooltip>
-        </Grid>
+        <>
+          <Grid
+            item
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+            key={`user-cirlce-desktop-display-user-id-${user.id}`}
+          >
+            <Tooltip title={user.username} aria-label={user.username}>
+              <Avatar className={meeple}>
+                <Meeple size="icon" fill={MeeplePaletteColors[user.color].main} />
+              </Avatar>
+            </Tooltip>
+          </Grid>
+          <Grid
+            item
+            sx={{
+              display: {
+                xs: "block",
+                md: "none",
+              },
+            }}
+            key={`user-cirlce-mobile-display-user-id-${user.id}`}
+          >
+            <Tooltip title={user.username} aria-label={user.username}>
+              <CircleIcon sx={{ color: MeeplePaletteColors[user.color].main }} />
+            </Tooltip>
+          </Grid>
+        </>
       ))}
     </Grid>
   );

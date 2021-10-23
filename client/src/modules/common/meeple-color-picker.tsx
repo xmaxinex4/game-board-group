@@ -3,7 +3,7 @@
 import React, { useCallback } from "react";
 import { CirclePicker, ColorResult } from "react-color";
 
-import Casino from "@mui/icons-material/Image";
+import CircleIcon from "@mui/icons-material/Circle";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -37,7 +37,7 @@ export function MeepleColorPicker(props: MeepleColorPickerProps): React.ReactEle
   }, [setColor]);
 
   return (
-    <Grid container spacing={3} justifyContent="center" alignItems="center">
+    <Grid container spacing={4} justifyContent="center" alignItems="center">
       <Grid
         item
         sx={{
@@ -58,7 +58,7 @@ export function MeepleColorPicker(props: MeepleColorPickerProps): React.ReactEle
           },
         }}
       >
-        <Casino sx={{ color: MeeplePaletteColors[color].main, fontSize: 96 }} />
+        <CircleIcon sx={{ color: MeeplePaletteColors[color].main, fontSize: 96 }} />
       </Grid>
       <Grid item className={circlePicker}>
         <CirclePicker

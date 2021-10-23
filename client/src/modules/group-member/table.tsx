@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
+import CircleIcon from "@mui/icons-material/Circle";
 import Shield from "@mui/icons-material/ShieldTwoTone";
 import {
   Avatar,
@@ -60,10 +61,29 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
             >
               <TableCell component="th" scope="row">
                 <Grid container alignItems="center" spacing={2}>
-                  <Grid item>
+                  <Grid
+                    item
+                    sx={{
+                      display: {
+                        xs: "none",
+                        md: "block",
+                      },
+                    }}
+                  >
                     <Avatar className={meeple}>
                       <Meeple size="icon" fill={MeeplePaletteColors[membership.user.color].main} />
                     </Avatar>
+                  </Grid>
+                  <Grid
+                    item
+                    sx={{
+                      display: {
+                        xs: "block",
+                        md: "none",
+                      },
+                    }}
+                  >
+                    <CircleIcon sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
                   </Grid>
                   <Grid item>
                     <Typography>{membership.user.username}</Typography>

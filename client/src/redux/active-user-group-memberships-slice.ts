@@ -59,7 +59,7 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
         (membership) => membership.id === action.payload.groupMembershipId,
       );
 
-      if (groupMembershipIndex! < 0) {
+      if (!(groupMembershipIndex < 0)) {
         state.activeUserGroupMemberships.groupMemberships[groupMembershipIndex].activeInvitationLink = action.payload.link;
       }
     },
