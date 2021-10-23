@@ -43,17 +43,8 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
   );
 
   return (
-    <TableContainer sx={{ maxWidth: 800, margin: "auto" }} component={Paper}>
-      <Table
-        sx={{
-          minWidth: {
-            xs: 275,
-            sm: 500,
-            md: 600,
-          },
-        }}
-        aria-label="user table"
-      >
+    <TableContainer component={Paper}>
+      <Table aria-label="grouop members table">
         <TableBody>
           {activeGroupMemberships.map((membership) => (
             <TableRow

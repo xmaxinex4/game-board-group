@@ -91,63 +91,77 @@ export function ManageGroup(): React.ReactElement {
 
   return (
     <TabContentContainer title="Group Members">
-      <Grid container direction="column" spacing={4}>
-        {activeGroupMembership?.isAdmin && (
-          activeGroupMembership?.activeInvitationLink
-            ? (
-              <Grid container item direction="column" alignItems="center" justifyContent="center" spacing={3}>
-                <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
-                  <FormControl
-                    variant="outlined"
-                    sx={{
-                      width: {
-                        xs: "100%",
-                        sm: "550px",
-                      },
-                    }}
-                  >
-                    <InputLabel>Invite Link</InputLabel>
-                    <OutlinedInput
-                      readOnly
-                      id="invite-link"
-                      value={activeGroupMembership?.activeInvitationLink}
-                      inputProps={{ sx: { textOverflow: "ellipsis" } }}
-                      endAdornment={(
-                        <InputAdornment position="end">
-                          <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
-                            <IconButton
-                              color="primary"
-                              aria-label="copy invite link to clipboard"
-                              onClick={copyLinkToClipboard}
-                              edge="end"
-                            >
-                              <ContentCopyTwoToneIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </InputAdornment>
-                      )}
-                      label="Invite Link"
-                    />
-                    <FormHelperText id="invite-link-helper-text">
-                      Send link to a friend to join this group
-                    </FormHelperText>
-                  </FormControl>
+      <Grid container sx={{ marginLeft: "-16px" }}>
+        <Grid
+          sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
+          container
+          direction="column"
+          spacing={4}
+        >
+          {activeGroupMembership?.isAdmin && (
+            activeGroupMembership?.activeInvitationLink
+              ? (
+                <Grid
+                  container
+                  item
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  spacing={3}
+                >
+                  <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
+                    <FormControl
+                      variant="outlined"
+                      sx={{
+                        width: {
+                          xs: "100%",
+                          sm: "550px",
+                        },
+                      }}
+                    >
+                      <InputLabel>Invite Link</InputLabel>
+                      <OutlinedInput
+                        readOnly
+                        id="invite-link"
+                        value={activeGroupMembership?.activeInvitationLink}
+                        inputProps={{ sx: { textOverflow: "ellipsis" } }}
+                        endAdornment={(
+                          <InputAdornment position="end">
+                            <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
+                              <IconButton
+                                color="primary"
+                                aria-label="copy invite link to clipboard"
+                                onClick={copyLinkToClipboard}
+                                edge="end"
+                              >
+                                <ContentCopyTwoToneIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </InputAdornment>
+                        )}
+                        label="Invite Link"
+                      />
+                      <FormHelperText id="invite-link-helper-text">
+                        Send link to a friend to join this group
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <Button onClick={openGenerateInviteLink} variant="contained">
+                      Generate New Link
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Button onClick={openGenerateInviteLink} variant="contained">
-                    Generate New Link
-                  </Button>
+              )
+              : (
+                <Grid item sx={{ textAlign: "end" }}>
+                  <Button onClick={openGenerateInviteLink} variant="contained">+ Member</Button>
                 </Grid>
-              </Grid>
-            )
-            : (
-              <Grid item sx={{ marginLeft: "auto" }}>
-                <Button onClick={openGenerateInviteLink} variant="contained">+ Member</Button>
-              </Grid>
-            )
-        )}
-        <Grid item>
-          <ActiveGroupMembershipTable />
+              )
+          )}
+          <Grid item>
+            <ActiveGroupMembershipTable />
+          </Grid>
         </Grid>
       </Grid>
       {activeGroupMembership?.isAdmin && (
