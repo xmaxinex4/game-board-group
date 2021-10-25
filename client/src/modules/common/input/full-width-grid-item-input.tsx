@@ -7,8 +7,10 @@ import {
   FormHelperText,
   Grid,
   InputAdornment,
+  InputBaseComponentProps,
   InputLabel,
   OutlinedInput,
+  OutlinedInputProps,
 } from "@mui/material";
 
 import { GridTypeMap } from "@mui/material/Grid";
@@ -27,7 +29,8 @@ export interface FullWidthGridItemInputProps {
   gridItemProps?: Omit<GridTypeMap<{}, "div">, "alignItems">;
   input: String;
   inputLabel?: string;
-  inputProps?: InputProps;
+  inputProps?: InputBaseComponentProps;
+  outlinedInputProps?: OutlinedInputProps;
   onInputChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   setInputState: (input: string) => void;
 }
@@ -40,6 +43,7 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
     input,
     inputLabel,
     inputProps,
+    outlinedInputProps,
     innerEndAdornmentIconButton: InnerEndAdornmentIconButton,
     innerEndAdornmentOnClick,
     outerEndAdornmentIcon: OuterEndAdornmentIcon,
@@ -47,7 +51,6 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
     setInputState,
   } = props;
 
-  // const labelWidth = inputLabel ? inputLabel.length * 10 : 0;
   const hasError = useMemo(() => !!error, [error]);
   const [focused, setFocused] = React.useState(false);
 
@@ -85,11 +88,11 @@ export function FullWidthGridItemInput(props: FullWidthGridItemInputProps): Reac
         <OutlinedInput
           autoComplete="off"
           error={!!error}
-          // labelWidth={labelWidth}
           label={inputLabel}
           value={input}
           onChange={onChange}
-          {...inputProps}
+          inputProps={inputProps}
+          {...outlinedInputProps}
           onFocus={onFocus}
           onBlur={onBlur}
           endAdornment={(

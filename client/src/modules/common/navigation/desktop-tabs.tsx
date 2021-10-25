@@ -19,7 +19,6 @@ import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 import Logo from "../../../images/png/logo.png";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 import { selectActiveUser } from "../../../redux/active-user-slice";
-import { selectedActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
 const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme) => ({
   root: ({ activeUserColor }) => ({
@@ -37,7 +36,6 @@ export interface DesktopTabsProps {
 
 export function DesktopTabs(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
-  const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
   // The last 2 digits on a hex represent the alpha value
   const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
@@ -58,7 +56,7 @@ export function DesktopTabs(): React.ReactElement {
     if (isPollsRoute?.isExact) return pollsTabIndex;
     if (isStatsRoute?.isExact) return statsTabIndex;
     if (isLibraryRoute?.isExact) return libraryTabIndex;
-    if (isGroupManageRoute?.isExact && activeUserGroupMembership?.isAdmin) return groupManageTabIndex;
+    if (isGroupManageRoute?.isExact) return groupManageTabIndex;
     if (isMyGamesRoute?.isExact) return myGamesTabIndex;
     return 0;
   }, [isPollsRoute, isStatsRoute, isLibraryRoute, isGroupManageRoute]);

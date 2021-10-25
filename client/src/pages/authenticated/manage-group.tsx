@@ -30,6 +30,7 @@ import {
   selectedActiveUserGroupMembership,
   updateActiveUserGroupMembershipActiveInviteLink,
 } from "../../redux/active-user-group-memberships-slice";
+import { ActionButtons } from "../../modules/common/button/action-buttons";
 
 export function ManageGroup(): React.ReactElement {
   const { apiPost } = useApi();
@@ -155,7 +156,7 @@ export function ManageGroup(): React.ReactElement {
               )
               : (
                 <Grid item sx={{ textAlign: "end" }}>
-                  <Button onClick={openGenerateInviteLink} variant="contained">+ Member</Button>
+                  <Button onClick={openGenerateInviteLink} variant="contained">+ Add Member</Button>
                 </Grid>
               )
           )}
@@ -201,14 +202,13 @@ export function ManageGroup(): React.ReactElement {
             </Grid>
           </DialogContent>
           <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
-            <Grid container justifyContent="right" spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <Button fullWidth variant="outlined" onClick={closeGenerateInviteLinkDialog} disabled={generatingLink}>Cancel</Button>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Button fullWidth variant="contained" onClick={generateNewLink} disabled={generatingLink}>Generate Invite Link</Button>
-              </Grid>
-            </Grid>
+            <ActionButtons
+              onSave={generateNewLink}
+              saveButtonProps={{ disabled: generatingLink }}
+              saveText="Generate Invite Link"
+              onCancel={closeGenerateInviteLinkDialog}
+              cancelButtonProps={{ disabled: generatingLink }}
+            />
           </DialogActions>
         </Dialog>
       )}

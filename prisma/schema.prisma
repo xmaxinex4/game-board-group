@@ -9,29 +9,25 @@ datasource db {
 
 enum Color {
   Red
-  LightPink
+  Rose
   Pink
-  LightOrange
+  Merigold
   Orange
-  DarkOrange
-  LightYellow
-  Yellow
-  LightGreen
+  Squash
+  Olive
   Green
-  DarkGreen
-  LightBlue
-  Cyan
+  Pine
   Blue
   Teal
-  DarkBlue
-  LightPurple
+  Navy
+  Lilac
   Purple
-  DarkPurple
+  Plum
+  Tan
   Brown
-  DarkBrown
+  Silver
   Grey
-  DarkGrey
-  BlueGrey
+  Slate
 }
 
 enum Permission {

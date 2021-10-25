@@ -53,7 +53,8 @@ export function UpdateCollectionForm(): React.ReactElement {
           formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           outerEndAdornmentIcon={PersonIcon}
           input={name}
-          inputProps={{ id: "name" }}
+          inputProps={{ maxLength: 50 }}
+          outlinedInputProps={{ id: "name" }}
           inputLabel="Name"
           setInputState={setName}
           error={errors.name}

@@ -2,42 +2,38 @@ import { PaletteColor } from "@mui/material/styles/createPalette";
 
 export interface MeeplePaletteColorTheme {
   Red: PaletteColor;
-  LightPink: PaletteColor;
+  Rose: PaletteColor;
   Pink: PaletteColor;
-  LightOrange: PaletteColor;
+  Merigold: PaletteColor;
   Orange: PaletteColor;
-  DarkOrange: PaletteColor;
-  LightYellow: PaletteColor;
-  Yellow: PaletteColor;
-  LightGreen: PaletteColor;
+  Squash: PaletteColor;
+  Olive: PaletteColor;
   Green: PaletteColor;
-  DarkGreen: PaletteColor;
-  LightBlue: PaletteColor;
-  Cyan: PaletteColor;
+  Pine: PaletteColor;
   Blue: PaletteColor;
   Teal: PaletteColor;
-  DarkBlue: PaletteColor;
-  LightPurple: PaletteColor;
+  Navy: PaletteColor;
+  Lilac: PaletteColor;
   Purple: PaletteColor;
-  DarkPurple: PaletteColor;
+  Plum: PaletteColor;
+  Tan: PaletteColor;
   Brown: PaletteColor;
-  DarkBrown: PaletteColor;
+  Silver: PaletteColor;
   Grey: PaletteColor;
-  DarkGrey: PaletteColor;
-  BlueGrey: PaletteColor;
+  Slate: PaletteColor;
 }
 
 export const MeeplePaletteColors: MeeplePaletteColorTheme = {
   Red: {
-    light: "#ff5131",
-    dark: "#9b0000",
-    main: "#d50000",
+    light: "#ff6757",
+    dark: "#970004",
+    main: "#d0312d",
     contrastText: "#ffffff",
   },
-  LightPink: {
-    light: "#ffc6f3",
-    dark: "#ca6490",
-    main: "#ff94c0",
+  Rose: {
+    light: "#ffc6e1",
+    dark: "#c76480",
+    main: "#fc94af",
     contrastText: "",
   },
   Pink: {
@@ -46,70 +42,46 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     main: "#ff6090",
     contrastText: "#ffffff",
   },
-  LightOrange: {
+  Merigold: {
     light: "#fff562",
     dark: "#c79300",
     main: "#ffc32b",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Orange: {
-    light: "#ffb54e",
-    dark: "#c55500",
-    main: "#ff8418",
+    light: "#ffa048",
+    dark: "#b44100",
+    main: "#ed7014",
     contrastText: "#ffffff",
   },
-  DarkOrange: {
-    light: "#fe8438",
-    dark: "#8e2600",
-    main: "#c55500",
+  Squash: {
+    light: "#ff8a3f",
+    dark: "#922d00",
+    main: "#c95b0c",
     contrastText: "#ffffff",
   },
-  LightYellow: {
-    light: "#ffffcf",
-    dark: "#cbcc6d",
-    main: "#ffff9d",
-    contrastText: "",
-  },
-  Yellow: {
-    light: "#ffff6b",
-    dark: "#c8c500",
-    main: "#fff82f",
-    contrastText: "",
-  },
-  LightGreen: {
-    light: "#afff58",
-    dark: "#34c600",
-    main: "#76fa0a",
+  Olive: {
+    light: "#caf293",
+    dark: "#688f37",
+    main: "#98bf64",
     contrastText: "",
   },
   Green: {
-    light: "#80e27e",
-    dark: "#087f23",
-    main: "#4CAF50",
+    light: "#73e372",
+    dark: "#007f12",
+    main: "#3cb043",
     contrastText: "#ffffff",
   },
-  DarkGreen: {
-    light: "#3d825f",
-    dark: "#002b0f",
-    main: "#065535",
-    contrastText: "#ffffff",
-  },
-  LightBlue: {
-    light: "#e6ffff",
-    dark: "#82b3c9",
-    main: "#B3E5FC",
-    contrastText: "",
-  },
-  Cyan: {
-    light: "#62efff",
-    dark: "#008ba3",
-    main: "#00BCD4",
+  Pine: {
+    light: "#4f7c47",
+    dark: "#002600",
+    main: "#234f1e",
     contrastText: "#ffffff",
   },
   Blue: {
-    light: "#6ec6ff",
-    dark: "#0069c0",
-    main: "#2196F3",
+    light: "#5bc2f5",
+    dark: "#006491",
+    main: "#0492c2",
     contrastText: "#ffffff",
   },
   Teal: {
@@ -118,17 +90,17 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     main: "#009688",
     contrastText: "#ffffff",
   },
-  DarkBlue: {
-    light: "#3f5c94",
-    dark: "#000c3b",
-    main: "#003366",
+  Navy: {
+    light: "#4a39a2",
+    dark: "#000046",
+    main: "#0a1172",
     contrastText: "#ffffff",
   },
-  LightPurple: {
+  Lilac: {
     light: "#ffc4ff",
     dark: "#9c64a6",
     main: "#CE93D8",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Purple: {
     light: "#d05ce3",
@@ -136,96 +108,88 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     main: "#9C27B0",
     contrastText: "#ffffff",
   },
-  DarkPurple: {
+  Plum: {
     light: "#9b3eb0",
     dark: "#3a0053",
     main: "#6a0080",
     contrastText: "#ffffff",
   },
-  Brown: {
-    light: "#997b77",
-    dark: "#3e2723",
-    main: "#6a4f4b",
+  Tan: {
+    light: "#f5cb9a",
+    dark: "#8f6c3f",
+    main: "#c19a6b",
     contrastText: "#ffffff",
   },
-  DarkBrown: {
-    light: "#6a4f4b",
-    dark: "#1b0000",
-    main: "#3E2723",
+  Brown: {
+    light: "#684530",
+    dark: "#1d0000",
+    main: "#3b1e08",
     contrastText: "#ffffff",
+  },
+  Silver: {
+    light: "#f3f3f3",
+    dark: "#909090",
+    main: "#c0c0c0",
+    contrastText: "",
   },
   Grey: {
-    light: "#cfcfcf",
-    dark: "#707070",
-    main: "#9E9E9E",
+    light: "#afafaf",
+    dark: "#545454",
+    main: "#808080",
     contrastText: "#ffffff",
   },
-  DarkGrey: {
-    light: "",
-    dark: "",
-    main: "#666666",
-    contrastText: "#ffffff",
-  },
-  BlueGrey: {
-    light: "#8eacbb",
-    dark: "#34515e",
-    main: "#607D8B",
+  Slate: {
+    light: "#87a7be",
+    dark: "#2c4c61",
+    main: "#59788e",
     contrastText: "#ffffff",
   },
 };
 
 export const MeepleColorStringArray: string[] = [
   MeeplePaletteColors.Red.main,
-  MeeplePaletteColors.LightPink.main,
+  MeeplePaletteColors.Rose.main,
   MeeplePaletteColors.Pink.main,
-  MeeplePaletteColors.LightOrange.main,
+  MeeplePaletteColors.Merigold.main,
   MeeplePaletteColors.Orange.main,
-  MeeplePaletteColors.DarkOrange.main,
-  MeeplePaletteColors.LightYellow.main,
-  MeeplePaletteColors.Yellow.main,
-  MeeplePaletteColors.LightGreen.main,
+  MeeplePaletteColors.Squash.main,
+  MeeplePaletteColors.Olive.main,
   MeeplePaletteColors.Green.main,
-  MeeplePaletteColors.DarkGreen.main,
-  MeeplePaletteColors.LightBlue.main,
-  MeeplePaletteColors.Cyan.main,
+  MeeplePaletteColors.Pine.main,
   MeeplePaletteColors.Blue.main,
   MeeplePaletteColors.Teal.main,
-  MeeplePaletteColors.DarkBlue.main,
-  MeeplePaletteColors.LightPurple.main,
+  MeeplePaletteColors.Navy.main,
+  MeeplePaletteColors.Lilac.main,
   MeeplePaletteColors.Purple.main,
-  MeeplePaletteColors.DarkPurple.main,
+  MeeplePaletteColors.Plum.main,
+  MeeplePaletteColors.Tan.main,
   MeeplePaletteColors.Brown.main,
-  MeeplePaletteColors.DarkBrown.main,
+  MeeplePaletteColors.Silver.main,
   MeeplePaletteColors.Grey.main,
-  MeeplePaletteColors.DarkGrey.main,
-  MeeplePaletteColors.BlueGrey.main,
+  MeeplePaletteColors.Slate.main,
 ];
 
 const hashTableOfMainToMeeplePaletteColor = new Map<string, keyof MeeplePaletteColorTheme>([
-  ["#d50000", "Red"],
-  ["#ff94c0", "LightPink"],
+  ["#d0312d", "Red"],
+  ["#fc94af", "Rose"],
   ["#ff6090", "Pink"],
-  ["#ffc32b", "LightOrange"],
-  ["#ff8418", "Orange"],
-  ["#c55500", "DarkOrange"],
-  ["#ffff9d", "LightYellow"],
-  ["#fff82f", "Yellow"],
-  ["#76fa0a", "LightGreen"],
-  ["#4caf50", "Green"],
-  ["#065535", "DarkGreen"],
-  ["#b3e5fc", "LightBlue"],
-  ["#00bcd4", "Cyan"],
-  ["#2196f3", "Blue"],
+  ["#ffc32b", "Merigold"],
+  ["#ed7014", "Orange"],
+  ["#c95b0c", "Squash"],
+  ["#98bf64", "Olive"],
+  ["#3cb043", "Green"],
+  ["#234f1e", "Pine"],
+  ["#0492c2", "Blue"],
   ["#009688", "Teal"],
-  ["#003366", "DarkBlue"],
-  ["#ce93d8", "LightPurple"],
+  ["#0a1172", "Navy"],
+  ["#ce93d8", "Lilac"],
   ["#9c27b0", "Purple"],
-  ["#6a0080", "DarkPurple"],
-  ["#6a4f4b", "Brown"],
-  ["#3e2723", "DarkBrown"],
-  ["#9e9e9e", "Grey"],
-  ["#666666", "DarkGrey"],
-  ["#607d8b", "BlueGrey"],
+  ["#6a0080", "Plum"],
+  ["#c19a6b", "Tan"],
+  ["#3b1e08", "Brown"],
+  ["#c0c0c0", "Silver"],
+  ["#808080", "Grey"],
+  ["#59788e", "Slate"],
 ]);
 
 export const getMappedHexToPaletteColor = (

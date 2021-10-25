@@ -13,7 +13,7 @@ export function CollectionCardList(props: CollectionCardListProps): React.ReactE
   const { collections } = props;
 
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" spacing={2}>
       {collections.map((collection) => (
         <Grid key={`collection-card-collection-id-${collection.id}`} item>
           <CollectionCard collection={collection} />

@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { makeStyles } from "@mui/styles";
+import GameIcon from "@mui/icons-material/CasinoTwoTone";
+
 import {
   Button,
+  Card,
+  CardContent,
   CircularProgress,
   Grid,
   Typography,
@@ -17,17 +20,6 @@ import { useApi } from "../../hooks/useApi";
 import { CollectionCardList } from "../../modules/collection/card-list";
 import { CollectionResponse, CollectionsResponse } from "../../types";
 
-const useStyles = makeStyles(() => ({
-  createFormContainer: {
-    width: "100%",
-    maxWidth: "500px",
-  },
-  collectionCardList: {
-    width: "100%",
-    maxWidth: "800px !important",
-  },
-}));
-
 export function MyCollections(): React.ReactElement {
   const [userCollections, setUserCollections] = useState<CollectionResponse[]>([]);
   const [loadingCollections, setLoadingCollections] = useState(false);
@@ -35,10 +27,9 @@ export function MyCollections(): React.ReactElement {
   const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
   const [formGames, setFormGames] = useState<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">[]>([]);
 
-  const { createFormContainer, collectionCardList } = useStyles();
-
   const { apiGet } = useApi();
   const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
+  const hideForm = useCallback(() => setshowAddCollectionForm(false), [setshowAddCollectionForm]);
 
   const getCollections = useCallback(() => {
     setLoadingCollections(true);
@@ -53,42 +44,51 @@ export function MyCollections(): React.ReactElement {
   }, []);
 
   return (
-    <TabContentContainer title="My Game Collections">
-      {loadingCollections
-        ? (
-          <CircularProgress />
-        )
-        : (
-          <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
-            {showAddCollectionForm && (
-              <Grid item className={createFormContainer}>
-                <GamesStateContext.Provider value={{ games: formGames, setGames: setFormGames }}>
-                  <CreateCollectionForm />
-                </GamesStateContext.Provider>
-              </Grid>
-            )}
-            {!showAddCollectionForm && (
-              userCollections?.length > 0
-                ? (
-                  <Grid className={collectionCardList} item>
-                    <CollectionCardList collections={userCollections} />
-                  </Grid>
-                )
-                : (
-                  <>
+    <TabContentContainer title={showAddCollectionForm ? "" : "My Game Collections"}>
+      {
+        loadingCollections
+          ? (
+            <CircularProgress />
+          )
+          : (
+            <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
+              {showAddCollectionForm && (
+                <Grid item sx={{ width: "100%" }}>
+                  <Card sx={{ margin: "auto", maxWidth: "600px", minWidth: "275px" }}>
+                    <CardContent>
+                      <GamesStateContext.Provider value={{ games: formGames, setGames: setFormGames }}>
+                        <CreateCollectionForm onSave={showForm} onCancel={hideForm} />
+                      </GamesStateContext.Provider>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+              {!showAddCollectionForm && (
+                userCollections?.length > 0
+                  ? (
                     <Grid item>
-                      <Typography>
-                        Add a New Game Collection to Get Started!
-                      </Typography>
+                      <CollectionCardList collections={userCollections} />
                     </Grid>
-                    <Grid item>
-                      <Button onClick={showForm} variant="outlined">+ Add Collection</Button>
-                    </Grid>
-                  </>
-                )
-            )}
-          </Grid>
-        )}
+                  )
+                  : (
+                    <>
+                      <Grid item>
+                        <GameIcon fontSize="large" color="primary" />
+                      </Grid>
+                      <Grid item>
+                        <Typography>
+                          Add a New Game Collection to Get Started!
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Button onClick={showForm} variant="outlined">+ Add Collection</Button>
+                      </Grid>
+                    </>
+                  )
+              )}
+            </Grid>
+          )
+      }
     </TabContentContainer>
   );
 }

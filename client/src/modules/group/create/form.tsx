@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { useApi } from "../../../hooks/useApi";
@@ -45,6 +44,8 @@ export function CreateGroupForm(): React.ReactElement {
           dispatch(setSelectedActiveUserGroupMembershipId({
             id: data?.id,
           }));
+
+          window.location.href = "/manage-group";
         })
         .catch((error) => {
           // TODO: Better error handling
@@ -56,20 +57,45 @@ export function CreateGroupForm(): React.ReactElement {
 
   return (
     <form noValidate onSubmit={handleSubmit} autoComplete="off">
-      <Grid container direction="column" spacing={4}>
+      <Grid
+        container
+        direction="column"
+        spacing={4}
+        sx={{
+          minWidth: {
+            xs: "300px",
+            sm: "400px",
+            md: "500px",
+          },
+        }}
+      >
         <FullWidthGridItemInput
           formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-          outerEndAdornmentIcon={PersonIcon}
           input={name}
-          inputProps={{ id: "name" }}
+          inputProps={{ maxLength: 50 }}
+          outlinedInputProps={{ id: "name" }}
           inputLabel="Name"
           setInputState={setName}
           error={errors.name}
           onInputChange={clearErrorField}
         />
 
-        <Grid container item alignItems="stretch">
-          <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create Group</Button>
+        <Grid container item>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isLoading}
+            type="submit"
+            sx={{
+              marginLeft: "auto",
+              width: {
+                xs: "100%",
+                md: "unset",
+              },
+            }}
+          >
+            Create Group
+          </Button>
         </Grid>
       </Grid>
     </form>

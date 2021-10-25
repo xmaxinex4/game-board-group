@@ -31,7 +31,7 @@ export function NavBar(): React.ReactElement {
   return (
     <Grid container>
       <AppBar className={appBar} color="transparent" position="static">
-        <Toolbar>
+        <Toolbar sx={{ marginLeft: userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 ? "unset" : "auto" }}>
           <Grid item container alignItems="center" justifyContent="space-between" spacing={2}>
             {
               userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 && (

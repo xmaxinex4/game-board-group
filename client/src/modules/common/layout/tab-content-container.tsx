@@ -38,7 +38,7 @@ export function TabContentContainer(props: TabContentContainerProps & { children
             </Grid>
           </Grid>
         )}
-        <Grid container item>
+        <Grid item sx={{ width: "100%" }}>
           {children}
         </Grid>
       </Grid>

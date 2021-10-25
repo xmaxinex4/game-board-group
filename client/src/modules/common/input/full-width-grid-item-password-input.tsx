@@ -39,7 +39,8 @@ export function FullWidthGridItemPasswordInput(props: FullWidthGridItemPasswordI
       innerEndAdornmentOnClick={toggleShowPassword}
       outerEndAdornmentIcon={LockIcon}
       inputLabel={inputLabel || "Password"}
-      inputProps={{ type: showPasswordControl.showPassword ? "text" : "password", id: fullWidthGridItemInputId || "password" }}
+      inputProps={{ maxLength: 50 }}
+      outlinedInputProps={{ type: showPasswordControl.showPassword ? "text" : "password", id: fullWidthGridItemInputId || "password" }}
     />
   );
 }

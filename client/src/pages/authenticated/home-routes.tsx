@@ -102,7 +102,17 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                             </Switch>
                           </Grid>
                         </Grid>
-                      ) : <NoActiveGroup />
+                      )
+                      : (
+                        <Grid container>
+                          <Grid item style={{ width: "100%" }}>
+                            <Switch>
+                              <Route path="/account" component={AccountSettings} />
+                              <Route path="*" component={NoActiveGroup} />
+                            </Switch>
+                          </Grid>
+                        </Grid>
+                      )
                   }
                 </Grid>
               </Grid>

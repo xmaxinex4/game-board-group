@@ -79,7 +79,6 @@ export function GridItemInput(props: GridItemInputProps): React.ReactElement {
           <OutlinedInput
             error={error ? true : false}
             label={inputLabel}
-            // labelWidth={labelWidth}
             value={input}
             onChange={onChange}
             {...inputProps}

@@ -52,7 +52,8 @@ export function LoginForm(): React.ReactElement {
             formControlProps={{ disabled: isLoading, fullWidth: true }}
             outerEndAdornmentIcon={EmailIcon}
             input={email}
-            inputProps={{ id: "email" }}
+            inputProps={{ maxLength: 50 }}
+            outlinedInputProps={{ id: "email" }}
             inputLabel="Email"
             setInputState={setEmail}
             error={errors.email}

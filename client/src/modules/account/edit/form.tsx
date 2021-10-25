@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import {
-  Button,
   Grid,
   InputLabel,
 } from "@mui/material";
@@ -19,6 +18,7 @@ import { MeepleColorPicker } from "../../common/meeple-color-picker";
 import { EditAccountFormModel } from "./model";
 import { validateEditAccountForm } from "./validator";
 import { setActiveUser } from "../../../redux/active-user-slice";
+import { ActionButtons } from "../../common/button/action-buttons";
 
 export interface EditAccountFormProps {
   initialData: EditAccountFormModel;
@@ -46,9 +46,7 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
 
   const { apiPost } = useApi();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const isFormValid = validateEditAccountForm({
       username,
       color,
@@ -72,40 +70,42 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
   return (
-    <form noValidate onSubmit={handleSubmit}>
-      <Grid container direction="column" spacing={8}>
-        <Grid container item direction="column" spacing={4}>
-          <FullWidthGridItemInput
-            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-            outerEndAdornmentIcon={PersonIcon}
-            input={username}
-            inputProps={{ id: "username" }}
-            inputLabel="Username"
-            setInputState={setUsername}
-            error={errors.username}
-            onInputChange={clearErrorField}
+    <form noValidate onSubmit={handleFormSubmit}>
+      <Grid container direction="column" spacing={4}>
+        <FullWidthGridItemInput
+          formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+          outerEndAdornmentIcon={PersonIcon}
+          input={username}
+          inputProps={{ maxLength: 50 }}
+          outlinedInputProps={{ id: "username" }}
+          inputLabel="Username"
+          setInputState={setUsername}
+          error={errors.username}
+          onInputChange={clearErrorField}
+        />
+
+        <Grid container item direction="column" spacing={2}>
+          <Grid item>
+            <InputLabel required>Color</InputLabel>
+          </Grid>
+          <Grid item>
+            <MeepleColorPicker color={color} setColor={setColor} />
+          </Grid>
+        </Grid>
+
+        <Grid item>
+          <ActionButtons
+            formButtons
+            onSave={handleSubmit}
+            onCancel={onCancel}
+            disabled={isLoading}
           />
-
-          <Grid container item direction="column" spacing={2}>
-            <Grid item>
-              <InputLabel required>Color</InputLabel>
-            </Grid>
-            <Grid item>
-              <MeepleColorPicker color={color} setColor={setColor} />
-            </Grid>
-          </Grid>
-
-          <Grid item sx={{ marginLeft: { md: "auto" }, marginTop: "8px" }}>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <Button fullWidth variant="outlined" color="primary" disabled={isLoading} onClick={onCancel}>Cancel</Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Save</Button>
-              </Grid>
-            </Grid>
-          </Grid>
         </Grid>
       </Grid>
     </form>

@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 
-import {
-  Button,
-  Grid,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 
 import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
 import { ResetPasswordFormModel } from "./model";
 import { validateResetPasswordForm } from "./validator";
 import { useApi } from "../../../hooks/useApi";
 import { ActiveUserResponse } from "../../../types";
+import { ActionButtons } from "../../common/button/action-buttons";
 
 export interface ResetPasswordFormProps {
   onSave: () => void;
-};
+  onCancel: () => void;
+}
 
 export function ResetPasswordForm(props: ResetPasswordFormProps): React.ReactElement {
-  const { onSave } = props;
+  const { onSave, onCancel } = props;
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -40,9 +39,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps): React.ReactEle
 
   const { apiPost } = useApi();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const isFormValid = validateResetPasswordForm({
       currentPassword,
       newPassword,
@@ -56,7 +53,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps): React.ReactEle
         currentPassword,
         newPassword,
       })
-        .then(({ data }) => {
+        .then(() => {
           // TODO: Success
           onSave();
         })
@@ -68,8 +65,13 @@ export function ResetPasswordForm(props: ResetPasswordFormProps): React.ReactEle
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <form noValidate onSubmit={handleFormSubmit}>
       <Grid container direction="column" spacing={8}>
         <Grid container item direction="column" spacing={4}>
           <FullWidthGridItemPasswordInput
@@ -105,8 +107,13 @@ export function ResetPasswordForm(props: ResetPasswordFormProps): React.ReactEle
             showPasswordOverrideControl={showPasswordOverrideControl}
           />
 
-          <Grid container item alignItems="stretch">
-            <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create User</Button>
+          <Grid item>
+            <ActionButtons
+              formButtons
+              onSave={handleSubmit}
+              onCancel={onCancel}
+              disabled={isLoading}
+            />
           </Grid>
         </Grid>
       </Grid>
