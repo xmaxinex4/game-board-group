@@ -5,6 +5,7 @@ import { sign } from "jsonwebtoken";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
+import { ActiveUserGroupMembershipsResponse, GroupMembershipResponsePrismaSelect } from "../types/types";
 
 export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) => {
   app.get("/api/user/active-user", async (req, res) => {
@@ -39,31 +40,11 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
         select: {
           groupMemberships: { // my memberships
             select: {
-              id: true,
-              isAdmin: true,
-              group: {
-                select: {
-                  id: true,
-                  name: true,
-                  members: { // other user's memberships in your groups
-                    select: {
-                      id: true,
-                      isAdmin: true,
-                      user: {
-                        select: {
-                          id: true,
-                          username: true,
-                          color: true,
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              ...GroupMembershipResponsePrismaSelect
             }
           }
         }
-      });
+      }) as ActiveUserGroupMembershipsResponse;
 
       const groupMembershipsWithActiveInviteLinks = [];
 
@@ -106,7 +87,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
     }
 
     if (!username) {
-      return res.status(401).json({ error: `Missing username` });
+      return res.status(400).json({ error: `Missing username` });
     }
 
     // TODO: check if email is available

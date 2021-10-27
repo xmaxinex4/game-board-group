@@ -8,17 +8,18 @@ import {
 
 import PersonIcon from "@mui/icons-material/Person";
 
+import { ActiveUserResponse } from "../../../../../src/types/types";
+
 import { MeeplePaletteColorTheme } from "../../../theme/meeple-palettes";
 import { useApi } from "../../../hooks/useApi";
-import { ActiveUserResponse } from "../../../types";
+import { setActiveUser } from "../../../redux/active-user-slice";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { MeepleColorPicker } from "../../common/meeple-color-picker";
+import { ActionButtons } from "../../common/button/action-buttons";
 
 import { EditAccountFormModel } from "./model";
 import { validateEditAccountForm } from "./validator";
-import { setActiveUser } from "../../../redux/active-user-slice";
-import { ActionButtons } from "../../common/button/action-buttons";
 
 export interface EditAccountFormProps {
   initialData: EditAccountFormModel;

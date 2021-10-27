@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
-import PencilIcon from "@mui/icons-material/Edit";
+import PencilIcon from "@mui/icons-material/EditTwoTone";
+
 import {
   Avatar,
   Grid,

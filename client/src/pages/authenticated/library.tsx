@@ -4,11 +4,12 @@ import { isEmpty, values } from "lodash";
 
 import { Typography } from "@mui/material";
 
+import { LibraryReponse } from "../../../../src/types/types";
+
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { useApi } from "../../hooks/useApi";
 import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 import { LibraryCardList } from "../../modules/library/card-list";
-import { LibraryReponse } from "../../types";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { selectActiveUserGroupLibrary, setActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 

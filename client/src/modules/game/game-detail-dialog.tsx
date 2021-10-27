@@ -2,7 +2,7 @@ import React from "react";
 
 import { Dialog, DialogTitle } from "@mui/material";
 
-import { LibraryGame } from "../../types";
+import { LibraryGame } from "../../../../src/types/types";
 
 export interface GameDetailDialogProps {
   open: boolean;

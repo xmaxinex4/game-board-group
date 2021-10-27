@@ -1,22 +1,26 @@
+/* eslint-disable no-unused-vars */
+
 import React from "react";
 
 import { Grid } from "@mui/material";
 
+import { CollectionResponse } from "../../../../src/types/types";
+
 import { CollectionCard } from "./card";
-import { CollectionResponse } from "../../types";
 
 export interface CollectionCardListProps {
   collections: CollectionResponse[];
+  onCollectionCardEdit: (collection: CollectionResponse) => void;
 }
 
 export function CollectionCardList(props: CollectionCardListProps): React.ReactElement {
-  const { collections } = props;
+  const { collections, onCollectionCardEdit } = props;
 
   return (
     <Grid container direction="column" spacing={2}>
       {collections.map((collection) => (
         <Grid key={`collection-card-collection-id-${collection.id}`} item>
-          <CollectionCard collection={collection} />
+          <CollectionCard onEdit={onCollectionCardEdit} collection={collection} />
         </Grid>
       ))}
     </Grid>

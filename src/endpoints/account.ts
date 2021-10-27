@@ -3,6 +3,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
+import { ActiveUserResponse, ActiveUserResponsePrismaSelect } from "../types/types";
 
 export const initializeAccountApi = (app: Express, prisma: PrismaClient) => {
   app.post("/api/account/edit", async (req, res) => {
@@ -27,12 +28,9 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient) => {
           color,
         },
         select: {
-          id: true,
-          username: true,
-          color: true,
-          email: true,
+          ...ActiveUserResponsePrismaSelect
         }
-      });
+      }) as ActiveUserResponse;
 
       return res.status(200).json(result);
     } catch (error) {
@@ -41,7 +39,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient) => {
     }
   });
 
-  app.post("/api/account/reset-password", async (req, res) => {
+  app.post("/api/account/change-password", async (req, res) => {
     const userId = getCurrentUserId(req, res);
     const { currentPassword, newPassword } = req.body;
 
@@ -75,12 +73,9 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient) => {
           password: newPassword
         },
         select: {
-          id: true,
-          username: true,
-          color: true,
-          email: true,
+          ...ActiveUserResponsePrismaSelect
         }
-      });
+      }) as ActiveUserResponse;
 
       return res.status(200).json(result);
     } catch (error) {

@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { LibraryReponse } from "../types";
+import { LibraryReponse } from "../../../src/types/types";
 
 export type ActiveUserGroupLibraryState = {
   activeUserGroupLibrary: LibraryReponse,

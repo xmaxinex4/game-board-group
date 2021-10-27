@@ -11,25 +11,29 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Game } from ".prisma/client";
+import {
+  CollectionResponse,
+  CollectionsResponse,
+  GameResponse,
+} from "../../../../src/types/types";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
-import { CreateCollectionForm } from "../../modules/collection/create/form";
+import { UpsertCollectionForm } from "../../modules/collection/upsert/form";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 import { useApi } from "../../hooks/useApi";
 import { CollectionCardList } from "../../modules/collection/card-list";
-import { CollectionResponse, CollectionsResponse } from "../../types";
 
 export function MyCollections(): React.ReactElement {
   const [userCollections, setUserCollections] = useState<CollectionResponse[]>([]);
   const [loadingCollections, setLoadingCollections] = useState(false);
 
-  const [showAddCollectionForm, setshowAddCollectionForm] = useState(false);
-  const [formGames, setFormGames] = useState<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">[]>([]);
+  const [initialCollectionData, setInitialDataCollection] = useState<CollectionResponse>();
+  const [showUpsertCollectionForm, setShowUpsertCollectionForm] = useState(false);
+  const [formGames, setFormGames] = useState<GameResponse[]>([]);
 
   const { apiGet } = useApi();
-  const showForm = useCallback(() => setshowAddCollectionForm(true), [setshowAddCollectionForm]);
-  const hideForm = useCallback(() => setshowAddCollectionForm(false), [setshowAddCollectionForm]);
+  const showForm = useCallback(() => setShowUpsertCollectionForm(true), [setShowUpsertCollectionForm]);
+  const hideForm = useCallback(() => setShowUpsertCollectionForm(false), [setShowUpsertCollectionForm]);
 
   const getCollections = useCallback(() => {
     setLoadingCollections(true);
@@ -43,8 +47,20 @@ export function MyCollections(): React.ReactElement {
     getCollections();
   }, []);
 
+  const onCollectionCardEdit = useCallback((collection: CollectionResponse) => {
+    setInitialDataCollection(collection);
+    setFormGames(collection.games);
+    showForm();
+  }, [setFormGames, setShowUpsertCollectionForm]);
+
+  const onCollectionUpsertCancel = useCallback(() => {
+    setInitialDataCollection(undefined);
+    setFormGames([]);
+    hideForm();
+  }, [setInitialDataCollection, setFormGames, hideForm]);
+
   return (
-    <TabContentContainer title={showAddCollectionForm ? "" : "My Game Collections"}>
+    <TabContentContainer title={showUpsertCollectionForm ? "" : "My Game Collections"}>
       {
         loadingCollections
           ? (
@@ -52,22 +68,22 @@ export function MyCollections(): React.ReactElement {
           )
           : (
             <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
-              {showAddCollectionForm && (
+              {showUpsertCollectionForm && (
                 <Grid item sx={{ width: "100%" }}>
                   <Card sx={{ margin: "auto", maxWidth: "600px", minWidth: "275px" }}>
                     <CardContent>
                       <GamesStateContext.Provider value={{ games: formGames, setGames: setFormGames }}>
-                        <CreateCollectionForm onSave={showForm} onCancel={hideForm} />
+                        <UpsertCollectionForm initialData={initialCollectionData} onSave={showForm} onCancel={onCollectionUpsertCancel} />
                       </GamesStateContext.Provider>
                     </CardContent>
                   </Card>
                 </Grid>
               )}
-              {!showAddCollectionForm && (
+              {!showUpsertCollectionForm && (
                 userCollections?.length > 0
                   ? (
                     <Grid item>
-                      <CollectionCardList collections={userCollections} />
+                      <CollectionCardList onCollectionCardEdit={onCollectionCardEdit} collections={userCollections} />
                     </Grid>
                   )
                   : (

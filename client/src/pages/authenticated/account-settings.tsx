@@ -20,7 +20,7 @@ import { selectActiveUser } from "../../redux/active-user-slice";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { EditAccountForm } from "../../modules/account/edit/form";
 import { ActiveUserInfoDisplay } from "../../modules/user/active-user-info-display";
-import { ResetPasswordForm } from "../../modules/account/reset-password/form";
+import { ChangePasswordForm } from "../../modules/account/change-password/form";
 
 export function AccountSettings(): React.ReactElement {
   const theme = useTheme<Theme>();
@@ -43,11 +43,11 @@ export function AccountSettings(): React.ReactElement {
     setEditingAccount(false);
   }, [setEditingAccount]);
 
-  const openResetPassword = useCallback(() => {
+  const openChangePassword = useCallback(() => {
     setEditingPassword(true);
   }, [setEditingPassword]);
 
-  const closeResetPassword = useCallback(() => {
+  const closeChangePassword = useCallback(() => {
     setEditingPassword(false);
   }, [setEditingPassword]);
 
@@ -134,19 +134,19 @@ export function AccountSettings(): React.ReactElement {
           <Card sx={{ margin: "auto", maxWidth: "450px", minWidth: "275px" }}>
             <CardContent>
               {editingPassword && (
-                <ResetPasswordForm
-                  onCancel={closeResetPassword}
-                  onSave={closeResetPassword}
+                <ChangePasswordForm
+                  onCancel={closeChangePassword}
+                  onSave={closeChangePassword}
                 />
               )}
               {!editingPassword && (
-                <Button fullWidth onClick={openResetPassword}>
+                <Button fullWidth onClick={openChangePassword}>
                   <Grid container alignItems="center" justifyContent="center" spacing={2}>
                     <Grid item>
                       <LockIcon sx={{ fontSize: 40 }} color="primary" />
                     </Grid>
                     <Grid item>
-                      Reset Password
+                      Change Password
                     </Grid>
                   </Grid>
                 </Button>

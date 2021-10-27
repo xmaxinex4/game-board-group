@@ -1,10 +1,9 @@
 import React from "react";
-
-import { Game } from ".prisma/client";
+import { GameResponse } from "../../../src/types/types";
 
 export interface GamesStateContextProps {
-  games?: Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">[];
-  setGames?: React.Dispatch<React.SetStateAction<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">[]>>;
+  games?: GameResponse[];
+  setGames?: React.Dispatch<React.SetStateAction<GameResponse[]>>;
 }
 
 export const GamesStateContext = React.createContext<GamesStateContextProps>({ games: [], setGames: undefined });

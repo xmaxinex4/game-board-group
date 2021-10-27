@@ -3,13 +3,15 @@ import { useDispatch } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
 
-import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
+import { GroupMembershipResponse } from "../../../../../src/types/types";
+
 import { useApi } from "../../../hooks/useApi";
+import { addActiveUserGroupMembership, setSelectedActiveUserGroupMembershipId } from "../../../redux/active-user-group-memberships-slice";
+
+import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
-import { GroupMembershipResponse } from "../../../types";
-import { addActiveUserGroupMembership, setSelectedActiveUserGroupMembershipId } from "../../../redux/active-user-group-memberships-slice";
 
 export function CreateGroupForm(): React.ReactElement {
   const { apiPost } = useApi();

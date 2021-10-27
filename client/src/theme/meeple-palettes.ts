@@ -2,16 +2,20 @@ import { PaletteColor } from "@mui/material/styles/createPalette";
 
 export interface MeeplePaletteColorTheme {
   Red: PaletteColor;
+  Blush: PaletteColor;
   Rose: PaletteColor;
   Pink: PaletteColor;
+  Coral: PaletteColor;
   Merigold: PaletteColor;
+  Fire: PaletteColor;
   Orange: PaletteColor;
   Squash: PaletteColor;
   Olive: PaletteColor;
   Green: PaletteColor;
   Pine: PaletteColor;
-  Blue: PaletteColor;
   Teal: PaletteColor;
+  Blue: PaletteColor;
+  Regal: PaletteColor;
   Navy: PaletteColor;
   Lilac: PaletteColor;
   Purple: PaletteColor;
@@ -25,10 +29,16 @@ export interface MeeplePaletteColorTheme {
 
 export const MeeplePaletteColors: MeeplePaletteColorTheme = {
   Red: {
-    light: "#ff6757",
-    dark: "#970004",
-    main: "#d0312d",
+    light: "#f34f35",
+    dark: "#810000",
+    main: "#b90e0a",
     contrastText: "#ffffff",
+  },
+  Blush: {
+    light: "#f28377",
+    dark: "#872523",
+    main: "#bc544b",
+    contrastText: "ffffff",
   },
   Rose: {
     light: "#ffc6e1",
@@ -42,11 +52,23 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     main: "#ff6090",
     contrastText: "#ffffff",
   },
+  Coral: {
+    light: "#ffae98",
+    dark: "#c64d3f",
+    main: "#fe7d6a",
+    contrastText: "ffffff",
+  },
   Merigold: {
     light: "#fff562",
     dark: "#c79300",
     main: "#ffc32b",
     contrastText: "#ffffff",
+  },
+  Fire: {
+    light: "#ffd64e",
+    dark: "#c47600",
+    main: "#fda50f",
+    contrastText: "",
   },
   Orange: {
     light: "#ffa048",
@@ -78,34 +100,40 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     main: "#234f1e",
     contrastText: "#ffffff",
   },
-  Blue: {
-    light: "#5bc2f5",
-    dark: "#006491",
-    main: "#0492c2",
-    contrastText: "#ffffff",
-  },
   Teal: {
     light: "#52c7b8",
     dark: "#00675b",
     main: "#009688",
     contrastText: "#ffffff",
   },
+  Blue: {
+    light: "#5bc2f5",
+    dark: "#006491",
+    main: "#0492c2",
+    contrastText: "#ffffff",
+  },
+  Regal: {
+    light: "#5078c3",
+    dark: "#002664",
+    main: "#0e4d92",
+    contrastText: "",
+  },
   Navy: {
-    light: "#4a39a2",
-    dark: "#000046",
-    main: "#0a1172",
+    light: "#49449a",
+    dark: "#000040",
+    main: "#101d6b",
     contrastText: "#ffffff",
   },
   Lilac: {
-    light: "#ffc4ff",
-    dark: "#9c64a6",
-    main: "#CE93D8",
-    contrastText: "#ffffff",
+    light: "#efd9ff",
+    dark: "#8b78b6",
+    main: "#bca7e8",
+    contrastText: "",
   },
   Purple: {
-    light: "#d05ce3",
-    dark: "#6a0080",
-    main: "#9C27B0",
+    light: "#aa76b8",
+    dark: "#4c1f5b",
+    main: "#7a4988",
     contrastText: "#ffffff",
   },
   Plum: {
@@ -148,16 +176,20 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
 
 export const MeepleColorStringArray: string[] = [
   MeeplePaletteColors.Red.main,
+  MeeplePaletteColors.Blush.main,
   MeeplePaletteColors.Rose.main,
   MeeplePaletteColors.Pink.main,
+  MeeplePaletteColors.Coral.main,
   MeeplePaletteColors.Merigold.main,
+  MeeplePaletteColors.Fire.main,
   MeeplePaletteColors.Orange.main,
   MeeplePaletteColors.Squash.main,
   MeeplePaletteColors.Olive.main,
   MeeplePaletteColors.Green.main,
   MeeplePaletteColors.Pine.main,
-  MeeplePaletteColors.Blue.main,
   MeeplePaletteColors.Teal.main,
+  MeeplePaletteColors.Blue.main,
+  MeeplePaletteColors.Regal.main,
   MeeplePaletteColors.Navy.main,
   MeeplePaletteColors.Lilac.main,
   MeeplePaletteColors.Purple.main,
@@ -170,20 +202,24 @@ export const MeepleColorStringArray: string[] = [
 ];
 
 const hashTableOfMainToMeeplePaletteColor = new Map<string, keyof MeeplePaletteColorTheme>([
-  ["#d0312d", "Red"],
+  ["#b90e0a", "Red"],
+  ["#bc544b", "Blush"],
   ["#fc94af", "Rose"],
   ["#ff6090", "Pink"],
+  ["#fe7d6a", "Coral"],
   ["#ffc32b", "Merigold"],
+  ["#fda50f", "Fire"],
   ["#ed7014", "Orange"],
   ["#c95b0c", "Squash"],
   ["#98bf64", "Olive"],
   ["#3cb043", "Green"],
   ["#234f1e", "Pine"],
-  ["#0492c2", "Blue"],
   ["#009688", "Teal"],
-  ["#0a1172", "Navy"],
-  ["#ce93d8", "Lilac"],
-  ["#9c27b0", "Purple"],
+  ["#0492c2", "Blue"],
+  ["#0e4d92", "Regal"],
+  ["#101d6b", "Navy"],
+  ["#bca7e8", "Lilac"],
+  ["#7a4988", "Purple"],
   ["#6a0080", "Plum"],
   ["#c19a6b", "Tan"],
   ["#3b1e08", "Brown"],

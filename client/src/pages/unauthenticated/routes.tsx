@@ -11,6 +11,9 @@ import { Login } from "./login";
 import { CreateAccount } from "./create-account";
 import { ForgotPassword } from "./forgot-password";
 import { UnauthenticatedNavBar } from "../../modules/common/navigation/unauthenticated-nav-bar";
+import { TermsOfService } from "../authenticated/terms-of-service";
+import { PrivacyPolicy } from "../authenticated/privacy-policy";
+import { NavFooter } from "../../modules/common/navigation/nav-footer";
 
 const useStyles = makeStyles(() => ({
   gridContainer: {
@@ -30,7 +33,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
         <UnauthenticatedNavBar />
       </Grid>
       <Grid xs={12} item container className={gridContainer} alignItems="center" justifyContent="center" spacing={2}>
-        <Grid xs={12} className={logo} item>
+        <Grid onClick={() => null} xs={12} className={logo} item>
           <MeepleCircleSiteNameInline />
         </Grid>
         <Grid xs={12} item>
@@ -38,9 +41,14 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/create-account" component={CreateAccount} />
             <Route path="/login" component={Login} />
+            <Route exact path="/terms-of-service" component={TermsOfService} />
+            <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             <Route exact path="*" component={() => <Redirect to="/login" />} />
           </Switch>
         </Grid>
+      </Grid>
+      <Grid xs={12}>
+        <NavFooter />
       </Grid>
     </Grid>
   );

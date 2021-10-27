@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { ActiveUserGroupMembershipsResponse, GroupMembershipResponse } from "../types";
+import { ActiveUserGroupMembershipsResponse, GroupMembershipResponse } from "../../../src/types/types";
 
 export type ActiveUserGroupMembershipsState = {
   activeUserGroupMemberships: ActiveUserGroupMembershipsResponse,

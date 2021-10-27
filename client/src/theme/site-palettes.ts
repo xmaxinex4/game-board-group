@@ -26,7 +26,7 @@ export const SitePaletteColors: SitePaletteColorTheme = {
     light: "#ff503a",
     dark: "#950000",
     main: "#cf000f",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Success: {
     light: "#51cb70",

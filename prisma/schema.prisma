@@ -9,16 +9,20 @@ datasource db {
 
 enum Color {
   Red
+  Blush
   Rose
   Pink
+  Coral
   Merigold
+  Fire
   Orange
   Squash
   Olive
   Green
   Pine
-  Blue
   Teal
+  Blue
+  Regal
   Navy
   Lilac
   Purple

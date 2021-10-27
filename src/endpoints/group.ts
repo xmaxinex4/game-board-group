@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-
 import { Express } from "express";
 
 import { PrismaClient } from ".prisma/client";
+
 import { getCurrentUserId } from "../utils/get-current-user-id";
+import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
 
 export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
@@ -31,29 +32,9 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
           isAdmin: true,
         },
         select: {
-          id: true,
-          isAdmin: true,
-          group: {
-            select: {
-              id: true,
-              name: true,
-              members: {
-                select: {
-                  id: true,
-                  isAdmin: true,
-                  user: {
-                    select: {
-                      id: true,
-                      username: true,
-                      color: true,
-                    }
-                  }
-                }
-              }
-            }
-          }
+          ...GroupMembershipResponsePrismaSelect
         }
-      });
+      }) as GroupMembershipResponse;
 
       return res.status(201).json({ ...groupMembership, activeInvitationLink: "" });
     } catch (error) {
@@ -193,32 +174,12 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         ]
       },
       select: {
-        id: true,
-        isAdmin: true,
-        group: {
-          select: {
-            id: true,
-            name: true,
-            members: {
-              select: {
-                id: true,
-                isAdmin: true,
-                user: {
-                  select: {
-                    id: true,
-                    username: true,
-                    color: true,
-                  }
-                }
-              }
-            }
-          }
-        }
+        ...GroupMembershipResponsePrismaSelect
       }
-    });
+    }) as GroupMembershipResponse;
 
     if (existingUserGroupMembership) {
-      return res.status(201).json({ ...existingUserGroupMembership, activeInvitationLink: "", alreadyInGroup: true });
+      return res.status(200).json({ ...existingUserGroupMembership, activeInvitationLink: "", alreadyInGroup: true });
     }
 
     try {
@@ -237,31 +198,11 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
           isAdmin: false,
         },
         select: {
-          id: true,
-          isAdmin: true,
-          group: {
-            select: {
-              id: true,
-              name: true,
-              members: {
-                select: {
-                  id: true,
-                  isAdmin: true,
-                  user: {
-                    select: {
-                      id: true,
-                      username: true,
-                      color: true,
-                    }
-                  }
-                }
-              }
-            }
-          }
+          ...GroupMembershipResponsePrismaSelect
         }
-      });
+      }) as GroupMembershipResponse;
 
-      return res.status(201).json({ ...groupMembership, activeInvitationLink: "", alreadyInGroup: false });
+      return res.status(200).json({ ...groupMembership, activeInvitationLink: "", alreadyInGroup: false });
     } catch (error) {
       console.error("Error verifying invitation link: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });

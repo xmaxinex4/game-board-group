@@ -14,7 +14,8 @@ import ZoomInTwoToneIcon from "@mui/icons-material/ZoomInTwoTone";
 import HideImageTwoToneIcon from "@mui/icons-material/HideImageTwoTone";
 import { makeStyles } from "@mui/styles";
 
-import { LibraryGame } from "../../types";
+import { LibraryGame } from "../../../../src/types/types";
+
 import { ImageLoader } from "../common/image/image-loader";
 
 export interface LibraryCardProps {

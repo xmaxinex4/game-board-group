@@ -1,20 +1,23 @@
 import React from "react";
 
 import CircleIcon from "@mui/icons-material/Circle";
+import PencilIcon from "@mui/icons-material/EditTwoTone";
 
 import {
   Grid,
   Tooltip,
   Avatar,
+  IconButton,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
+import { UserResponse } from "../../../../src/types/types";
+
 import { Meeple } from "../../images/components/meeple";
-import { UserResponse } from "../../types";
 import { MeeplePaletteColors } from "../../theme/meeple-palettes";
 
 export interface UserCircleListDisplayProps {
-  users: Omit<UserResponse, "groupMemberships">[];
+  users: UserResponse[];
   onEditUsers?: () => void;
 }
 
@@ -25,12 +28,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.ReactElement {
-  const { users } = props;
+  const { users, onEditUsers } = props;
   const { meeple } = useStyles();
 
   return (
     <Grid container spacing={2} alignItems="center">
-      {users.map((user) => (
+      {users && users.map((user) => (
         <>
           <Grid
             item
@@ -64,6 +67,13 @@ export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.
           </Grid>
         </>
       ))}
+      {onEditUsers && (
+        <Grid item>
+          <IconButton onClick={onEditUsers} color="primary" aria-label="edit games" component="span">
+            <PencilIcon />
+          </IconButton>
+        </Grid>
+      )}
     </Grid>
   );
 }

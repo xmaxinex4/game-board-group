@@ -3,7 +3,7 @@
 import { PURGE } from "redux-persist";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { ActiveUserResponse } from "../types";
+import { ActiveUserResponse } from "../../../src/types/types";
 
 export type ActiveUserState = {
   activeUser: ActiveUserResponse | undefined,

@@ -6,16 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 
+import { ActiveUserGroupMembershipsResponse, ActiveUserResponse } from "../../src/types/types";
+
 import { defaultTheme, getMuiTheme } from "./theme";
-
 import { useApi } from "./hooks/useApi";
-
 import { Page } from "./modules/common/layout/page";
-
 import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 import { selectActiveUser, setActiveUser } from "./redux/active-user-slice";
-import { ActiveUserGroupMembershipsResponse, ActiveUserResponse } from "./types";
 import { setActiveUserGroupMemberships, setSelectedActiveUserGroupMembershipId } from "./redux/active-user-group-memberships-slice";
 
 function App() {

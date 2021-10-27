@@ -21,6 +21,9 @@ import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { GroupInvite } from "./group-invite";
+import { NavFooter } from "../../modules/common/navigation/nav-footer";
+import { TermsOfService } from "./terms-of-service";
+import { PrivacyPolicy } from "./privacy-policy";
 
 export function AuthenticatedHomeRoutes(): React.ReactElement {
   const drawerWidth = 192;
@@ -98,6 +101,8 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                               <Route path="/account" component={AccountSettings} />
                               <Route path="/manage-group" component={ManageGroup} />
                               <Route path="/invite/:inviteCode" component={GroupInvite} />
+                              <Route exact path="/terms-of-service" component={TermsOfService} />
+                              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
                               <Route path="*" component={NotFound} />
                             </Switch>
                           </Grid>
@@ -115,6 +120,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                       )
                   }
                 </Grid>
+                <NavFooter />
               </Grid>
             )
           }

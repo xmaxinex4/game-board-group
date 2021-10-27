@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 
 import { Grid } from "@mui/material";
 
-import { LibraryGame } from "../../types";
+import { LibraryGame } from "../../../../src/types/types";
 
 import { GameDetailDialog } from "../game/game-detail-dialog";
 

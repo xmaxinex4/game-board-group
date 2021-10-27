@@ -12,9 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 
+import { GroupMembershipResponse } from "../../../../src/types/types";
+
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { useApi } from "../../hooks/useApi";
-import { GroupMembershipResponse } from "../../types";
 import { addActiveUserGroupMembership, setSelectedActiveUserGroupMembershipId } from "../../redux/active-user-group-memberships-slice";
 
 export function GroupInvite(): React.ReactElement {
