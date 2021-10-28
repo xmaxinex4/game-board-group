@@ -6,8 +6,29 @@ import { getCurrentUserId } from "../utils/get-current-user-id";
 import { CollectionResponse, CollectionResponsePrismaSelect } from "../types/types";
 
 export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
-  // app.get("/api/collection/:id", async (req, res) => {
-  // });
+  app.get("/api/collection/get/:id", async (req, res) => {
+    getCurrentUserId(req, res);
+    const collectionId = req.params.id;
+
+    if (!collectionId) {
+      return res.status(400).json({ error: `missing collection id` });
+    }
+
+    const collection = await prisma.collection.findUnique({
+      where: {
+        id: collectionId
+      },
+      select: {
+        ...CollectionResponsePrismaSelect,
+      }
+    });
+
+    if (!collection) {
+      return res.status(404).json({ error: `collection not found` });
+    }
+
+    res.json({ collection });
+  });
 
   app.get("/api/collection/mycollections", async (req, res) => {
     const userId = getCurrentUserId(req, res);

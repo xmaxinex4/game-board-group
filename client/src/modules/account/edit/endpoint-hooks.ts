@@ -1,23 +1,27 @@
 /* eslint-disable no-unused-vars */
-
 import React from "react";
 
+import { Color } from ".prisma/client";
+
+import { ActiveUserResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
 
-export interface DeleteCollectionArgs {
-  collectionId: string;
-  onCollectionDeleted?: (collectionId: string) => void;
+export interface EditAccountArgs {
+  color: Color;
+  username: string;
+  onAccountEdited?: (activeUser: ActiveUserResponse) => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
-export function useDeleteCollection() {
+export function useEditAccount() {
   const { apiPost } = useApi();
 
-  function deleteCollection(args: DeleteCollectionArgs): void {
+  function editAccount(args: EditAccountArgs): void {
     const {
-      collectionId,
-      onCollectionDeleted,
+      color,
+      username,
+      onAccountEdited,
       setIsLoading,
       onError,
     } = args;
@@ -26,17 +30,18 @@ export function useDeleteCollection() {
       setIsLoading(true);
     }
 
-    apiPost<{ deletedCollectionId: string; }>("/collection/delete", {
-      collectionId,
+    apiPost<ActiveUserResponse>("/account/edit", {
+      color,
+      username,
     })
       .then(({ data }) => {
-        if (onCollectionDeleted) {
-          onCollectionDeleted(data.deletedCollectionId);
+        if (onAccountEdited) {
+          onAccountEdited(data);
         }
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         // TODO: Better error handling
-        console.log("create collection error: ", error);
+        console.log("edit account error: ", error);
         if (onError) {
           onError(error);
         }
@@ -48,5 +53,5 @@ export function useDeleteCollection() {
       });
   }
 
-  return { deleteCollection };
+  return { editAccount };
 }

@@ -1,23 +1,24 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
+import { CollectionResponse } from "../../../../../src/types/types";
 
 import { useApi } from "../../../hooks/useApi";
 
-export interface DeleteCollectionArgs {
+export interface RefreshCollectionArgs {
   collectionId: string;
-  onCollectionDeleted?: (collectionId: string) => void;
+  onCollectionRetrieved?: (collection: CollectionResponse) => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
-export function useDeleteCollection() {
-  const { apiPost } = useApi();
+export function useRefreshCollection() {
+  const { apiGet } = useApi();
 
-  function deleteCollection(args: DeleteCollectionArgs): void {
+  function refreshCollection(args: RefreshCollectionArgs): void {
     const {
       collectionId,
-      onCollectionDeleted,
+      onCollectionRetrieved,
       setIsLoading,
       onError,
     } = args;
@@ -26,12 +27,12 @@ export function useDeleteCollection() {
       setIsLoading(true);
     }
 
-    apiPost<{ deletedCollectionId: string; }>("/collection/delete", {
+    apiGet<{ collection: CollectionResponse; }>(`/collection/${collectionId}`, {
       collectionId,
     })
       .then(({ data }) => {
-        if (onCollectionDeleted) {
-          onCollectionDeleted(data.deletedCollectionId);
+        if (onCollectionRetrieved) {
+          onCollectionRetrieved(data.collection);
         }
       })
       .catch((error: Error) => {
@@ -48,5 +49,5 @@ export function useDeleteCollection() {
       });
   }
 
-  return { deleteCollection };
+  return { refreshCollection };
 }

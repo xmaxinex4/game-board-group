@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   Button,
   Grid,
@@ -10,7 +9,7 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 
-import { MeeplePaletteColorTheme } from "../../../theme/meeple-palettes";
+import { Color } from ".prisma/client";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
@@ -25,7 +24,7 @@ export function CreateUserForm(): React.ReactElement {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [color, setColor] = useState<keyof MeeplePaletteColorTheme>("Red");
+  const [color, setColor] = useState<Color>("Red");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Omit<CreateUserFormModel, "color"> & { color: string; }>({
     username: "",

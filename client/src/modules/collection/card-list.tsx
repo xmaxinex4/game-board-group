@@ -1,24 +1,26 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { Grid } from "@mui/material";
 
 import { CollectionResponse } from "../../../../src/types/types";
+import { selectActiveUserCollections } from "../../redux/active-user-collections-slice";
 
 import { CollectionCard } from "./card";
 
 export interface CollectionCardListProps {
-  collections: CollectionResponse[];
   onCollectionCardEdit: (collection: CollectionResponse) => void;
 }
 
 export function CollectionCardList(props: CollectionCardListProps): React.ReactElement {
-  const { collections, onCollectionCardEdit } = props;
+  const { onCollectionCardEdit } = props;
+  const userCollections = useSelector(selectActiveUserCollections);
 
   return (
     <Grid container direction="column" spacing={2}>
-      {collections.map((collection) => (
+      {userCollections?.collections?.map((collection) => (
         <Grid key={`collection-card-collection-id-${collection.id}`} item>
           <CollectionCard onEdit={onCollectionCardEdit} collection={collection} />
         </Grid>

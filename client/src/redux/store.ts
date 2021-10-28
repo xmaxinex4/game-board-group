@@ -16,6 +16,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import activeUserReducer from "./active-user-slice";
 import activeUserGroupMembershipsStateReducer from "./active-user-group-memberships-slice";
 import activeUserGroupLibraryStateReducer from "./active-user-group-library-slice";
+import activeUserCollectionsStateReducer from "./active-user-collections-slice";
 
 const persistConfig = {
   key: "root",
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   activeUser: activeUserReducer,
   activeUserGroupMembershipsState: activeUserGroupMembershipsStateReducer,
   activeUserGroupLibraryState: activeUserGroupLibraryStateReducer,
+  activeUserCollectionsState: activeUserCollectionsStateReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import GameIcon from "@mui/icons-material/CasinoTwoTone";
 
@@ -22,14 +23,16 @@ import { UpsertCollectionForm } from "../../modules/collection/upsert/form";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 import { useApi } from "../../hooks/useApi";
 import { CollectionCardList } from "../../modules/collection/card-list";
+import { selectActiveUserCollections, setActiveUserCollections } from "../../redux/active-user-collections-slice";
 
 export function MyCollections(): React.ReactElement {
-  const [userCollections, setUserCollections] = useState<CollectionResponse[]>([]);
   const [loadingCollections, setLoadingCollections] = useState(false);
-
   const [initialCollectionData, setInitialDataCollection] = useState<CollectionResponse>();
   const [showUpsertCollectionForm, setShowUpsertCollectionForm] = useState(false);
   const [formGames, setFormGames] = useState<GameResponse[]>([]);
+
+  const dispatch = useDispatch();
+  const userCollections = useSelector(selectActiveUserCollections);
 
   const { apiGet } = useApi();
   const showForm = useCallback(() => setShowUpsertCollectionForm(true), [setShowUpsertCollectionForm]);
@@ -38,7 +41,7 @@ export function MyCollections(): React.ReactElement {
   const getCollections = useCallback(() => {
     setLoadingCollections(true);
     apiGet<CollectionsResponse>("/collection/mycollections")
-      .then(({ data }) => setUserCollections(data.collections))
+      .then(({ data }) => dispatch(setActiveUserCollections({ collections: data.collections })))
       .finally(() => setLoadingCollections(false));
   }, [setLoadingCollections]);
 
@@ -80,10 +83,10 @@ export function MyCollections(): React.ReactElement {
                 </Grid>
               )}
               {!showUpsertCollectionForm && (
-                userCollections?.length > 0
+                userCollections?.collections?.length > 0
                   ? (
                     <Grid item>
-                      <CollectionCardList onCollectionCardEdit={onCollectionCardEdit} collections={userCollections} />
+                      <CollectionCardList onCollectionCardEdit={onCollectionCardEdit} />
                     </Grid>
                   )
                   : (

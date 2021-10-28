@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -8,10 +8,9 @@ import {
 
 import PersonIcon from "@mui/icons-material/Person";
 
-import { ActiveUserResponse } from "../../../../../src/types/types";
+import { Color } from ".prisma/client";
 
-import { MeeplePaletteColorTheme } from "../../../theme/meeple-palettes";
-import { useApi } from "../../../hooks/useApi";
+import { ActiveUserResponse } from "../../../../../src/types/types";
 import { setActiveUser } from "../../../redux/active-user-slice";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
@@ -20,6 +19,7 @@ import { ActionButtons } from "../../common/button/action-buttons";
 
 import { EditAccountFormModel } from "./model";
 import { validateEditAccountForm } from "./validator";
+import { useEditAccount } from "./endpoint-hooks";
 
 export interface EditAccountFormProps {
   initialData: EditAccountFormModel;
@@ -33,8 +33,9 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState(initialData.username);
-  const [color, setColor] = useState<keyof MeeplePaletteColorTheme>(initialData.color);
+  const [color, setColor] = useState<Color>(initialData.color);
 
+  const { editAccount } = useEditAccount();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Omit<EditAccountFormModel, "color"> & { color: string; }>({
     username: "",
@@ -45,7 +46,10 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const { apiPost } = useApi();
+  const onAccountEdited = useCallback((user: ActiveUserResponse) => {
+    dispatch(setActiveUser({ user }));
+    onSave();
+  }, [dispatch, setActiveUser, onSave]);
 
   const handleSubmit = () => {
     const isFormValid = validateEditAccountForm({
@@ -54,20 +58,12 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
     }, setErrors);
 
     if (isFormValid) {
-      setIsLoading(true);
-      apiPost<ActiveUserResponse>("/account/edit", {
-        color,
+      editAccount({
         username,
-      })
-        .then(({ data }) => {
-          dispatch(setActiveUser({ user: data }));
-          onSave();
-        })
-        .catch((error) => {
-          // TODO: Better error handling
-          console.log("login error: ", error);
-        })
-        .finally(() => setIsLoading(false));
+        color,
+        setIsLoading,
+        onAccountEdited,
+      });
     }
   };
 

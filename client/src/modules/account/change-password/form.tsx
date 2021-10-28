@@ -2,15 +2,12 @@ import React, { useState } from "react";
 
 import { Grid } from "@mui/material";
 
-import { useApi } from "../../../hooks/useApi";
-
-import { ActiveUserResponse } from "../../../../../src/types/types";
-
 import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
 import { ActionButtons } from "../../common/button/action-buttons";
 
 import { ChangePasswordFormModel } from "./model";
 import { validateChangePasswordForm } from "./validator";
+import { useChangePassword } from "./endpoint-hooks";
 
 export interface ChangePasswordFormProps {
   onSave: () => void;
@@ -40,7 +37,7 @@ export function ChangePasswordForm(props: ChangePasswordFormProps): React.ReactE
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const { apiPost } = useApi();
+  const { changePassword } = useChangePassword();
 
   const handleSubmit = () => {
     const isFormValid = validateChangePasswordForm({
@@ -50,21 +47,12 @@ export function ChangePasswordForm(props: ChangePasswordFormProps): React.ReactE
     }, setErrors);
 
     if (isFormValid) {
-      setIsLoading(true);
-      // TODO: Create create response type or get from api (create api type project)
-      apiPost<ActiveUserResponse>("/account/change-password", {
+      changePassword({
         currentPassword,
         newPassword,
-      })
-        .then(() => {
-          // TODO: Success
-          onSave();
-        })
-        .catch((error) => {
-          // TODO: Better error handling
-          console.log("login error: ", error);
-        })
-        .finally(() => setIsLoading(false));
+        onPasswordChanged: onSave,
+        setIsLoading,
+      });
     }
   };
 
