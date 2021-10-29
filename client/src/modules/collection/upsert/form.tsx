@@ -18,6 +18,7 @@ import {
   Autocomplete,
   Box,
   Checkbox,
+  Chip,
   Grid,
   TextField,
   Typography,
@@ -36,6 +37,7 @@ import { ActionButtons } from "../../common/button/action-buttons";
 
 import { validateUpsertCollectionForm, UpsertCollectionValidationFormModel } from "./validator";
 import { useUpsertCollection } from "./endpoint-hooks";
+import { selectActiveUser } from "../../../redux/active-user-slice";
 
 export interface UpsertCollectionFormProps {
   onSave: () => void;
@@ -47,15 +49,16 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
   const { onSave, onCancel, initialData } = props;
   const { upsertCollection } = useUpsertCollection();
   const { games } = useContext(GamesStateContext);
+
+  const userGroupMemberships = useSelector(activeUserGroupMemberships);
+  const activeUser = useSelector(selectActiveUser);
   const dispatch = useDispatch();
 
   const [owners, setOwners] = useState<UserResponse[]>(initialData?.owners || []);
   const [name, setName] = useState(initialData?.name || "");
   const [addGamesFormIsActive, setAddGamesFormIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<UpsertCollectionValidationFormModel>({ name: "" });
-
-  const userGroupMemberships = useSelector(activeUserGroupMemberships);
+  const [errors, setErrors] = useState<UpsertCollectionValidationFormModel>({ name: "", owners: "" });
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -94,7 +97,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
   }, [setOwners]);
 
   const handleSubmit = () => {
-    const formValid = validateUpsertCollectionForm({ name }, setErrors);
+    const formValid = validateUpsertCollectionForm({ name, owners }, setErrors);
 
     if (formValid) {
       upsertCollection({
@@ -113,7 +116,10 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
     handleSubmit();
   };
 
-  console.log("owner options: ", ownerOptions);
+  const isOptionEqualToValue = useCallback(
+    (option: UserResponse, value: UserResponse): boolean => (option.id === value.id),
+    [],
+  );
 
   return (
     <form noValidate onSubmit={handleFormSubmit}>
@@ -159,34 +165,65 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
             disableCloseOnSelect
             onChange={onOwnerSelected}
             getOptionLabel={(option) => option.username}
-            renderOption={(renderProps, option, { selected }) => (
-              <li key={`owner-option-user-${option.id}`} {...renderProps}>
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <Checkbox
-                      icon={icon}
-                      checkedIcon={checkedIcon}
-                      style={{ marginRight: 8 }}
-                      checked={selected}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item sx={{ display: { xs: "none", md: "block" } }}>
-                        <Meeple fill={MeeplePaletteColors[option.color].main} size="icon" />
+            value={owners}
+            isOptionEqualToValue={isOptionEqualToValue}
+            getOptionDisabled={(option) => option.id === activeUser?.id}
+            renderTags={(tagValue, getTagProps) => tagValue.map((option, index) => (
+              <Chip
+                label={option.username}
+                {...getTagProps({ index })}
+                disabled={option.id === activeUser?.id}
+              />
+            ))}
+            renderOption={(renderProps, option, { selected }) => {
+              if (option.id !== activeUser?.id) {
+                return (
+                  <li key={`owner-option-user-${option.id}`} {...renderProps}>
+                    <Grid container alignItems="center">
+                      <Grid item>
+                        <Checkbox
+                          icon={icon}
+                          checkedIcon={checkedIcon}
+                          style={{ marginRight: 8 }}
+                          checked={selected}
+                        />
                       </Grid>
-                      <Grid item sx={{ display: { xs: "block", md: "none" } }}>
-                        <CircleIcon sx={{ color: MeeplePaletteColors[option.color].main, fontSize: 24 }} />
+                      <Grid item>
+                        <Grid container spacing={2} alignItems="center">
+                          <Grid item sx={{ display: { xs: "none", md: "block" } }}>
+                            <Meeple fill={MeeplePaletteColors[option.color].main} size="icon" />
+                          </Grid>
+                          <Grid item sx={{ display: { xs: "block", md: "none" } }}>
+                            <CircleIcon sx={{ color: MeeplePaletteColors[option.color].main, fontSize: 24 }} />
+                          </Grid>
+                          <Grid item>{option.username}</Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item>{option.username}</Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-              </li>
-            )}
-            style={{ width: 500 }}
+                  </li>
+                );
+              }
+
+              return <></>;
+            }}
             renderInput={(params) => (
-              <TextField {...params} label="Owners" placeholder="Collection Owners" />
+              //   <FullWidthGridItemInput
+              //   formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+              //   input={name}
+              //   inputProps={{ maxLength: 50 }}
+              //   outlinedInputProps={{ id: "name" }}
+              //   inputLabel="Name"
+              //   setInputState={setName}
+              //   error={errors?.get("name")}
+              //   onInputChange={clearErrorField}
+              // />
+              <TextField
+                error={!!errors.owners}
+                {...params}
+                label="Owners"
+                placeholder="Owners"
+                helperText={errors.owners || ""}
+              />
             )}
           />
         </Grid>

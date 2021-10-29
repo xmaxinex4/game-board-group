@@ -44,9 +44,14 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
           }
         }
       },
-      include: {
+      select: {
         games: true,
-        owners: true,
+        owners: {
+          select: {
+            username: true,
+            color: true,
+          }
+        }
       },
       distinct: ["id"],
     });
@@ -58,7 +63,7 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
       collection.games.forEach((game) => {
         if (library[game.bggId]) {
           library[game.bggId].copies += 1;
-          library[game.bggId].owners = new Set(library[game.bggId].concat(collection.owners));
+          library[game.bggId].owners = library[game.bggId].owners.concat(collection.owners);
         } else {
           library[game.bggId] = {
             bggId: game.bggId,

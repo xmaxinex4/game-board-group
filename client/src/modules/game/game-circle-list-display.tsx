@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 
 import PencilIcon from "@mui/icons-material/EditTwoTone";
 
@@ -8,6 +8,7 @@ import {
   Tooltip,
   IconButton,
   Theme,
+  Chip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -15,6 +16,7 @@ import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 
 export interface GameCircleListDisplayProps {
   onEditGames?: () => void;
+  canDelete?: boolean;
 }
 
 const useStyles = makeStyles<Theme>((theme) => ({
@@ -25,17 +27,35 @@ const useStyles = makeStyles<Theme>((theme) => ({
 }));
 
 export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.ReactElement {
-  const { onEditGames } = props;
-  const { games } = useContext(GamesStateContext);
+  const { onEditGames, canDelete } = props;
+  const { games, setGames } = useContext(GamesStateContext);
   const classes = useStyles();
+
+  const onDelete = useCallback((bggId: string) => {
+    const newGames = games?.filter((game) => game.bggId !== bggId);
+    if (setGames && newGames) {
+      setGames(newGames);
+    }
+  }, [games, setGames]);
 
   return (
     <Grid container spacing={2} alignItems="center">
       {games && games.map((game) => (
         <Grid item key={`game-circle-display-game-id-${game.bggId}`}>
-          <Tooltip title={game.name} aria-label={game.name}>
-            <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
-          </Tooltip>
+          <>
+            {canDelete && (
+              <Chip
+                label={game.name}
+                onDelete={() => onDelete(game.bggId)}
+                avatar={<Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />}
+              />
+            )}
+            {!canDelete && (
+              <Tooltip title={game.name} aria-label={game.name}>
+                <Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />
+              </Tooltip>
+            )}
+          </>
         </Grid>
       ))}
       {onEditGames && (

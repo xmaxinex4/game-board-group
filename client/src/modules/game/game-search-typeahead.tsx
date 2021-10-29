@@ -1,6 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading, no-unused-vars */
 
-import React, { useCallback, useState, useContext } from "react";
+import React, {
+  useCallback,
+  useState,
+  useContext,
+  // FormEvent,
+} from "react";
 import axios, { CancelTokenSource } from "axios";
 
 import {
@@ -132,10 +137,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   const onGameSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, bggId: string) => {
     e.preventDefault();
 
-    console.log("Setting search term to blank.");
     setSearchTerm("");
-
-    console.log("Selecting bggId: ", bggId);
 
     if (!games?.some((game) => game.bggId === bggId)) {
       addNewGameToSelectedGames(bggId);
@@ -144,6 +146,27 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
       console.log("Already have that game in list");
     }
   };
+
+  const onGameEnter = (e: React.FormEvent<HTMLLIElement>, bggId: string) => {
+    e.preventDefault();
+
+    console.log("Entered game. BggId: ", bggId);
+    setSearchTerm("");
+
+    if (!games?.some((game) => game.bggId === bggId)) {
+      addNewGameToSelectedGames(bggId);
+    } else {
+      // TODO: Highlight game thats already in the collection display
+      console.log("Already have that game in list");
+    }
+  };
+
+  const isOptionEqualToValue = useCallback(
+    (option: Pick<Game, "bggId" | "name" | "year">, value: Pick<Game, "bggId" | "name" | "year">): boolean => (
+      option.bggId === value.bggId
+    ),
+    [],
+  );
 
   const onSetIsFocused = useCallback(() => setIsFocused(true), [setIsFocused]);
   const onBlurSetNotIsFocused = useCallback(() => setIsFocused(false), [setIsFocused]);
@@ -169,14 +192,16 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
             onFocus={onSetIsFocused}
             onBlur={onBlurSetNotIsFocused}
             style={{ width: 300 }}
-            getOptionLabel={(option: any) => option.name}
+            getOptionLabel={(option: Pick<Game, "bggId" | "name" | "year">) => option.name}
             filterOptions={(x) => x}
             options={options}
             autoComplete
             includeInputInList
             freeSolo
+            clearOnBlur
             selectOnFocus={false}
             onInputChange={handleChange}
+            isOptionEqualToValue={isOptionEqualToValue}
             renderInput={(params) => (
               <Grid container direction="column">
                 <Grid item>
@@ -185,7 +210,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
                     label="Search Games"
                     variant="outlined"
                     fullWidth
-                    value={searchTerm}
+                    onKeyPress={(e) => { if (e.key === "Enter") e.preventDefault(); }}
                   />
                 </Grid>
                 <Grid item className={leftAlign}>
@@ -193,8 +218,13 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
                 </Grid>
               </Grid>
             )}
-            renderOption={(optionProps, option: any) => (
-              <ListItem key={`game-typeahead-option-bggid-${option.bggId}`} onClick={(e) => onGameSelect(e, option.bggId)}>
+            renderOption={(optionProps, option: Pick<Game, "bggId" | "name" | "year">) => (
+              <ListItem
+                {...optionProps}
+                key={`game-typeahead-option-bggid-${option.bggId}`}
+                onClick={(e) => onGameSelect(e, option.bggId)}
+                onSubmit={(e) => onGameEnter(e, option.bggId)}
+              >
                 <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
               </ListItem>
             )}

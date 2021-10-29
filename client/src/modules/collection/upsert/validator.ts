@@ -1,18 +1,25 @@
 /* eslint-disable no-unused-vars */
 
-import { Collection } from ".prisma/client";
+import { CollectionResponse } from "../../../../../src/types/types";
 
-export type UpsertCollectionValidationFormModel = Pick<Collection, "name">;
+export type UpsertCollectionValidationFormModel = {
+  [K in keyof Pick<CollectionResponse, "name" | "owners">]: string
+};
 
 export const validateUpsertCollectionForm = (
-  model: UpsertCollectionValidationFormModel,
+  model: Pick<CollectionResponse, "name" | "owners">,
   setErrors: (errorState: UpsertCollectionValidationFormModel) => void,
 ): boolean => {
   let formIsValid = true;
-  let errors: UpsertCollectionValidationFormModel = { name: "" };
+  let errors: UpsertCollectionValidationFormModel = { name: "", owners: "" };
 
   if (!model.name) {
     errors = { ...errors, name: "Name is required" };
+    formIsValid = false;
+  }
+
+  if (model.owners?.length < 1) {
+    errors = { ...errors, owners: "At least one owner needs to be specified" };
     formIsValid = false;
   }
 

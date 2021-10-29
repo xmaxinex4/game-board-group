@@ -19,8 +19,6 @@ export function ActiveGroupSelector(): React.ReactElement {
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
-  console.log("activeGroupMembership: ", activeGroupMembership);
-
   const dispatch = useDispatch();
 
   // const onCreateGroupError = (error: ApolloError) => {

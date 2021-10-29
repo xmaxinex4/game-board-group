@@ -56,7 +56,7 @@ model Game {
   name                String
   urlImage            String?
   urlThumb            String?
-  Collection          Collection?  @relation(fields: [collectionId], references: [id])
+  Collection          Collection[]
   collectionId        String?
   year                String?
   play                Play[]

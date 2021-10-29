@@ -76,7 +76,7 @@ export function MyCollections(): React.ReactElement {
                   <Card sx={{ margin: "auto", maxWidth: "600px", minWidth: "275px" }}>
                     <CardContent>
                       <GamesStateContext.Provider value={{ games: formGames, setGames: setFormGames }}>
-                        <UpsertCollectionForm initialData={initialCollectionData} onSave={showForm} onCancel={onCollectionUpsertCancel} />
+                        <UpsertCollectionForm initialData={initialCollectionData} onSave={hideForm} onCancel={onCollectionUpsertCancel} />
                       </GamesStateContext.Provider>
                     </CardContent>
                   </Card>

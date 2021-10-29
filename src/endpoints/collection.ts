@@ -3,7 +3,7 @@ import { Express } from "express";
 import { Game, PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { CollectionResponse, CollectionResponsePrismaSelect } from "../types/types";
+import { CollectionResponse, CollectionResponsePrismaSelect, GameResponse, UserResponse } from "../types/types";
 
 export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/collection/get/:id", async (req, res) => {
@@ -60,13 +60,42 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       return res.status(400).json({ error: `Required parameters were not given` });
     }
 
+    const currentCollection = await prisma.collection.findUnique({
+      where: {
+        id: collectionId
+      },
+      select: {
+        games: {
+          select: {
+            id: true,
+            bggId: true,
+          }
+        },
+        owners: {
+          select: {
+            id: true,
+          },
+        },
+      }
+    });
+
     // Gather owner ids with logged in user listed as owner
     const owners = (ownerIds || []).concat(userId);
+    const currentOwners = currentCollection.owners;
 
     // Filter out duplicates
     const ownersSet = new Set(owners);
 
     const ownersConnect = [];
+    const ownersDisconnect = [];
+
+    currentOwners.forEach((currentOwner) => {
+      if (!(owners as UserResponse[]).some((owner) => owner.id === currentOwner.id)) {
+        ownersDisconnect.push({
+          id: currentOwner.id,
+        });
+      }
+    });
 
     ownersSet.forEach((id => {
       ownersConnect.push({
@@ -75,10 +104,21 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     }));
 
     // Gather games info and ids
+    const currentGames = currentCollection.games;
+
     // Filter out duplicates
     const gamesSet = new Set<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">>(games || []);
 
+    const gamesDisconnect = [];
     const gamesConnectOrCreate = [];
+
+    currentGames.forEach((currentGame) => {
+      if (!(games as GameResponse[]).some((game) => game.bggId === currentGame.bggId)) {
+        gamesDisconnect.push({
+          bggId: currentGame.bggId,
+        });
+      }
+    });
 
     gamesSet.forEach((game => {
       gamesConnectOrCreate.push({
@@ -112,9 +152,11 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         update: {
           name,
           games: {
+            disconnect: gamesDisconnect.length > 0 ? gamesDisconnect : undefined,
             connectOrCreate: gamesConnectOrCreate,
           },
           owners: {
+            disconnect: ownersDisconnect.length > 0 ? ownersDisconnect : undefined,
             connect: ownersConnect,
           }
         },

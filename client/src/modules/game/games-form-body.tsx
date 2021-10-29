@@ -20,7 +20,7 @@ export function GamesFormBody(props: AddGamesFormProps): React.ReactElement {
     <Grid container direction="column" spacing={2}>
       <Grid container item alignItems="center">
         <Grid item xs={11}>
-          <Typography color={isActive ? "primary.main" : "GrayText"} variant="subtitle1">Add Games</Typography>
+          <Typography color={isActive ? "primary.main" : ""} variant="subtitle1">Add Games</Typography>
         </Grid>
       </Grid>
       <Grid item>
@@ -29,7 +29,7 @@ export function GamesFormBody(props: AddGamesFormProps): React.ReactElement {
             <GameSearchTypeahead isFocused={isActive} setIsFocused={setIsActive} />
           </Grid>
           <Grid item>
-            <GameCircleListDisplay />
+            <GameCircleListDisplay canDelete />
           </Grid>
         </Grid>
       </Grid>
