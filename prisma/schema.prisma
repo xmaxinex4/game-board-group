@@ -148,6 +148,7 @@ model User {
   email            String        @unique
   username         String       
   password         String
+  isPremiumUser    Boolean       @default(false)
   polls            Poll[]
   color            Color
   gameCollections  Collection[]
