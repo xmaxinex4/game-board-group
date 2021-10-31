@@ -30,7 +30,6 @@ export function LoginForm(): React.ReactElement {
 
     if (isFormValid) {
       setIsLoading(true);
-      // TODO: Create login response type or get from api (create api type project)
       apiPost<{ token: string; }>("/user/login", { email: email.toLowerCase(), password })
         .then(({ data }) => {
           localStorage.setItem("auth-token", data?.token);

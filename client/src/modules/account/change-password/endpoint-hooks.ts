@@ -8,7 +8,7 @@ import { useApi } from "../../../hooks/useApi";
 export interface ChangePasswordArgs {
   currentPassword: string;
   newPassword: string;
-  onPasswordChanged?: (activeUser: ActiveUserResponse) => void;
+  onPasswordChanged?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
@@ -33,9 +33,9 @@ export function useChangePassword() {
       currentPassword,
       newPassword,
     })
-      .then(({ data }) => {
+      .then(() => {
         if (onPasswordChanged) {
-          onPasswordChanged(data);
+          onPasswordChanged();
         }
       })
       .catch((error) => {

@@ -2,7 +2,12 @@
 
 import React from "react";
 
-import { Grid, Button, ButtonProps } from "@mui/material";
+import {
+  Grid,
+  Button,
+  ButtonProps,
+  GridSize,
+} from "@mui/material";
 
 export interface FormProps {
   saveText?: string;
@@ -13,6 +18,8 @@ export interface FormProps {
   cancelButtonProps?: ButtonProps;
   disabled?: boolean;
   formButtons?: boolean;
+  saveButtonSize?: boolean | GridSize;
+  cancelButtonSize?: boolean | GridSize;
 }
 
 export function ActionButtons(props: FormProps): React.ReactElement {
@@ -25,6 +32,8 @@ export function ActionButtons(props: FormProps): React.ReactElement {
     cancelButtonProps,
     disabled,
     formButtons,
+    saveButtonSize,
+    cancelButtonSize,
   } = props;
 
   const onHandleSave = () => {
@@ -37,12 +46,12 @@ export function ActionButtons(props: FormProps): React.ReactElement {
 
   return (
     <Grid container justifyContent="right" spacing={2}>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={cancelButtonSize || 4}>
         <Button disabled={disabled} fullWidth variant="outlined" onClick={onHandleCancel} {...cancelButtonProps}>
           {cancelText || "Cancel"}
         </Button>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12} sm={saveButtonSize || 6}>
         <Button
           fullWidth
           type={formButtons ? "submit" : "button"}

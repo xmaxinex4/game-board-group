@@ -113,6 +113,7 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                           <Grid item style={{ width: "100%" }}>
                             <Switch>
                               <Route path="/account" component={AccountSettings} />
+                              <Route path="/invite/:inviteCode" component={GroupInvite} />
                               <Route path="*" component={NoActiveGroup} />
                             </Switch>
                           </Grid>

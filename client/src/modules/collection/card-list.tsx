@@ -11,18 +11,18 @@ import { selectActiveUserCollections } from "../../redux/active-user-collections
 import { CollectionCard } from "./card";
 
 export interface CollectionCardListProps {
-  onCollectionCardEdit: (collection: CollectionResponse) => void;
+  onEdit: (collection: CollectionResponse) => void;
 }
 
 export function CollectionCardList(props: CollectionCardListProps): React.ReactElement {
-  const { onCollectionCardEdit } = props;
+  const { onEdit } = props;
   const userCollections = useSelector(selectActiveUserCollections);
 
   return (
     <Grid container direction="column" spacing={2}>
       {userCollections?.collections?.map((collection) => (
         <Grid key={`collection-card-collection-id-${collection.id}`} item>
-          <CollectionCard onEdit={onCollectionCardEdit} collection={collection} />
+          <CollectionCard onEdit={onEdit} collection={collection} />
         </Grid>
       ))}
     </Grid>

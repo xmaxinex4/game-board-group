@@ -1,19 +1,28 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
-import { CollectionResponse } from "../../../../../src/types/types";
+import { useDispatch } from "react-redux";
+import { CollectionResponse, CollectionsResponse } from "../../../../../src/types/types";
 
 import { useApi } from "../../../hooks/useApi";
+import { setActiveUserCollections, updateActiveUserCollection } from "../../../redux/active-user-collections-slice";
 
 export interface RefreshCollectionArgs {
   collectionId: string;
-  onCollectionRetrieved?: (collection: CollectionResponse) => void;
+  onCollectionRetrieved?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
-export function useRefreshCollection() {
+export interface RefreshAllCollectionsArgs {
+  onAllCollectionsRetrieved?: () => void;
+  setIsLoading?: (value: React.SetStateAction<boolean>) => void;
+  onError?: (error: Error) => void;
+}
+
+export function useRefreshCollections() {
   const { apiGet } = useApi();
+  const dispatch = useDispatch();
 
   function refreshCollection(args: RefreshCollectionArgs): void {
     const {
@@ -27,12 +36,14 @@ export function useRefreshCollection() {
       setIsLoading(true);
     }
 
-    apiGet<{ collection: CollectionResponse; }>(`/collection/${collectionId}`, {
+    apiGet<{ collection: CollectionResponse; }>(`/collection/get/${collectionId}`, {
       collectionId,
     })
       .then(({ data }) => {
+        dispatch(updateActiveUserCollection({ collection: data.collection }));
+
         if (onCollectionRetrieved) {
-          onCollectionRetrieved(data.collection);
+          onCollectionRetrieved();
         }
       })
       .catch((error: Error) => {
@@ -44,10 +55,48 @@ export function useRefreshCollection() {
       })
       .finally(() => {
         if (setIsLoading) {
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
         }
       });
   }
 
-  return { refreshCollection };
+  function refreshAllCollections(args: RefreshAllCollectionsArgs): void {
+    const {
+      onAllCollectionsRetrieved,
+      setIsLoading,
+      onError,
+    } = args;
+
+    if (setIsLoading) {
+      setIsLoading(true);
+    }
+
+    apiGet<CollectionsResponse>("/collection/my-collections", {
+    })
+      .then(({ data }) => {
+        dispatch(setActiveUserCollections({ collections: data.collections }));
+
+        if (onAllCollectionsRetrieved) {
+          onAllCollectionsRetrieved();
+        }
+      })
+      .catch((error: Error) => {
+        // TODO: Better error handling
+        console.log("create collection error: ", error);
+        if (onError) {
+          onError(error);
+        }
+      })
+      .finally(() => {
+        if (setIsLoading) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        }
+      });
+  }
+
+  return { refreshCollection, refreshAllCollections };
 }

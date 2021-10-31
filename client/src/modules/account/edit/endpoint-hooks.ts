@@ -1,21 +1,24 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { useDispatch } from "react-redux";
 
 import { Color } from ".prisma/client";
 
 import { ActiveUserResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
+import { setActiveUser } from "../../../redux/active-user-slice";
 
 export interface EditAccountArgs {
   color: Color;
   username: string;
-  onAccountEdited?: (activeUser: ActiveUserResponse) => void;
+  onAccountEdited?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
 export function useEditAccount() {
   const { apiPost } = useApi();
+  const dispatch = useDispatch();
 
   function editAccount(args: EditAccountArgs): void {
     const {
@@ -35,8 +38,10 @@ export function useEditAccount() {
       username,
     })
       .then(({ data }) => {
+        dispatch(setActiveUser({ user: data }));
+
         if (onAccountEdited) {
-          onAccountEdited(data);
+          onAccountEdited();
         }
       })
       .catch((error) => {

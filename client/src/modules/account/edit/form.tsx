@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import {
   Grid,
@@ -10,7 +9,6 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import { Color } from ".prisma/client";
 
-import { ActiveUserResponse } from "../../../../../src/types/types";
 import { setActiveUser } from "../../../redux/active-user-slice";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
@@ -30,8 +28,6 @@ export interface EditAccountFormProps {
 export function EditAccountForm(props: EditAccountFormProps): React.ReactElement {
   const { initialData, onSave, onCancel } = props;
 
-  const dispatch = useDispatch();
-
   const [username, setUsername] = useState(initialData.username);
   const [color, setColor] = useState<Color>(initialData.color);
 
@@ -46,10 +42,9 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const onAccountEdited = useCallback((user: ActiveUserResponse) => {
-    dispatch(setActiveUser({ user }));
+  const onAccountEdited = useCallback(() => {
     onSave();
-  }, [dispatch, setActiveUser, onSave]);
+  }, [setActiveUser, onSave]);
 
   const handleSubmit = () => {
     const isFormValid = validateEditAccountForm({

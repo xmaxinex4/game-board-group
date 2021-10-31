@@ -8,6 +8,7 @@ import {
   Tooltip,
   Avatar,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -19,6 +20,7 @@ import { MeeplePaletteColors } from "../../theme/meeple-palettes";
 export interface UserCircleListDisplayProps {
   users: UserResponse[];
   onEditUsers?: () => void;
+  verticalNames?: boolean;
 }
 
 const useStyles = makeStyles(() => ({
@@ -28,14 +30,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.ReactElement {
-  const { users, onEditUsers } = props;
+  const { users, onEditUsers, verticalNames } = props;
   const { meeple } = useStyles();
 
   return (
-    <Grid container spacing={2} alignItems="center">
+    <Grid container direction={verticalNames ? "column" : "row"} spacing={2} alignItems={verticalNames ? "flex-start" : "center"}>
       {users && users.map((user) => (
         <Grid item key={`user-display-${user.id}`}>
-          <Grid container>
+          <Grid container alignItems="center" spacing={1}>
             <Grid
               item
               sx={{
@@ -65,6 +67,9 @@ export function UserCircleListDisplay(props: UserCircleListDisplayProps): React.
               <Tooltip title={user.username} aria-label={user.username}>
                 <CircleIcon sx={{ color: MeeplePaletteColors[user.color].main }} />
               </Tooltip>
+            </Grid>
+            <Grid item>
+              <Typography>{user.username}</Typography>
             </Grid>
           </Grid>
         </Grid>

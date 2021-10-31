@@ -59,7 +59,6 @@ export function CreateUserForm(): React.ReactElement {
 
     if (isFormValid) {
       setIsLoading(true);
-      // TODO: Create create response type or get from api (create api type project)
       apiPost<{ token: string; }>("/user/create", {
         color,
         email: email.toLowerCase(),

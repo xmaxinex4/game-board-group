@@ -1,12 +1,17 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import { mdiAccount, mdiLogout } from "@mdi/js";
-import Menu from "@mui/icons-material/Menu";
-import Icon from "@mdi/react";
-
 import { generateFilter } from "colorize-filter";
+
+import Menu from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/LogoutTwoTone";
+import AccountIcon from "@mui/icons-material/PersonOutlineTwoTone";
+import GroupIcon from "@mui/icons-material/GroupsTwoTone";
+import GamesIcon from "@mui/icons-material/CasinoTwoTone";
+import StatsIcon from "@mui/icons-material/PollTwoTone";
+import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
+import HomeIcon from "@mui/icons-material/HomeTwoTone";
+import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
 
 import {
   Popover,
@@ -17,9 +22,8 @@ import {
   Avatar,
   ListItemIcon,
   IconButton,
-  Theme,
 } from "@mui/material";
-import { makeStyles, useTheme } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 import { Meeple } from "../../../images/components/meeple";
 import { MeepleMenu } from "../../../images/components/meeple-menu";
@@ -40,12 +44,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export interface UserNavMenuProps {
-}
-
 export function UserNavMenuButton(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
-  const theme = useTheme<Theme>();
 
   const { meepleAvatar, listLink } = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -111,13 +111,127 @@ export function UserNavMenuButton(): React.ReactElement {
           </ListItem>
           <ListItem button onClick={handleClose} component={Link} className={listLink} to="/account">
             <ListItemIcon>
-              <Icon path={mdiAccount} color={theme.palette.primary.main} size={1} />
+              <AccountIcon color="primary" />
             </ListItemIcon>
             <ListItemText primary="Account" />
           </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <HomeIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Home" />
+              </Grid>
+            </Grid>
+          </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/polls"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <PollIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Polls" />
+              </Grid>
+            </Grid>
+          </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/library"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <LibraryIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Library" />
+              </Grid>
+            </Grid>
+          </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/stats"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <StatsIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Stats" />
+              </Grid>
+            </Grid>
+          </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/my-game-collections"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <GamesIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Games" />
+              </Grid>
+            </Grid>
+          </ListItem>
+          <ListItem
+            button
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleClose}
+            component={Link}
+            className={listLink}
+            to="/manage-group"
+          >
+            <Grid container>
+              <Grid item>
+                <ListItemIcon>
+                  <GroupIcon color="primary" />
+                </ListItemIcon>
+              </Grid>
+              <Grid item>
+                <ListItemText primary="Group" />
+              </Grid>
+            </Grid>
+          </ListItem>
           <ListItem button onClick={logout}>
             <ListItemIcon>
-              <Icon path={mdiLogout} color={theme.palette.primary.main} size={1} />
+              <LogoutIcon color="primary" />
             </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>

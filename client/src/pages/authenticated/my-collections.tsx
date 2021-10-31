@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import GameIcon from "@mui/icons-material/CasinoTwoTone";
+import RefreshIcon from "@mui/icons-material/RefreshTwoTone";
 
 import {
   Button,
@@ -14,41 +15,53 @@ import {
 
 import {
   CollectionResponse,
-  CollectionsResponse,
   GameResponse,
 } from "../../../../src/types/types";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { UpsertCollectionForm } from "../../modules/collection/upsert/form";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
-import { useApi } from "../../hooks/useApi";
 import { CollectionCardList } from "../../modules/collection/card-list";
-import { selectActiveUserCollections, setActiveUserCollections } from "../../redux/active-user-collections-slice";
+import { selectActiveUserCollections } from "../../redux/active-user-collections-slice";
+import { selectActiveUser } from "../../redux/active-user-slice";
+import { useRefreshCollections } from "../../modules/collection/refresh/endpoint-hooks";
 
 export function MyCollections(): React.ReactElement {
-  const [loadingCollections, setLoadingCollections] = useState(false);
-  const [initialCollectionData, setInitialDataCollection] = useState<CollectionResponse>();
+  const [loadingCollections, setLoadingCollections] = useState(true);
+  const [refreshingCollections, setRefreshingCollections] = useState(false);
+
+  const [initialCollectionData, setInitialDataCollection] = useState<Partial<CollectionResponse>>();
   const [showUpsertCollectionForm, setShowUpsertCollectionForm] = useState(false);
   const [formGames, setFormGames] = useState<GameResponse[]>([]);
 
-  const dispatch = useDispatch();
   const userCollections = useSelector(selectActiveUserCollections);
+  const activeUser = useSelector(selectActiveUser);
+  const { refreshAllCollections } = useRefreshCollections();
 
-  const { apiGet } = useApi();
   const showForm = useCallback(() => setShowUpsertCollectionForm(true), [setShowUpsertCollectionForm]);
   const hideForm = useCallback(() => setShowUpsertCollectionForm(false), [setShowUpsertCollectionForm]);
 
+  const refreshCollections = useCallback(() => {
+    refreshAllCollections({
+      setIsLoading: setRefreshingCollections,
+    });
+  }, [setRefreshingCollections]);
+
   const getCollections = useCallback(() => {
-    setLoadingCollections(true);
-    apiGet<CollectionsResponse>("/collection/mycollections")
-      .then(({ data }) => dispatch(setActiveUserCollections({ collections: data.collections })))
-      .finally(() => setLoadingCollections(false));
+    refreshAllCollections({
+      setIsLoading: setLoadingCollections,
+    });
   }, [setLoadingCollections]);
 
   // run once on page load
   useEffect(() => {
     getCollections();
   }, []);
+
+  const onAddCollection = useCallback(() => {
+    setInitialDataCollection({ owners: activeUser ? [activeUser] : [] });
+    showForm();
+  }, [setInitialDataCollection, activeUser, showForm]);
 
   const onCollectionCardEdit = useCallback((collection: CollectionResponse) => {
     setInitialDataCollection(collection);
@@ -86,7 +99,22 @@ export function MyCollections(): React.ReactElement {
                 userCollections?.collections?.length > 0
                   ? (
                     <Grid item>
-                      <CollectionCardList onCollectionCardEdit={onCollectionCardEdit} />
+                      <Grid container direction="column" spacing={4}>
+                        <Grid item sx={{ marginLeft: "auto" }}>
+                          <Button disabled={refreshingCollections} onClick={refreshCollections} variant="contained" startIcon={<RefreshIcon />}>
+                            Refresh All
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          {refreshingCollections
+                            ? (
+                              <CircularProgress />
+                            )
+                            : (
+                              <CollectionCardList onEdit={onCollectionCardEdit} />
+                            )}
+                        </Grid>
+                      </Grid>
                     </Grid>
                   )
                   : (
@@ -100,7 +128,7 @@ export function MyCollections(): React.ReactElement {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button onClick={showForm} variant="outlined">+ Add Collection</Button>
+                        <Button onClick={onAddCollection} variant="outlined">+ Add Collection</Button>
                       </Grid>
                     </>
                   )

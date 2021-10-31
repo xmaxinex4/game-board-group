@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
-
-import { GroupMembershipResponse } from "../../../../../src/types/types";
-
-import { useApi } from "../../../hooks/useApi";
-import { addActiveUserGroupMembership, setSelectedActiveUserGroupMembershipId } from "../../../redux/active-user-group-memberships-slice";
 
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 
 import { CreateGroupFormModel } from "./model";
 import { validateCreateGroupForm } from "./validator";
+import { useCreateGroup } from "./endpoint-hooks";
 
 export function CreateGroupForm(): React.ReactElement {
-  const { apiPost } = useApi();
-  const dispatch = useDispatch();
+  const { createGroup } = useCreateGroup();
 
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,29 +25,13 @@ export function CreateGroupForm(): React.ReactElement {
     const formValid = validateCreateGroupForm({ name }, setErrors);
 
     if (formValid) {
-      setIsLoading(true);
-      apiPost<GroupMembershipResponse>("/group/create", {
+      createGroup({
         name,
-      })
-        .then(({ data }) => {
-          // TODO: Alert user their group has been created
-          console.log("created group membership: ", data);
-
-          dispatch(addActiveUserGroupMembership({
-            groupMembership: data,
-          }));
-
-          dispatch(setSelectedActiveUserGroupMembershipId({
-            id: data?.id,
-          }));
-
+        onGroupCreated: () => {
           window.location.href = "/manage-group";
-        })
-        .catch((error) => {
-          // TODO: Better error handling
-          console.log("create group error: ", error);
-        })
-        .finally(() => setIsLoading(false));
+        },
+        setIsLoading,
+      });
     }
   };
 

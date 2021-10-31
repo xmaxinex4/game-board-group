@@ -1,22 +1,25 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
+import { useDispatch } from "react-redux";
 
 import { CollectionResponse, GameResponse, UserResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
+import { addActiveUserCollection, updateActiveUserCollection } from "../../../redux/active-user-collections-slice";
 
 export interface UpsertCollectionArgs {
   collectionId?: string;
   collectionName: string;
   collectionGames?: GameResponse[];
   collectionOwners?: UserResponse[];
-  onCollectionUpserted?: (collection: CollectionResponse) => void;
+  onCollectionUpserted?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
 export function useUpsertCollection() {
   const { apiPost } = useApi();
+  const dispatch = useDispatch();
 
   function upsertCollection(args: UpsertCollectionArgs): void {
     const {
@@ -40,8 +43,14 @@ export function useUpsertCollection() {
       ownerIds: collectionOwners?.map((owner) => owner.id) || [],
     })
       .then(({ data }) => {
+        if (collectionId) {
+          dispatch(updateActiveUserCollection({ collection: data.collection }));
+        } else {
+          dispatch(addActiveUserCollection({ collection: data.collection }));
+        }
+
         if (onCollectionUpserted) {
-          onCollectionUpserted(data.collection);
+          onCollectionUpserted();
         }
       })
       .catch((error: Error) => {

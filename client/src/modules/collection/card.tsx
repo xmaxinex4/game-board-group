@@ -21,7 +21,9 @@ import { PaddedCard } from "../common/layout/padded-card";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { GameCircleListDisplay } from "../game/game-circle-list-display";
 import { ActionButtons } from "../common/button/action-buttons";
+
 import { useDeleteCollection } from "./delete/endpoint-hooks";
+import { useRefreshCollections } from "./refresh/endpoint-hooks";
 
 export interface CollectionCardProps {
   collection: CollectionResponse;
@@ -34,7 +36,9 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false);
   const [lastOwnerDeleteModalOpen, setLastOwnerDeleteModalOpen] = useState(false);
   const [removingOwnerFromListModalOpen, setRemovingOwnerFromListModalOpen] = useState(false);
+
   const { deleteCollection } = useDeleteCollection();
+  const { refreshCollection } = useRefreshCollections();
 
   const closeLastOwnerDeleteModalOpen = useCallback(() => {
     setLastOwnerDeleteModalOpen(false);
@@ -48,7 +52,6 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
     deleteCollection({
       collectionId: collection.id,
       onCollectionDeleted: () => {
-        // TODO: remove from redux
         closeLastOwnerDeleteModalOpen();
         closeRemovingOwnerFromListModalOpen();
       },
@@ -66,22 +69,12 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
     }
   }, [collection, setLastOwnerDeleteModalOpen, setRemovingOwnerFromListModalOpen]);
 
-  // const refreshCollection = useCallback(() => {
-  //   setIsLoading(true);
-
-  //   apiGet<{ collection: CollectionResponse; }>("/collection", {
-  //     collectionId: collection.id,
-  //   })
-  //     .then(({ data }) => {
-  //       console.log("data: ", data);
-  //     })
-  //     .catch(() => {
-  //       setError("Oops! Something went wrong.");
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, []);
+  const onRefreshCollection = useCallback(() => {
+    refreshCollection({
+      collectionId: collection.id,
+      setIsLoading,
+    });
+  }, [collection, setIsLoading]);
 
   const editCollection = useCallback(() => {
     onEdit(collection);
@@ -103,7 +96,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
               </Grid>
               <Grid item>
                 <IconButton
-                  onClick={() => console.log("Refresh")}
+                  onClick={onRefreshCollection}
                   disabled={isLoading}
                   color="primary"
                   aria-label="refresh collection"

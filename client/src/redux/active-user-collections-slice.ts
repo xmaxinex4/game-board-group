@@ -21,6 +21,10 @@ export type ActiveUserCollectionsStateReducers = {
     type: string,
     payload: { collection: CollectionResponse; },
   }) => void;
+  deleteActiveUserCollection: (state: ActiveUserCollectionsState, action: {
+    type: string,
+    payload: { collectionId: string; },
+  }) => void;
 };
 
 export const activeUserCollectionsSlice = createSlice<ActiveUserCollectionsState, ActiveUserCollectionsStateReducers>({
@@ -54,6 +58,19 @@ export const activeUserCollectionsSlice = createSlice<ActiveUserCollectionsState
         state.activeUserCollections.collections[collectionIndex] = action.payload.collection;
       }
     },
+    deleteActiveUserCollection: (state, action: {
+      type: string,
+      payload: { collectionId: string; },
+    }) => {
+      const collectionIndex = state.activeUserCollections.collections.findIndex(
+        (collection) => collection.id === action.payload.collectionId,
+      );
+
+      if (!(collectionIndex < 0)) {
+        // const currentCollections = state.activeUserCollections.collections;
+        state.activeUserCollections.collections.splice(collectionIndex, 1);
+      }
+    },
   },
 });
 
@@ -61,6 +78,7 @@ export const {
   setActiveUserCollections,
   addActiveUserCollection,
   updateActiveUserCollection,
+  deleteActiveUserCollection,
 } = activeUserCollectionsSlice.actions;
 
 export const selectActiveUserCollections = (state: { activeUserCollectionsState: ActiveUserCollectionsState; }) => (

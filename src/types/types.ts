@@ -81,7 +81,6 @@ export interface ActiveUserGroupMembershipsResponse {
 /******************************* Library Games */
 export interface LibraryGame {
   bggId: string;
-  copies: number;
   name: string;
   urlImage: string | null;
   urlThumb: string | null;

@@ -1,7 +1,8 @@
 import { Express } from "express";
 
-import { PrismaClient } from ".prisma/client";
+import { Color, PrismaClient } from ".prisma/client";
 import { getCurrentUserId } from "../utils/get-current-user-id";
+import { GameResponse } from "../types/types";
 
 export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
   // app.get("/api/collection/:id", async (req, res) => {
@@ -32,7 +33,7 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
       }
     });
 
-    const userIds = groupMembers.map((member) => member.userId);
+    const userIds = groupMembers.map((member) => member.user.id);
 
     const collections = await prisma.collection.findMany({
       where: {
@@ -48,6 +49,7 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
         games: true,
         owners: {
           select: {
+            id: true,
             username: true,
             color: true,
           }
@@ -56,14 +58,19 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
       distinct: ["id"],
     });
 
-    const library = new Map();
+    const library = new Map<string, GameResponse & { owners: { username: string, color: Color; id: string; }[]; }>();
 
     // TODO: Evaluate Complexity and test logic
     collections.forEach((collection) => {
       collection.games.forEach((game) => {
-        if (library[game.bggId]) {
-          library[game.bggId].copies += 1;
-          library[game.bggId].owners = library[game.bggId].owners.concat(collection.owners);
+        const existingLibraryGameEntry = library[game.bggId];
+
+        if (existingLibraryGameEntry) {
+          collection.owners.forEach((owner) => {
+            if (userIds.some(id => id === owner.id) && !existingLibraryGameEntry.owners.some(ownerOnLibaryGame => ownerOnLibaryGame.id === owner.id)) {
+              library[game.bggId] = { ...existingLibraryGameEntry, owners: existingLibraryGameEntry.owners.concat(owner) };
+            }
+          });
         } else {
           library[game.bggId] = {
             bggId: game.bggId,
@@ -71,13 +78,15 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
             urlThumb: game.urlThumb,
             urlImage: game.urlImage,
             year: game.year,
-            copies: 1,
-            owners: collection.owners.map((owner) => ({ username: owner.username, color: owner.color })),
+            owners: collection.owners.filter((owner) => userIds.some(id => id === owner.id)),
           };
+
+          console.log("added game. Library is now: ", library);
         }
       });
     });
 
+    console.log("Returning Library: ", { library });
     res.json({ library });
   });
 };

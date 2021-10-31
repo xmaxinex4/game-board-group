@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useRouteMatch } from "react-router";
 
 import {
   AppBar,
@@ -27,14 +28,15 @@ export function NavBar(): React.ReactElement {
     appBar,
   } = useStyles();
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
+  const isMyGamesRoute = useRouteMatch("/my-game-collections");
 
   return (
     <Grid container>
       <AppBar className={appBar} color="transparent" position="static">
         <Toolbar sx={{ marginLeft: userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 ? "unset" : "auto" }}>
-          <Grid item container alignItems="center" justifyContent="space-between" spacing={2}>
+          <Grid item container alignItems="center" justifyContent={isMyGamesRoute ? "flex-end" : "space-between"} spacing={2}>
             {
-              userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 && (
+              !isMyGamesRoute && userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 && (
                 <Grid item>
                   <ActiveGroupSelector />
                 </Grid>

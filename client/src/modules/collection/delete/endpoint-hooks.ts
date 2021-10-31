@@ -1,18 +1,21 @@
 /* eslint-disable no-unused-vars */
 
 import React from "react";
+import { useDispatch } from "react-redux";
 
 import { useApi } from "../../../hooks/useApi";
+import { deleteActiveUserCollection } from "../../../redux/active-user-collections-slice";
 
 export interface DeleteCollectionArgs {
   collectionId: string;
-  onCollectionDeleted?: (collectionId: string) => void;
+  onCollectionDeleted?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
 export function useDeleteCollection() {
   const { apiPost } = useApi();
+  const dispatch = useDispatch();
 
   function deleteCollection(args: DeleteCollectionArgs): void {
     const {
@@ -31,7 +34,8 @@ export function useDeleteCollection() {
     })
       .then(({ data }) => {
         if (onCollectionDeleted) {
-          onCollectionDeleted(data.deletedCollectionId);
+          dispatch(deleteActiveUserCollection({ collectionId: data.deletedCollectionId }));
+          onCollectionDeleted();
         }
       })
       .catch((error: Error) => {

@@ -30,7 +30,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     res.json({ collection });
   });
 
-  app.get("/api/collection/mycollections", async (req, res) => {
+  app.get("/api/collection/my-collections", async (req, res) => {
     const userId = getCurrentUserId(req, res);
 
     const result = await prisma.collection.findMany({
@@ -60,28 +60,42 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       return res.status(400).json({ error: `Required parameters were not given` });
     }
 
-    const currentCollection = await prisma.collection.findUnique({
-      where: {
-        id: collectionId
-      },
-      select: {
-        games: {
-          select: {
-            id: true,
-            bggId: true,
-          }
+    let currentCollection: {
+      games: { id: string, bggId: string; }[],
+      owners: { id: string; }[];
+    } = {
+      games: [],
+      owners: [],
+    };
+
+    if (collectionId) {
+      currentCollection = await prisma.collection.findUnique({
+        where: {
+          id: collectionId
         },
-        owners: {
-          select: {
-            id: true,
+        select: {
+          games: {
+            select: {
+              id: true,
+              bggId: true,
+            }
           },
-        },
-      }
-    });
+          owners: {
+            select: {
+              id: true,
+            },
+          },
+        }
+      });
+    }
 
     // Gather owner ids with logged in user listed as owner
     const owners = (ownerIds || []).concat(userId);
     const currentOwners = currentCollection.owners;
+
+    if (collectionId && !currentOwners.some(owner => owner.id === userId)) {
+      return res.status(401).json({ error: `You are not an owner of this collection` });
+    }
 
     // Filter out duplicates
     const ownersSet = new Set(owners);

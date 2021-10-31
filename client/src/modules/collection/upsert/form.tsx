@@ -7,7 +7,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import PersonIcon from "@mui/icons-material/Person";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlankTwoTone";
@@ -27,7 +27,6 @@ import {
 import { CollectionResponse, UserMembershipResponse, UserResponse } from "../../../../../src/types/types";
 import { Meeple } from "../../../images/components/meeple";
 import { GamesStateContext } from "../../../contexts/upsert-games-state-context";
-import { updateActiveUserCollection } from "../../../redux/active-user-collections-slice";
 import { activeUserGroupMemberships } from "../../../redux/active-user-group-memberships-slice";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
@@ -42,7 +41,7 @@ import { selectActiveUser } from "../../../redux/active-user-slice";
 export interface UpsertCollectionFormProps {
   onSave: () => void;
   onCancel: () => void;
-  initialData?: CollectionResponse;
+  initialData?: Partial<CollectionResponse>;
 }
 
 export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.ReactElement {
@@ -52,7 +51,6 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
 
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const activeUser = useSelector(selectActiveUser);
-  const dispatch = useDispatch();
 
   const [owners, setOwners] = useState<UserResponse[]>(initialData?.owners || []);
   const [name, setName] = useState(initialData?.name || "");
@@ -87,8 +85,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const onCollectionUpserted = useCallback((collection: CollectionResponse) => {
-    dispatch(updateActiveUserCollection({ collection }));
+  const onCollectionUpserted = useCallback(() => {
     onSave();
   }, [onSave]);
 
@@ -126,7 +123,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
       <Grid container direction="column" justifyContent="center" alignItems="stretch" spacing={4}>
         <Grid item xs={12}>
           <Typography align="center" variant="h5" component="h2">
-            Create Collection
+            {initialData?.id ? "Edit Collection" : "Create Collection"}
           </Typography>
         </Grid>
 
@@ -207,16 +204,6 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
               return <></>;
             }}
             renderInput={(params) => (
-              //   <FullWidthGridItemInput
-              //   formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-              //   input={name}
-              //   inputProps={{ maxLength: 50 }}
-              //   outlinedInputProps={{ id: "name" }}
-              //   inputLabel="Name"
-              //   setInputState={setName}
-              //   error={errors?.get("name")}
-              //   onInputChange={clearErrorField}
-              // />
               <TextField
                 error={!!errors.owners}
                 {...params}
@@ -232,9 +219,9 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
           <ActionButtons
             formButtons
             onSave={handleSubmit}
-            saveText="Create Collection"
             onCancel={onCancel}
             disabled={isLoading}
+            saveButtonSize={4}
           />
         </Grid>
       </Grid>
