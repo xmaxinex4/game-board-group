@@ -80,7 +80,9 @@ export function MyCollections(): React.ReactElement {
       {
         loadingCollections
           ? (
-            <CircularProgress />
+            <Grid container justifyContent="center" alignItems="center">
+              <CircularProgress size={72} sx={{ padding: "100px" }} />
+            </Grid>
           )
           : (
             <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
@@ -98,7 +100,7 @@ export function MyCollections(): React.ReactElement {
               {!showUpsertCollectionForm && (
                 userCollections?.collections?.length > 0
                   ? (
-                    <Grid item>
+                    <Grid item sx={{ width: "100%" }}>
                       <Grid container direction="column" spacing={4}>
                         <Grid item sx={{ marginLeft: "auto" }}>
                           <Button disabled={refreshingCollections} onClick={refreshCollections} variant="contained" startIcon={<RefreshIcon />}>
@@ -108,7 +110,9 @@ export function MyCollections(): React.ReactElement {
                         <Grid item>
                           {refreshingCollections
                             ? (
-                              <CircularProgress />
+                              <Grid container justifyContent="center" alignItems="center">
+                                <CircularProgress size={72} sx={{ padding: "100px" }} />
+                              </Grid>
                             )
                             : (
                               <CollectionCardList onEdit={onCollectionCardEdit} />

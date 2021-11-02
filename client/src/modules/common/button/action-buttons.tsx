@@ -7,6 +7,7 @@ import {
   Button,
   ButtonProps,
   GridSize,
+  Typography,
 } from "@mui/material";
 
 export interface FormProps {
@@ -46,12 +47,14 @@ export function ActionButtons(props: FormProps): React.ReactElement {
 
   return (
     <Grid container justifyContent="right" spacing={2}>
-      <Grid item xs={12} sm={cancelButtonSize || 4}>
+      <Grid item xs={12} sm={cancelButtonSize || 3}>
         <Button disabled={disabled} fullWidth variant="outlined" onClick={onHandleCancel} {...cancelButtonProps}>
-          {cancelText || "Cancel"}
+          <Typography variant="button">
+            {cancelText || "Cancel"}
+          </Typography>
         </Button>
       </Grid>
-      <Grid item xs={12} sm={saveButtonSize || 6}>
+      <Grid item xs={12} sm={saveButtonSize || 3}>
         <Button
           fullWidth
           type={formButtons ? "submit" : "button"}

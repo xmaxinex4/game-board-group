@@ -69,7 +69,7 @@ export function GroupInvite(): React.ReactElement {
       <Grid container direction="column" alignItems="center" justifyContent="center" spacing={4}>
         {loadingAddUser && !simulatingProgress && (
           <Grid container sx={{ padding: "100px" }} justifyContent="center" alignItems="center">
-            <CircularProgress size={80} />
+            <CircularProgress size={72} />
           </Grid>
         )}
         {simulatingProgress && !loadingAddUser && (

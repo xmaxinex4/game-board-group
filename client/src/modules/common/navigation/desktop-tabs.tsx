@@ -38,7 +38,7 @@ export function DesktopTabs(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
 
   // The last 2 digits on a hex represent the alpha value
-  const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
+  const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}4B` : "" });
 
   const isPollsRoute = useRouteMatch("/polls");
   const isLibraryRoute = useRouteMatch("/library");

@@ -221,7 +221,6 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
             onSave={handleSubmit}
             onCancel={onCancel}
             disabled={isLoading}
-            saveButtonSize={4}
           />
         </Grid>
       </Grid>

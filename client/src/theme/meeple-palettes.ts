@@ -38,7 +38,7 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     light: "#f28377",
     dark: "#872523",
     main: "#bc544b",
-    contrastText: "ffffff",
+    contrastText: "#ffffff",
   },
   Rose: {
     light: "#ffc6e1",
@@ -56,7 +56,7 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     light: "#ffae98",
     dark: "#c64d3f",
     main: "#fe7d6a",
-    contrastText: "ffffff",
+    contrastText: "#ffffff",
   },
   Merigold: {
     light: "#fff562",

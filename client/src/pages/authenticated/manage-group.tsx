@@ -208,6 +208,8 @@ export function ManageGroup(): React.ReactElement {
               saveText="Generate Invite Link"
               onCancel={closeGenerateInviteLinkDialog}
               cancelButtonProps={{ disabled: generatingLink }}
+              saveButtonSize={6}
+              cancelButtonSize={4}
             />
           </DialogActions>
         </Dialog>

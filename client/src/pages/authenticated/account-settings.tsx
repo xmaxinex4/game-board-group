@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 
 import EditIcon from "@mui/icons-material/EditTwoTone";
-import LockIcon from "@mui/icons-material/LockTwoTone";
 
 import {
   Grid,
@@ -132,7 +131,7 @@ export function AccountSettings(): React.ReactElement {
           sx={{ width: "100%" }}
         >
           <Card sx={{ margin: "auto", maxWidth: "450px", minWidth: "275px" }}>
-            <CardContent>
+            <CardContent sx={{ textAlign: "center" }}>
               {editingPassword && (
                 <ChangePasswordForm
                   onCancel={closeChangePassword}
@@ -140,15 +139,13 @@ export function AccountSettings(): React.ReactElement {
                 />
               )}
               {!editingPassword && (
-                <Button fullWidth onClick={openChangePassword}>
-                  <Grid container alignItems="center" justifyContent="center" spacing={2}>
-                    <Grid item>
-                      <LockIcon sx={{ fontSize: 40 }} color="primary" />
-                    </Grid>
-                    <Grid item>
-                      Change Password
-                    </Grid>
-                  </Grid>
+                <Button
+                  sx={{ textAlign: "center" }}
+                  onClick={openChangePassword}
+                >
+                  <Typography variant="button">
+                    Change Password
+                  </Typography>
                 </Button>
               )}
             </CardContent>

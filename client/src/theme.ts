@@ -14,6 +14,38 @@ export const getMuiTheme = (primary: keyof MeeplePaletteColorTheme): Theme => cr
     info: SitePaletteColors.Info,
     warning: SitePaletteColors.Warning,
   },
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": {
+            color: MeeplePaletteColors[primary].dark,
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlinedPrimary: {
+          borderColor: MeeplePaletteColors[primary].dark,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        textColorPrimary: {
+          "&.Mui-selected": {
+            color: MeeplePaletteColors[primary].dark,
+          },
+        },
+      },
+    },
+  },
+  typography: {
+    button: {
+      color: MeeplePaletteColors[primary].dark,
+    },
+  },
 });
 
 export const defaultTheme = createTheme({

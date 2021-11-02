@@ -9,6 +9,7 @@ import {
   SvgIconProps,
   Theme,
   Typography,
+  TypographyProps,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -20,6 +21,7 @@ export interface SiteLinkProps extends LinkProps {
   text: string;
   icon?: (props: SvgIconProps) => React.ReactElement;
   styleProps?: SiteLinkStyleProps;
+  typographyProps?: TypographyProps;
 }
 
 const useStyles = makeStyles<Theme, SiteLinkStyleProps>((theme: Theme) => ({
@@ -38,6 +40,7 @@ export function SiteLink(props: SiteLinkProps): React.ReactElement {
     icon: Icon,
     text,
     styleProps,
+    typographyProps,
     ...linkProps
   } = props;
   const { link } = useStyles(styleProps || {});
@@ -52,7 +55,7 @@ export function SiteLink(props: SiteLinkProps): React.ReactElement {
             </SvgIcon>
           </Grid>
           <Grid item>
-            <Typography color="primary">
+            <Typography color="default" {...typographyProps}>
               {text}
             </Typography>
           </Grid>
@@ -60,7 +63,9 @@ export function SiteLink(props: SiteLinkProps): React.ReactElement {
       </Link>
     ) : (
       <Link className={link} {...linkProps}>
-        {text}
+        <Typography color="default" {...typographyProps}>
+          {text}
+        </Typography>
       </Link>
     )
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import {
   Divider,
@@ -8,8 +9,12 @@ import {
 } from "@mui/material";
 
 import { SiteLink } from "./site-link";
+import { selectActiveUser } from "../../../redux/active-user-slice";
+import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
 export function NavFooter(): React.ReactElement {
+  const activeUser = useSelector(selectActiveUser);
+
   return (
     <Grid
       container
@@ -29,14 +34,24 @@ export function NavFooter(): React.ReactElement {
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
-              <Typography variant="subtitle2">
-                <SiteLink to="/privacy-policy" text="Privacy Policy" />
-              </Typography>
+              <SiteLink
+                to="/privacy-policy"
+                text="Privacy Policy"
+                typographyProps={{
+                  variant: "subtitle2",
+                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : "default",
+                }}
+              />
             </Grid>
             <Grid item>
-              <Typography variant="subtitle2">
-                <SiteLink to="/terms-of-service" text="Terms of Service" />
-              </Typography>
+              <SiteLink
+                to="/terms-of-service"
+                text="Terms of Service"
+                typographyProps={{
+                  variant: "subtitle2",
+                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : "default",
+                }}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -49,7 +64,12 @@ export function NavFooter(): React.ReactElement {
             </Grid>
             <Grid item>
               <Typography variant="subtitle2">
-                <Link href="https://boardgamegeek.com/">BoardGameGeek</Link>
+                <Link
+                  href="https://boardgamegeek.com/"
+                  color={activeUser ? MeeplePaletteColors[activeUser.color].dark : "default"}
+                >
+                  BoardGameGeek
+                </Link>
               </Typography>
             </Grid>
           </Grid>
