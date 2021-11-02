@@ -86,7 +86,6 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
       });
     });
 
-    console.log("Returning Library: ", { library });
     res.json({ library });
   });
 };
