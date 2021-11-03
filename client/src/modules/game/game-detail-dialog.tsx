@@ -1,15 +1,14 @@
 import React from "react";
 
 import {
+  CircularProgress,
   Dialog,
   DialogContent,
-  DialogTitle,
-  Grid,
-  Typography,
+  // DialogTitle,
 } from "@mui/material";
 
 import { LibraryGame } from "../../../../src/types/types";
-import { UserCircleListDisplay } from "../user/user-circle-list-display";
+import { BggGameDetailDisplay } from "./bgg-game-detail-display";
 
 export interface GameDetailDialogProps {
   open: boolean;
@@ -21,19 +20,14 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
   const { open, game, onClose } = props;
 
   return (
-    <Dialog onClose={onClose} open={open}>
-      <DialogTitle>{game?.name}</DialogTitle>
-      <DialogContent>
-        <Grid container direction="column" spacing={2}>
-          <Grid item>
-            <Typography>Owners:</Typography>
-          </Grid>
-          <Grid item>
-            {game?.owners && (
-              <UserCircleListDisplay verticalNames users={game?.owners} />
-            )}
-          </Grid>
-        </Grid>
+    <Dialog maxWidth="lg" onClose={onClose} open={open}>
+      <DialogContent sx={{ width: "800px" }}>
+        {!game && (
+          <CircularProgress />
+        )}
+        {game && (
+          <BggGameDetailDisplay game={game} />
+        )}
       </DialogContent>
     </Dialog>
   );

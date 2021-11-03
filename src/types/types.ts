@@ -1,16 +1,41 @@
-import { Prisma, Color } from "@prisma/client";
+import { Prisma, Color, PlayPreference } from "@prisma/client";
+
+/******************************* User Play Preferences */
+export interface UserPlayPreferenceResponse {
+  id: string;
+  preference: PlayPreference;
+  game: {
+    bggId: string;
+  };
+}
+
+export const UserPlayPreferenceResponsePrismaSelect: Prisma.UserPlayPreferenceSelect = {
+  id: true,
+  preference: true,
+  game: {
+    select: {
+      bggId: true,
+    }
+  },
+};
 
 /******************************* Users */
 export interface UserResponse {
   id: string;
   color: Color;
   username: string;
+  playPreferences: UserPlayPreferenceResponse[];
 }
 
 export const UserResponsePrismaSelect: Prisma.UserSelect = {
   id: true,
   color: true,
   username: true,
+  playPreferences: {
+    select: {
+      ...UserPlayPreferenceResponsePrismaSelect,
+    },
+  },
 };
 
 export interface ActiveUserResponse extends UserResponse {
@@ -22,6 +47,11 @@ export const ActiveUserResponsePrismaSelect: Prisma.UserSelect = {
   color: true,
   username: true,
   email: true,
+  playPreferences: {
+    select: {
+      ...UserPlayPreferenceResponsePrismaSelect,
+    },
+  },
 };
 
 /******************************* Groups & Group Memberships */
@@ -110,6 +140,22 @@ export const GameResponsePrismaSelect = {
   urlThumb: true,
   year: true,
 };
+
+export interface GameDetails {
+  description: string,
+  minPlayers: number,
+  maxPlayers: number,
+  minPlayTime: number,
+  maxPlayTime: number,
+  minAge: number,
+  categories: string[];
+  mechanics: string[];
+  designers: string[];
+  artists: string[];
+  publishers: string[];
+  rating: number;
+  complexity: number;
+}
 
 /******************************* Collections */
 export interface CollectionResponse {

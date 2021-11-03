@@ -80,8 +80,6 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
             year: game.year,
             owners: collection.owners.filter((owner) => userIds.some(id => id === owner.id)),
           };
-
-          console.log("added game. Library is now: ", library);
         }
       });
     });

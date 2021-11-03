@@ -6,7 +6,9 @@ import {
   Grid,
   Link,
   Typography,
+  Theme,
 } from "@mui/material";
+import { useTheme } from "@mui/styles";
 
 import { SiteLink } from "./site-link";
 import { selectActiveUser } from "../../../redux/active-user-slice";
@@ -14,6 +16,7 @@ import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
 export function NavFooter(): React.ReactElement {
   const activeUser = useSelector(selectActiveUser);
+  const theme = useTheme<Theme>();
 
   return (
     <Grid
@@ -39,7 +42,7 @@ export function NavFooter(): React.ReactElement {
                 text="Privacy Policy"
                 typographyProps={{
                   variant: "subtitle2",
-                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : "default",
+                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main,
                 }}
               />
             </Grid>
@@ -49,7 +52,7 @@ export function NavFooter(): React.ReactElement {
                 text="Terms of Service"
                 typographyProps={{
                   variant: "subtitle2",
-                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : "default",
+                  color: activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main,
                 }}
               />
             </Grid>
@@ -66,7 +69,7 @@ export function NavFooter(): React.ReactElement {
               <Typography variant="subtitle2">
                 <Link
                   href="https://boardgamegeek.com/"
-                  color={activeUser ? MeeplePaletteColors[activeUser.color].dark : "default"}
+                  color={activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main}
                 >
                   BoardGameGeek
                 </Link>

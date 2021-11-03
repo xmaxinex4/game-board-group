@@ -73,7 +73,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const addNewGameToSelectedGames = useCallback(async (bggId: string) => {
-    const { data } = await bggApiGet(`/thing?id=${bggId}`); // this does not wait long enough :(
+    const { data } = await bggApiGet(`/thing?id=${bggId}`);
 
     if (data as string) {
       const result = getGameDetailsFromBggXmlResult(data as string, bggId);

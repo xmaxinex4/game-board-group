@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { ActiveUserGroupMembershipsResponse, GroupMembershipResponsePrismaSelect } from "../types/types";
+import { ActiveUserGroupMembershipsResponse, ActiveUserResponsePrismaSelect, GroupMembershipResponsePrismaSelect } from "../types/types";
 
 export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) => {
   app.get("/api/user/active-user", async (req, res) => {
@@ -16,10 +16,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
           id: userId
         },
         select: {
-          id: true,
-          username: true,
-          color: true,
-          email: true,
+          ...ActiveUserResponsePrismaSelect
         }
       });
 
