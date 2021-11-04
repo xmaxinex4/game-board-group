@@ -1,9 +1,10 @@
-import { Prisma, Color, PlayPreference } from "@prisma/client";
+import { Prisma, Color } from "@prisma/client";
 
 /******************************* User Play Preferences */
+
 export interface UserPlayPreferenceResponse {
   id: string;
-  preference: PlayPreference;
+  preference: string;
   game: {
     bggId: string;
   };
@@ -24,18 +25,12 @@ export interface UserResponse {
   id: string;
   color: Color;
   username: string;
-  playPreferences: UserPlayPreferenceResponse[];
 }
 
 export const UserResponsePrismaSelect: Prisma.UserSelect = {
   id: true,
   color: true,
   username: true,
-  playPreferences: {
-    select: {
-      ...UserPlayPreferenceResponsePrismaSelect,
-    },
-  },
 };
 
 export interface ActiveUserResponse extends UserResponse {
@@ -47,11 +42,6 @@ export const ActiveUserResponsePrismaSelect: Prisma.UserSelect = {
   color: true,
   username: true,
   email: true,
-  playPreferences: {
-    select: {
-      ...UserPlayPreferenceResponsePrismaSelect,
-    },
-  },
 };
 
 /******************************* Groups & Group Memberships */

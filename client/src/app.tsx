@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 
-import { ActiveUserGroupMembershipsResponse, ActiveUserResponse } from "../../src/types/types";
+import { ActiveUserGroupMembershipsResponse, ActiveUserResponse, UserPlayPreferenceResponse } from "../../src/types/types";
 
 import { defaultTheme, getMuiTheme } from "./theme";
 import { useApi } from "./hooks/useApi";
@@ -15,6 +15,7 @@ import { AuthenticatedRoutes } from "./pages/authenticated/routes";
 import { UnAuthenticatedRoutes } from "./pages/unauthenticated/routes";
 import { selectActiveUser, setActiveUser } from "./redux/active-user-slice";
 import { setActiveUserGroupMemberships, setSelectedActiveUserGroupMembershipId } from "./redux/active-user-group-memberships-slice";
+import { setActiveUserPlayPreferences } from "./redux/active-user-play-preferences-slice";
 
 function App() {
   const { apiGet } = useApi();
@@ -48,6 +49,12 @@ function App() {
             id: data?.groupMemberships?.[0]?.id,
           }));
         }
+      });
+
+      apiGet<UserPlayPreferenceResponse[]>("/user/active-user-play-preferences").then(({ data }) => {
+        dispatch(setActiveUserPlayPreferences({
+          playPreferences: data,
+        }));
       });
     }
   }, [activeUser]);

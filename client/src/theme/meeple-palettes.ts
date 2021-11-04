@@ -230,7 +230,4 @@ const hashTableOfMainToMeeplePaletteColor = new Map<string, keyof MeeplePaletteC
 
 export const getMappedHexToPaletteColor = (
   mainHexColor: string,
-): keyof MeeplePaletteColorTheme => {
-  console.log("mainHexColor: ", mainHexColor);
-  return hashTableOfMainToMeeplePaletteColor.get(mainHexColor) || "Red";
-};
+): keyof MeeplePaletteColorTheme => hashTableOfMainToMeeplePaletteColor.get(mainHexColor) || "Red";

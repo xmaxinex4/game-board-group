@@ -4,20 +4,13 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMoreTwoTone";
 import MinAgeIcon from "@mui/icons-material/CakeTwoTone";
 import TimeIcon from "@mui/icons-material/AccessTimeTwoTone";
 import PlayerCountIcon from "@mui/icons-material/GroupTwoTone";
-import DesignerIcon from "@mui/icons-material/DesignServicesTwoTone";
-import ArtistIcon from "@mui/icons-material/BrushTwoTone";
-import PublisherIcon from "@mui/icons-material/MenuBookTwoTone";
 
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Card,
   CircularProgress,
   Grid,
@@ -30,8 +23,10 @@ import { useBggApi } from "../../hooks/useBggApi";
 
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
-import { PlayPreferenceRating } from "./play-preference-rating";
-import { selectActiveUser } from "../../redux/active-user-slice";
+// import { selectActiveUser } from "../../redux/active-user-slice";
+
+import { BggGameDetailAccordionDisplay } from "./bgg-game-detail-accordion-display";
+import { PlayPreferenceRating } from "./user-game-play-preference/play-preference-rating";
 
 export interface BggGameDetailDisplayProps {
   game: LibraryGame;
@@ -40,8 +35,8 @@ export interface BggGameDetailDisplayProps {
 export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.ReactElement {
   const { game } = props;
 
-  const activeUser = useSelector(selectActiveUser);
-  const activeUserPlayPreference = useMemo(() => activeUser?.playPreferences.find((preference) => preference.game.bggId === game.bggId), []);
+  // const activeUser = useSelector(selectActiveUser);
+  // const activeUserPlayPreference = useMemo(() => activeUser?.playPreferences?.find((preference) => preference.game.bggId === game.bggId), []);
 
   const [gameDetails, setGameDetails] = useState<GameDetails | null>();
   const { bggApiGet } = useBggApi();
@@ -62,7 +57,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
   const decodedGameDescription = useMemo(() => {
     const encodedDescription = document.createElement("div");
     encodedDescription.innerHTML = gameDetails?.description || "";
-    return encodedDescription.textContent;
+    return encodedDescription.textContent || undefined;
   }, [gameDetails]);
 
   return (
@@ -72,11 +67,6 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
       )}
       {gameDetails === null && (
         <Grid container direction="column" spacing={2}>
-          <Grid item>
-            <Typography variant="h5">
-              {game.name}
-            </Typography>
-          </Grid>
           <Grid item>
             <Typography>Owners:</Typography>
           </Grid>
@@ -89,11 +79,6 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
       )}
       {gameDetails && (
         <Grid container direction="column" spacing={2}>
-          <Grid item>
-            <Typography variant="h5">
-              {game.name}
-            </Typography>
-          </Grid>
           <Grid container item alignItems="center" spacing={1}>
             <Grid item>
               <Typography>Owned By:</Typography>
@@ -105,7 +90,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
             </Grid>
           </Grid>
           <Grid item>
-            <PlayPreferenceRating userPlayPreference={activeUserPlayPreference} />
+            <PlayPreferenceRating bggId={game.bggId} />
           </Grid>
           <Grid item>
             <Card sx={{ padding: "16px" }}>
@@ -144,55 +129,12 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
             </Card>
           </Grid>
           <Grid item>
-            {decodedGameDescription && (
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>Description</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography variant="body2">
-                    {decodedGameDescription}
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            )}
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-              >
-                <Typography>Credits</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="body2">
-                  <Grid container spacing={1}>
-                    {gameDetails?.designers?.length > 0 && (
-                      <Grid container item spacing={2}>
-                        <Grid item><DesignerIcon color="primary" /></Grid>
-                        <Grid item xs={11}>{`Designers: ${gameDetails.designers.join(", ")}`}</Grid>
-                      </Grid>
-                    )}
-                    {gameDetails?.artists?.length > 0 && (
-                      <Grid container item spacing={2}>
-                        <Grid item><ArtistIcon color="primary" /></Grid>
-                        <Grid item xs={11}>{`Artists: ${gameDetails.artists.join(", ")}`}</Grid>
-                      </Grid>
-                    )}
-                    {gameDetails?.publishers?.length > 0 && (
-                      <Grid container item spacing={2}>
-                        <Grid item><PublisherIcon color="primary" /></Grid>
-                        <Grid item xs={11}>{`Publishers: ${gameDetails.publishers.join(", ")}`}</Grid>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+            <BggGameDetailAccordionDisplay
+              gameDescription={decodedGameDescription}
+              designers={gameDetails?.designers}
+              artists={gameDetails?.artists}
+              publishers={gameDetails?.publishers}
+            />
           </Grid>
         </Grid>
       )}

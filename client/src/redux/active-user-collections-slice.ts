@@ -67,7 +67,6 @@ export const activeUserCollectionsSlice = createSlice<ActiveUserCollectionsState
       );
 
       if (!(collectionIndex < 0)) {
-        // const currentCollections = state.activeUserCollections.collections;
         state.activeUserCollections.collections.splice(collectionIndex, 1);
       }
     },

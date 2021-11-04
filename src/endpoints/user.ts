@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { ActiveUserGroupMembershipsResponse, ActiveUserResponsePrismaSelect, GroupMembershipResponsePrismaSelect } from "../types/types";
+import { ActiveUserGroupMembershipsResponse, ActiveUserResponsePrismaSelect, GroupMembershipResponsePrismaSelect, UserPlayPreferenceResponse, UserPlayPreferenceResponsePrismaSelect } from "../types/types";
 
 export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) => {
   app.get("/api/user/active-user", async (req, res) => {
@@ -143,6 +143,97 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
     } catch (error) {
       console.error("Error on sign in: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.get("/api/user/active-user-play-preferences", async (req, res) => {
+    try {
+      const userId = getCurrentUserId(req, res);
+      const result = await prisma.user.findUnique({
+        where: {
+          id: userId
+        },
+        select: {
+          playPreferences: {
+            select: {
+              ...UserPlayPreferenceResponsePrismaSelect
+            }
+          }
+        }
+      }) as { playPreferences: UserPlayPreferenceResponse[]; };
+
+      return res.status(200).json(result.playPreferences);
+    } catch (error) {
+      console.error("Error getting current user play preferences: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.post("/api/user/play-preference/upsert", async (req, res) => {
+    const userId = getCurrentUserId(req, res);
+
+    const { id, preference, bggId } = req.body;
+
+    if (!preference || !bggId) {
+      return res.status(400).json({ error: `Required parameters were not given` });
+    }
+
+    try {
+      const result = await prisma.userPlayPreference.upsert({
+        where: {
+          id: id || ""
+        },
+        create: {
+          preference,
+          game: {
+            connect: {
+              bggId,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+        update: {
+          preference,
+        },
+        select: {
+          ...UserPlayPreferenceResponsePrismaSelect
+        },
+      }) as UserPlayPreferenceResponse;
+
+      res.json(result);
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({ error: `Failed to upsert user game play preference` });
+    }
+  });
+
+  app.post("/api/user/play-preference/delete", async (req, res) => {
+    getCurrentUserId(req, res);
+
+    const { id } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: `Required parameters were not given` });
+    }
+
+    try {
+      const result = await prisma.userPlayPreference.delete({
+        where: {
+          id
+        },
+        select: {
+          ...UserPlayPreferenceResponsePrismaSelect
+        },
+      }) as UserPlayPreferenceResponse;
+
+      res.json(result);
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({ error: `Failed to delete user game play preference` });
     }
   });
 };

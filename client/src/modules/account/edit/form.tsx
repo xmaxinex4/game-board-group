@@ -9,8 +9,6 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import { Color } from ".prisma/client";
 
-import { setActiveUser } from "../../../redux/active-user-slice";
-
 import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
 import { MeepleColorPicker } from "../../common/meeple-color-picker";
 import { ActionButtons } from "../../common/button/action-buttons";
@@ -44,7 +42,7 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
 
   const onAccountEdited = useCallback(() => {
     onSave();
-  }, [setActiveUser, onSave]);
+  }, [onSave]);
 
   const handleSubmit = () => {
     const isFormValid = validateEditAccountForm({

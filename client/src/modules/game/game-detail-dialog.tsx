@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useCallback } from "react";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   CircularProgress,
   Dialog,
   DialogContent,
-  // DialogTitle,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Typography,
 } from "@mui/material";
 
 import { LibraryGame } from "../../../../src/types/types";
@@ -19,8 +24,26 @@ export interface GameDetailDialogProps {
 export function GameDetailDialog(props: GameDetailDialogProps): React.ReactElement {
   const { open, game, onClose } = props;
 
+  const onCloseGameDialog = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
   return (
-    <Dialog maxWidth="lg" onClose={onClose} open={open}>
+    <Dialog maxWidth="lg" onClose={onCloseGameDialog} open={open}>
+      <DialogTitle>
+        <Grid container alignItems="stretch" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">
+              {game?.name}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <IconButton size="small" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </DialogTitle>
       <DialogContent sx={{ width: "800px" }}>
         {!game && (
           <CircularProgress />
