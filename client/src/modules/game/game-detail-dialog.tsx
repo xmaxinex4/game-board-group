@@ -29,22 +29,26 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
   }, [onClose]);
 
   return (
-    <Dialog maxWidth="lg" onClose={onCloseGameDialog} open={open}>
+    <Dialog
+      onClose={onCloseGameDialog}
+      open={open}
+      sx={{ ".MuiDialog-container": { marginTop: "32px", height: "unset" } }}
+    >
       <DialogTitle>
         <Grid container alignItems="stretch" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">
+          <Grid item xs={11}>
+            <Typography noWrap variant="h6">
               {game?.name}
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={1} sx={{ marginLeft: { xs: "auto" } }}>
             <IconButton size="small" onClick={onClose}>
               <CloseIcon />
             </IconButton>
           </Grid>
         </Grid>
       </DialogTitle>
-      <DialogContent sx={{ width: "800px" }}>
+      <DialogContent>
         {!game && (
           <CircularProgress />
         )}

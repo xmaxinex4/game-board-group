@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-// import { useSelector } from "react-redux";
 
 import MinAgeIcon from "@mui/icons-material/CakeTwoTone";
 import TimeIcon from "@mui/icons-material/AccessTimeTwoTone";
@@ -14,19 +13,20 @@ import {
   Card,
   CircularProgress,
   Grid,
+  Theme,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 import { GameDetails, LibraryGame } from "../../../../src/types/types";
-
-import { useBggApi } from "../../hooks/useBggApi";
-
-import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
-// import { selectActiveUser } from "../../redux/active-user-slice";
+import { useBggApi } from "../../hooks/useBggApi";
+import { UserCircleListDisplay } from "../user/user-circle-list-display";
 
 import { BggGameDetailAccordionDisplay } from "./bgg-game-detail-accordion-display";
 import { PlayPreferenceRating } from "./user-game-play-preference/play-preference-rating";
+import { GameComplexityRating } from "./game-complexity-rating";
 
 export interface BggGameDetailDisplayProps {
   game: LibraryGame;
@@ -34,9 +34,8 @@ export interface BggGameDetailDisplayProps {
 
 export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.ReactElement {
   const { game } = props;
-
-  // const activeUser = useSelector(selectActiveUser);
-  // const activeUserPlayPreference = useMemo(() => activeUser?.playPreferences?.find((preference) => preference.game.bggId === game.bggId), []);
+  const theme = useTheme<Theme>();
+  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [gameDetails, setGameDetails] = useState<GameDetails | null>();
   const { bggApiGet } = useBggApi();
@@ -72,20 +71,20 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
           </Grid>
           <Grid item>
             {game?.owners && (
-              <UserCircleListDisplay users={game?.owners} />
+              <UserCircleListDisplay useLetterAvatars={!isSmUp} users={game?.owners} />
             )}
           </Grid>
         </Grid>
       )}
       {gameDetails && (
-        <Grid container direction="column" spacing={2}>
-          <Grid container item alignItems="center" spacing={1}>
+        <Grid container direction="column" justifyContent="center" spacing={2}>
+          <Grid container item direction="column" alignItems="center" spacing={1}>
             <Grid item>
-              <Typography>Owned By:</Typography>
+              <Typography>Owners:</Typography>
             </Grid>
             <Grid item>
               {game?.owners && (
-                <UserCircleListDisplay users={game?.owners} />
+                <UserCircleListDisplay useLetterAvatars={!isSmUp} users={game?.owners} />
               )}
             </Grid>
           </Grid>
@@ -94,48 +93,74 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
           </Grid>
           <Grid item>
             <Card sx={{ padding: "16px" }}>
-              <Grid container direction="column" spacing={1}>
-                <Grid container item alignItems="center" spacing={1}>
-                  <Grid item><MinAgeIcon color="primary" /></Grid>
-                  <Grid item><Typography>{`Ages ${gameDetails.minAge}+`}</Typography></Grid>
-                </Grid>
-                {!!gameDetails.minPlayers && (
-                  <Grid container item alignItems="center" spacing={1}>
-                    <Grid item><PlayerCountIcon color="primary" /></Grid>
-                    <Grid item>
-                      {!!gameDetails.maxPlayers && (
-                        gameDetails.minPlayers === gameDetails.maxPlayers
-                          ? (
+              <Grid container alignItems="center" justifyContent="space-evenly">
+                <Grid
+                  item
+                  sx={{
+                    padding: {
+                      xs: "8px",
+                      sm: "unset",
+                    },
+                  }}
+                >
+                  <Grid container direction="column" spacing={1}>
+                    <Grid container item alignItems="center" spacing={1}>
+                      <Grid item><MinAgeIcon color="primary" /></Grid>
+                      <Grid item><Typography>{`Ages ${gameDetails.minAge}+`}</Typography></Grid>
+                    </Grid>
+                    {!!gameDetails.minPlayers && (
+                      <Grid container item alignItems="center" spacing={1}>
+                        <Grid item><PlayerCountIcon color="primary" /></Grid>
+                        <Grid item>
+                          {!!gameDetails.maxPlayers && (
+                            gameDetails.minPlayers === gameDetails.maxPlayers
+                              ? (
+                                <Typography>{`${gameDetails.minPlayers} Player(s)`}</Typography>
+                              )
+                              : (
+                                <Typography>{`${gameDetails.minPlayers}-${gameDetails.maxPlayers} Players`}</Typography>
+                              )
+                          )}
+                          {!gameDetails.maxPlayers && (
                             <Typography>{`${gameDetails.minPlayers} Player(s)`}</Typography>
-                          )
-                          : (
-                            <Typography>{`${gameDetails.minPlayers}-${gameDetails.maxPlayers} Players`}</Typography>
-                          )
-                      )}
-                      {!gameDetails.maxPlayers && (
-                        <Typography>{`${gameDetails.minPlayers} Player(s)`}</Typography>
-                      )}
+                          )}
+                        </Grid>
+                      </Grid>
+                    )}
+                    <Grid container item alignItems="center" spacing={1}>
+                      <Grid item><TimeIcon color="primary" /></Grid>
+                      <Grid item>
+                        <Typography>{`${gameDetails.minPlayTime}-${gameDetails.maxPlayTime} min`}</Typography>
+                      </Grid>
                     </Grid>
                   </Grid>
-                )}
-                <Grid container item alignItems="center" spacing={1}>
-                  <Grid item><TimeIcon color="primary" /></Grid>
-                  <Grid item>
-                    <Typography>{`${gameDetails.minPlayTime}-${gameDetails.maxPlayTime} min`}</Typography>
-                  </Grid>
                 </Grid>
-                {/* <Grid item><Typography>Complexity</Typography></Grid> */}
+                {!!gameDetails.complexity && (
+                  <Grid
+                    item
+                    sx={{
+                      padding: {
+                        xs: "8px",
+                        sm: "unset",
+                      },
+                    }}
+                  >
+                    <GameComplexityRating complexity={gameDetails.complexity} />
+                  </Grid>
+                )}
               </Grid>
             </Card>
           </Grid>
-          <Grid item>
-            <BggGameDetailAccordionDisplay
-              gameDescription={decodedGameDescription}
-              designers={gameDetails?.designers}
-              artists={gameDetails?.artists}
-              publishers={gameDetails?.publishers}
-            />
-          </Grid>
+          {isSmUp && (
+            <Grid item>
+              <BggGameDetailAccordionDisplay
+                gameDescription={decodedGameDescription}
+                designers={gameDetails?.designers}
+                artists={gameDetails?.artists}
+                publishers={gameDetails?.publishers}
+              />
+            </Grid>
+          )}
         </Grid>
       )}
     </>

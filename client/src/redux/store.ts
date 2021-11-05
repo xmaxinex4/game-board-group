@@ -28,7 +28,7 @@ const persistConfig = {
   key: "root",
   storage,
   whitelist: ["activeUser", "activeUserPlayPreferencesState"], // only activeUser and active user's play preferences will be persisted,
-  transforms: [expireIn(expireInTime, expirationKey, [])],
+  transforms: [expireIn(expireInTime, expirationKey)],
 };
 
 const rootReducer = combineReducers({

@@ -26,6 +26,8 @@ export const activeUserSlice = createSlice<ActiveUserState, ActiveUserStateReduc
       type: string,
       payload: { user: ActiveUserResponse | undefined; },
     }) => {
+      console.log("state.activeUser: ", state.activeUser);
+      console.log("action.payload.user: ", action.payload.user);
       state.activeUser = action.payload.user;
     },
   },

@@ -58,20 +58,20 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
           <Typography variant="body2">
             <Grid container spacing={1}>
               {designers && designers?.length > 0 && (
-                <Grid container item spacing={2}>
-                  <Grid item><DesignerIcon color="primary" /></Grid>
+                <Grid container item>
+                  <Grid item xs={1}><DesignerIcon color="primary" /></Grid>
                   <Grid item xs={11}>{`Designers: ${designers.join(", ")}`}</Grid>
                 </Grid>
               )}
               {artists && artists?.length > 0 && (
-                <Grid container item spacing={2}>
-                  <Grid item><ArtistIcon color="primary" /></Grid>
+                <Grid container item>
+                  <Grid item xs={1}><ArtistIcon color="primary" /></Grid>
                   <Grid item xs={11}>{`Artists: ${artists.join(", ")}`}</Grid>
                 </Grid>
               )}
               {publishers && publishers?.length > 0 && (
-                <Grid container item spacing={2}>
-                  <Grid item><PublisherIcon color="primary" /></Grid>
+                <Grid container item>
+                  <Grid item xs={1}><PublisherIcon color="primary" /></Grid>
                   <Grid item xs={11}>{`Publishers: ${publishers.join(", ")}`}</Grid>
                 </Grid>
               )}

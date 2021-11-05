@@ -142,14 +142,14 @@ export function PlayPreferenceRating(props: PlayPreferenceRatingProps): React.Re
   };
 
   return (
-    <Grid container direction="column">
+    <Grid container justifyContent="center" alignItems="center" direction="column">
       <Grid item>
         <Typography variant="subtitle2">
           My Play Preference
         </Typography>
       </Grid>
       <Grid item>
-        <Grid container alignItems="center" spacing={2}>
+        <Grid container direction="column" alignItems="center">
           <Grid item>
             <Rating
               disabled={savingPlayPreference}
