@@ -115,7 +115,9 @@ export function MyCollections(): React.ReactElement {
                               </Grid>
                             )
                             : (
-                              <CollectionCardList onEdit={onCollectionCardEdit} />
+                              <Grid container sx={{ margin: "auto", maxWidth: "800px", minWidth: "275px" }}>
+                                <CollectionCardList onEdit={onCollectionCardEdit} />
+                              </Grid>
                             )}
                         </Grid>
                       </Grid>

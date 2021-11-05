@@ -1,15 +1,23 @@
 import React from "react";
-// import { useSelector } from "react-redux";
+
+import ConstructionIcon from "@mui/icons-material/ConstructionTwoTone";
+import { Grid, Typography } from "@mui/material";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
-// import { selectActiveGroup } from "../../modules/group/redux/slice";
 
 export function Stats(): React.ReactElement {
-  // const activeGroup = useSelector(selectActiveGroup);
-
   return (
     <TabContentContainer title="Group Stats">
-      UNDERCONSTRUCTION
+      <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
+        <Grid item>
+          <ConstructionIcon color="primary" sx={{ fontSize: 80 }} />
+        </Grid>
+        <Grid item>
+          <Typography>
+            Under Construction
+          </Typography>
+        </Grid>
+      </Grid>
     </TabContentContainer>
   );
 }

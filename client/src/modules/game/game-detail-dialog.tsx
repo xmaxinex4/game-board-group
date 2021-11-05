@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
 import {
-  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -14,6 +13,7 @@ import {
 
 import { LibraryGame } from "../../../../src/types/types";
 import { BggGameDetailDisplay } from "./bgg-game-detail-display";
+import { PageLoadingSpinner } from "../common/progress/page-loading-spinner";
 
 export interface GameDetailDialogProps {
   open: boolean;
@@ -50,7 +50,7 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
       </DialogTitle>
       <DialogContent>
         {!game && (
-          <CircularProgress />
+          <PageLoadingSpinner />
         )}
         {game && (
           <BggGameDetailDisplay game={game} />

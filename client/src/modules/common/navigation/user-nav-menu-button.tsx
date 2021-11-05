@@ -65,7 +65,7 @@ export function UserNavMenuButton(): React.ReactElement {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? "menu-popover" : undefined;
 
   const userColor = useMemo(() => {
     if (activeUser) return MeeplePaletteColors[activeUser.color].main;

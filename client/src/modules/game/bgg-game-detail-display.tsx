@@ -11,7 +11,6 @@ import PlayerCountIcon from "@mui/icons-material/GroupTwoTone";
 
 import {
   Card,
-  CircularProgress,
   Grid,
   Theme,
   Typography,
@@ -23,6 +22,7 @@ import { GameDetails, LibraryGame } from "../../../../src/types/types";
 import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
 import { useBggApi } from "../../hooks/useBggApi";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
+import { PageLoadingSpinner } from "../common/progress/page-loading-spinner";
 
 import { BggGameDetailAccordionDisplay } from "./bgg-game-detail-accordion-display";
 import { PlayPreferenceRating } from "./user-game-play-preference/play-preference-rating";
@@ -68,12 +68,14 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
       ? `${Math.round(gameDetails?.minPlayTime / 60)} hr`
       : `${gameDetails?.minPlayTime} min`;
 
-    if (!gameDetails?.maxPlayTime || !(gameDetails?.minPlayTime === gameDetails?.maxPlayTime)) {
+    if (gameDetails?.maxPlayTime && (gameDetails?.minPlayTime !== gameDetails?.maxPlayTime)) {
       const maxPlayTimeDisplay = gameDetails?.maxPlayTime && gameDetails.maxPlayTime >= 60
         ? `${Math.round(gameDetails?.maxPlayTime / 60)} hr`
         : `${gameDetails?.maxPlayTime} min`;
 
-      return `${minPlayTimeDisplay} - ${maxPlayTimeDisplay}`;
+      return minPlayTimeDisplay === maxPlayTimeDisplay
+        ? minPlayTimeDisplay
+        : `${minPlayTimeDisplay} - ${maxPlayTimeDisplay}`;
     }
 
     return minPlayTimeDisplay;
@@ -82,7 +84,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
   return (
     <>
       {gameDetails === undefined && (
-        <CircularProgress />
+        <PageLoadingSpinner />
       )}
       {gameDetails === null && (
         <Grid container direction="column" spacing={2}>

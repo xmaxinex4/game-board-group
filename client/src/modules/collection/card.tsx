@@ -9,7 +9,11 @@ import {
   Grid,
   IconButton,
   Typography,
+  useMediaQuery,
+  Theme,
+  useTheme,
 } from "@mui/material";
+
 import EditIcon from "@mui/icons-material/EditTwoTone";
 import RefreshIcon from "@mui/icons-material/SyncRounded";
 import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
@@ -24,6 +28,8 @@ import { ActionButtons } from "../common/button/action-buttons";
 
 import { useDeleteCollection } from "./delete/endpoint-hooks";
 import { useRefreshCollections } from "./refresh/endpoint-hooks";
+import { MobileMoreActionsButton } from "./mobile-more-actions-button";
+import { PageLoadingSpinner } from "../common/progress/page-loading-spinner";
 
 export interface CollectionCardProps {
   collection: CollectionResponse;
@@ -32,6 +38,8 @@ export interface CollectionCardProps {
 
 export function CollectionCard(props: CollectionCardProps): React.ReactElement {
   const { collection, onEdit } = props;
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const [isLoading, setIsLoading] = useState(false);
   const [lastOwnerDeleteModalOpen, setLastOwnerDeleteModalOpen] = useState(false);
@@ -88,51 +96,63 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
             <Grid item>
               <Typography variant="subtitle1">{collection.name}</Typography>
             </Grid>
-            <Grid container alignItems="flex-end" justifyContent="space-between" item xs={3}>
-              <Grid item>
-                <IconButton onClick={editCollection} disabled={isLoading} color="primary" aria-label="edit collection" component="span">
-                  <EditIcon />
-                </IconButton>
+            {isMdUp && (
+              <Grid container alignItems="flex-end" justifyContent="space-between" item xs={3}>
+                <Grid item>
+                  <IconButton onClick={editCollection} disabled={isLoading} color="primary" aria-label="edit collection" component="span">
+                    <EditIcon />
+                  </IconButton>
+                </Grid>
+                <Grid item>
+                  <IconButton
+                    onClick={onRefreshCollection}
+                    disabled={isLoading}
+                    color="primary"
+                    aria-label="refresh collection"
+                    component="span"
+                  >
+                    <RefreshIcon />
+                  </IconButton>
+                </Grid>
+                <Grid item>
+                  <IconButton onClick={verifyDelete} disabled={isLoading} color="primary" aria-label="delete collection" component="span">
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
               </Grid>
-              <Grid item>
-                <IconButton
-                  onClick={onRefreshCollection}
-                  disabled={isLoading}
-                  color="primary"
-                  aria-label="refresh collection"
-                  component="span"
-                >
-                  <RefreshIcon />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <IconButton onClick={verifyDelete} disabled={isLoading} color="primary" aria-label="delete collection" component="span">
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
+            )}
+            {!isMdUp && (
+              <MobileMoreActionsButton isLoading={isLoading} onEdit={editCollection} onRefresh={onRefreshCollection} onDelete={verifyDelete} />
+            )}
           </Grid>
-          <Grid container item spacing={2}>
-            <Grid container item alignItems="center" spacing={2}>
-              <Grid item>
-                <Typography variant="subtitle2">Games:</Typography>
-              </Grid>
-              <Grid item>
-                <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
-                  <GameCircleListDisplay />
-                </GamesStateContext.Provider>
-              </Grid>
-            </Grid>
-            <Grid container item alignItems="center" spacing={2}>
-              <Grid item>
-                <Typography variant="subtitle2">Owners:</Typography>
-              </Grid>
-              <Grid item>
-                <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
-                  <UserCircleListDisplay users={collection.owners} />
-                </GamesStateContext.Provider>
-              </Grid>
-            </Grid>
+          <Grid container item spacing={4}>
+            {isLoading && (
+              <PageLoadingSpinner />
+            )}
+            {!isLoading && (
+              <>
+                <Grid container item alignItems="center" spacing={2}>
+                  <Grid item>
+                    <Typography variant="subtitle2">Games:</Typography>
+                  </Grid>
+                  <Grid item>
+                    <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                      <GameCircleListDisplay />
+                    </GamesStateContext.Provider>
+                  </Grid>
+                </Grid>
+                <Grid container item alignItems="center" spacing={2}>
+                  <Grid item>
+                    <Typography variant="subtitle2">Owners:</Typography>
+                  </Grid>
+                  <Grid item>
+                    <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                      <UserCircleListDisplay users={collection.owners} />
+                    </GamesStateContext.Provider>
+                  </Grid>
+                </Grid>
+              </>
+            )}
           </Grid>
         </Grid>
       </PaddedCard>
@@ -167,7 +187,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
           <Typography>
             There are other owners in this collection.
             You will be removed from the collection, but the collection will not be completely deleted.
-            Are you sure you want to remove this collection from your list?
+            Are you sure you want to be removed from this collection?
           </Typography>
         </DialogContent>
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
@@ -177,6 +197,8 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
             saveText="Remove From My Collections"
             onCancel={closeRemovingOwnerFromListModalOpen}
             cancelButtonProps={{ disabled: isLoading }}
+            saveButtonSize={7}
+            cancelButtonSize={3}
           />
         </DialogActions>
       </Dialog>
