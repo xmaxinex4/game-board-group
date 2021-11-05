@@ -59,6 +59,26 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
     return encodedDescription.textContent || undefined;
   }, [gameDetails]);
 
+  const playTimeDisplay = useMemo(() => {
+    if (!gameDetails?.minPlayTime) {
+      return null;
+    }
+
+    const minPlayTimeDisplay = gameDetails?.minPlayTime && gameDetails.minPlayTime >= 60
+      ? `${Math.round(gameDetails?.minPlayTime / 60)} hr`
+      : `${gameDetails?.minPlayTime} min`;
+
+    if (!gameDetails?.maxPlayTime || !(gameDetails?.minPlayTime === gameDetails?.maxPlayTime)) {
+      const maxPlayTimeDisplay = gameDetails?.maxPlayTime && gameDetails.maxPlayTime >= 60
+        ? `${Math.round(gameDetails?.maxPlayTime / 60)} hr`
+        : `${gameDetails?.maxPlayTime} min`;
+
+      return `${minPlayTimeDisplay} - ${maxPlayTimeDisplay}`;
+    }
+
+    return minPlayTimeDisplay;
+  }, [gameDetails]);
+
   return (
     <>
       {gameDetails === undefined && (
@@ -127,12 +147,14 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                         </Grid>
                       </Grid>
                     )}
-                    <Grid container item alignItems="center" spacing={1}>
-                      <Grid item><TimeIcon color="primary" /></Grid>
-                      <Grid item>
-                        <Typography>{`${gameDetails.minPlayTime}-${gameDetails.maxPlayTime} min`}</Typography>
+                    {playTimeDisplay && (
+                      <Grid container item alignItems="center" spacing={1}>
+                        <Grid item><TimeIcon color="primary" /></Grid>
+                        <Grid item>
+                          <Typography>{playTimeDisplay}</Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    )}
                   </Grid>
                 </Grid>
                 {!!gameDetails.complexity && (

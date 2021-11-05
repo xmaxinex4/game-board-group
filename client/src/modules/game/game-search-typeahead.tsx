@@ -20,6 +20,7 @@ import {
   TextField,
   Switch,
   Typography,
+  InputAdornment,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -38,10 +39,6 @@ const useStyles = makeStyles<Theme>((theme) => ({
   exactMatchSwitchClass: {
     paddingRight: theme.spacing(),
   },
-  loadingIndicatorClass: {
-    position: "absolute",
-    marginLeft: "250px",
-  },
   leftAlign: {
     marginLeft: "auto",
   },
@@ -57,7 +54,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
 
   const { setIsFocused, isFocused } = props;
   const { games, setGames } = useContext(GamesStateContext);
-  const { exactMatchSwitchClass, loadingIndicatorClass, leftAlign } = useStyles();
+  const { exactMatchSwitchClass, leftAlign } = useStyles();
 
   const [activeRequestCancelToken, setActiveRequestCancelToken] = useState<CancelTokenSource>();
 
@@ -65,6 +62,13 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isSearching, setIsSearching] = React.useState(false);
   const [exactMatch, setExactMatch] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOnOpen = useCallback(() => {
+    if (searchTerm.length > 0) {
+      setOpen(true);
+    }
+  }, [searchTerm, setOpen]);
 
   const { bggApiGet } = useBggApi();
 
@@ -129,28 +133,22 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   );
 
   const handleChange = (event: React.ChangeEvent<{}>, value: string, reason: AutocompleteInputChangeReason) => {
-    if (value) {
+    if (reason !== "reset") {
       setSearchTerm(value);
     }
-  };
-
-  const onGameSelect = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, bggId: string) => {
-    e.preventDefault();
-
-    setSearchTerm("");
-
-    if (!games?.some((game) => game.bggId === bggId)) {
-      addNewGameToSelectedGames(bggId);
+    if (searchTerm.length > 0) {
+      setOpen(true);
     } else {
-      // TODO: Highlight game thats already in the collection display
-      console.log("Already have that game in list");
+      setOpen(false);
     }
   };
 
-  const onGameEnter = (e: React.FormEvent<HTMLLIElement>, bggId: string) => {
+  const onGameSelect = (
+    e: React.SyntheticEvent<Element, Event>,
+    bggId: string,
+  ) => {
     e.preventDefault();
 
-    console.log("Entered game. BggId: ", bggId);
     setSearchTerm("");
 
     if (!games?.some((game) => game.bggId === bggId)) {
@@ -181,55 +179,58 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           className={exactMatchSwitchClass}
         />
       </Grid>
-      <Grid container alignItems="center" item>
-        <Grid item>
-          {isSearching && (
-            <CircularProgress className={loadingIndicatorClass} size={20} />
-          )}
-        </Grid>
-        <Grid item>
-          <Autocomplete
-            onFocus={onSetIsFocused}
-            onBlur={onBlurSetNotIsFocused}
-            style={{ width: 300 }}
-            getOptionLabel={(option: Pick<Game, "bggId" | "name" | "year">) => option.name}
-            filterOptions={(x) => x}
-            options={options}
-            autoComplete
-            includeInputInList
-            freeSolo
-            clearOnBlur
-            selectOnFocus={false}
-            onInputChange={handleChange}
-            isOptionEqualToValue={isOptionEqualToValue}
-            renderInput={(params) => (
-              <Grid container direction="column">
-                <Grid item>
-                  <TextField
-                    {...params}
-                    label="Search Games"
-                    variant="outlined"
-                    fullWidth
-                    onKeyPress={(e) => { if (e.key === "Enter") e.preventDefault(); }}
-                  />
-                </Grid>
-                <Grid item className={leftAlign}>
-                  <Typography variant="caption" color={isFocused ? "primary.main" : "GrayText"}>Powered by BoardGameGeek</Typography>
-                </Grid>
+      <Grid item>
+        <Autocomplete
+          open={open}
+          onOpen={handleOnOpen}
+          disableClearable
+          clearOnBlur={false}
+          onFocus={onSetIsFocused}
+          onBlur={onBlurSetNotIsFocused}
+          style={{ width: 300 }}
+          getOptionLabel={(option: Pick<Game, "bggId" | "name" | "year">) => option.name}
+          filterOptions={(x) => x}
+          options={options}
+          includeInputInList
+          selectOnFocus={false}
+          inputValue={searchTerm}
+          onInputChange={handleChange}
+          onChange={(e, option) => { if (option) onGameSelect(e, option?.bggId); }}
+          isOptionEqualToValue={isOptionEqualToValue}
+          renderInput={(params) => (
+            <Grid container direction="column">
+              <Grid item>
+                <TextField
+                  {...params}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: isSearching && (
+                      <InputAdornment position="end">
+                        <CircularProgress size={24} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  label="Search Games"
+                  variant="outlined"
+                  fullWidth
+                  onKeyPress={(e) => { if (e.key === "Enter") e.preventDefault(); }}
+                />
               </Grid>
-            )}
-            renderOption={(optionProps, option: Pick<Game, "bggId" | "name" | "year">) => (
-              <ListItem
-                {...optionProps}
-                key={`game-typeahead-option-bggid-${option.bggId}`}
-                onClick={(e) => onGameSelect(e, option.bggId)}
-                onSubmit={(e) => onGameEnter(e, option.bggId)}
-              >
-                <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
-              </ListItem>
-            )}
-          />
-        </Grid>
+              <Grid item className={leftAlign}>
+                <Typography variant="caption" color={isFocused ? "primary.main" : "GrayText"}>Powered by BoardGameGeek</Typography>
+              </Grid>
+            </Grid>
+          )}
+          renderOption={(optionProps, option: Pick<Game, "bggId" | "name" | "year">) => (
+            <ListItem
+              {...optionProps}
+              key={`game-typeahead-option-bggid-${option.bggId}`}
+              onClick={(e) => onGameSelect(e, option.bggId)}
+            >
+              <ListItemText primary={option.name} secondary={option.year ? `Year: ${option.year}` : ""} />
+            </ListItem>
+          )}
+        />
       </Grid>
     </Grid>
   );
