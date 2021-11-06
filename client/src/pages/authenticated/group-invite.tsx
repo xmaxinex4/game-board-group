@@ -44,7 +44,6 @@ export function GroupInvite(): React.ReactElement {
       guid: inviteCode,
     })
       .then(({ data }) => {
-        console.log("data: ", data);
         setGroupMembershipResult(data);
 
         if (!data.alreadyInGroup) {

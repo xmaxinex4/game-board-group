@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 
-import React from "react";
+import React, { useState } from "react";
 import { Switch, Route } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,6 +21,7 @@ function App() {
   const { apiGet } = useApi();
   const dispatch = useDispatch();
 
+  const [isActiveGroupLoading, setIsActiveGroupLoading] = useState(true);
   const activeUser = useSelector(selectActiveUser);
 
   React.useEffect(() => {
@@ -49,7 +50,7 @@ function App() {
             id: data?.groupMemberships?.[0]?.id,
           }));
         }
-      });
+      }).finally(() => setIsActiveGroupLoading(false));
 
       apiGet<UserPlayPreferenceResponse[]>("/user/active-user-play-preferences").then(({ data }) => {
         dispatch(setActiveUserPlayPreferences({
@@ -67,7 +68,12 @@ function App() {
             ? (
               <ThemeProvider theme={getMuiTheme(activeUser.color)}>
                 <Switch>
-                  <Route path="*" component={AuthenticatedRoutes} />
+                  <Route
+                    path="*"
+                    render={() => (
+                      <AuthenticatedRoutes isActiveGroupLoading={isActiveGroupLoading} />
+                    )}
+                  />
                 </Switch>
               </ThemeProvider>
             )

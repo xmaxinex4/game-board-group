@@ -20,12 +20,19 @@ import { MobileTabs } from "../../modules/common/navigation/mobile-tabs";
 import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
-import { GroupInvite } from "./group-invite";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
+
+import { GroupInvite } from "./group-invite";
 import { TermsOfService } from "./terms-of-service";
 import { PrivacyPolicy } from "./privacy-policy";
+import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 
-export function AuthenticatedHomeRoutes(): React.ReactElement {
+export interface AuthenticatedHomeRoutesProps {
+  isActiveGroupLoading?: boolean;
+}
+
+export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): React.ReactElement {
+  const { isActiveGroupLoading } = props;
   const drawerWidth = 192;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
@@ -111,11 +118,16 @@ export function AuthenticatedHomeRoutes(): React.ReactElement {
                       : (
                         <Grid container>
                           <Grid item style={{ width: "100%" }}>
-                            <Switch>
-                              <Route path="/account" component={AccountSettings} />
-                              <Route path="/invite/:inviteCode" component={GroupInvite} />
-                              <Route path="*" component={NoActiveGroup} />
-                            </Switch>
+                            {isActiveGroupLoading && (
+                              <PageLoadingSpinner />
+                            )}
+                            {!isActiveGroupLoading && (
+                              <Switch>
+                                <Route path="/account" component={AccountSettings} />
+                                <Route path="/invite/:inviteCode" component={GroupInvite} />
+                                <Route path="*" component={NoActiveGroup} />
+                              </Switch>
+                            )}
                           </Grid>
                         </Grid>
                       )

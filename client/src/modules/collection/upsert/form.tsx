@@ -52,7 +52,12 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const activeUser = useSelector(selectActiveUser);
 
-  const [owners, setOwners] = useState<UserResponse[]>(initialData?.owners || []);
+  const initialOwnersWithoutActiveUser = initialData?.owners?.filter((owner) => owner.id !== activeUser?.id);
+  const initialActiveUserOwner = initialData?.owners?.filter((owner) => owner.id === activeUser?.id);
+
+  const sortedInitialOwners = initialActiveUserOwner?.concat(initialOwnersWithoutActiveUser || []);
+
+  const [owners, setOwners] = useState<UserResponse[]>(sortedInitialOwners || []);
   const [name, setName] = useState(initialData?.name || "");
   const [addGamesFormIsActive, setAddGamesFormIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
