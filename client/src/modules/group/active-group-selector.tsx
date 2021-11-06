@@ -2,11 +2,16 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+  Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
+  Theme,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 import {
@@ -18,21 +23,14 @@ import {
 export function ActiveGroupSelector(): React.ReactElement {
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const dispatch = useDispatch();
 
-  // const onCreateGroupError = (error: ApolloError) => {
-  //   // TODO: Handle error
-  //   console.log("create group error: ", error);
-  // }
-
-  // const onCreateGroupCompleted = (data: any) => {
-  //   // TODO: Show success snackbar
-  //   // window.location.href = "/manage-group";
-  //   console.log("create account success", data)
-  // }
-
-  // const [createGroup, createGroupResults] = useMutation(CREATE_GROUP, { onError: onCreateGroupError, onCompleted: onCreateGroupCompleted });
+  const onAddGroup = useCallback(() => {
+    console.log("onAddGroup");
+  }, []);
 
   const onActiveGroupChanged = useCallback((event: any) => {
     if (event.target.value === "Add Group") {
@@ -45,41 +43,52 @@ export function ActiveGroupSelector(): React.ReactElement {
   }, []);
 
   return (
-    <FormControl
-      sx={{
-        maxWidth: {
-          xs: "200px",
-          sm: "400px",
-        },
-        minWidth: {
-          xs: "200px",
-        },
-      }}
-      variant="outlined"
+    <Grid
+      container
+      spacing={isMdUp ? 1 : 0}
+      direction={isMdUp ? "row" : "column"}
+      alignItems={isMdUp ? "center" : "flex-end"}
     >
-      <InputLabel id="active-group-select">Active Group</InputLabel>
-      <Select
-        labelId="active-group-select"
-        onChange={onActiveGroupChanged}
-        value={activeGroupMembership ? activeGroupMembership.id : ""}
-        label="Active Group"
-        inputProps={{
-          name: "active group",
-          id: "group-select",
-        }}
-      >
-        {userGroupMemberships && userGroupMemberships?.groupMemberships?.map((groupMembership) => (
-          <MenuItem
-            key={`menu-item-group-id-${groupMembership.id}`}
-            value={groupMembership.id}
+      <Grid item>
+        <FormControl
+          sx={{
+            maxWidth: {
+              xs: "200px",
+              sm: "400px",
+            },
+            minWidth: {
+              xs: "200px",
+            },
+          }}
+          variant="outlined"
+        >
+          <InputLabel id="active-group-select">Active Group</InputLabel>
+          <Select
+            labelId="active-group-select"
+            onChange={onActiveGroupChanged}
+            value={activeGroupMembership ? activeGroupMembership.id : ""}
+            label="Active Group"
+            inputProps={{
+              name: "active group",
+              id: "group-select",
+            }}
           >
-            <Typography variant="inherit" noWrap>
-              {groupMembership.group.name}
-            </Typography>
-          </MenuItem>
-        ))}
-        <MenuItem value="Add Group">+ Add Group</MenuItem>
-      </Select>
-    </FormControl>
+            {userGroupMemberships && userGroupMemberships?.groupMemberships?.map((groupMembership) => (
+              <MenuItem
+                key={`menu-item-group-id-${groupMembership.id}`}
+                value={groupMembership.id}
+              >
+                <Typography variant="inherit" noWrap>
+                  {groupMembership.group.name}
+                </Typography>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item>
+        <Button onClick={onAddGroup}>+ Add Group</Button>
+      </Grid>
+    </Grid>
   );
 }

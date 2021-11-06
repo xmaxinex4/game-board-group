@@ -7,6 +7,8 @@ import {
   Grid,
   Theme,
   Toolbar,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -29,12 +31,20 @@ export function NavBar(): React.ReactElement {
   } = useStyles();
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const isMyGamesRoute = useRouteMatch("/my-game-collections");
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
     <Grid container>
       <AppBar className={appBar} color="transparent" position="static">
         <Toolbar sx={{ marginLeft: userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 ? "unset" : "auto" }}>
-          <Grid item container alignItems="center" justifyContent={isMyGamesRoute ? "flex-end" : "space-between"} spacing={2}>
+          <Grid
+            item
+            container
+            alignItems={isMdUp ? "center" : "flex-start"}
+            justifyContent={isMyGamesRoute ? "flex-end" : "space-between"}
+            spacing={2}
+          >
             {
               !isMyGamesRoute && userGroupMemberships && userGroupMemberships?.groupMemberships?.length > 0 && (
                 <Grid item>

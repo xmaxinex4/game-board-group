@@ -16,7 +16,7 @@ import GamesIcon from "@mui/icons-material/CasinoTwoTone";
 import StatsIcon from "@mui/icons-material/PollTwoTone";
 import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 
-import Logo from "../../../images/png/logo.png";
+import Logo from "../../../images/png/logo-sm.png";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 import { selectActiveUser } from "../../../redux/active-user-slice";
 
@@ -26,8 +26,8 @@ const useStyles = makeStyles<Theme, { activeUserColor?: string; }>((theme: Theme
     backgroundColor: activeUserColor || theme.palette.background.paper,
   }),
   logo: {
-    padding: theme.spacing(2),
-    marginBottom: `-${theme.spacing(3)}`,
+    padding: theme.spacing(3),
+    marginBottom: `-${theme.spacing(1)}`,
   },
 }));
 

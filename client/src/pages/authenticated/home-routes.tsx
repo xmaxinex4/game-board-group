@@ -33,7 +33,7 @@ export interface AuthenticatedHomeRoutesProps {
 
 export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): React.ReactElement {
   const { isActiveGroupLoading } = props;
-  const drawerWidth = 192;
+  const drawerWidth = 144;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
 
