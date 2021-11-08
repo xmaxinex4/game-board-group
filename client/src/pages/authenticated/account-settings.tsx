@@ -143,9 +143,7 @@ export function AccountSettings(): React.ReactElement {
                   sx={{ textAlign: "center" }}
                   onClick={openChangePassword}
                 >
-                  <Typography variant="button">
-                    Change Password
-                  </Typography>
+                  Change Password
                 </Button>
               )}
             </CardContent>

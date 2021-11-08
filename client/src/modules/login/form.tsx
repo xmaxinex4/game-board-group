@@ -1,23 +1,29 @@
 import React, { useState } from "react";
 
-import { Grid, Button, Typography } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Typography,
+  Alert,
+} from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 
-import { validateLoginForm } from "./validator";
-
+import { useApi } from "../../hooks/useApi";
 import { FullWidthGridItemPasswordInput } from "../common/input/full-width-grid-item-password-input";
 import { SiteLink } from "../common/navigation/site-link";
 import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-input";
-import { useApi } from "../../hooks/useApi";
 import { LoginFormModel } from "./model";
+import { validateLoginForm } from "./validator";
 
 export function LoginForm(): React.ReactElement {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<LoginFormModel>({ email: "", password: "" });
+  const [serverError, setServerError] = useState("");
 
-  const clearErrorField = (e: React.ChangeEvent) => {
+  const clearErrorFields = (e: React.ChangeEvent) => {
+    setServerError("");
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
@@ -35,9 +41,14 @@ export function LoginForm(): React.ReactElement {
           localStorage.setItem("auth-token", data?.token);
           window.location.href = "/";
         })
-        .catch((error) => {
-          // TODO: Better error handling
-          console.log("login error: ", error);
+        .catch(({ response }) => {
+          const error = response?.data?.error;
+          setServerError(error || "Something went wrong. Please try again.");
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         })
         .finally(() => setIsLoading(false));
     }
@@ -47,6 +58,11 @@ export function LoginForm(): React.ReactElement {
     <form noValidate onSubmit={handleSubmit}>
       <Grid container direction="column" spacing={8}>
         <Grid container item direction="column" spacing={4}>
+          {serverError && (
+            <Grid item>
+              <Alert severity="error">{serverError}</Alert>
+            </Grid>
+          )}
           <FullWidthGridItemInput
             formControlProps={{ disabled: isLoading, fullWidth: true }}
             outerEndAdornmentIcon={EmailIcon}
@@ -56,7 +72,7 @@ export function LoginForm(): React.ReactElement {
             inputLabel="Email"
             setInputState={setEmail}
             error={errors.email}
-            onInputChange={clearErrorField}
+            onInputChange={clearErrorFields}
           />
 
           <Grid container item spacing={1}>
@@ -65,7 +81,7 @@ export function LoginForm(): React.ReactElement {
               input={password}
               setInputState={setPassword}
               error={errors.password}
-              onInputChange={clearErrorField}
+              onInputChange={clearErrorFields}
             />
             <Grid container item justifyContent="flex-end">
               <Typography>

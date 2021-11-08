@@ -136,7 +136,8 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
     if (reason !== "reset") {
       setSearchTerm(value);
     }
-    if (searchTerm.length > 0) {
+
+    if (searchTerm.length > 0 && reason !== "reset") {
       setOpen(true);
     } else {
       setOpen(false);
@@ -157,6 +158,8 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
       // TODO: Highlight game thats already in the collection display
       console.log("Already have that game in list");
     }
+
+    setOpen(false);
   };
 
   const isOptionEqualToValue = useCallback(
@@ -167,7 +170,10 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
   );
 
   const onSetIsFocused = useCallback(() => setIsFocused(true), [setIsFocused]);
-  const onBlurSetNotIsFocused = useCallback(() => setIsFocused(false), [setIsFocused]);
+  const onBlur = useCallback(() => {
+    setIsFocused(false);
+    setOpen(false);
+  }, [setIsFocused, setOpen]);
 
   return (
     <Grid container alignItems="flex-end" direction="column">
@@ -186,7 +192,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           disableClearable
           clearOnBlur={false}
           onFocus={onSetIsFocused}
-          onBlur={onBlurSetNotIsFocused}
+          onBlur={onBlur}
           style={{ width: 300 }}
           getOptionLabel={(option: Pick<Game, "bggId" | "name" | "year">) => option.name}
           filterOptions={(x) => x}

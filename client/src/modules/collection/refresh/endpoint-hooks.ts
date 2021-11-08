@@ -48,7 +48,7 @@ export function useRefreshCollections() {
       })
       .catch((error: Error) => {
         // TODO: Better error handling
-        console.log("create collection error: ", error);
+        console.log("refresh collection error: ", error);
         if (onError) {
           onError(error);
         }
@@ -84,7 +84,7 @@ export function useRefreshCollections() {
       })
       .catch((error: Error) => {
         // TODO: Better error handling
-        console.log("create collection error: ", error);
+        console.log("refresh collections error: ", error);
         if (onError) {
           onError(error);
         }

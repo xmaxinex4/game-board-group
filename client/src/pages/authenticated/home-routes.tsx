@@ -1,31 +1,31 @@
 import React from "react";
-import { Switch, Route } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import { useSelector } from "react-redux";
 
 import { Drawer, Grid, Box } from "@mui/material";
 
-import { Polls } from "./polls";
-import { Stats } from "./stats";
-import { Library } from "./library";
-import { ManageGroup } from "./manage-group";
-import { Home } from "./home";
-
-import { NoActiveGroup } from "../../modules/group/no-active-group";
 import { NavBar } from "../../modules/common/navigation/nav-bar";
-import { MyCollections } from "./my-collections";
-import { AccountSettings } from "./account-settings";
-import { NotFound } from "../error/not-found";
-
+import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 import { MobileTabs } from "../../modules/common/navigation/mobile-tabs";
 import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
 
+import { NotFound } from "../error/not-found";
+
+import { Polls } from "./polls";
+import { Stats } from "./stats";
+import { Library } from "./library";
+import { ManageGroup } from "./manage-group";
+import { Home } from "./home";
 import { GroupInvite } from "./group-invite";
 import { TermsOfService } from "./terms-of-service";
 import { PrivacyPolicy } from "./privacy-policy";
-import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
+import { AddGroup } from "./add-group";
+import { MyCollections } from "./my-collections";
+import { AccountSettings } from "./account-settings";
+import { ScrollToTopButton } from "../../modules/common/navigation/scroll-to-top-button";
 
 export interface AuthenticatedHomeRoutesProps {
   isActiveGroupLoading?: boolean;
@@ -33,7 +33,7 @@ export interface AuthenticatedHomeRoutesProps {
 
 export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): React.ReactElement {
   const { isActiveGroupLoading } = props;
-  const drawerWidth = 144;
+  const drawerWidth = 150;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
 
@@ -92,7 +92,14 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
           {
             activeUser && (
               <Grid container>
-                <Grid container item direction="column" alignItems="center">
+                <Grid
+                  container
+                  item
+                  direction="column"
+                  alignItems="center"
+                  sx={{ minHeight: "calc(100vh - 188px)" }}
+                >
+                  <div id="back-to-top-anchor" />
                   <NavBar />
                   {
                     activeUserGroupMembership
@@ -110,6 +117,7 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                               <Route path="/invite/:inviteCode" component={GroupInvite} />
                               <Route exact path="/terms-of-service" component={TermsOfService} />
                               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+                              <Route exact path="/add-group" component={AddGroup} />
                               <Route path="*" component={NotFound} />
                             </Switch>
                           </Grid>
@@ -123,15 +131,21 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                             )}
                             {!isActiveGroupLoading && (
                               <Switch>
-                                <Route path="/account" component={AccountSettings} />
+                                <Route exact path="/account" component={AccountSettings} />
                                 <Route path="/invite/:inviteCode" component={GroupInvite} />
-                                <Route path="*" component={NoActiveGroup} />
+                                <Route exact path="/terms-of-service" component={TermsOfService} />
+                                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+                                <Route exact path="/add-group" component={() => <AddGroup noGroup />} />
+                                <Route path="*" component={() => <Redirect to="/add-group" />} />
                               </Switch>
                             )}
                           </Grid>
                         </Grid>
                       )
                   }
+                  <Grid item>
+                    <ScrollToTopButton />
+                  </Grid>
                 </Grid>
                 <NavFooter />
               </Grid>

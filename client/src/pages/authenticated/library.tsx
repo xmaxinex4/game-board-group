@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty, values } from "lodash";
 
-import { Typography } from "@mui/material";
+import GameIcon from "@mui/icons-material/CasinoTwoTone";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForwardTwoTone";
+
+import { Button, Grid, Typography } from "@mui/material";
 
 import { LibraryReponse } from "../../../../src/types/types";
 
@@ -42,7 +45,19 @@ export function Library(): React.ReactElement {
         <LibraryCardList games={values(activeLibrary.library)} />
       )}
       {!loadingLibrary && isEmpty(activeLibrary?.library) && (
-        <Typography>No game in library placeholder</Typography>
+        <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid item>
+            <GameIcon fontSize="large" color="primary" />
+          </Grid>
+          <Grid item>
+            <Typography>
+              Create your own game collection to display in the group library
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button endIcon={<ArrowForwardIcon />} onClick={() => console.log("Add library")} variant="outlined">Go To Add Game Collections</Button>
+          </Grid>
+        </Grid>
       )}
     </TabContentContainer>
   );

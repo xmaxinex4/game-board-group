@@ -26,8 +26,9 @@ export function NavFooter(): React.ReactElement {
       alignItems="center"
       sx={{
         bottom: 0,
-        marginTop: "250px",
         width: "100%",
+        position: "relative",
+        marginTop: "48px",
       }}
     >
       <Grid item sx={{ width: "100%" }}>

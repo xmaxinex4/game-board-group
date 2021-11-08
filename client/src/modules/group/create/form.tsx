@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 
 import { Button, Grid } from "@mui/material";
 
@@ -10,6 +11,7 @@ import { useCreateGroup } from "./endpoint-hooks";
 
 export function CreateGroupForm(): React.ReactElement {
   const { createGroup } = useCreateGroup();
+  const history = useHistory();
 
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +30,7 @@ export function CreateGroupForm(): React.ReactElement {
       createGroup({
         name,
         onGroupCreated: () => {
-          window.location.href = "/manage-group";
+          history.push("/manage-group");
         },
         setIsLoading,
       });

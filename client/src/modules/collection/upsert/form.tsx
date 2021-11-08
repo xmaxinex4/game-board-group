@@ -162,6 +162,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
         <Grid item>
           <Autocomplete
             multiple
+            disableClearable
             id="collection-owners-multi-select"
             options={ownerOptions}
             disableCloseOnSelect

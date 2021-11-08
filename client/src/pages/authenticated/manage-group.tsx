@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import RefreshIcon from "@mui/icons-material/SyncRounded";
 import ContentCopyTwoToneIcon from "@mui/icons-material/ContentCopyTwoTone";
 
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -31,11 +33,13 @@ import {
   updateActiveUserGroupMembershipActiveInviteLink,
 } from "../../redux/active-user-group-memberships-slice";
 import { ActionButtons } from "../../modules/common/button/action-buttons";
+import { useRefreshActiveGroupMembers } from "../../modules/group-member/refresh/endpoint-hooks";
 
 export function ManageGroup(): React.ReactElement {
   const { apiPost } = useApi();
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
+  const [loadingGroupMembers, setLoadingGroupMembers] = useState(false);
   const [generatingLink, setGeneratingLink] = useState(false);
   const [generateLinkDialogOpen, setGenerateLinkDialogOpen] = useState(false);
   const [linkTimeout, setLinkTimeout] = useState("1WEEK");
@@ -44,6 +48,18 @@ export function ManageGroup(): React.ReactElement {
   );
 
   const dispatch = useDispatch();
+  const { refreshAllActiveGroupMembers } = useRefreshActiveGroupMembers();
+
+  const getActiveGroupMembers = useCallback(() => {
+    refreshAllActiveGroupMembers({
+      setIsLoading: setLoadingGroupMembers,
+    });
+  }, [setLoadingGroupMembers]);
+
+  // run once on page load
+  useEffect(() => {
+    getActiveGroupMembers();
+  }, []);
 
   const closeGenerateInviteLinkDialog = useCallback(
     () => setGenerateLinkDialogOpen(false),
@@ -92,12 +108,12 @@ export function ManageGroup(): React.ReactElement {
 
   return (
     <TabContentContainer title="Group Members">
-      <Grid container sx={{ marginLeft: "-16px" }}>
+      <Grid container sx={{ marginLeft: "-8px" }}>
         <Grid
           sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
           container
           direction="column"
-          spacing={4}
+          spacing={2}
         >
           {activeGroupMembership?.isAdmin && (
             activeGroupMembership?.activeInvitationLink
@@ -147,7 +163,7 @@ export function ManageGroup(): React.ReactElement {
                       </FormHelperText>
                     </FormControl>
                   </Grid>
-                  <Grid item>
+                  <Grid item sx={{ textAlign: "end" }}>
                     <Button onClick={openGenerateInviteLink} variant="contained">
                       Generate New Link
                     </Button>
@@ -155,13 +171,33 @@ export function ManageGroup(): React.ReactElement {
                 </Grid>
               )
               : (
-                <Grid item sx={{ textAlign: "end" }}>
+                <Grid item sx={{ textAlign: "center" }}>
                   <Button onClick={openGenerateInviteLink} variant="contained">+ Add Member</Button>
                 </Grid>
               )
           )}
+          <Grid item sx={{ marginLeft: "auto" }}>
+            <Button
+              variant="text"
+              color="primary"
+              size="small"
+              disabled={loadingGroupMembers}
+              onClick={getActiveGroupMembers}
+              aria-label="Refresh Members Table"
+              startIcon={<RefreshIcon />}
+            >
+              Refresh
+            </Button>
+          </Grid>
           <Grid item>
-            <ActiveGroupMembershipTable />
+            {loadingGroupMembers && (
+              <Grid container justifyContent="center" alignItems="center">
+                <CircularProgress size={72} sx={{ padding: "100px" }} />
+              </Grid>
+            )}
+            {!loadingGroupMembers && (
+              <ActiveGroupMembershipTable />
+            )}
           </Grid>
         </Grid>
       </Grid>

@@ -103,8 +103,16 @@ export function MyCollections(): React.ReactElement {
                     <Grid item sx={{ width: "100%" }}>
                       <Grid container direction="column" spacing={4}>
                         <Grid item sx={{ marginLeft: "auto" }}>
-                          <Button disabled={refreshingCollections} onClick={refreshCollections} variant="contained" startIcon={<RefreshIcon />}>
-                            Refresh All
+                          <Button
+                            variant="text"
+                            color="primary"
+                            size="small"
+                            startIcon={<RefreshIcon />}
+                            disabled={refreshingCollections}
+                            onClick={refreshCollections}
+                            aria-label="Refresh All Collections"
+                          >
+                            Refresh
                           </Button>
                         </Grid>
                         <Grid item>

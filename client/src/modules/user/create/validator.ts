@@ -1,6 +1,16 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, max-len */
 
 import { CreateUserFormModel } from "./model";
+
+function validateEmail(email: string) {
+  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regex.test(String(email).toLowerCase());
+}
+
+function validatePassword(password: string) {
+  const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#%&$])(?=.{8,})");
+  return regex.test(String(password));
+}
 
 export function validateCreateUserForm(
   model: CreateUserFormModel,
@@ -20,6 +30,11 @@ export function validateCreateUserForm(
     formIsValid = false;
   }
 
+  if (model.email && !validateEmail(model.email)) {
+    errors = { ...errors, email: "Invalid Email Address" };
+    formIsValid = false;
+  }
+
   if (!model.username) {
     errors = { ...errors, username: "Username is required" };
     formIsValid = false;
@@ -27,6 +42,15 @@ export function validateCreateUserForm(
 
   if (!model.password) {
     errors = { ...errors, password: "Password is required" };
+    formIsValid = false;
+  }
+
+  if (model.password && !validatePassword(model.password)) {
+    errors = {
+      ...errors,
+      password:
+        "Password must contain lowercase, uppercase, numeric, and special characters. Password must be at least 8 characters long",
+    };
     formIsValid = false;
   }
 

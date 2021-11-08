@@ -27,7 +27,14 @@ export const getMuiTheme = (primary: keyof MeeplePaletteColorTheme): Theme => cr
     MuiButton: {
       styleOverrides: {
         outlinedPrimary: {
+          color: MeeplePaletteColors[primary].dark,
           borderColor: MeeplePaletteColors[primary].dark,
+          "&:hover": {
+            borderColor: MeeplePaletteColors[primary].dark,
+          },
+        },
+        text: {
+          color: MeeplePaletteColors[primary].dark,
         },
       },
     },

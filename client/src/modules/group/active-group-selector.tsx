@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 import {
   Button,
@@ -27,9 +28,10 @@ export function ActiveGroupSelector(): React.ReactElement {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onAddGroup = useCallback(() => {
-    console.log("onAddGroup");
+    history.push("/add-group");
   }, []);
 
   const onActiveGroupChanged = useCallback((event: any) => {
@@ -87,7 +89,9 @@ export function ActiveGroupSelector(): React.ReactElement {
         </FormControl>
       </Grid>
       <Grid item>
-        <Button onClick={onAddGroup}>+ Add Group</Button>
+        <Button onClick={onAddGroup}>
+          + Add Group
+        </Button>
       </Grid>
     </Grid>
   );

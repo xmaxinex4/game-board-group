@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
+import { sortBy } from "lodash";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Shield from "@mui/icons-material/ShieldTwoTone";
@@ -20,6 +21,8 @@ import { makeStyles } from "@mui/styles";
 import { Meeple } from "../../images/components/meeple";
 import { MeeplePaletteColors } from "../../theme/meeple-palettes";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
+import { selectActiveUser } from "../../redux/active-user-slice";
+import { UserMembershipResponse } from "../../../../src/types/types";
 
 const useStyles = makeStyles(() => ({
   meeple: {
@@ -29,12 +32,21 @@ const useStyles = makeStyles(() => ({
 
 export function ActiveGroupMembershipTable(): React.ReactElement {
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
+  const activeUser = useSelector(selectActiveUser);
   const { meeple } = useStyles();
 
   const activeGroupMemberships = useMemo(
     () => {
       if (activeUserGroupMembership && activeUserGroupMembership.group?.members?.length > 0) {
-        return activeUserGroupMembership.group?.members;
+        if (activeUserGroupMembership.group?.members as UserMembershipResponse[]) {
+          const members = activeUserGroupMembership.group?.members;
+          const activeMember = members.filter((member) => member.user.id === activeUser?.id);
+          const membersNoActiveMember = members.filter((member) => member.user.id !== activeUser?.id);
+          const sortedGroupMembers = sortBy(membersNoActiveMember, (member) => member.user.username);
+
+          return activeMember.concat(sortedGroupMembers);
+        }
+        return [];
       }
 
       return [];
@@ -44,7 +56,7 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
 
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="grouop members table">
+      <Table aria-label="group members table">
         <TableBody>
           {activeGroupMemberships.map((membership) => (
             <TableRow
