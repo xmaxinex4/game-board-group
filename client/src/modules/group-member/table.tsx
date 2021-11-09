@@ -4,9 +4,13 @@ import { sortBy } from "lodash";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Shield from "@mui/icons-material/ShieldTwoTone";
+import LeaveIcon from "@mui/icons-material/MeetingRoomTwoTone";
+import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
+
 import {
   Avatar,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -23,6 +27,7 @@ import { MeeplePaletteColors } from "../../theme/meeple-palettes";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { UserMembershipResponse } from "../../../../src/types/types";
+import { AdminGroupMemberSwitch } from "./edit/admin-group-member-switch";
 
 const useStyles = makeStyles(() => ({
   meeple: {
@@ -51,7 +56,7 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
 
       return [];
     },
-    [activeUserGroupMembership],
+    [activeUserGroupMembership, activeUser],
   );
 
   return (
@@ -93,12 +98,55 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
                   </Grid>
                 </Grid>
               </TableCell>
-              <TableCell align="right">
-                {membership.isAdmin && (
-                  <Tooltip title="Admin" aria-label="admin">
-                    <Shield sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
-                  </Tooltip>
-                )}
+              <TableCell>
+                <Grid container alignItems="center" justifyContent="flex-end">
+                  {activeUserGroupMembership?.isAdmin && (
+                    <>
+                      <Grid item>
+                        <AdminGroupMemberSwitch membership={membership} activeGroupMemberships={activeGroupMemberships} />
+                      </Grid>
+                      {activeUser && membership.user.id !== activeUser.id && (
+                        <Grid item>
+                          <Tooltip title="Delete Member" aria-label="delete-group-member">
+                            <IconButton
+                              onClick={() => console.log("delete group member")}
+                              // disabled={isLoading}
+                              color="primary"
+                              aria-label="delete group member"
+                              component="span"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Grid>
+                      )}
+                    </>
+                  )}
+                  {!activeUserGroupMembership?.isAdmin && (
+                    <Grid item>
+                      {membership.isAdmin && (
+                        <Tooltip title="Admin" aria-label="admin">
+                          <Shield sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
+                        </Tooltip>
+                      )}
+                    </Grid>
+                  )}
+                  {activeUser && membership.user.id === activeUser.id && (
+                    <Grid item>
+                      <Tooltip title="Leave Group" aria-label="leave-group">
+                        <IconButton
+                          onClick={() => console.log("leave group")}
+                          // disabled={isLoading}
+                          color="primary"
+                          aria-label="leave active group"
+                          component="span"
+                        >
+                          <LeaveIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  )}
+                </Grid>
               </TableCell>
             </TableRow>
           ))}

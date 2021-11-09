@@ -53,7 +53,7 @@ export interface GroupResponse {
 
 export interface UserMembershipResponse {
   id: string;
-  isAdmin: string;
+  isAdmin: boolean;
   user: UserResponse;
 }
 

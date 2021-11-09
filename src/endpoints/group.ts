@@ -4,7 +4,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
+import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, UserGroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
 
 export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
@@ -205,6 +205,101 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(200).json({ ...groupMembership, activeInvitationLink: "", alreadyInGroup: false });
     } catch (error) {
       console.error("Error verifying invitation link: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.post('/api/group/update-admin-status-of-member', async (req, res, next) => {
+    const userId = getCurrentUserId(req, res);
+
+    const { groupMembershipId, isAdmin } = req.body;
+
+    if (!groupMembershipId) {
+      return res.status(400).json({ error: `Missing groupMembershipId.` });
+    }
+
+    if (isAdmin === null || isAdmin === undefined) {
+      return res.status(400).json({ error: `Missing isAdmin status.` });
+    }
+
+    try {
+      const groupLookup = await prisma.groupMember.findUnique({
+        where: {
+          id: groupMembershipId
+        },
+        select: {
+          group: {
+            select: {
+              id: true,
+              members: {
+                select: {
+                  isAdmin: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!groupLookup) {
+        return res.status(400).json({ error: `Group membership not found.` });
+      }
+
+      // if we are revoking admin status but this is the last admin, return error
+      if (!isAdmin && groupLookup.group.members.filter((member) => member.isAdmin).length < 2) {
+        return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
+      }
+
+      const isAdminInGroup = await prisma.group.findFirst({
+        where: {
+          AND: [
+            {
+              id: { equals: groupLookup.group.id },
+            },
+            {
+              members: {
+                some: {
+                  AND: [
+                    {
+                      userId: {
+                        equals: userId
+                      }
+                    },
+                    {
+                      isAdmin: {
+                        equals: true,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+        }
+      });
+
+      if (!isAdminInGroup) {
+        return res.status(401).json({ error: `You do not have permission to change group members' admin status.` });
+      }
+
+      const result = await prisma.groupMember.update({
+        where: {
+          id: groupMembershipId,
+        },
+        data: {
+          isAdmin,
+        },
+        select: {
+          ...UserGroupMembershipResponsePrismaSelect
+        }
+      }) as UserMembershipResponse;
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error changing admin status of group member: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });

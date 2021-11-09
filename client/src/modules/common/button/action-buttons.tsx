@@ -11,7 +11,7 @@ import {
 
 export interface FormProps {
   saveText?: string;
-  onSave: () => void;
+  onSave?: () => void;
   saveButtonProps?: ButtonProps;
   cancelText?: string;
   onCancel: () => void;
@@ -37,7 +37,9 @@ export function ActionButtons(props: FormProps): React.ReactElement {
   } = props;
 
   const onHandleSave = () => {
-    onSave();
+    if (onSave) {
+      onSave();
+    }
   };
 
   const onHandleCancel = () => {
@@ -51,18 +53,20 @@ export function ActionButtons(props: FormProps): React.ReactElement {
           {cancelText || "Cancel"}
         </Button>
       </Grid>
-      <Grid item xs={12} sm={saveButtonSize || 3}>
-        <Button
-          fullWidth
-          type={formButtons ? "submit" : "button"}
-          disabled={disabled}
-          variant="contained"
-          onClick={onHandleSave}
-          {...saveButtonProps}
-        >
-          {saveText || "Save"}
-        </Button>
-      </Grid>
+      {!!onSave && (
+        <Grid item xs={12} sm={saveButtonSize || 3}>
+          <Button
+            fullWidth
+            type={formButtons ? "submit" : "button"}
+            disabled={disabled}
+            variant="contained"
+            onClick={onHandleSave}
+            {...saveButtonProps}
+          >
+            {saveText || "Save"}
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 }
