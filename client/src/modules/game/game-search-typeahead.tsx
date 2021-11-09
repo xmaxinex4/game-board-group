@@ -185,7 +185,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           className={exactMatchSwitchClass}
         />
       </Grid>
-      <Grid item>
+      <Grid item sx={{ width: "100%" }}>
         <Autocomplete
           open={open}
           onOpen={handleOnOpen}
@@ -193,7 +193,6 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           clearOnBlur={false}
           onFocus={onSetIsFocused}
           onBlur={onBlur}
-          style={{ width: 300 }}
           getOptionLabel={(option: Pick<Game, "bggId" | "name" | "year">) => option.name}
           filterOptions={(x) => x}
           options={options}
@@ -218,7 +217,6 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
                   }}
                   label="Search Games"
                   variant="outlined"
-                  fullWidth
                   onKeyPress={(e) => { if (e.key === "Enter") e.preventDefault(); }}
                 />
               </Grid>

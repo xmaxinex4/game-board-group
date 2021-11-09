@@ -34,7 +34,6 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
 
   const deleteMember = useCallback(() => {
     deleteGroupMember({
-      activeUserGroupMembershipId: activeUserGroupMembership?.id || "",
       memberGroupMembershipId: membership.id,
       setIsLoading: setRemovingMember,
     });

@@ -23,12 +23,12 @@ export function GamesFormBody(props: AddGamesFormProps): React.ReactElement {
           <Typography color={isActive ? "primary.main" : ""} variant="subtitle1">Add Games</Typography>
         </Grid>
       </Grid>
-      <Grid item>
+      <Grid item sx={{ width: "100%" }}>
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
+          <Grid item sx={{ width: "100%" }}>
             <GameSearchTypeahead isFocused={isActive} setIsFocused={setIsActive} />
           </Grid>
-          <Grid item>
+          <Grid item sx={{ width: "100%" }}>
             <GameCircleListDisplay canDelete />
           </Grid>
         </Grid>

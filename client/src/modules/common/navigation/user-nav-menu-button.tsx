@@ -105,7 +105,10 @@ export function UserNavMenuButton(): React.ReactElement {
                 </Avatar>
               </Grid>
               <Grid item>
-                <ListItemText primary={activeUser?.username} secondary={activeUser?.email} />
+                <ListItemText
+                  primary={activeUser?.username}
+                  secondary={activeUser?.email}
+                />
               </Grid>
             </Grid>
           </ListItem>

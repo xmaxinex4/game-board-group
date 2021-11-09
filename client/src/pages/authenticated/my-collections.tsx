@@ -102,19 +102,6 @@ export function MyCollections(): React.ReactElement {
                   ? (
                     <Grid item sx={{ width: "100%" }}>
                       <Grid container direction="column" spacing={4}>
-                        <Grid item sx={{ marginLeft: "auto" }}>
-                          <Button
-                            variant="text"
-                            color="primary"
-                            size="small"
-                            startIcon={<RefreshIcon />}
-                            disabled={refreshingCollections}
-                            onClick={refreshCollections}
-                            aria-label="Refresh All Collections"
-                          >
-                            Refresh
-                          </Button>
-                        </Grid>
                         <Grid item>
                           {refreshingCollections
                             ? (
@@ -123,8 +110,32 @@ export function MyCollections(): React.ReactElement {
                               </Grid>
                             )
                             : (
-                              <Grid container sx={{ margin: "auto", maxWidth: "800px", minWidth: "275px" }}>
-                                <CollectionCardList onEdit={onCollectionCardEdit} />
+                              <Grid
+                                container
+                                sx={{
+                                  paddingRight: { sm: "24px" },
+                                  margin: { sm: "auto" },
+                                  maxWidth: "800px",
+                                  minWidth: "275px",
+                                }}
+                                spacing={2}
+                              >
+                                <Grid item sx={{ marginLeft: "auto" }}>
+                                  <Button
+                                    variant="text"
+                                    color="primary"
+                                    size="small"
+                                    startIcon={<RefreshIcon />}
+                                    disabled={refreshingCollections}
+                                    onClick={refreshCollections}
+                                    aria-label="Refresh All Collections"
+                                  >
+                                    Refresh
+                                  </Button>
+                                </Grid>
+                                <Grid item>
+                                  <CollectionCardList onEdit={onCollectionCardEdit} />
+                                </Grid>
                               </Grid>
                             )}
                         </Grid>

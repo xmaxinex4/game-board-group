@@ -12,6 +12,7 @@ import {
   IconButton,
   Snackbar,
   Button,
+  useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/styles";
 
@@ -24,6 +25,7 @@ import { ChangePasswordForm } from "../../modules/account/change-password/form";
 export function AccountSettings(): React.ReactElement {
   const theme = useTheme<Theme>();
   const activeUser = useSelector(selectActiveUser);
+  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [snackbarState, setSnackbarState] = useState<{ isOpen: boolean, message: string; }>({ isOpen: false, message: "" });
 
@@ -83,7 +85,7 @@ export function AccountSettings(): React.ReactElement {
               {!editingAccount && (
                 <Grid container>
                   <Grid item xs={10}>
-                    <Grid container justifyContent="center" spacing={6}>
+                    <Grid container direction={isSmUp ? "row" : "column"} justifyContent="center" spacing={isSmUp ? 6 : 2}>
                       <Grid item>
                         <Grid container direction="column">
                           <Grid item>
@@ -92,7 +94,7 @@ export function AccountSettings(): React.ReactElement {
                             </Typography>
                           </Grid>
                           <Grid item>
-                            <Typography>
+                            <Typography noWrap overflow="hidden" textOverflow="ellipsis">
                               {activeUser?.username}
                             </Typography>
                           </Grid>

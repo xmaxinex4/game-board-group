@@ -19,10 +19,11 @@ const useStyles = makeStyles<Theme, { hasTitle: boolean; }>((theme) => ({
 
 export interface TabContentContainerProps {
   title?: string,
+  titleAction?: React.ReactNode;
 }
 
 export function TabContentContainer(props: TabContentContainerProps & { children: ReactNode; }): React.ReactElement {
-  const { children, title } = props;
+  const { children, title, titleAction } = props;
 
   const { gridContainerPadding, titlePadding } = useStyles({ hasTitle: (!!title) });
 
@@ -30,12 +31,17 @@ export function TabContentContainer(props: TabContentContainerProps & { children
     <Container maxWidth="xl">
       <Grid container className={gridContainerPadding} justifyContent="center" alignItems="center" direction="column">
         {title && (
-          <Grid container item className={titlePadding} direction="column" alignItems="center" justifyContent="center">
+          <Grid container item className={titlePadding} alignItems="flex-end" justifyContent="center" spacing={1}>
             <Grid item>
               <Typography align="center" variant="h6">
                 {title}
               </Typography>
             </Grid>
+            {titleAction && (
+              <Grid item>
+                {titleAction}
+              </Grid>
+            )}
           </Grid>
         )}
         <Grid item sx={{ width: "100%" }}>

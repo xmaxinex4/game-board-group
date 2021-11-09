@@ -45,6 +45,7 @@ export function GameCircleListDisplay(props: GameCircleListDisplayProps): React.
           <>
             {canDelete && (
               <Chip
+                sx={{ maxWidth: { xs: "200px", sm: "500px" } }}
                 label={game.name}
                 onDelete={() => onDelete(game.bggId)}
                 avatar={<Avatar alt={game.name} src={game.urlThumb || undefined} className={classes.large} />}

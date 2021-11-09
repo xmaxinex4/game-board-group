@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import RefreshIcon from "@mui/icons-material/SyncRounded";
 import ContentCopyTwoToneIcon from "@mui/icons-material/ContentCopyTwoTone";
+import EditIcon from "@mui/icons-material/EditTwoTone";
 
 import {
   Button,
@@ -34,11 +35,14 @@ import {
 } from "../../redux/active-user-group-memberships-slice";
 import { ActionButtons } from "../../modules/common/button/action-buttons";
 import { useRefreshActiveGroupMembers } from "../../modules/group-member/refresh/endpoint-hooks";
+import { EditGroupForm } from "../../modules/group/edit/form";
+import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 
 export function ManageGroup(): React.ReactElement {
   const { apiPost } = useApi();
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
+  const [editingGroup, setEditingGroup] = useState(false);
   const [loadingGroupMembers, setLoadingGroupMembers] = useState(false);
   const [generatingLink, setGeneratingLink] = useState(false);
   const [generateLinkDialogOpen, setGenerateLinkDialogOpen] = useState(false);
@@ -60,6 +64,14 @@ export function ManageGroup(): React.ReactElement {
   useEffect(() => {
     getActiveGroupMembers();
   }, []);
+
+  const onEditGroup = useCallback(() => {
+    setEditingGroup(true);
+  }, [setEditingGroup]);
+
+  const closeEditingGroup = useCallback(() => {
+    setEditingGroup(false);
+  }, [setEditingGroup]);
 
   const closeGenerateInviteLinkDialog = useCallback(
     () => setGenerateLinkDialogOpen(false),
@@ -107,149 +119,181 @@ export function ManageGroup(): React.ReactElement {
   }, [setTooltipState, activeGroupMembership]);
 
   return (
-    <TabContentContainer title="Group Members">
-      <Grid container sx={{ marginLeft: "-8px" }}>
-        <Grid
-          sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
-          container
-          direction="column"
-          spacing={2}
+    <>
+      {!activeGroupMembership && (
+        <PageLoadingSpinner />
+      )}
+      {activeGroupMembership && (
+        <TabContentContainer
+          title={activeGroupMembership.group.name}
+          titleAction={
+            !editingGroup && activeGroupMembership.isAdmin && (
+              <IconButton color="primary" onClick={onEditGroup}>
+                <EditIcon />
+              </IconButton>
+            )
+          }
         >
-          {activeGroupMembership?.isAdmin && (
-            activeGroupMembership?.activeInvitationLink
-              ? (
-                <Grid
-                  container
-                  item
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                  spacing={3}
-                >
-                  <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
-                    <FormControl
-                      variant="outlined"
-                      sx={{
-                        width: {
-                          xs: "100%",
-                          sm: "550px",
-                        },
-                      }}
-                    >
-                      <InputLabel>Invite Link</InputLabel>
-                      <OutlinedInput
-                        readOnly
-                        id="invite-link"
-                        value={activeGroupMembership?.activeInvitationLink}
-                        inputProps={{ sx: { textOverflow: "ellipsis" } }}
-                        endAdornment={(
-                          <InputAdornment position="end">
-                            <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
-                              <IconButton
-                                color="primary"
-                                aria-label="copy invite link to clipboard"
-                                onClick={copyLinkToClipboard}
-                                edge="end"
-                              >
-                                <ContentCopyTwoToneIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </InputAdornment>
-                        )}
-                        label="Invite Link"
-                      />
-                      <FormHelperText id="invite-link-helper-text">
-                        Send link to a friend to join this group
-                      </FormHelperText>
+          <Grid container sx={{ marginLeft: "-8px" }}>
+            {editingGroup && (
+              <Grid
+                sx={{ maxWidth: { xs: 400 }, margin: "auto" }}
+                container
+                direction="column"
+                spacing={2}
+              >
+                <EditGroupForm
+                  intialData={activeGroupMembership.group}
+                  onActiveGroupEdited={closeEditingGroup}
+                  onCancel={closeEditingGroup}
+                />
+              </Grid>
+            )}
+            {!editingGroup && (
+              <Grid
+                sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
+                container
+                direction="column"
+                spacing={2}
+              >
+                {activeGroupMembership.isAdmin && (
+                  activeGroupMembership.activeInvitationLink
+                    ? (
+                      <Grid
+                        container
+                        item
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                        spacing={3}
+                      >
+                        <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                              width: {
+                                xs: "100%",
+                                sm: "550px",
+                              },
+                            }}
+                          >
+                            <InputLabel>Invite Link</InputLabel>
+                            <OutlinedInput
+                              readOnly
+                              id="invite-link"
+                              value={activeGroupMembership.activeInvitationLink}
+                              inputProps={{ sx: { textOverflow: "ellipsis" } }}
+                              endAdornment={(
+                                <InputAdornment position="end">
+                                  <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
+                                    <IconButton
+                                      color="primary"
+                                      aria-label="copy invite link to clipboard"
+                                      onClick={copyLinkToClipboard}
+                                      edge="end"
+                                    >
+                                      <ContentCopyTwoToneIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                </InputAdornment>
+                              )}
+                              label="Invite Link"
+                            />
+                            <FormHelperText id="invite-link-helper-text">
+                              Send link to a friend to join this group
+                            </FormHelperText>
+                          </FormControl>
+                        </Grid>
+                        <Grid item sx={{ textAlign: "end" }}>
+                          <Button onClick={openGenerateInviteLink} variant="contained">
+                            Generate New Link
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    )
+                    : (
+                      <Grid item sx={{ textAlign: "center" }}>
+                        <Button onClick={openGenerateInviteLink} variant="contained">+ Add Member</Button>
+                      </Grid>
+                    )
+                )}
+                <Grid item sx={{ marginLeft: "auto" }}>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    size="small"
+                    disabled={loadingGroupMembers}
+                    onClick={getActiveGroupMembers}
+                    aria-label="Refresh Members Table"
+                    startIcon={<RefreshIcon />}
+                  >
+                    Refresh
+                  </Button>
+                </Grid>
+                <Grid item>
+                  {loadingGroupMembers && (
+                    <Grid container justifyContent="center" alignItems="center">
+                      <CircularProgress size={72} sx={{ padding: "100px" }} />
+                    </Grid>
+                  )}
+                  {!loadingGroupMembers && (
+                    <ActiveGroupMembershipTable />
+                  )}
+                </Grid>
+              </Grid>
+            )}
+          </Grid>
+          {activeGroupMembership.isAdmin && (
+            <Dialog
+              onClose={closeGenerateInviteLinkDialog}
+              open={generateLinkDialogOpen}
+              sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+            >
+              <DialogContent>
+                <Grid container alignItems="center" justifyContent="center" spacing={4}>
+                  <Grid item xs={12}>
+                    <DialogContentText>
+                      Send an invite link to a friend to join this group
+                    </DialogContentText>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel id="invite-link-expire-time">Expire After</InputLabel>
+                      <Select
+                        labelId="set-link-expire-time"
+                        id="link-expire-time-select"
+                        value={linkTimeout}
+                        label="Expire After"
+                        sx={{ width: "100%" }}
+                        fullWidth
+                        onChange={onTimeoutChange}
+                      >
+                        <MenuItem value="30MIN">30 minutes</MenuItem>
+                        <MenuItem value="1HR">1 hour</MenuItem>
+                        <MenuItem value="6HR">6 hours</MenuItem>
+                        <MenuItem value="12HR">12 hours</MenuItem>
+                        <MenuItem value="1DAY">1 day</MenuItem>
+                        <MenuItem value="1WEEK">1 week</MenuItem>
+                      </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item sx={{ textAlign: "end" }}>
-                    <Button onClick={openGenerateInviteLink} variant="contained">
-                      Generate New Link
-                    </Button>
-                  </Grid>
                 </Grid>
-              )
-              : (
-                <Grid item sx={{ textAlign: "center" }}>
-                  <Button onClick={openGenerateInviteLink} variant="contained">+ Add Member</Button>
-                </Grid>
-              )
+              </DialogContent>
+              <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
+                <ActionButtons
+                  onSave={generateNewLink}
+                  saveButtonProps={{ disabled: generatingLink }}
+                  saveText="Generate Invite Link"
+                  onCancel={closeGenerateInviteLinkDialog}
+                  cancelButtonProps={{ disabled: generatingLink }}
+                  saveButtonSize={6}
+                  cancelButtonSize={4}
+                />
+              </DialogActions>
+            </Dialog>
           )}
-          <Grid item sx={{ marginLeft: "auto" }}>
-            <Button
-              variant="text"
-              color="primary"
-              size="small"
-              disabled={loadingGroupMembers}
-              onClick={getActiveGroupMembers}
-              aria-label="Refresh Members Table"
-              startIcon={<RefreshIcon />}
-            >
-              Refresh
-            </Button>
-          </Grid>
-          <Grid item>
-            {loadingGroupMembers && (
-              <Grid container justifyContent="center" alignItems="center">
-                <CircularProgress size={72} sx={{ padding: "100px" }} />
-              </Grid>
-            )}
-            {!loadingGroupMembers && (
-              <ActiveGroupMembershipTable />
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
-      {activeGroupMembership?.isAdmin && (
-        <Dialog
-          onClose={closeGenerateInviteLinkDialog}
-          open={generateLinkDialogOpen}
-          sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
-        >
-          <DialogContent>
-            <Grid container alignItems="center" justifyContent="center" spacing={4}>
-              <Grid item xs={12}>
-                <DialogContentText>
-                  Send an invite link to a friend to join this group
-                </DialogContentText>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id="invite-link-expire-time">Expire After</InputLabel>
-                  <Select
-                    labelId="set-link-expire-time"
-                    id="link-expire-time-select"
-                    value={linkTimeout}
-                    label="Expire After"
-                    sx={{ width: "100%" }}
-                    fullWidth
-                    onChange={onTimeoutChange}
-                  >
-                    <MenuItem value="30MIN">30 minutes</MenuItem>
-                    <MenuItem value="1HR">1 hour</MenuItem>
-                    <MenuItem value="6HR">6 hours</MenuItem>
-                    <MenuItem value="12HR">12 hours</MenuItem>
-                    <MenuItem value="1DAY">1 day</MenuItem>
-                    <MenuItem value="1WEEK">1 week</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
-            <ActionButtons
-              onSave={generateNewLink}
-              saveButtonProps={{ disabled: generatingLink }}
-              saveText="Generate Invite Link"
-              onCancel={closeGenerateInviteLinkDialog}
-              cancelButtonProps={{ disabled: generatingLink }}
-              saveButtonSize={6}
-              cancelButtonSize={4}
-            />
-          </DialogActions>
-        </Dialog>
+        </TabContentContainer>
       )}
-    </TabContentContainer>
+    </>
   );
 }

@@ -40,6 +40,11 @@ export function validateCreateUserForm(
     formIsValid = false;
   }
 
+  if (model.username.length > 25) {
+    errors = { ...errors, username: "Username must be less then 25 characters" };
+    formIsValid = false;
+  }
+
   if (!model.password) {
     errors = { ...errors, password: "Password is required" };
     formIsValid = false;

@@ -8,7 +8,6 @@ import { useApi } from "../../../hooks/useApi";
 import { updateMemberInActiveUserGroupMembershipAdminStatus } from "../../../redux/active-user-group-memberships-slice";
 
 export interface EditAdminStatusOfGroupMemberArgs {
-  activeUserGroupMembershipId: string,
   memberGroupMembershipId: string,
   isAdmin: boolean,
   onAdminStatusUpdated?: () => void;
@@ -22,7 +21,6 @@ export function useEditGroupMember() {
 
   function editAdminStatusOfGroupMember(args: EditAdminStatusOfGroupMemberArgs): void {
     const {
-      activeUserGroupMembershipId,
       memberGroupMembershipId,
       isAdmin,
       onAdminStatusUpdated,
@@ -40,7 +38,7 @@ export function useEditGroupMember() {
     })
       .then(({ data }) => {
         dispatch(updateMemberInActiveUserGroupMembershipAdminStatus({
-          activeUserGroupMembershipId, memberGroupMembershipId: data.id, isAdmin: data.isAdmin,
+          memberGroupMembershipId: data.id, isAdmin: data.isAdmin,
         }));
 
         if (onAdminStatusUpdated) {

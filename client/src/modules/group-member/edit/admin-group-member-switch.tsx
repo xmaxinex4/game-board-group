@@ -14,7 +14,6 @@ import { UserMembershipResponse } from "../../../../../src/types/types";
 import { selectActiveUser } from "../../../redux/active-user-slice";
 import { ActionButtons } from "../../common/button/action-buttons";
 import { useEditGroupMember } from "./endpoint-hooks";
-import { selectedActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
 export interface AdminGroupMemberSwitchProps {
   membership: UserMembershipResponse;
@@ -24,7 +23,6 @@ export interface AdminGroupMemberSwitchProps {
 export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): React.ReactElement {
   const { membership, activeGroupMemberships } = props;
   const activeUser = useSelector(selectActiveUser);
-  const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
   const isCurrentUser = useMemo(() => membership.user.id === activeUser?.id, [activeUser, membership]);
 
@@ -38,13 +36,12 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
 
   const onChange = useCallback(() => {
     editAdminStatusOfGroupMember({
-      activeUserGroupMembershipId: activeUserGroupMembership?.id || "",
       memberGroupMembershipId: membership.id,
       isAdmin: !isAdmin,
       onAdminStatusUpdated: toggleIsAdmin,
       setIsLoading: setIsEditingAdminStatus,
     });
-  }, [setIsEditingAdminStatus, toggleIsAdmin, activeUserGroupMembership]);
+  }, [setIsEditingAdminStatus, toggleIsAdmin]);
 
   const verifyChangeOfAdminStatus = useCallback(() => {
     const isLastAdmin = isAdmin && activeGroupMemberships.filter((member) => member.isAdmin).length < 2;

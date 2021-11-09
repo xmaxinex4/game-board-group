@@ -8,7 +8,6 @@ import { useApi } from "../../../hooks/useApi";
 import { deleteMemberInActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
 export interface DeleteGroupMemberArgs {
-  activeUserGroupMembershipId: string,
   memberGroupMembershipId: string,
   onDeleted?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
@@ -21,7 +20,6 @@ export function useDeleteGroupMember() {
 
   function deleteGroupMember(args: DeleteGroupMemberArgs): void {
     const {
-      activeUserGroupMembershipId,
       memberGroupMembershipId,
       onDeleted,
       setIsLoading,
@@ -37,7 +35,7 @@ export function useDeleteGroupMember() {
     })
       .then(({ data }) => {
         dispatch(deleteMemberInActiveUserGroupMembership({
-          activeUserGroupMembershipId, memberGroupMembershipId: data.id,
+          memberGroupMembershipId: data.id,
         }));
 
         if (onDeleted) {

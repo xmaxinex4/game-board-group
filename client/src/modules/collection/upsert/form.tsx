@@ -146,7 +146,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
           />
         </Grid>
 
-        <Grid item>
+        <Grid item sx={{ width: "100%" }}>
           <Box sx={{
             border: addGamesFormIsActive ? 2 : 1,
             borderRadius: "4px",
@@ -159,7 +159,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
           </Box>
         </Grid>
 
-        <Grid item>
+        <Grid item sx={{ width: "100%" }}>
           <Autocomplete
             multiple
             disableClearable

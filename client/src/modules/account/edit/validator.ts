@@ -17,6 +17,11 @@ export function validateEditAccountForm(
     formIsValid = false;
   }
 
+  if (model.username.length > 25) {
+    errors = { ...errors, username: "Username must be less then 25 characters" };
+    formIsValid = false;
+  }
+
   if (!model.color) {
     errors = { ...errors, color: "Color is required" };
     formIsValid = false;

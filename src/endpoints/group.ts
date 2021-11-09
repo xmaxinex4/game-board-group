@@ -4,7 +4,7 @@ import { Express } from "express";
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, UserGroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
+import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, GroupResponse, GroupResponsePrismaSelect, UserGroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
 
 export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
@@ -39,6 +39,62 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(201).json({ ...groupMembership, activeInvitationLink: "" });
     } catch (error) {
       console.error("Error on group create: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.post('/api/group/edit', async (req, res) => {
+    const userId = getCurrentUserId(req, res);
+
+    const { groupId, name, groupMembershipId } = req.body;
+
+    if (!groupId) {
+      return res.status(400).json({ error: `Missing group id` });
+    }
+
+    if (!name) {
+      return res.status(400).json({ error: `Missing name` });
+    }
+
+    try {
+      const userGroupMembership = await prisma.groupMember.findFirst({
+        where: {
+          AND: [
+            {
+              id: { equals: groupMembershipId },
+            },
+            {
+              user: {
+                id: { equals: userId }
+              }
+            }
+          ]
+
+        },
+        select: {
+          isAdmin: true,
+        }
+      });
+
+      if (!userGroupMembership || !userGroupMembership.isAdmin) {
+        return res.status(401).json({ error: `You do not have permission to edit this group.` });
+      }
+
+      const editedGroup = await prisma.group.update({
+        where: {
+          id: groupId,
+        },
+        data: {
+          name,
+        },
+        select: {
+          ...GroupResponsePrismaSelect
+        }
+      }) as GroupResponse;
+
+      return res.status(201).json(editedGroup);
+    } catch (error) {
+      console.error("Error on group edit: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });

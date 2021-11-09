@@ -34,7 +34,6 @@ export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactEleme
 
   const deleteMember = useCallback(() => {
     deleteGroupMember({
-      activeUserGroupMembershipId: activeUserGroupMembership?.id || "",
       memberGroupMembershipId: membership.id,
       setIsLoading: setDeletingCurrentUserFromGroup,
     });

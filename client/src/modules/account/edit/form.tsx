@@ -72,7 +72,7 @@ export function EditAccountForm(props: EditAccountFormProps): React.ReactElement
           formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
           outerEndAdornmentIcon={PersonIcon}
           input={username}
-          inputProps={{ maxLength: 50 }}
+          inputProps={{ maxLength: 25 }}
           outlinedInputProps={{ id: "username" }}
           inputLabel="Username"
           setInputState={setUsername}

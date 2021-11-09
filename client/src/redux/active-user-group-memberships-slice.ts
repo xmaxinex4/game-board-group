@@ -18,6 +18,10 @@ export type ActiveUserGroupMembershipsStateReducers = {
     type: string,
     payload: { groupMembership: GroupMembershipResponse; },
   }) => void;
+  editActiveUserGroupMembershipGroupName: (state: ActiveUserGroupMembershipsState, action: {
+    type: string,
+    payload: { groupName: string; },
+  }) => void;
   setSelectedActiveUserGroupMembershipId: (state: ActiveUserGroupMembershipsState, action: {
     type: string,
     payload: { id: string; },
@@ -28,11 +32,11 @@ export type ActiveUserGroupMembershipsStateReducers = {
   }) => void;
   updateMemberInActiveUserGroupMembershipAdminStatus: (state: ActiveUserGroupMembershipsState, action: {
     type: string,
-    payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string, isAdmin: boolean; },
+    payload: { memberGroupMembershipId: string, isAdmin: boolean; },
   }) => void;
   deleteMemberInActiveUserGroupMembership: (state: ActiveUserGroupMembershipsState, action: {
     type: string,
-    payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string; },
+    payload: { memberGroupMembershipId: string; },
   }) => void;
 };
 
@@ -59,6 +63,18 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
       localStorage.setItem("gbg-selected-active-user-group-membership", action.payload.groupMembership.id);
       state.selectedActiveUserGroupMembershipId = action.payload.groupMembership.id;
     },
+    editActiveUserGroupMembershipGroupName: (state, action: {
+      type: string,
+      payload: { groupName: string; },
+    }) => {
+      const activeUserGroupMembershipIndex = state.activeUserGroupMemberships.groupMemberships.findIndex(
+        (membership) => membership.id === state.selectedActiveUserGroupMembershipId,
+      );
+
+      if (!(activeUserGroupMembershipIndex < 0)) {
+        state.activeUserGroupMemberships.groupMemberships[activeUserGroupMembershipIndex].group.name = action.payload.groupName;
+      }
+    },
     updateActiveUserGroupMembershipActiveInviteLink: (state, action: {
       type: string,
       payload: { groupMembershipId: string, link: string; },
@@ -73,10 +89,10 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
     },
     updateMemberInActiveUserGroupMembershipAdminStatus: (state, action: {
       type: string,
-      payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string, isAdmin: boolean; },
+      payload: { memberGroupMembershipId: string, isAdmin: boolean; },
     }) => {
       const activeUserGroupMembershipIndex = state.activeUserGroupMemberships.groupMemberships.findIndex(
-        (membership) => membership.id === action.payload.activeUserGroupMembershipId,
+        (membership) => membership.id === state.selectedActiveUserGroupMembershipId,
       );
 
       if (!(activeUserGroupMembershipIndex < 0)) {
@@ -94,10 +110,10 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
     },
     deleteMemberInActiveUserGroupMembership: (state, action: {
       type: string,
-      payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string; },
+      payload: { memberGroupMembershipId: string; },
     }) => {
       const activeUserGroupMembershipIndex = state.activeUserGroupMemberships.groupMemberships.findIndex(
-        (membership) => membership.id === action.payload.activeUserGroupMembershipId,
+        (membership) => membership.id === state.selectedActiveUserGroupMembershipId,
       );
 
       if (!(activeUserGroupMembershipIndex < 0)) {
@@ -123,6 +139,7 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
 export const {
   setActiveUserGroupMemberships,
   addActiveUserGroupMembership,
+  editActiveUserGroupMembershipGroupName,
   setSelectedActiveUserGroupMembershipId,
   updateActiveUserGroupMembershipActiveInviteLink,
   updateMemberInActiveUserGroupMembershipAdminStatus,

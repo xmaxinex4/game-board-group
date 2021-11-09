@@ -16,6 +16,9 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  Theme,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -37,6 +40,10 @@ const useStyles = makeStyles(() => ({
 export function ActiveGroupMembershipTable(): React.ReactElement {
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
+
+  const theme = useTheme<Theme>();
+  const isXsDown = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { meeple } = useStyles();
 
   const activeGroupMemberships = useMemo(
@@ -98,7 +105,7 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
                 </Grid>
               </TableCell>
               <TableCell>
-                <Grid container alignItems="center" justifyContent="flex-end">
+                <Grid container direction={isXsDown ? "column" : "row"} alignItems={isXsDown ? "flex-end" : "center"} justifyContent="flex-end">
                   {activeUserGroupMembership?.isAdmin && (
                     <>
                       <Grid item>
