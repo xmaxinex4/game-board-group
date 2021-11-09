@@ -26,9 +26,13 @@ export type ActiveUserGroupMembershipsStateReducers = {
     type: string,
     payload: { groupMembershipId: string, link: string; },
   }) => void;
-  updateActiveUserGroupMembershipAdminStatus: (state: ActiveUserGroupMembershipsState, action: {
+  updateMemberInActiveUserGroupMembershipAdminStatus: (state: ActiveUserGroupMembershipsState, action: {
     type: string,
     payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string, isAdmin: boolean; },
+  }) => void;
+  deleteMemberInActiveUserGroupMembership: (state: ActiveUserGroupMembershipsState, action: {
+    type: string,
+    payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string; },
   }) => void;
 };
 
@@ -67,7 +71,7 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
         state.activeUserGroupMemberships.groupMemberships[groupMembershipIndex].activeInvitationLink = action.payload.link;
       }
     },
-    updateActiveUserGroupMembershipAdminStatus: (state, action: {
+    updateMemberInActiveUserGroupMembershipAdminStatus: (state, action: {
       type: string,
       payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string, isAdmin: boolean; },
     }) => {
@@ -88,6 +92,24 @@ export const activeUserGroupMembershipsSlice = createSlice<ActiveUserGroupMember
         }
       }
     },
+    deleteMemberInActiveUserGroupMembership: (state, action: {
+      type: string,
+      payload: { activeUserGroupMembershipId: string, memberGroupMembershipId: string; },
+    }) => {
+      const activeUserGroupMembershipIndex = state.activeUserGroupMemberships.groupMemberships.findIndex(
+        (membership) => membership.id === action.payload.activeUserGroupMembershipId,
+      );
+
+      if (!(activeUserGroupMembershipIndex < 0)) {
+        const groupMembershipIndex = state.activeUserGroupMemberships.groupMemberships[activeUserGroupMembershipIndex].group.members.findIndex(
+          (membership) => membership.id === action.payload.memberGroupMembershipId,
+        );
+
+        if (!(groupMembershipIndex < 0)) {
+          state.activeUserGroupMemberships.groupMemberships[activeUserGroupMembershipIndex].group.members.splice(groupMembershipIndex, 1);
+        }
+      }
+    },
     setSelectedActiveUserGroupMembershipId: (state, action: {
       type: string,
       payload: { id: string; },
@@ -103,7 +125,8 @@ export const {
   addActiveUserGroupMembership,
   setSelectedActiveUserGroupMembershipId,
   updateActiveUserGroupMembershipActiveInviteLink,
-  updateActiveUserGroupMembershipAdminStatus,
+  updateMemberInActiveUserGroupMembershipAdminStatus,
+  deleteMemberInActiveUserGroupMembership,
 } = activeUserGroupMembershipsSlice.actions;
 
 export const selectedActiveUserGroupMembership = (state: { activeUserGroupMembershipsState: ActiveUserGroupMembershipsState; }) => (

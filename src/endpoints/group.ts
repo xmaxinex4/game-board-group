@@ -303,4 +303,98 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
+
+  app.post('/api/group/delete-member', async (req, res, next) => {
+    const userId = getCurrentUserId(req, res);
+
+    const { groupMembershipId } = req.body;
+
+    if (!groupMembershipId) {
+      return res.status(400).json({ error: `Missing groupMembershipId.` });
+    }
+
+    try {
+      const groupLookup = await prisma.groupMember.findUnique({
+        where: {
+          id: groupMembershipId
+        },
+        select: {
+          isAdmin: true,
+          user: {
+            select: {
+              id: true,
+            },
+          },
+          group: {
+            select: {
+              id: true,
+              members: {
+                select: {
+                  isAdmin: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!groupLookup) {
+        return res.status(400).json({ error: `Group membership not found.` });
+      }
+
+      if (groupLookup.isAdmin && groupLookup.group.members.filter((member) => member.isAdmin).length < 2) {
+        return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
+      }
+
+      const isAdminInGroup = await prisma.group.findFirst({
+        where: {
+          AND: [
+            {
+              id: { equals: groupLookup.group.id },
+            },
+            {
+              members: {
+                some: {
+                  AND: [
+                    {
+                      userId: {
+                        equals: userId
+                      }
+                    },
+                    {
+                      isAdmin: {
+                        equals: true,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+        }
+      });
+
+      // you can leave the group, so you can delete yourself without being an admin
+      if (groupLookup.user.id !== userId && !isAdminInGroup) {
+        return res.status(401).json({ error: `You do not have permission to delete group members.` });
+      }
+
+      const result = await prisma.groupMember.delete({
+        where: {
+          id: groupMembershipId,
+        },
+        select: {
+          ...UserGroupMembershipResponsePrismaSelect
+        }
+      }) as UserMembershipResponse;
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error deleting group member: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
 };

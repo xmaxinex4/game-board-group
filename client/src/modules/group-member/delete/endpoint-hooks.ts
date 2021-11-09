@@ -5,27 +5,25 @@ import { useDispatch } from "react-redux";
 
 import { UserMembershipResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
-import { updateMemberInActiveUserGroupMembershipAdminStatus } from "../../../redux/active-user-group-memberships-slice";
+import { deleteMemberInActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
-export interface EditAdminStatusOfGroupMemberArgs {
+export interface DeleteGroupMemberArgs {
   activeUserGroupMembershipId: string,
   memberGroupMembershipId: string,
-  isAdmin: boolean,
-  onAdminStatusUpdated?: () => void;
+  onDeleted?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
 }
 
-export function useEditGroupMember() {
+export function useDeleteGroupMember() {
   const { apiPost } = useApi();
   const dispatch = useDispatch();
 
-  function editAdminStatusOfGroupMember(args: EditAdminStatusOfGroupMemberArgs): void {
+  function deleteGroupMember(args: DeleteGroupMemberArgs): void {
     const {
       activeUserGroupMembershipId,
       memberGroupMembershipId,
-      isAdmin,
-      onAdminStatusUpdated,
+      onDeleted,
       setIsLoading,
       onError,
     } = args;
@@ -34,17 +32,16 @@ export function useEditGroupMember() {
       setIsLoading(true);
     }
 
-    apiPost<UserMembershipResponse>("/group/update-admin-status-of-member", {
+    apiPost<UserMembershipResponse>("/group/delete-member", {
       groupMembershipId: memberGroupMembershipId,
-      isAdmin,
     })
       .then(({ data }) => {
-        dispatch(updateMemberInActiveUserGroupMembershipAdminStatus({
-          activeUserGroupMembershipId, memberGroupMembershipId: data.id, isAdmin: data.isAdmin,
+        dispatch(deleteMemberInActiveUserGroupMembership({
+          activeUserGroupMembershipId, memberGroupMembershipId: data.id,
         }));
 
-        if (onAdminStatusUpdated) {
-          onAdminStatusUpdated();
+        if (onDeleted) {
+          onDeleted();
         }
       })
       .catch((error: Error) => {
@@ -63,5 +60,5 @@ export function useEditGroupMember() {
       });
   }
 
-  return { editAdminStatusOfGroupMember };
+  return { deleteGroupMember };
 }

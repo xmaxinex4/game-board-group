@@ -1,61 +1,53 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 
 import {
   Dialog,
   DialogActions,
   DialogContent,
-  FormControlLabel,
-  Switch,
+  IconButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
+import LeaveIcon from "@mui/icons-material/MeetingRoomTwoTone";
+
 import { UserMembershipResponse } from "../../../../../src/types/types";
-import { selectActiveUser } from "../../../redux/active-user-slice";
 import { ActionButtons } from "../../common/button/action-buttons";
-import { useEditGroupMember } from "./endpoint-hooks";
+import { useDeleteGroupMember } from "./endpoint-hooks";
 import { selectedActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
 
-export interface AdminGroupMemberSwitchProps {
+export interface LeaveGroupButtonProps {
   membership: UserMembershipResponse;
   activeGroupMemberships: UserMembershipResponse[];
 }
 
-export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): React.ReactElement {
+export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactElement {
   const { membership, activeGroupMemberships } = props;
-  const activeUser = useSelector(selectActiveUser);
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
 
-  const isCurrentUser = useMemo(() => membership.user.id === activeUser?.id, [activeUser, membership]);
-
-  const [isAdmin, setIsAdmin] = useState(membership.isAdmin);
-  const [editingAdminStatus, setIsEditingAdminStatus] = useState(false);
+  const [deletingCurrentUserFromGroup, setDeletingCurrentUserFromGroup] = useState(false);
   const [showForbiddenMessage, setShowForbiddenMessage] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
 
-  const { editAdminStatusOfGroupMember } = useEditGroupMember();
-  const toggleIsAdmin = useCallback(() => setIsAdmin(!isAdmin), [isAdmin, setIsAdmin]);
+  const { deleteGroupMember } = useDeleteGroupMember();
 
-  const onChange = useCallback(() => {
-    editAdminStatusOfGroupMember({
+  const deleteMember = useCallback(() => {
+    deleteGroupMember({
       activeUserGroupMembershipId: activeUserGroupMembership?.id || "",
       memberGroupMembershipId: membership.id,
-      isAdmin: !isAdmin,
-      onAdminStatusUpdated: toggleIsAdmin,
-      setIsLoading: setIsEditingAdminStatus,
+      setIsLoading: setDeletingCurrentUserFromGroup,
     });
-  }, [setIsEditingAdminStatus, toggleIsAdmin, activeUserGroupMembership]);
+  }, [activeUserGroupMembership, setDeletingCurrentUserFromGroup]);
 
-  const verifyChangeOfAdminStatus = useCallback(() => {
-    const isLastAdmin = isAdmin && activeGroupMemberships.filter((member) => member.isAdmin).length < 2;
+  const verifyDelete = useCallback(() => {
+    const isLastAdmin = membership.isAdmin && activeGroupMemberships.filter((member) => member.isAdmin).length < 2;
     if (isLastAdmin) {
       setShowForbiddenMessage(true);
-    } else if (isCurrentUser) {
-      setShowVerificationMessage(true);
     } else {
-      onChange();
+      setShowVerificationMessage(true);
     }
-  }, [onChange, setShowVerificationMessage, setShowForbiddenMessage, activeGroupMemberships]);
+  }, [setShowVerificationMessage, setShowForbiddenMessage, activeGroupMemberships]);
 
   const closeForbiddenMessage = useCallback(() => {
     setShowForbiddenMessage(false);
@@ -67,10 +59,17 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
 
   return (
     <>
-      <FormControlLabel
-        control={<Switch disabled={editingAdminStatus} checked={isAdmin} onClick={verifyChangeOfAdminStatus} />}
-        label="Admin"
-      />
+      <Tooltip title="Leave Group" aria-label="leave-group">
+        <IconButton
+          onClick={verifyDelete}
+          disabled={deletingCurrentUserFromGroup}
+          color="primary"
+          aria-label="leave active group"
+          component="span"
+        >
+          <LeaveIcon />
+        </IconButton>
+      </Tooltip>
       <Dialog
         onClose={closeForbiddenMessage}
         open={showForbiddenMessage}
@@ -94,19 +93,17 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
         sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
       >
         <DialogContent>
-          <Typography>
-            Are you sure you want to revoke your own admin status?
-          </Typography>
+          <Typography>Are you sure you want to leave this group?</Typography>
         </DialogContent>
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
           <ActionButtons
-            onSave={onChange}
-            saveButtonProps={{ disabled: editingAdminStatus, color: "error" }}
-            saveText="Revoke my admin status"
+            onSave={deleteMember}
+            saveButtonProps={{ disabled: deletingCurrentUserFromGroup, color: "error" }}
+            saveText="Leave Group"
             onCancel={closeVerificationMessage}
-            cancelButtonProps={{ disabled: editingAdminStatus }}
-            saveButtonSize={7}
-            cancelButtonSize={3}
+            cancelButtonProps={{ disabled: deletingCurrentUserFromGroup }}
+            saveButtonSize={6}
+            cancelButtonSize={4}
           />
         </DialogActions>
       </Dialog>

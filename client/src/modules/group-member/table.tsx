@@ -4,13 +4,10 @@ import { sortBy } from "lodash";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Shield from "@mui/icons-material/ShieldTwoTone";
-import LeaveIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
 
 import {
   Avatar,
   Grid,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -28,6 +25,8 @@ import { selectedActiveUserGroupMembership } from "../../redux/active-user-group
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { UserMembershipResponse } from "../../../../src/types/types";
 import { AdminGroupMemberSwitch } from "./edit/admin-group-member-switch";
+import { DeleteMemberButton } from "./delete/delete-member-button";
+import { LeaveGroupButton } from "./delete/leave-group-button";
 
 const useStyles = makeStyles(() => ({
   meeple: {
@@ -107,17 +106,7 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
                       </Grid>
                       {activeUser && membership.user.id !== activeUser.id && (
                         <Grid item>
-                          <Tooltip title="Delete Member" aria-label="delete-group-member">
-                            <IconButton
-                              onClick={() => console.log("delete group member")}
-                              // disabled={isLoading}
-                              color="primary"
-                              aria-label="delete group member"
-                              component="span"
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip>
+                          <DeleteMemberButton membership={membership} activeGroupMemberships={activeGroupMemberships} />
                         </Grid>
                       )}
                     </>
@@ -133,17 +122,7 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
                   )}
                   {activeUser && membership.user.id === activeUser.id && (
                     <Grid item>
-                      <Tooltip title="Leave Group" aria-label="leave-group">
-                        <IconButton
-                          onClick={() => console.log("leave group")}
-                          // disabled={isLoading}
-                          color="primary"
-                          aria-label="leave active group"
-                          component="span"
-                        >
-                          <LeaveIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <LeaveGroupButton membership={membership} activeGroupMemberships={activeGroupMemberships} />
                     </Grid>
                   )}
                 </Grid>
