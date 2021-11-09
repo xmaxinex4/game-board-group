@@ -213,7 +213,7 @@ export function ManageGroup(): React.ReactElement {
                     )
                     : (
                       <Grid item sx={{ textAlign: "center" }}>
-                        <Button onClick={openGenerateInviteLink} variant="contained">+ Add Member</Button>
+                        <Button onClick={openGenerateInviteLink} variant="outlined">+ Add Member</Button>
                       </Grid>
                     )
                 )}

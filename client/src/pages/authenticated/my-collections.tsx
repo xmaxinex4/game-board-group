@@ -101,7 +101,10 @@ export function MyCollections(): React.ReactElement {
                 userCollections?.collections?.length > 0
                   ? (
                     <Grid item sx={{ width: "100%" }}>
-                      <Grid container direction="column" spacing={4}>
+                      <Grid container direction="column" alignItems="center">
+                        <Grid item>
+                          <Button onClick={onAddCollection} variant="outlined">+ Add Collection</Button>
+                        </Grid>
                         <Grid item>
                           {refreshingCollections
                             ? (
