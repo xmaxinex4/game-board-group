@@ -2,12 +2,9 @@ import { Express } from "express";
 
 import { Color, PrismaClient } from ".prisma/client";
 import { getCurrentUserId } from "../utils/get-current-user-id";
-import { GameResponse } from "../types/types";
+import { CollectionGameResponse, CollectionGameResponsePrismaSelect, GameResponse } from "../types/types";
 
 export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
-  // app.get("/api/collection/:id", async (req, res) => {
-  // });
-
   app.get("/api/library", async (req, res) => {
     getCurrentUserId(req, res); // check authorization
 
@@ -46,7 +43,11 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
         }
       },
       select: {
-        games: true,
+        games: {
+          select: {
+            ...CollectionGameResponsePrismaSelect,
+          },
+        },
         owners: {
           select: {
             id: true,
@@ -58,26 +59,27 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
       distinct: ["id"],
     });
 
-    const library = new Map<string, GameResponse & { owners: { username: string, color: Color; id: string; }[]; }>();
+    const library = new Map<string, CollectionGameResponse & { owners: { username: string, color: Color; id: string; }[]; }>();
 
     // TODO: Evaluate Complexity and test logic
     collections.forEach((collection) => {
-      collection.games.forEach((game) => {
-        const existingLibraryGameEntry = library[game.bggId];
+      collection.games.forEach((collectionGame) => {
+        const existingLibraryGameEntry = library[collectionGame.game.bggId];
 
         if (existingLibraryGameEntry) {
           collection.owners.forEach((owner) => {
             if (userIds.some(id => id === owner.id) && !existingLibraryGameEntry.owners.some(ownerOnLibaryGame => ownerOnLibaryGame.id === owner.id)) {
-              library[game.bggId] = { ...existingLibraryGameEntry, owners: existingLibraryGameEntry.owners.concat(owner) };
+              library[collectionGame.game.bggId] = { ...existingLibraryGameEntry, owners: existingLibraryGameEntry.owners.concat(owner) };
             }
           });
         } else {
-          library[game.bggId] = {
-            bggId: game.bggId,
-            name: game.name,
-            urlThumb: game.urlThumb,
-            urlImage: game.urlImage,
-            year: game.year,
+          library[collectionGame.game.bggId] = {
+            createdAt: collectionGame.createdAt,
+            bggId: collectionGame.game.bggId,
+            name: collectionGame.game.name,
+            urlThumb: collectionGame.game.urlThumb,
+            urlImage: collectionGame.game.urlImage,
+            year: collectionGame.game.year,
             owners: collection.owners.filter((owner) => userIds.some(id => id === owner.id)),
           };
         }

@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Game" ALTER COLUMN "bggId" SET DATA TYPE TEXT;

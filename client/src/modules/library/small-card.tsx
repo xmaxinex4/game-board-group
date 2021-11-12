@@ -18,32 +18,43 @@ import { LibraryGame } from "../../../../src/types/types";
 
 import { ImageLoader } from "../common/image/image-loader";
 
-export interface LibraryCardProps {
+export interface SmallLibraryCardProps {
   game: LibraryGame;
   openGameDetails: (game: LibraryGame) => void;
 }
 
 const useStyles = makeStyles(() => ({
   card: {
-    minWidth: "250px",
-    minHeight: "250px",
+    maxWidth: "150px",
+    minWidth: "150px",
+    minHeight: "100px",
     boxShadow: "10px 10px 10px rgb(95, 77, 99)",
     cursor: "pointer",
   },
   cardTextContainer: {
-    paddingLeft: "24px",
     paddingRight: "24px",
   },
   cardText: {
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
+  root: {
+    paddingBottom: "unset !important",
+    paddingTop: "unset",
+    paddingRight: "16px",
+    paddingLeft: "16px",
+  },
 }));
 
-export function LibraryCard(props: LibraryCardProps): React.ReactElement {
+export function SmallLibraryCard(props: SmallLibraryCardProps): React.ReactElement {
   const { game, openGameDetails } = props;
 
-  const { card, cardText, cardTextContainer } = useStyles();
+  const {
+    card,
+    cardText,
+    cardTextContainer,
+    root,
+  } = useStyles();
 
   const openGameDetailsDisplay = useCallback(() => {
     openGameDetails(game);
@@ -56,14 +67,14 @@ export function LibraryCard(props: LibraryCardProps): React.ReactElement {
     >
       {game.urlImage
         ? (
-          <ImageLoader imgSrc={game.urlImage || ""} imageDimensions={{ height: "175px", width: "100%" }} />
+          <ImageLoader imgSrc={game.urlImage || ""} imageDimensions={{ height: "100px", width: "100%" }} />
         )
         : (
-          <Box display="flex" justifyContent="center" alignItems="center" height="175px" width="100%">
+          <Box display="flex" justifyContent="center" alignItems="center" height="50px" width="100%">
             <HideImageTwoToneIcon color="primary" sx={{ fontSize: 56 }} />
           </Box>
         )}
-      <CardContent>
+      <CardContent className={root} sx={{ Muiroot: { paddingBottom: "unset" } }}>
         <Grid
           container
           justifyContent="center"
@@ -71,10 +82,10 @@ export function LibraryCard(props: LibraryCardProps): React.ReactElement {
           className={cardTextContainer}
         >
           <Grid item xs={11}>
-            <Typography noWrap variant="h6" className={cardText}>{game.name}</Typography>
+            <Typography noWrap variant="body2" className={cardText}>{game.name}</Typography>
           </Grid>
           <Grid item xs={1}>
-            <IconButton size="large" color="primary" aria-label="show card details" component="span">
+            <IconButton size="large" color="primary" aria-label="show card details">
               <ZoomInTwoToneIcon />
             </IconButton>
           </Grid>

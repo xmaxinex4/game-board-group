@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { isEmpty, values } from "lodash";
 
 import GameIcon from "@mui/icons-material/CasinoTwoTone";
@@ -7,34 +8,31 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForwardTwoTone";
 
 import { Button, Grid, Typography } from "@mui/material";
 
-import { LibraryReponse } from "../../../../src/types/types";
-
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
-import { useApi } from "../../hooks/useApi";
 import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 import { LibraryCardList } from "../../modules/library/card-list";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
-import { selectActiveUserGroupLibrary, setActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
+import { selectActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
+import { useGetLibrary } from "../../modules/library/endpoint-hooks";
 
 export function Library(): React.ReactElement {
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeLibrary = useSelector(selectActiveUserGroupLibrary);
 
-  const { apiGet } = useApi();
-  const dispatch = useDispatch();
+  const { getLibrary } = useGetLibrary();
+  const history = useHistory();
 
   const [loadingLibrary, setLoadingLibrary] = useState(false);
 
   useEffect(() => {
     if (activeGroupMembership?.group.id) {
-      setLoadingLibrary(true);
-      apiGet<LibraryReponse>("/library", { groupId: activeGroupMembership.group.id })
-        .then(({ data }) => {
-          dispatch(setActiveUserGroupLibrary({ newLibrary: data }));
-        })
-        .finally(() => setLoadingLibrary(false));
+      getLibrary({
+        setIsLoading: setLoadingLibrary,
+      });
     }
   }, [activeGroupMembership]);
+
+  const goToGameCollections = () => history.push("/my-game-collections");
 
   return (
     <TabContentContainer title="Group Library">
@@ -55,7 +53,7 @@ export function Library(): React.ReactElement {
             </Typography>
           </Grid>
           <Grid item>
-            <Button endIcon={<ArrowForwardIcon />} onClick={() => console.log("Add library")} variant="outlined">Go To Add Game Collections</Button>
+            <Button endIcon={<ArrowForwardIcon />} onClick={goToGameCollections} variant="outlined">Go To Add Game Collections</Button>
           </Grid>
         </Grid>
       )}

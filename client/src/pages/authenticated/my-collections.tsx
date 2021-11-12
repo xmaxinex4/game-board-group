@@ -65,7 +65,7 @@ export function MyCollections(): React.ReactElement {
 
   const onCollectionCardEdit = useCallback((collection: CollectionResponse) => {
     setInitialDataCollection(collection);
-    setFormGames(collection.games);
+    setFormGames(collection.games.map((collectionGame) => collectionGame.game));
     showForm();
   }, [setFormGames, setShowUpsertCollectionForm]);
 
@@ -101,7 +101,7 @@ export function MyCollections(): React.ReactElement {
                 userCollections?.collections?.length > 0
                   ? (
                     <Grid item sx={{ width: "100%" }}>
-                      <Grid container direction="column" alignItems="center">
+                      <Grid container direction="column" alignItems="center" spacing={2}>
                         <Grid item>
                           <Button onClick={onAddCollection} variant="outlined">+ Add Collection</Button>
                         </Grid>
@@ -122,6 +122,7 @@ export function MyCollections(): React.ReactElement {
                                   minWidth: "275px",
                                 }}
                                 spacing={2}
+                                direction="column"
                               >
                                 <Grid item sx={{ marginLeft: "auto" }}>
                                   <Button

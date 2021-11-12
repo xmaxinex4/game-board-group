@@ -136,7 +136,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                     <Typography variant="subtitle2">Games:</Typography>
                   </Grid>
                   <Grid item>
-                    <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                    <GamesStateContext.Provider value={{ games: collection.games.map((collectionGame) => collectionGame.game), setGames: undefined }}>
                       <GameCircleListDisplay />
                     </GamesStateContext.Provider>
                   </Grid>
@@ -146,7 +146,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                     <Typography variant="subtitle2">Owners:</Typography>
                   </Grid>
                   <Grid item>
-                    <GamesStateContext.Provider value={{ games: collection.games, setGames: undefined }}>
+                    <GamesStateContext.Provider value={{ games: collection.games.map((collectionGame) => collectionGame.game), setGames: undefined }}>
                       <UserCircleListDisplay users={collection.owners} />
                     </GamesStateContext.Provider>
                   </Grid>

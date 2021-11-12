@@ -61,7 +61,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     }
 
     let currentCollection: {
-      games: { id: string, bggId: string; }[],
+      games: { id: string, game: { bggId: string; }; }[],
       owners: { id: string; }[];
     } = {
       games: [],
@@ -77,8 +77,12 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
           games: {
             select: {
               id: true,
-              bggId: true,
-            }
+              game: {
+                select: {
+                  bggId: true,
+                }
+              }
+            },
           },
           owners: {
             select: {
@@ -117,36 +121,62 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       });
     }));
 
-    // Gather games info and ids
-    const currentGames = currentCollection.games;
+    // Gather games info and ids in current collection
+    const currentCollectionGames = currentCollection.games;
 
-    // Filter out duplicates
+    // Filter out duplicates of incoming games
     const gamesSet = new Set<Pick<Game, "bggId" | "name" | "urlThumb" | "urlImage" | "year">>(games || []);
 
-    const gamesDisconnect = [];
-    const gamesConnectOrCreate = [];
+    const collectionGamesDelete = [];
+    const nestedGamesConnectOrCreateForNewCollection = [];
+    const nestedGamesConnectOrCreateForUpdateCollection = [];
 
-    currentGames.forEach((currentGame) => {
-      if (!(games as GameResponse[]).some((game) => game.bggId === currentGame.bggId)) {
-        gamesDisconnect.push({
-          bggId: currentGame.bggId,
+    currentCollectionGames.forEach((currentCollectionGame) => {
+      if (!(games as GameResponse[]).some((game) => game.bggId === currentCollectionGame.game.bggId)) {
+        collectionGamesDelete.push({
+          id: currentCollectionGame.id,
         });
       }
     });
 
     gamesSet.forEach((game => {
-      gamesConnectOrCreate.push({
-        where: {
-          bggId: game.bggId,
+      nestedGamesConnectOrCreateForNewCollection.push({
+        game: {
+          connectOrCreate: {
+            where: {
+              bggId: game.bggId,
+            },
+            create: {
+              bggId: game.bggId,
+              name: game.name,
+              year: game.year,
+              urlThumb: game.urlThumb,
+              urlImage: game.urlImage,
+            },
+          },
         },
-        create: {
-          bggId: game.bggId,
-          name: game.name,
-          year: game.year,
-          urlThumb: game.urlThumb,
-          urlImage: game.urlImage,
-        }
       });
+    }));
+
+    gamesSet.forEach((game => {
+      if (!(currentCollectionGames).some((collectionGame) => game.bggId === collectionGame.game.bggId)) {
+        nestedGamesConnectOrCreateForUpdateCollection.push({
+          game: {
+            connectOrCreate: {
+              where: {
+                bggId: game.bggId,
+              },
+              create: {
+                bggId: game.bggId,
+                name: game.name,
+                year: game.year,
+                urlThumb: game.urlThumb,
+                urlImage: game.urlImage,
+              },
+            },
+          },
+        });
+      }
     }));
 
     try {
@@ -157,7 +187,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         create: {
           name,
           games: {
-            connectOrCreate: gamesConnectOrCreate,
+            create: nestedGamesConnectOrCreateForNewCollection,
           },
           owners: {
             connect: ownersConnect,
@@ -166,8 +196,8 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         update: {
           name,
           games: {
-            disconnect: gamesDisconnect.length > 0 ? gamesDisconnect : undefined,
-            connectOrCreate: gamesConnectOrCreate,
+            delete: collectionGamesDelete.length > 0 ? collectionGamesDelete : undefined,
+            create: nestedGamesConnectOrCreateForUpdateCollection,
           },
           owners: {
             disconnect: ownersDisconnect.length > 0 ? ownersDisconnect : undefined,
@@ -215,15 +245,23 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
 
       const isLastOwner = collection.owners.length < 2;
 
-      // delete collection if this is the last owner
+      // delete collection and collection games if this is the last owner
       if (isLastOwner) {
+        await prisma.collectionGame.deleteMany({
+          where: {
+            collectionId: {
+              equals: collectionId,
+            },
+          },
+        });
+
         const deletedResult = await prisma.collection.delete({
           where: {
             id: collectionId
           }
         });
 
-        res.status(200).json({ deletedCollectionId: deletedResult.id });
+        return res.status(200).json({ deletedCollectionId: deletedResult.id });
       }
 
       // otherwise, just remove ownership
@@ -240,7 +278,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         }
       });
 
-      res.status(200).json({ deletedCollectionId: updatedResult.id });
+      return res.status(200).json({ deletedCollectionId: updatedResult.id });
     } catch (e) {
       console.log(e);
       return res.status(500).json({ error: `Failed to delete collection` });

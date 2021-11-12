@@ -45,7 +45,17 @@ model Collection {
   updatedAt DateTime @updatedAt
   name      String
   owners    User[]
-  games     Game[]
+  games     CollectionGame[]
+}
+
+model CollectionGame {
+  id              String        @id @default(cuid())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  collection      Collection    @relation(fields: [collectionId], references: [id])
+  collectionId    String
+  game            Game          @relation(fields: [gameId], references: [id])
+  gameId          String
 }
 
 model Game {
@@ -56,12 +66,11 @@ model Game {
   name                String
   urlImage            String?
   urlThumb            String?
-  Collection          Collection[]
-  collectionId        String?
   year                String?
-  play                Play[]
-  pollOption          PollOption[]
+  plays               Play[]
+  pollOptions         PollOption[]
   playPreferences     UserPlayPreference[]
+  collectionGames     CollectionGame[]
 }
 
 model Group {

@@ -100,6 +100,7 @@ export interface ActiveUserGroupMembershipsResponse {
 
 /******************************* Library Games */
 export interface LibraryGame {
+  createdAt: string;
   bggId: string;
   name: string;
   urlImage: string | null;
@@ -131,6 +132,22 @@ export const GameResponsePrismaSelect = {
   year: true,
 };
 
+export interface CollectionGameResponse {
+  id: string;
+  createdAt: string;
+  game: GameResponse;
+}
+
+export const CollectionGameResponsePrismaSelect = {
+  id: true,
+  createdAt: true,
+  game: {
+    select: {
+      ...GameResponsePrismaSelect,
+    },
+  },
+};
+
 export interface GameDetails {
   description: string,
   minPlayers: number,
@@ -151,7 +168,7 @@ export interface GameDetails {
 export interface CollectionResponse {
   id: string,
   name: string,
-  games: GameResponse[],
+  games: CollectionGameResponse[],
   owners: UserResponse[],
 }
 
@@ -164,7 +181,7 @@ export const CollectionResponsePrismaSelect: Prisma.CollectionSelect = {
   name: true,
   games: {
     select: {
-      ...GameResponsePrismaSelect,
+      ...CollectionGameResponsePrismaSelect,
     },
   },
   owners: {

@@ -1,8 +1,11 @@
 -- CreateEnum
-CREATE TYPE "Color" AS ENUM ('Red', 'Pink', 'Orange', 'Yellow', 'Green', 'Teal', 'LightBlue', 'Blue', 'Purple', 'PastelRed', 'PastelPink', 'PastelOrange', 'PastelYellow', 'PastelGreen', 'PastelTeal', 'PastelLightblue', 'PastelBlue', 'PastelPurple');
+CREATE TYPE "Color" AS ENUM ('Red', 'Blush', 'Rose', 'Pink', 'Coral', 'Merigold', 'Fire', 'Orange', 'Squash', 'Olive', 'Green', 'Pine', 'Teal', 'Blue', 'Regal', 'Navy', 'Lilac', 'Purple', 'Plum', 'Tan', 'Brown', 'Silver', 'Grey', 'Slate');
 
 -- CreateEnum
 CREATE TYPE "Permission" AS ENUM ('Admin', 'User');
+
+-- CreateEnum
+CREATE TYPE "PlayPreference" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Usually', 'Always');
 
 -- CreateTable
 CREATE TABLE "Collection" (
@@ -15,33 +18,26 @@ CREATE TABLE "Collection" (
 );
 
 -- CreateTable
-CREATE TABLE "Game" (
+CREATE TABLE "CollectionGame" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "collectionId" TEXT NOT NULL,
+    "gameId" TEXT NOT NULL,
+
+    CONSTRAINT "CollectionGame_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Game" (
+    "id" TEXT NOT NULL,
+    "bggId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "noPoints" BOOLEAN,
-    "highestWins" BOOLEAN,
-    "cooperative" BOOLEAN,
-    "usesTeams" BOOLEAN,
-    "urlThumb" TEXT NOT NULL,
-    "year" INTEGER NOT NULL,
-    "bggId" INTEGER NOT NULL,
-    "urlImage" TEXT NOT NULL,
-    "designers" TEXT[],
-    "publishers" TEXT[],
-    "artists" TEXT[],
-    "categories" TEXT[],
-    "families" TEXT[],
-    "minPlayers" INTEGER NOT NULL,
-    "maxPlayers" INTEGER NOT NULL,
-    "age" INTEGER NOT NULL,
-    "minPlaytime" INTEGER NOT NULL,
-    "maxPlaytime" INTEGER NOT NULL,
-    "mechanics" TEXT[],
-    "bggComplexityRating" DOUBLE PRECISION NOT NULL,
-    "collectionId" TEXT,
+    "urlImage" TEXT,
+    "urlThumb" TEXT,
+    "year" TEXT,
 
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
@@ -129,11 +125,24 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "color" TEXT NOT NULL,
+    "isPremiumUser" BOOLEAN NOT NULL DEFAULT false,
+    "color" "Color" NOT NULL,
     "resetToken" TEXT,
     "resetTokenExpiry" DOUBLE PRECISION,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserPlayPreference" (
+    "id" TEXT NOT NULL,
+    "gameId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "preference" "PlayPreference" NOT NULL,
+
+    CONSTRAINT "UserPlayPreference_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -158,10 +167,16 @@ CREATE TABLE "_CollectionToUser" (
 CREATE UNIQUE INDEX "Game_bggId_key" ON "Game"("bggId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "GroupMember_userId_groupId_key" ON "GroupMember"("userId", "groupId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "PollOption_gameId_pollId_key" ON "PollOption"("gameId", "pollId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserPlayPreference_userId_gameId_key" ON "UserPlayPreference"("userId", "gameId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserVote_voteId_voterId_key" ON "UserVote"("voteId", "voterId");
@@ -173,7 +188,10 @@ CREATE UNIQUE INDEX "_CollectionToUser_AB_unique" ON "_CollectionToUser"("A", "B
 CREATE INDEX "_CollectionToUser_B_index" ON "_CollectionToUser"("B");
 
 -- AddForeignKey
-ALTER TABLE "Game" ADD CONSTRAINT "Game_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "CollectionGame" ADD CONSTRAINT "CollectionGame_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CollectionGame" ADD CONSTRAINT "CollectionGame_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "GroupMember" ADD CONSTRAINT "GroupMember_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -204,6 +222,12 @@ ALTER TABLE "Score" ADD CONSTRAINT "Score_playerId_fkey" FOREIGN KEY ("playerId"
 
 -- AddForeignKey
 ALTER TABLE "Score" ADD CONSTRAINT "Score_playId_fkey" FOREIGN KEY ("playId") REFERENCES "Play"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserPlayPreference" ADD CONSTRAINT "UserPlayPreference_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserPlayPreference" ADD CONSTRAINT "UserPlayPreference_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserVote" ADD CONSTRAINT "UserVote_voteId_fkey" FOREIGN KEY ("voteId") REFERENCES "PollOption"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

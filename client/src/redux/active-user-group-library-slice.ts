@@ -2,7 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { LibraryReponse } from "../../../src/types/types";
+import { LibraryGame, LibraryReponse } from "../../../src/types/types";
 
 export type ActiveUserGroupLibraryState = {
   activeUserGroupLibrary: LibraryReponse,
@@ -34,6 +34,17 @@ export const { setActiveUserGroupLibrary } = ActiveUserGroupLibrarySlice.actions
 
 export const selectActiveUserGroupLibrary = (state: { activeUserGroupLibraryState: ActiveUserGroupLibraryState; }) => (
   state.activeUserGroupLibraryState.activeUserGroupLibrary
+);
+
+const getRecentGames = (games: LibraryGame[]): LibraryGame[] => {
+  const sortedGames = games;
+  sortedGames.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+
+  return sortedGames.slice(0, 3);
+};
+
+export const selectActiveUserGroupLibraryRecentGames = (state: { activeUserGroupLibraryState: ActiveUserGroupLibraryState; }) => (
+  getRecentGames(Object.values(state.activeUserGroupLibraryState.activeUserGroupLibrary.library))
 );
 
 export default ActiveUserGroupLibrarySlice.reducer;
