@@ -53,54 +53,56 @@ export function LibraryCardList(props: LibraryCardListProps): React.ReactElement
   }, [setGameDetails, setGameDetailDialogOpen]);
 
   return (
-    <>
-      <Grid container justifyContent="center">
-        {onRefresh && (
-          <Grid item sx={{ marginLeft: "auto" }}>
-            <Button
-              variant="text"
-              color="primary"
-              size="small"
-              startIcon={<RefreshIcon />}
-              disabled={refreshingLibrary}
-              onClick={onRefresh}
-              aria-label="Refresh All Collections"
-            >
-              Refresh
-            </Button>
-          </Grid>
-        )}
-        {refreshingLibrary && (
-          <PageLoadingSpinner />
-        )}
-        {!refreshingLibrary && (
-          <>
-            {!noFilters && (
-              <Grid item>
-                <LibraryFiltersAndSort games={games} setFilteredGames={setFilteredGames} />
+    <Grid container spacing={2}>
+      {onRefresh && (
+        <Grid item sx={{ marginLeft: "auto" }}>
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            startIcon={<RefreshIcon />}
+            disabled={refreshingLibrary}
+            onClick={onRefresh}
+            aria-label="Refresh All Collections"
+          >
+            Refresh
+          </Button>
+        </Grid>
+      )}
+      <Grid item>
+        <Grid container justifyContent="center">
+          {refreshingLibrary && (
+            <PageLoadingSpinner />
+          )}
+          {!refreshingLibrary && (
+            <>
+              {!noFilters && (
+                <Grid item>
+                  <LibraryFiltersAndSort games={games} setFilteredGames={setFilteredGames} />
+                </Grid>
+              )}
+              <Grid container spacing={3} sx={{ justifyContent: "center" }}>
+                {filteredGames.map((game) => (
+                  size === "small" || isMdDown ? (
+                    <Grid key={`library-card-game-bgg-id-${game.bggId}`} item>
+                      <SmallLibraryCard openGameDetails={openGameDetails} game={game} />
+                    </Grid>
+                  ) : (
+                    <Grid xs={12} sm={6} lg={4} xl={3} key={`library-card-game-bgg-id-${game.bggId}`} item>
+                      <LibraryCard openGameDetails={openGameDetails} game={game} />
+                    </Grid>
+                  )
+                ))}
               </Grid>
-            )}
-            <Grid container spacing={3} sx={{ justifyContent: "center" }}>
-              {filteredGames.map((game) => (
-                size === "small" || isMdDown ? (
-                  <Grid key={`library-card-game-bgg-id-${game.bggId}`} item>
-                    <SmallLibraryCard openGameDetails={openGameDetails} game={game} />
-                  </Grid>
-                ) : (
-                  <Grid xs={12} sm={6} lg={4} xl={3} key={`library-card-game-bgg-id-${game.bggId}`} item>
-                    <LibraryCard openGameDetails={openGameDetails} game={game} />
-                  </Grid>
-                )
-              ))}
-            </Grid>
-          </>
-        )}
+            </>
+          )}
+        </Grid>
       </Grid>
       <GameDetailDialog
         open={gameDetailDialogOpen}
         onClose={closeGameDetailDialog}
         game={gameDetails}
       />
-    </>
+    </Grid>
   );
 }

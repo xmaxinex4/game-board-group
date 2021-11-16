@@ -6,6 +6,7 @@ import {
   Box,
   Card,
   CardContent,
+  Chip,
   Grid,
   IconButton,
   Typography,
@@ -30,20 +31,12 @@ const useStyles = makeStyles(() => ({
     boxShadow: "10px 10px 10px rgb(95, 77, 99)",
     cursor: "pointer",
   },
-  cardTextContainer: {
-    paddingLeft: "24px",
-    paddingRight: "24px",
-  },
-  cardText: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
 }));
 
 export function LibraryCard(props: LibraryCardProps): React.ReactElement {
   const { game, openGameDetails } = props;
 
-  const { card, cardText, cardTextContainer } = useStyles();
+  const { card } = useStyles();
 
   const openGameDetailsDisplay = useCallback(() => {
     openGameDetails(game);
@@ -68,11 +61,29 @@ export function LibraryCard(props: LibraryCardProps): React.ReactElement {
           container
           justifyContent="center"
           alignItems="center"
-          className={cardTextContainer}
+          sx={{
+            paddingLeft: game.gameDetails?.gameType === "boardgameexpansion" ? "unset" : "24px",
+            paddingRight: "24px",
+          }}
         >
-          <Grid item xs={11}>
-            <Typography noWrap variant="h6" className={cardText}>{game.name}</Typography>
-          </Grid>
+          {game.gameDetails?.gameType === "boardgameexpansion" && (
+            <>
+              <Grid item sx={{ paddingRight: "8px" }}>
+                <Chip
+                  size="small"
+                  label="Expansion"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Typography noWrap variant="h6">{game.name}</Typography>
+              </Grid>
+            </>
+          )}
+          {game.gameDetails?.gameType !== "boardgameexpansion" && (
+            <Grid item xs={11}>
+              <Typography noWrap variant="h6" sx={{ overflow: "hidden", textOverflow: "ellipsis" }}>{game.name}</Typography>
+            </Grid>
+          )}
           <Grid item xs={1}>
             <IconButton size="large" color="primary" aria-label="show card details" component="span">
               <ZoomInTwoToneIcon />

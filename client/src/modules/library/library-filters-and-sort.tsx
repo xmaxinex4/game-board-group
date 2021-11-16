@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -28,8 +28,45 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
   const [sort, setSort] = useState("nameAsc");
   const [filterOpen, setFilterOpen] = useState(false);
 
+  useEffect(() => {
+    const sortedGames = [...games];
+
+    switch (sort) {
+      case "nameDesc":
+        sortedGames.sort((a, b) => ((a.name < b.name) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "nameAsc":
+        sortedGames.sort((a, b) => ((a.name > b.name) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "lowHighComp":
+        sortedGames.sort((a, b) => ((a.gameDetails && b.gameDetails && (a.gameDetails.complexity > b.gameDetails.complexity)) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "highLowComp":
+        sortedGames.sort((a, b) => ((a.gameDetails && b.gameDetails && (a.gameDetails.complexity < b.gameDetails.complexity)) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "newest":
+        sortedGames.sort((a, b) => (((a.year && b.year) && a.year < b.year) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "oldest":
+        sortedGames.sort((a, b) => (((a.year && b.year) && a.year > b.year) ? 1 : -1));
+        setFilteredGames(sortedGames);
+        break;
+      case "recentlyAdded":
+        sortedGames.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+        setFilteredGames(sortedGames);
+        break;
+      default:
+        setFilteredGames(games);
+        break;
+    }
+  }, [sort, setFilteredGames]);
+
   const onSortChange = useCallback((event: SelectChangeEvent) => {
-    console.log("Sort Changed");
     const {
       target: { value },
     } = event;
@@ -66,8 +103,14 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
             <MenuItem value="">None</MenuItem>
             <MenuItem value="nameAsc">A-Z</MenuItem>
             <MenuItem value="nameDesc">Z-A</MenuItem>
-            <MenuItem value="lowHighComp">Low to High Complexity</MenuItem>
-            <MenuItem value="highLowComp">High to Low Complexity</MenuItem>
+            {games[0].gameDetails && (
+              <MenuItem value="lowHighComp">Low to High Complexity</MenuItem>
+            )}
+            {games[0].gameDetails && (
+              <MenuItem value="highLowComp">High to Low Complexity</MenuItem>
+            )}
+            <MenuItem value="newest">Newest</MenuItem>
+            <MenuItem value="oldest">Oldest</MenuItem>
             <MenuItem value="recentlyAdded">Most Recently Added</MenuItem>
           </Select>
         </FormControl>

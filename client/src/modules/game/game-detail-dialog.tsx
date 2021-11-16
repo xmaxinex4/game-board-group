@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
 import {
+  Chip,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -36,11 +37,26 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
     >
       <DialogTitle>
         <Grid container alignItems="stretch" justifyContent="space-between">
-          <Grid item xs={11}>
-            <Typography noWrap variant="h6">
-              {game?.name}
-            </Typography>
-          </Grid>
+          {game?.gameDetails?.gameType !== "boardgameexpansion" && (
+            <Grid item xs={11}>
+              <Typography noWrap variant="h6">
+                {game?.name}
+              </Typography>
+            </Grid>
+          )}
+          {game?.gameDetails?.gameType === "boardgameexpansion" && (
+            <>
+              <Grid item sx={{ paddingRight: "8px" }}>
+                <Chip
+                  size="small"
+                  label="Expansion"
+                />
+              </Grid>
+              <Grid item xs={6} sm={8} md={9}>
+                <Typography noWrap variant="h6">{game?.name}</Typography>
+              </Grid>
+            </>
+          )}
           <Grid item xs={1} sx={{ marginLeft: { xs: "auto" } }}>
             <IconButton size="small" onClick={onClose}>
               <CloseIcon />

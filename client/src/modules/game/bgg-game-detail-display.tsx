@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import MinAgeIcon from "@mui/icons-material/CakeTwoTone";
 import TimeIcon from "@mui/icons-material/AccessTimeTwoTone";
 import PlayerCountIcon from "@mui/icons-material/GroupTwoTone";
+import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 
 import {
   Card,
@@ -147,6 +148,12 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                         <Grid item>
                           <Typography>{playTimeDisplay}</Typography>
                         </Grid>
+                      </Grid>
+                    )}
+                    {!!game.year && (
+                      <Grid container item alignItems="center" spacing={1}>
+                        <Grid item><CalendarIcon color="primary" /></Grid>
+                        <Grid item><Typography>{`Year Published: ${game.year}`}</Typography></Grid>
                       </Grid>
                     )}
                   </Grid>

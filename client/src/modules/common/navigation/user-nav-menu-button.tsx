@@ -88,7 +88,7 @@ export function UserNavMenuButton(): React.ReactElement {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
+          vertical: "center",
           horizontal: "left",
         }}
         transformOrigin={{

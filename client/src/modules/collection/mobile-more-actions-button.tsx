@@ -52,12 +52,12 @@ export function MobileMoreActionsButton(props: MobileMoreActionsButtonProps): Re
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+          vertical: "center",
+          horizontal: "center",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "center",
+          horizontal: "right",
         }}
       >
         <List component="nav">
