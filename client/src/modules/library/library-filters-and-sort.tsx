@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import { LibraryGame } from "../../../../src/types/types";
 import { FilterForm } from "./filter/form";
+import { sortAndFilterGames } from "./filter/helpers";
+import { LibraryGameFilters } from "./filter/model";
 
 export interface LibraryFiltersAndSortProps {
   games: LibraryGame[];
@@ -28,45 +30,12 @@ export interface LibraryFiltersAndSortProps {
 export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.ReactElement {
   const { games, setFilteredGames } = props;
   const [sort, setSort] = useState("nameAsc");
+  const [filters, setFilters] = useState<LibraryGameFilters>();
   const [filterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
-    const sortedGames = [...games];
-
-    switch (sort) {
-      case "nameDesc":
-        sortedGames.sort((a, b) => ((a.name < b.name) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "nameAsc":
-        sortedGames.sort((a, b) => ((a.name > b.name) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "lowHighComp":
-        sortedGames.sort((a, b) => ((a.gameDetails && b.gameDetails && (a.gameDetails.complexity > b.gameDetails.complexity)) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "highLowComp":
-        sortedGames.sort((a, b) => ((a.gameDetails && b.gameDetails && (a.gameDetails.complexity < b.gameDetails.complexity)) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "newest":
-        sortedGames.sort((a, b) => (((a.year && b.year) && a.year < b.year) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "oldest":
-        sortedGames.sort((a, b) => (((a.year && b.year) && a.year > b.year) ? 1 : -1));
-        setFilteredGames(sortedGames);
-        break;
-      case "recentlyAdded":
-        sortedGames.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
-        setFilteredGames(sortedGames);
-        break;
-      default:
-        setFilteredGames(games);
-        break;
-    }
-  }, [sort, setFilteredGames]);
+    setFilteredGames(sortAndFilterGames(games, sort, filters));
+  }, [sort, setFilteredGames, games]);
 
   const onSortChange = useCallback((event: SelectChangeEvent) => {
     const {
@@ -160,7 +129,7 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
           </Grid>
         </DialogTitle>
         <DialogContent>
-          <FilterForm games={games} onCancel={onCloseFilters} setFilteredGames={setFilteredGames} />
+          <FilterForm onCancel={onCloseFilters} setFilters={setFilters} />
         </DialogContent>
       </Dialog>
     </Grid>

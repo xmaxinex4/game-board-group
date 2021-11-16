@@ -9,11 +9,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Chip,
   Grid,
   Typography,
 } from "@mui/material";
 
 export interface BggGameDetailAccordionDisplayProps {
+  categories?: string[];
+  mechanics?: string[];
   gameDescription?: string;
   designers?: string[];
   artists?: string[];
@@ -22,6 +25,8 @@ export interface BggGameDetailAccordionDisplayProps {
 
 export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDisplayProps): React.ReactElement {
   const {
+    categories,
+    mechanics,
     gameDescription,
     designers,
     artists,
@@ -30,6 +35,45 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
 
   return (
     <>
+      {categories && categories?.length > 0 && (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="game-categories-content"
+            id="game-categories-header"
+          >
+            <Typography>Categories</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid container spacing={1}>
+              {categories.map((category) => (
+                <Grid item key={`category-itmem-${category}`}>
+                  <Chip
+                    sx={{ maxWidth: { xs: "200px", sm: "500px" } }}
+                    label={category}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </AccordionDetails>
+        </Accordion>
+      )}
+      {mechanics && mechanics?.length > 0 && (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="game-mechanics-content"
+            id="game-mechanics-header"
+          >
+            <Typography>Mechanics</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2">
+              {gameDescription}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      )}
       {gameDescription && (
         <Accordion>
           <AccordionSummary

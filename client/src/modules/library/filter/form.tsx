@@ -8,33 +8,34 @@ import {
   Slider,
 } from "@mui/material";
 
-import { LibraryGameFilters } from "./model";
 import { ActionButtons } from "../../common/button/action-buttons";
-import { LibraryGame } from "../../../../../src/types/types";
+import { LibraryGameFilters } from "./model";
 
 export interface FilterFormProps {
-  games: LibraryGame[];
-  setFilteredGames: React.Dispatch<React.SetStateAction<LibraryGame[]>>;
+  setFilters: React.Dispatch<React.SetStateAction<LibraryGameFilters | undefined>>;
   onCancel: () => void;
 }
 
 export function FilterForm(props: FilterFormProps): React.ReactElement {
-  const { onCancel, setFilteredGames, games } = props;
-  const [filters, setFilters] = useState<LibraryGameFilters>({});
+  const { onCancel, setFilters } = props;
+
+  const [localFilters, setLocalFilters] = useState({
+    complexityRange: [0, 5],
+    excludeExpansions: false,
+  });
 
   const handleSubmit = () => {
-    console.log("Filters submit");
+    setFilters(localFilters);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Filters handle submit");
-    setFilteredGames(games);
+    handleSubmit();
   };
 
   const onComplexityChange = useCallback((event: Event, value: number | number[]) => {
-    setFilters({ ...filters, complexityRange: value as number[] });
-  }, [setFilters, filters]);
+    setLocalFilters({ ...localFilters, complexityRange: typeof value === "number" ? [value] : value });
+  }, [setLocalFilters, localFilters]);
 
   return (
     <form noValidate onSubmit={handleFormSubmit}>
@@ -43,7 +44,7 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
           <Box sx={{ width: 300 }}>
             <Slider
               getAriaLabel={() => "Complexity Range"}
-              value={filters.complexityRange}
+              value={localFilters.complexityRange}
               onChange={onComplexityChange}
               valueLabelDisplay="auto"
               // getAriaValueText={valuetext}

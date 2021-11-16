@@ -39,6 +39,8 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
     designers,
     artists,
     publishers,
+    categories,
+    mechanics,
   } = game.gameDetails || {};
 
   const theme = useTheme<Theme>();
@@ -153,7 +155,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                     {!!game.year && (
                       <Grid container item alignItems="center" spacing={1}>
                         <Grid item><CalendarIcon color="primary" /></Grid>
-                        <Grid item><Typography>{`Year Published: ${game.year}`}</Typography></Grid>
+                        <Grid item><Typography>{game.year}</Typography></Grid>
                       </Grid>
                     )}
                   </Grid>
@@ -177,6 +179,8 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
           {isSmUp && (
             <Grid item>
               <BggGameDetailAccordionDisplay
+                mechanics={mechanics}
+                categories={categories}
                 gameDescription={decodedGameDescription}
                 designers={designers}
                 artists={artists}

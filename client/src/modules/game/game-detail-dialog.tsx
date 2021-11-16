@@ -10,6 +10,9 @@ import {
   Grid,
   IconButton,
   Typography,
+  Theme,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 import { LibraryGame } from "../../../../src/types/types";
@@ -24,6 +27,8 @@ export interface GameDetailDialogProps {
 
 export function GameDetailDialog(props: GameDetailDialogProps): React.ReactElement {
   const { open, game, onClose } = props;
+  const theme = useTheme<Theme>();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onCloseGameDialog = useCallback(() => {
     onClose();
@@ -31,15 +36,27 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
 
   return (
     <Dialog
+      scroll="paper"
       onClose={onCloseGameDialog}
       open={open}
-      sx={{ ".MuiDialog-container": { marginTop: "32px", height: "unset" } }}
+      sx={{
+        ".MuiDialog-container": {
+          marginTop: "32px",
+          height: "unset",
+        },
+        ".MuiDialog-paper": {
+          maxHeight: {
+            xs: "475px",
+            sm: "unset",
+          },
+        },
+      }}
     >
       <DialogTitle>
-        <Grid container alignItems="stretch" justifyContent="space-between">
+        <Grid container alignItems="center" justifyContent="space-between">
           {game?.gameDetails?.gameType !== "boardgameexpansion" && (
             <Grid item xs={11}>
-              <Typography noWrap variant="h6">
+              <Typography noWrap variant={isSmDown ? "body1" : "h6"}>
                 {game?.name}
               </Typography>
             </Grid>
@@ -53,7 +70,7 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
                 />
               </Grid>
               <Grid item xs={6} sm={8} md={9}>
-                <Typography noWrap variant="h6">{game?.name}</Typography>
+                <Typography noWrap variant={isSmDown ? "body1" : "h6"}>{game?.name}</Typography>
               </Grid>
             </>
           )}
