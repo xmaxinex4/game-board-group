@@ -54,7 +54,10 @@ export function LibraryCardList(props: LibraryCardListProps): React.ReactElement
 
   return (
     <Grid container spacing={2}>
-      {onRefresh && (
+      {refreshingLibrary && (
+        <PageLoadingSpinner />
+      )}
+      {!refreshingLibrary && onRefresh && (
         <Grid item sx={{ marginLeft: "auto" }}>
           <Button
             variant="text"
@@ -71,9 +74,6 @@ export function LibraryCardList(props: LibraryCardListProps): React.ReactElement
       )}
       <Grid item>
         <Grid container justifyContent="center">
-          {refreshingLibrary && (
-            <PageLoadingSpinner />
-          )}
           {!refreshingLibrary && (
             <>
               {!noFilters && (

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
+import FilterIcon from "@mui/icons-material/FilterAltTwoTone";
 
 import {
   Grid,
@@ -14,6 +15,7 @@ import {
   Typography,
   IconButton,
   DialogContent,
+  Button,
 } from "@mui/material";
 import { LibraryGame } from "../../../../src/types/types";
 import { FilterForm } from "./filter/form";
@@ -109,11 +111,27 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
             {games[0].gameDetails && (
               <MenuItem value="highLowComp">High to Low Complexity</MenuItem>
             )}
-            <MenuItem value="newest">Newest</MenuItem>
-            <MenuItem value="oldest">Oldest</MenuItem>
+            {games[0].year && (
+              <MenuItem value="newest">Newest</MenuItem>
+            )}
+            {games[0].year && (
+              <MenuItem value="oldest">Oldest</MenuItem>
+            )}
             <MenuItem value="recentlyAdded">Most Recently Added</MenuItem>
           </Select>
         </FormControl>
+      </Grid>
+      <Grid item>
+        <Button
+          variant="outlined"
+          color="primary"
+          sx={{ paddingTop: "8px", paddingBottom: "8px" }}
+          onClick={() => console.log("Open Filters")}
+          aria-label="Open Filters"
+          startIcon={<FilterIcon />}
+        >
+          Filters
+        </Button>
       </Grid>
       <Dialog
         onClose={onCloseFilters}
