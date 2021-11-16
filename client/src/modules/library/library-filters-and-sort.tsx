@@ -76,18 +76,25 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
     setSort(value);
   }, []);
 
+  const onOpenFilters = useCallback(() => {
+    setFilterOpen(true);
+  }, [setFilterOpen]);
+
   const onCloseFilters = useCallback(() => {
     setFilterOpen(false);
   }, [setFilterOpen]);
 
   return (
     <Grid container spacing={4} item alignItems="center" sx={{ paddingBottom: "24px" }}>
-      <Grid item>
+      <Grid item xs={12} sm="auto">
         <FormControl
           sx={{
+            width: {
+              xs: "100%",
+              sm: "unset",
+            },
             maxWidth: {
-              xs: "200px",
-              sm: "400px",
+              xs: "400px",
             },
             minWidth: {
               xs: "200px",
@@ -121,12 +128,12 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
           </Select>
         </FormControl>
       </Grid>
-      <Grid item>
+      <Grid item xs={12} sm="auto">
         <Button
           variant="outlined"
           color="primary"
           sx={{ paddingTop: "8px", paddingBottom: "8px" }}
-          onClick={() => console.log("Open Filters")}
+          onClick={onOpenFilters}
           aria-label="Open Filters"
           startIcon={<FilterIcon />}
         >
