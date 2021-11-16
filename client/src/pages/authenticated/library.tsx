@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { isEmpty, values } from "lodash";
+import { isEmpty } from "lodash";
 
 import GameIcon from "@mui/icons-material/CasinoTwoTone";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForwardTwoTone";
 
 import { Button, Grid, Typography } from "@mui/material";
 
+import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
+import { selectActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 import { LibraryCardList } from "../../modules/library/card-list";
-import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
-import { selectActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 import { useGetLibrary } from "../../modules/library/endpoint-hooks";
 
 export function Library(): React.ReactElement {
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeLibrary = useSelector(selectActiveUserGroupLibrary);
+
+  const [refreshingLibrary, setRefreshingLibrary] = useState(false);
 
   const { getLibrary } = useGetLibrary();
   const history = useHistory();
@@ -25,12 +27,20 @@ export function Library(): React.ReactElement {
   const [loadingLibrary, setLoadingLibrary] = useState(false);
 
   useEffect(() => {
-    if (activeGroupMembership?.group.id) {
+    if (activeGroupMembership?.group.id && activeGroupMembership?.group.id !== activeLibrary.groupId) {
       getLibrary({
         setIsLoading: setLoadingLibrary,
       });
     }
   }, [activeGroupMembership]);
+
+  const refreshLibrary = useCallback(() => {
+    if (activeGroupMembership?.group.id) {
+      getLibrary({
+        setIsLoading: setRefreshingLibrary,
+      });
+    }
+  }, [setRefreshingLibrary, activeGroupMembership]);
 
   const goToGameCollections = () => history.push("/my-game-collections");
 
@@ -39,10 +49,14 @@ export function Library(): React.ReactElement {
       {loadingLibrary && (
         <PageLoadingSpinner />
       )}
-      {!loadingLibrary && !isEmpty(activeLibrary?.library) && (
-        <LibraryCardList games={values(activeLibrary.library)} />
+      {!loadingLibrary && !isEmpty(activeLibrary.activeUserGroupLibrary) && (
+        <LibraryCardList
+          refreshingLibrary={refreshingLibrary}
+          onRefresh={refreshLibrary}
+          games={activeLibrary.activeUserGroupLibrary}
+        />
       )}
-      {!loadingLibrary && isEmpty(activeLibrary?.library) && (
+      {!loadingLibrary && isEmpty(activeLibrary) && (
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
             <GameIcon fontSize="large" color="primary" />

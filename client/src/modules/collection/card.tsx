@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 
-import React, { useCallback, useState } from "react";
+import React, {
+  lazy,
+  Suspense,
+  useCallback,
+  useState,
+} from "react";
 
 import {
   Dialog,
@@ -23,13 +28,15 @@ import { CollectionResponse } from "../../../../src/types/types";
 import { GamesStateContext } from "../../contexts/upsert-games-state-context";
 import { PaddedCard } from "../common/layout/padded-card";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
-import { GameCircleListDisplay } from "../game/game-circle-list-display";
 import { ActionButtons } from "../common/button/action-buttons";
 
 import { useDeleteCollection } from "./delete/endpoint-hooks";
 import { useRefreshCollections } from "./refresh/endpoint-hooks";
 import { MobileMoreActionsButton } from "./mobile-more-actions-button";
 import { PageLoadingSpinner } from "../common/progress/page-loading-spinner";
+
+const GameCircleListDisplay = lazy(() => import("../game/game-circle-list-display")
+  .then((module) => ({ default: module.GameCircleListDisplay })));
 
 export interface CollectionCardProps {
   collection: CollectionResponse;
@@ -130,7 +137,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
               <PageLoadingSpinner />
             )}
             {!isLoading && (
-              <>
+              <Suspense fallback={<PageLoadingSpinner />}>
                 <Grid container item alignItems="center" spacing={2}>
                   <Grid item>
                     <Typography variant="subtitle2">Games:</Typography>
@@ -151,7 +158,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                     </GamesStateContext.Provider>
                   </Grid>
                 </Grid>
-              </>
+              </Suspense>
             )}
           </Grid>
         </Grid>

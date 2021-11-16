@@ -3,10 +3,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { LibraryReponse } from "../../../../src/types/types";
+import { LibraryGame, LibraryReponse } from "../../../../src/types/types";
 import { setActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { useApi } from "../../hooks/useApi";
+import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
+import { useBggApi } from "../../hooks/useBggApi";
 
 export interface GetLibraryArgs {
   onLibraryRetrieved?: () => void;
@@ -31,11 +33,34 @@ export function useGetLibrary() {
       setIsLoading(true);
     }
 
+    const { bggApiGet } = useBggApi();
+
     apiGet<LibraryReponse>("/library", { groupId: activeGroupMembership?.group.id })
-      .then(({ data }) => {
-        dispatch(setActiveUserGroupLibrary({
-          newLibrary: data,
-        }));
+      .then(async ({ data }) => {
+        const library = Object.values(data.library);
+        const gameBggIdsString = library.map((game) => game.bggId).join(",");
+
+        const { data: gameDetailsXML } = await bggApiGet(`/thing?id=${gameBggIdsString}&stats=1`);
+        const newLibrary: LibraryGame[] = [];
+
+        if (gameDetailsXML as string) {
+          const gameDetails = getExpandedGameDetailsFromBggXmlResult(gameDetailsXML as string);
+
+          if (gameDetails && gameDetails.length > 0) {
+            library.forEach((game) => {
+              newLibrary.push({ ...game, gameDetails: gameDetails.find((detail) => detail.bggId === game.bggId) });
+            });
+          }
+        }
+
+        if (activeGroupMembership?.group.id) {
+          dispatch(setActiveUserGroupLibrary({
+            groupId: activeGroupMembership.group.id,
+            newLibrary,
+          }));
+        } else {
+          throw Error("No active group is selected");
+        }
 
         if (onLibraryRetrieved) {
           onLibraryRetrieved();

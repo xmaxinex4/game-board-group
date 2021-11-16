@@ -65,9 +65,9 @@ export function SmallLibraryCard(props: SmallLibraryCardProps): React.ReactEleme
       onClick={openGameDetailsDisplay}
       className={card}
     >
-      {game.urlImage
+      {game.urlThumb
         ? (
-          <ImageLoader imgSrc={game.urlImage || ""} imageDimensions={{ height: "100px", width: "100%" }} />
+          <ImageLoader imgSrc={game.urlThumb || ""} imageDimensions={{ height: "100px", width: "100%" }} />
         )
         : (
           <Box display="flex" justifyContent="center" alignItems="center" height="50px" width="100%">

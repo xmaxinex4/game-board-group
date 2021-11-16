@@ -2,30 +2,33 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-import { LibraryGame, LibraryReponse } from "../../../src/types/types";
+import { LibraryGame } from "../../../src/types/types";
 
 export type ActiveUserGroupLibraryState = {
-  activeUserGroupLibrary: LibraryReponse,
+  groupId: string,
+  activeUserGroupLibrary: LibraryGame[],
 };
 
 export type ActiveUserGroupLibraryStateReducers = {
   setActiveUserGroupLibrary: (state: ActiveUserGroupLibraryState, action: {
     type: string,
-    payload: { newLibrary: LibraryReponse; },
+    payload: { groupId: string, newLibrary: LibraryGame[]; },
   }) => void;
 };
 
 export const ActiveUserGroupLibrarySlice = createSlice<ActiveUserGroupLibraryState, ActiveUserGroupLibraryStateReducers>({
   name: "ActiveUserGroupLibrary",
   initialState: {
-    activeUserGroupLibrary: { library: {} },
+    groupId: "",
+    activeUserGroupLibrary: [],
   },
   reducers: {
     setActiveUserGroupLibrary: (state, action: {
       type: string,
-      payload: { newLibrary: LibraryReponse; },
+      payload: { groupId: string, newLibrary: LibraryGame[]; },
     }) => {
-      state.activeUserGroupLibrary = { library: action.payload.newLibrary.library };
+      state.groupId = action.payload.groupId;
+      state.activeUserGroupLibrary = action.payload.newLibrary;
     },
   },
 });
@@ -33,18 +36,19 @@ export const ActiveUserGroupLibrarySlice = createSlice<ActiveUserGroupLibrarySta
 export const { setActiveUserGroupLibrary } = ActiveUserGroupLibrarySlice.actions;
 
 export const selectActiveUserGroupLibrary = (state: { activeUserGroupLibraryState: ActiveUserGroupLibraryState; }) => (
-  state.activeUserGroupLibraryState.activeUserGroupLibrary
+  state.activeUserGroupLibraryState
 );
 
 const getRecentGames = (games: LibraryGame[]): LibraryGame[] => {
-  const sortedGames = games;
+  const sortedGames = [...games];
+
   sortedGames.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 
   return sortedGames.slice(0, 3);
 };
 
 export const selectActiveUserGroupLibraryRecentGames = (state: { activeUserGroupLibraryState: ActiveUserGroupLibraryState; }) => (
-  getRecentGames(Object.values(state.activeUserGroupLibraryState.activeUserGroupLibrary.library))
+  getRecentGames(state.activeUserGroupLibraryState.activeUserGroupLibrary)
 );
 
 export default ActiveUserGroupLibrarySlice.reducer;

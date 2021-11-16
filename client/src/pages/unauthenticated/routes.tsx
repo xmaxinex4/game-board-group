@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import { Grid } from "@mui/material";
@@ -32,11 +31,19 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
       <Grid xs={12} item>
         <UnauthenticatedNavBar />
       </Grid>
-      <Grid xs={12} item container className={gridContainer} alignItems="center" justifyContent="center" spacing={2}>
+      <Grid
+        xs={12}
+        item
+        container
+        className={gridContainer}
+        alignItems="center"
+        justifyContent="center"
+        spacing={2}
+      >
         <Grid onClick={() => null} xs={12} className={logo} item>
           <MeepleCircleSiteNameInline />
         </Grid>
-        <Grid xs={12} item>
+        <Grid xs={12} item sx={{ minHeight: "calc(100vh - 380px)" }}>
           <Switch>
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/create-account" component={CreateAccount} />

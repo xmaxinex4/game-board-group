@@ -74,6 +74,7 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
           });
         } else {
           library[collectionGame.game.bggId] = {
+            id: collectionGame.id,
             createdAt: collectionGame.createdAt,
             bggId: collectionGame.game.bggId,
             name: collectionGame.game.name,

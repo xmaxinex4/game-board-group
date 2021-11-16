@@ -26,7 +26,12 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
           },
           group: {
             create: {
-              name
+              name,
+              createdByUser: {
+                connect: {
+                  id: userId,
+                },
+              }
             }
           },
           isAdmin: true,

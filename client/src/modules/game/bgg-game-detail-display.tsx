@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { useMemo } from "react";
 
 import MinAgeIcon from "@mui/icons-material/CakeTwoTone";
 import TimeIcon from "@mui/icons-material/AccessTimeTwoTone";
@@ -18,12 +13,9 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { GameDetails, LibraryGame } from "../../../../src/types/types";
-import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
-import { useBggApi } from "../../hooks/useBggApi";
-import { UserCircleListDisplay } from "../user/user-circle-list-display";
-import { PageLoadingSpinner } from "../common/progress/page-loading-spinner";
+import { LibraryGame } from "../../../../src/types/types";
 
+import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { BggGameDetailAccordionDisplay } from "./bgg-game-detail-accordion-display";
 import { PlayPreferenceRating } from "./user-game-play-preference/play-preference-rating";
 import { GameComplexityRating } from "./game-complexity-rating";
@@ -34,44 +26,45 @@ export interface BggGameDetailDisplayProps {
 
 export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.ReactElement {
   const { game } = props;
+
+  const {
+    description,
+    minPlayTime,
+    maxPlayTime,
+    minAge,
+    minPlayers,
+    maxPlayers,
+    complexity,
+    designers,
+    artists,
+    publishers,
+  } = game.gameDetails || {};
+
   const theme = useTheme<Theme>();
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const [gameDetails, setGameDetails] = useState<GameDetails | null>();
-  const { bggApiGet } = useBggApi();
-
-  const getGameDetails = useCallback(async () => {
-    const { data } = await bggApiGet(`/thing?id=${game.bggId}&stats=1`);
-
-    if (data as string) {
-      const result = getExpandedGameDetailsFromBggXmlResult(data as string);
-      setGameDetails(result);
-    }
-  }, [setGameDetails]);
-
-  useEffect(() => {
-    getGameDetails();
-  }, []); // run once on component load
-
   const decodedGameDescription = useMemo(() => {
     const encodedDescription = document.createElement("div");
-    encodedDescription.innerHTML = gameDetails?.description || "";
+    encodedDescription.innerHTML = description || "";
     return encodedDescription.textContent || undefined;
-  }, [gameDetails]);
+  }, [description]);
 
   const playTimeDisplay = useMemo(() => {
-    if (!gameDetails?.minPlayTime) {
+    if (!minPlayTime) {
       return null;
     }
 
-    const minPlayTimeDisplay = gameDetails?.minPlayTime && gameDetails.minPlayTime >= 60
-      ? `${Math.round(gameDetails?.minPlayTime / 60)} hr`
-      : `${gameDetails?.minPlayTime} min`;
+    let minPlayTimeDisplay;
+    if (minPlayTime) {
+      minPlayTimeDisplay = minPlayTime >= 60
+        ? `${Math.round(minPlayTime / 60)} hr`
+        : `${minPlayTime} min`;
+    }
 
-    if (gameDetails?.maxPlayTime && (gameDetails?.minPlayTime !== gameDetails?.maxPlayTime)) {
-      const maxPlayTimeDisplay = gameDetails?.maxPlayTime && gameDetails.maxPlayTime >= 60
-        ? `${Math.round(gameDetails?.maxPlayTime / 60)} hr`
-        : `${gameDetails?.maxPlayTime} min`;
+    if (maxPlayTime && (minPlayTime !== maxPlayTime)) {
+      const maxPlayTimeDisplay = maxPlayTime >= 60
+        ? `${Math.round(maxPlayTime / 60)} hr`
+        : `${maxPlayTime} min`;
 
       return minPlayTimeDisplay === maxPlayTimeDisplay
         ? minPlayTimeDisplay
@@ -79,14 +72,11 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
     }
 
     return minPlayTimeDisplay;
-  }, [gameDetails]);
+  }, [minPlayTime, maxPlayTime]);
 
   return (
     <>
-      {gameDetails === undefined && (
-        <PageLoadingSpinner />
-      )}
-      {gameDetails === null && (
+      {!game?.gameDetails && (
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <Typography>Owners:</Typography>
@@ -98,7 +88,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
           </Grid>
         </Grid>
       )}
-      {gameDetails && (
+      {game?.gameDetails && (
         <Grid container direction="column" justifyContent="center" spacing={2}>
           <Grid container item direction="column" alignItems="center" spacing={1}>
             <Grid item>
@@ -126,25 +116,27 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                   }}
                 >
                   <Grid container direction="column" spacing={1}>
-                    <Grid container item alignItems="center" spacing={1}>
-                      <Grid item><MinAgeIcon color="primary" /></Grid>
-                      <Grid item><Typography>{`Ages ${gameDetails.minAge}+`}</Typography></Grid>
-                    </Grid>
-                    {!!gameDetails.minPlayers && (
+                    {!!minAge && (
+                      <Grid container item alignItems="center" spacing={1}>
+                        <Grid item><MinAgeIcon color="primary" /></Grid>
+                        <Grid item><Typography>{`Ages ${minAge}+`}</Typography></Grid>
+                      </Grid>
+                    )}
+                    {!!minPlayers && (
                       <Grid container item alignItems="center" spacing={1}>
                         <Grid item><PlayerCountIcon color="primary" /></Grid>
                         <Grid item>
-                          {!!gameDetails.maxPlayers && (
-                            gameDetails.minPlayers === gameDetails.maxPlayers
+                          {!!maxPlayers && (
+                            minPlayers === maxPlayers
                               ? (
-                                <Typography>{`${gameDetails.minPlayers} Player(s)`}</Typography>
+                                <Typography>{`${minPlayers} Player(s)`}</Typography>
                               )
                               : (
-                                <Typography>{`${gameDetails.minPlayers}-${gameDetails.maxPlayers} Players`}</Typography>
+                                <Typography>{`${minPlayers}-${maxPlayers} Players`}</Typography>
                               )
                           )}
-                          {!gameDetails.maxPlayers && (
-                            <Typography>{`${gameDetails.minPlayers} Player(s)`}</Typography>
+                          {!maxPlayers && (
+                            <Typography>{`${minPlayers} Player(s)`}</Typography>
                           )}
                         </Grid>
                       </Grid>
@@ -159,7 +151,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                     )}
                   </Grid>
                 </Grid>
-                {!!gameDetails.complexity && (
+                {!!complexity && (
                   <Grid
                     item
                     sx={{
@@ -169,7 +161,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                       },
                     }}
                   >
-                    <GameComplexityRating complexity={gameDetails.complexity} />
+                    <GameComplexityRating complexity={complexity} />
                   </Grid>
                 )}
               </Grid>
@@ -179,9 +171,9 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
             <Grid item>
               <BggGameDetailAccordionDisplay
                 gameDescription={decodedGameDescription}
-                designers={gameDetails?.designers}
-                artists={gameDetails?.artists}
-                publishers={gameDetails?.publishers}
+                designers={designers}
+                artists={artists}
+                publishers={publishers}
               />
             </Grid>
           )}

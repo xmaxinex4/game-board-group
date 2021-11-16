@@ -97,7 +97,7 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                   item
                   direction="column"
                   alignItems="center"
-                  sx={{ minHeight: "calc(100vh - 188px)" }}
+                  sx={{ minHeight: { xs: "calc(100vh - 232px)", md: "calc(100vh - 188px)" } }}
                 >
                   <div id="back-to-top-anchor" />
                   <NavBar />

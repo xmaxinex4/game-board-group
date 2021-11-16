@@ -1,49 +1,35 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useRouteMatch } from "react-router";
 
-import { AppBar, Grid, Toolbar } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
 
-import { MeepleCircleSiteNameInline } from "../../../images/components/meeple-circle-site-name-inline";
+import {
+  AppBar,
+  Grid,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 import { GameToolsLink } from "./game-tools-link";
+import { SiteLink } from "./site-link";
 
-const useStyles = makeStyles(() => ({
-  navBar: {
-    background: "transparent",
-    boxShadow: "none",
-  },
-  logo: {
-    width: "100%",
-    height: "100%",
-    maxWidth: "150px",
-    maxHeight: "75px",
-  },
-}));
-
-export interface UnauthenticatedNavBarProps {
-  homeLogo?: boolean;
-}
-
-export function UnauthenticatedNavBar(props: UnauthenticatedNavBarProps): React.ReactElement {
-  const { homeLogo } = props;
-  const { navBar, logo } = useStyles();
+export function UnauthenticatedNavBar(): React.ReactElement {
+  const isLoginRoute = useRouteMatch("/login");
+  const isCreateUserRoute = useRouteMatch("/create-account");
 
   return (
     <Grid container>
-      <AppBar position="static" className={navBar}>
+      <AppBar position="static" sx={{ background: "transparent", boxShadow: "none" }}>
         <Toolbar>
           <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item className={logo}>
-              {
-                homeLogo && (
-                  <Link to="/">
-                    <MeepleCircleSiteNameInline />
-                  </Link>
-                )
-              }
-            </Grid>
-            <Grid item>
+            {!(isLoginRoute || isCreateUserRoute) && (
+              <Grid item>
+                <Typography>
+                  <SiteLink icon={ChevronLeft} text="Login" to="/" />
+                </Typography>
+              </Grid>
+            )}
+            <Grid item sx={{ marginLeft: "auto" }}>
               <GameToolsLink />
             </Grid>
           </Grid>

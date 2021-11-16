@@ -49,6 +49,7 @@ export interface GroupResponse {
   id: string;
   name: string;
   members: UserMembershipResponse[];
+  createdByUser: UserResponse;
 }
 
 export interface UserMembershipResponse {
@@ -70,6 +71,7 @@ export const UserGroupMembershipResponsePrismaSelect: Prisma.GroupMemberSelect =
 export const GroupResponsePrismaSelect: Prisma.GroupSelect = {
   id: true,
   name: true,
+  createdByUser: true,
   members: {
     select: {
       ...UserGroupMembershipResponsePrismaSelect,
@@ -100,6 +102,7 @@ export interface ActiveUserGroupMembershipsResponse {
 
 /******************************* Library Games */
 export interface LibraryGame {
+  id: string;
   createdAt: string;
   bggId: string;
   name: string;
@@ -107,6 +110,7 @@ export interface LibraryGame {
   urlThumb: string | null;
   year: string | null;
   owners: UserResponse[];
+  gameDetails?: GameDetails;
 }
 
 export interface LibraryReponse {
@@ -149,6 +153,8 @@ export const CollectionGameResponsePrismaSelect = {
 };
 
 export interface GameDetails {
+  bggId: string,
+  gameType: string,
   description: string,
   minPlayers: number,
   maxPlayers: number,

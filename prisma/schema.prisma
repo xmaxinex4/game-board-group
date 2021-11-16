@@ -74,13 +74,15 @@ model Game {
 }
 
 model Group {
-  id        String        @id @default(cuid())
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  name      String
-  members   GroupMember[]
-  polls     Poll[]
-  plays     Play[]
+  id                  String        @id @default(cuid())
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  name                String
+  members             GroupMember[]
+  polls               Poll[]
+  plays               Play[]
+  createdByUser       User     @relation(fields: [createdByUserId], references: [id])
+  createdByUserId     String
 }
 
 model GroupMember {
@@ -168,6 +170,7 @@ model User {
   scores           Score[]
   userVotes        UserVote[]
   playPreferences  UserPlayPreference[]
+  createdGroups    Group[]
 }
 
 model UserPlayPreference {
