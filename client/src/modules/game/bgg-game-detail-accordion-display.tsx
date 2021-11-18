@@ -4,6 +4,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMoreTwoTone";
 import DesignerIcon from "@mui/icons-material/DesignServicesTwoTone";
 import ArtistIcon from "@mui/icons-material/BrushTwoTone";
 import PublisherIcon from "@mui/icons-material/MenuBookTwoTone";
+import CategoryIcon from "@mui/icons-material/CategoryTwoTone";
+import MechanicIcon from "@mui/icons-material/BuildTwoTone";
+import DescriptionIcon from "@mui/icons-material/DescriptionTwoTone";
+import CreditIcon from "@mui/icons-material/PersonOutlineTwoTone";
 
 import {
   Accordion,
@@ -42,12 +46,19 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
             aria-controls="game-categories-content"
             id="game-categories-header"
           >
-            <Typography>Categories</Typography>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <CategoryIcon color="primary" />
+              </Grid>
+              <Grid item>
+                <Typography>Categories</Typography>
+              </Grid>
+            </Grid>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={1}>
               {categories.map((category) => (
-                <Grid item key={`category-itmem-${category}`}>
+                <Grid item key={`category-item-${category}`}>
                   <Chip
                     sx={{ maxWidth: { xs: "200px", sm: "500px" } }}
                     label={category}
@@ -65,12 +76,26 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
             aria-controls="game-mechanics-content"
             id="game-mechanics-header"
           >
-            <Typography>Mechanics</Typography>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <MechanicIcon color="primary" />
+              </Grid>
+              <Grid item>
+                <Typography>Mechanics</Typography>
+              </Grid>
+            </Grid>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="body2">
-              {gameDescription}
-            </Typography>
+            <Grid container spacing={1}>
+              {mechanics.map((mechanic) => (
+                <Grid item key={`mechanic-item-${mechanic}`}>
+                  <Chip
+                    sx={{ maxWidth: { xs: "200px", sm: "500px" } }}
+                    label={mechanic}
+                  />
+                </Grid>
+              ))}
+            </Grid>
           </AccordionDetails>
         </Accordion>
       )}
@@ -81,7 +106,14 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
             aria-controls="game-description-content"
             id="game-description-header"
           >
-            <Typography>Description</Typography>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <DescriptionIcon color="primary" />
+              </Grid>
+              <Grid item>
+                <Typography>Desciption</Typography>
+              </Grid>
+            </Grid>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body2">
@@ -96,7 +128,14 @@ export function BggGameDetailAccordionDisplay(props: BggGameDetailAccordionDispl
           aria-controls="game-credits-content"
           id="game-credits-header"
         >
-          <Typography>Credits</Typography>
+          <Grid container alignItems="center" spacing={1}>
+            <Grid item>
+              <CreditIcon color="primary" />
+            </Grid>
+            <Grid item>
+              <Typography>Credits</Typography>
+            </Grid>
+          </Grid>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body2">

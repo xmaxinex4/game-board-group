@@ -12,6 +12,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Link,
 } from "@mui/material";
 
 import { LibraryGame } from "../../../../src/types/types";
@@ -44,7 +45,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
   } = game.gameDetails || {};
 
   const theme = useTheme<Theme>();
-  const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const decodedGameDescription = useMemo(() => {
     const encodedDescription = document.createElement("div");
@@ -86,7 +87,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
           </Grid>
           <Grid item>
             {game?.owners && (
-              <UserCircleListDisplay useLetterAvatars={!isSmUp} users={game?.owners} />
+              <UserCircleListDisplay useLetterAvatars={!isMdUp} users={game?.owners} />
             )}
           </Grid>
         </Grid>
@@ -99,7 +100,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
             </Grid>
             <Grid item>
               {game?.owners && (
-                <UserCircleListDisplay useLetterAvatars={!isSmUp} users={game?.owners} />
+                <UserCircleListDisplay useLetterAvatars={!isMdUp} users={game?.owners} />
               )}
             </Grid>
           </Grid>
@@ -165,8 +166,8 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
                     item
                     sx={{
                       padding: {
-                        xs: "8px",
-                        sm: "unset",
+                        xs: "16px",
+                        md: "unset",
                       },
                     }}
                   >
@@ -176,7 +177,7 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
               </Grid>
             </Card>
           </Grid>
-          {isSmUp && (
+          {isMdUp && (
             <Grid item>
               <BggGameDetailAccordionDisplay
                 mechanics={mechanics}
@@ -188,6 +189,20 @@ export function BggGameDetailDisplay(props: BggGameDetailDisplayProps): React.Re
               />
             </Grid>
           )}
+          <Grid item container alignItems="center" justifyContent="flex-end" spacing={0.5}>
+            <Grid item>
+              <Typography color="GrayText" variant="caption">
+                Data Collected From
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="caption">
+                <Link href="https://boardgamegeek.com/">
+                  BoardGameGeek
+                </Link>
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       )}
     </>

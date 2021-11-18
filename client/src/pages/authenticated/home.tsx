@@ -67,7 +67,7 @@ export function Home(): React.ReactElement {
                     <Typography>Recently Added Games</Typography>
                   </Grid>
                   <Grid item>
-                    <LibraryCardList noFilters size="small" games={recentGames} />
+                    <LibraryCardList noExpand noFilters size="small" games={recentGames} />
                   </Grid>
                 </Grid>
                 <Grid

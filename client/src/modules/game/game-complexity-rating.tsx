@@ -20,7 +20,7 @@ function GameComplexityIconContainer(props: IconContainerProps) {
 
   return (
     <Box sx={{ padding: "4px" }}>
-      <span {...other}><RatingIcon sx={{ fontSize: { xs: 24, sm: 32 } }} /></span>
+      <span {...other}><RatingIcon sx={{ fontSize: { xs: 24, md: 32 } }} /></span>
     </Box>
   );
 }

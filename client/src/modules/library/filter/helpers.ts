@@ -17,6 +17,12 @@ function sortGames(sort: string, games: LibraryGame[]): LibraryGame[] {
     case "highLowComp":
       sortedGames.sort((a, b) => ((a.gameDetails && b.gameDetails && (a.gameDetails.complexity < b.gameDetails.complexity)) ? 1 : -1));
       return sortedGames;
+    case "shortestTimes":
+      sortedGames.sort((a, b) => (((a.gameDetails && b.gameDetails) && a.gameDetails.maxPlayTime > b.gameDetails.maxPlayTime) ? 1 : -1));
+      return sortedGames;
+    case "longestTimes":
+      sortedGames.sort((a, b) => (((a.gameDetails && b.gameDetails) && a.gameDetails.maxPlayTime < b.gameDetails.maxPlayTime) ? 1 : -1));
+      return sortedGames;
     case "newest":
       sortedGames.sort((a, b) => (((a.year && b.year) && a.year < b.year) ? 1 : -1));
       return sortedGames;

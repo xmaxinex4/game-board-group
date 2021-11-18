@@ -47,7 +47,7 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
         ".MuiDialog-paper": {
           maxHeight: {
             xs: "475px",
-            sm: "unset",
+            md: "750px",
           },
         },
       }}

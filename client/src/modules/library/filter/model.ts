@@ -1,7 +1,6 @@
 export type LibraryGameFilters = {
   name?: string;
   minYearPublished?: string;
-  maxYearPublished?: string;
   complexityRange?: number[];
   owners?: string[];
   excludeExpansions?: boolean;
@@ -165,7 +164,7 @@ export const BggMechanics = [
   "Grid Movement",
   "Hand Management",
   "Hexagon Grid",
-  "Hidden Movement", ,
+  "Hidden Movement",
   "Hidden Roles",
   "Hidden Victory Points",
   "Highest - Lowest Scoring",
@@ -203,7 +202,7 @@ export const BggMechanics = [
   "Moving Multiple Units",
   "Multiple Maps",
   "Multiple - Lot Auction",
-  "Narrative Choice / Paragraph", ,
+  "Narrative Choice / Paragraph",
   "Negotiation",
   "Network and Route Building",
   "Once-Per-Game Abilities",

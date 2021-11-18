@@ -77,6 +77,7 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
             onChange={onSortChange}
             value={sort}
             label="Sort By"
+            size="small"
           >
             <MenuItem value="">None</MenuItem>
             <MenuItem value="nameAsc">A-Z</MenuItem>
@@ -86,6 +87,12 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
             )}
             {games[0].gameDetails && (
               <MenuItem value="highLowComp">High to Low Complexity</MenuItem>
+            )}
+            {games[0].gameDetails && (
+              <MenuItem value="shortestTimes">Shortest Play Time</MenuItem>
+            )}
+            {games[0].gameDetails && (
+              <MenuItem value="longestTimes">Longest Play Time</MenuItem>
             )}
             {games[0].year && (
               <MenuItem value="newest">Newest</MenuItem>
@@ -101,7 +108,7 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
         <Button
           variant="outlined"
           color="primary"
-          sx={{ paddingTop: "8px", paddingBottom: "8px" }}
+          sx={{ paddingTop: "8px", paddingBottom: "8px", width: "100%" }}
           onClick={onOpenFilters}
           aria-label="Open Filters"
           startIcon={<FilterIcon />}
@@ -112,13 +119,27 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
       <Dialog
         onClose={onCloseFilters}
         open={filterOpen}
-        sx={{ ".MuiDialog-container": { marginTop: "32px", height: "unset" } }}
+        sx={{
+
+          ".MuiDialog-container": {
+            marginTop: "32px",
+            height: "unset",
+          },
+          ".MuiDialog-paper": {
+            maxHeight: {
+              xs: "475px",
+              md: "750px",
+            },
+            width: "600px",
+          },
+        }}
+        scroll="paper"
       >
         <DialogTitle>
           <Grid container alignItems="stretch" justifyContent="space-between">
             <Grid item xs={11}>
               <Typography noWrap variant="h6">
-                Filter
+                Filters
               </Typography>
             </Grid>
             <Grid item xs={1} sx={{ marginLeft: { xs: "auto" } }}>
@@ -129,7 +150,7 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
           </Grid>
         </DialogTitle>
         <DialogContent>
-          <FilterForm onCancel={onCloseFilters} setFilters={setFilters} />
+          <FilterForm initialFilters={filters} onCancel={onCloseFilters} setFilters={setFilters} />
         </DialogContent>
       </Dialog>
     </Grid>
