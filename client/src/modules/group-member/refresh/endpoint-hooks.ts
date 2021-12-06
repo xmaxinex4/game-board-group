@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { ActiveUserGroupMembershipsResponse } from "../../../../../src/types/types";
 import { setActiveUserGroupMemberships } from "../../../redux/active-user-group-memberships-slice";
 import { useApi } from "../../../hooks/useApi";
+import { useGetLibrary } from "../../library/endpoint-hooks";
 
 export interface RefreshAllActiveGroupMembersArgs {
   onAllActiveGroupMembersRetrieved?: () => void;
@@ -16,6 +17,7 @@ export interface RefreshAllActiveGroupMembersArgs {
 export function useRefreshActiveGroupMembers() {
   const { apiGet } = useApi();
   const dispatch = useDispatch();
+  const { getLibrary } = useGetLibrary();
 
   function refreshAllActiveGroupMembers(args: RefreshAllActiveGroupMembersArgs): void {
     const {
@@ -32,6 +34,8 @@ export function useRefreshActiveGroupMembers() {
       dispatch(setActiveUserGroupMemberships({
         groupMemberships: data?.groupMemberships,
       }));
+
+      getLibrary({}); // refreshes group library in the background
 
       if (onAllActiveGroupMembersRetrieved) {
         onAllActiveGroupMembersRetrieved();

@@ -34,8 +34,11 @@ export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactEleme
 
   const deleteMember = useCallback(() => {
     deleteGroupMember({
-      memberGroupMembershipId: membership.id,
+      groupMembershipId: membership.id,
       setIsLoading: setDeletingCurrentUserFromGroup,
+      onDeleted: () => {
+        window.location.href = "/";
+      },
     });
   }, [activeUserGroupMembership, setDeletingCurrentUserFromGroup]);
 
@@ -97,7 +100,7 @@ export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactEleme
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
           <ActionButtons
             onSave={deleteMember}
-            saveButtonProps={{ disabled: deletingCurrentUserFromGroup, color: "error" }}
+            saveButtonProps={{ disabled: deletingCurrentUserFromGroup }}
             saveText="Leave Group"
             onCancel={closeVerificationMessage}
             cancelButtonProps={{ disabled: deletingCurrentUserFromGroup }}

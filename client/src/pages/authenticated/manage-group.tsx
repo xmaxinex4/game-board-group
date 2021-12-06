@@ -134,115 +134,114 @@ export function ManageGroup(): React.ReactElement {
             )
           }
         >
-          <Grid container sx={{ marginLeft: "-8px" }}>
-            {editingGroup && (
-              <Grid
-                sx={{ maxWidth: { xs: 400 }, margin: "auto" }}
-                container
-                direction="column"
-                spacing={2}
-              >
-                <EditGroupForm
-                  intialData={activeGroupMembership.group}
-                  onActiveGroupEdited={closeEditingGroup}
-                  onCancel={closeEditingGroup}
-                />
-              </Grid>
-            )}
-            {!editingGroup && (
-              <Grid
-                sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
-                container
-                direction="column"
-                spacing={2}
-              >
-                {activeGroupMembership.isAdmin && (
-                  activeGroupMembership.activeInvitationLink
-                    ? (
-                      <Grid
-                        container
-                        item
-                        direction="column"
-                        alignItems="center"
-                        justifyContent="center"
-                        spacing={3}
-                      >
-                        <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                              width: {
-                                xs: "100%",
-                                sm: "550px",
-                              },
-                            }}
-                          >
-                            <InputLabel>Invite Link</InputLabel>
-                            <OutlinedInput
-                              readOnly
-                              id="invite-link"
-                              value={activeGroupMembership.activeInvitationLink}
-                              inputProps={{ sx: { textOverflow: "ellipsis" } }}
-                              endAdornment={(
-                                <InputAdornment position="end">
-                                  <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
-                                    <IconButton
-                                      color="primary"
-                                      aria-label="copy invite link to clipboard"
-                                      onClick={copyLinkToClipboard}
-                                      edge="end"
-                                    >
-                                      <ContentCopyTwoToneIcon />
-                                    </IconButton>
-                                  </Tooltip>
-                                </InputAdornment>
-                              )}
-                              label="Invite Link"
-                            />
-                            <FormHelperText id="invite-link-helper-text">
-                              Send link to a friend to join this group
-                            </FormHelperText>
-                          </FormControl>
-                        </Grid>
-                        <Grid item sx={{ textAlign: "end" }}>
-                          <Button onClick={openGenerateInviteLink} variant="contained">
-                            Generate New Link
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    )
-                    : (
-                      <Grid item sx={{ textAlign: "center" }}>
-                        <Button onClick={openGenerateInviteLink} variant="outlined">+ Add Member</Button>
-                      </Grid>
-                    )
-                )}
-                <Grid item sx={{ marginLeft: "auto" }}>
-                  <Button
-                    variant="text"
-                    color="primary"
-                    size="small"
-                    disabled={loadingGroupMembers}
-                    onClick={getActiveGroupMembers}
-                    aria-label="Refresh Members Table"
-                    startIcon={<RefreshIcon />}
-                  >
-                    Refresh
-                  </Button>
+          {loadingGroupMembers && (
+            <Grid container justifyContent="center" alignItems="center">
+              <CircularProgress size={72} sx={{ padding: "100px" }} />
+            </Grid>
+          )}
+          {!loadingGroupMembers && (
+            <Grid container>
+              {editingGroup && (
+                <Grid
+                  sx={{ maxWidth: { xs: 400 }, margin: "auto" }}
+                  container
+                  direction="column"
+                  spacing={2}
+                >
+                  <EditGroupForm
+                    intialData={activeGroupMembership.group}
+                    onActiveGroupEdited={closeEditingGroup}
+                    onCancel={closeEditingGroup}
+                  />
                 </Grid>
-                <Grid item>
-                  {loadingGroupMembers && (
-                    <Grid container justifyContent="center" alignItems="center">
-                      <CircularProgress size={72} sx={{ padding: "100px" }} />
-                    </Grid>
+              )}
+              {!editingGroup && (
+                <Grid
+                  sx={{ maxWidth: { xs: 800 }, margin: "auto" }}
+                  container
+                  direction="column"
+                >
+                  {activeGroupMembership.isAdmin && (
+                    activeGroupMembership.activeInvitationLink
+                      ? (
+                        <Grid
+                          container
+                          item
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
+                          spacing={3}
+                        >
+                          <Grid item sx={{ width: { xs: "100%", sm: "unset" } }}>
+                            <FormControl
+                              variant="outlined"
+                              sx={{
+                                width: {
+                                  xs: "100%",
+                                  sm: "550px",
+                                },
+                              }}
+                            >
+                              <InputLabel>Invite Link</InputLabel>
+                              <OutlinedInput
+                                readOnly
+                                id="invite-link"
+                                value={activeGroupMembership.activeInvitationLink}
+                                inputProps={{ sx: { textOverflow: "ellipsis" } }}
+                                endAdornment={(
+                                  <InputAdornment position="end">
+                                    <Tooltip title={tooltipState.text} placement={tooltipState.placement}>
+                                      <IconButton
+                                        color="primary"
+                                        aria-label="copy invite link to clipboard"
+                                        onClick={copyLinkToClipboard}
+                                        edge="end"
+                                      >
+                                        <ContentCopyTwoToneIcon />
+                                      </IconButton>
+                                    </Tooltip>
+                                  </InputAdornment>
+                                )}
+                                label="Invite Link"
+                              />
+                              <FormHelperText id="invite-link-helper-text">
+                                Send link to a friend to join this group
+                              </FormHelperText>
+                            </FormControl>
+                          </Grid>
+                          <Grid item sx={{ textAlign: "end" }}>
+                            <Button onClick={openGenerateInviteLink} variant="contained">
+                              Generate New Link
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      )
+                      : (
+                        <Grid item sx={{ textAlign: "center" }}>
+                          <Button onClick={openGenerateInviteLink} variant="outlined">+ Add Member</Button>
+                        </Grid>
+                      )
                   )}
-                  {!loadingGroupMembers && (
+                  <Grid item sx={{ marginLeft: "auto", paddingTop: "16px", paddingBottom: "16px" }}>
+                    <Button
+                      variant="text"
+                      color="primary"
+                      size="small"
+                      disabled={loadingGroupMembers}
+                      onClick={getActiveGroupMembers}
+                      aria-label="Refresh Members Table"
+                      startIcon={<RefreshIcon />}
+                    >
+                      Refresh
+                    </Button>
+                  </Grid>
+                  <Grid item>
                     <ActiveGroupMembershipTable />
-                  )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            )}
-          </Grid>
+              )}
+            </Grid>
+          )}
           {activeGroupMembership.isAdmin && (
             <Dialog
               onClose={closeGenerateInviteLinkDialog}

@@ -10,14 +10,16 @@ export function getExpandedGameDetailsFromBggXmlResult(xml: string): GameDetails
 
   const convertedJson = JSON.parse(xmlConverter.xml2json(xml, { compact: true }));
 
-  if (!convertedJson && !convertedJson?.items && !convertedJson?.items) {
+  if (!convertedJson && !convertedJson?.items && !convertedJson?.items?.item) {
     throw Error("Could not convert game xml to json");
   }
 
   let gameItems: any[] = [];
 
   try {
-    gameItems = Array.from(convertedJson?.items?.item);
+    gameItems = Array.isArray(convertedJson?.items?.item)
+      ? Array.from(convertedJson?.items?.item)
+      : [convertedJson?.items?.item];
   } catch {
     gameItems = [];
   }

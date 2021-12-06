@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 export interface SliderFilterProps {
-  initialValues?: number[];
+  filterValue?: number | number[];
   onSliderValueChange: (event: Event, value: number | number[]) => void;
   marks: boolean | Mark[] | undefined;
   min?: number;
@@ -23,7 +23,7 @@ export interface SliderFilterProps {
 export function SliderFilter(props: SliderFilterProps): React.ReactElement {
   const {
     onSliderValueChange,
-    initialValues,
+    filterValue,
     marks,
     min,
     max,
@@ -38,12 +38,19 @@ export function SliderFilter(props: SliderFilterProps): React.ReactElement {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Typography variant="subtitle1">{label}</Typography>
+        <Typography variant="subtitle2">{label}</Typography>
       </Grid>
       <Grid item>
-        <Box sx={{ padding: "32px", paddingTop: "8px", paddingBottom: "8px" }}>
+        <Box
+          sx={{
+            paddingRight: "24px",
+            paddingLeft: "24px",
+            paddingTop: "8px",
+            paddingBottom: "8px",
+          }}
+        >
           <Slider
-            defaultValue={initialValues}
+            value={filterValue}
             onChange={onChange}
             valueLabelDisplay="auto"
             min={min}

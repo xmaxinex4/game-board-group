@@ -6,6 +6,7 @@ import { CollectionResponse, CollectionsResponse } from "../../../../../src/type
 
 import { useApi } from "../../../hooks/useApi";
 import { setActiveUserCollections, updateActiveUserCollection } from "../../../redux/active-user-collections-slice";
+import { useGetLibrary } from "../../library/endpoint-hooks";
 
 export interface RefreshCollectionArgs {
   collectionId: string;
@@ -23,6 +24,7 @@ export interface RefreshAllCollectionsArgs {
 export function useRefreshCollections() {
   const { apiGet } = useApi();
   const dispatch = useDispatch();
+  const { getLibrary } = useGetLibrary();
 
   function refreshCollection(args: RefreshCollectionArgs): void {
     const {
@@ -77,6 +79,7 @@ export function useRefreshCollections() {
     })
       .then(({ data }) => {
         dispatch(setActiveUserCollections({ collections: data.collections }));
+        getLibrary({}); // refreshes group library in the background
 
         if (onAllCollectionsRetrieved) {
           onAllCollectionsRetrieved();

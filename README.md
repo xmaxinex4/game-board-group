@@ -101,3 +101,24 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Helpful Linux Instance & NGINX Commands:
+debug: systemctl statis nginx.service
+cd location: cd /etc/nginx
+edit conf: nano nginx.conf
+start: sudo systemctl start nginx
+restart: sudo systemctl restart nginx
+stop: sudo systemctl stop nginx
+check running apps on http(80): netstat -na | grep ':80.*LISTEN'
+pm2 start app:
+become root user: sudo su -
+
+### CertBot COmmands
+sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo yum-config-manager --enable epel
+sudo yum install certbot
+sudo certbot certonly --standalone -d yourdomain.com
+
+Renewal (must stop nginx:  sudo systemctl stop nginx)
+sudo certbot renew --force-renewal
+Then restart nginx (sudo systemctl start nginx)

@@ -178,7 +178,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
           <ActionButtons
             onSave={onDeleteCollection}
-            saveButtonProps={{ disabled: isLoading, color: "error" }}
+            saveButtonProps={{ disabled: isLoading }}
             saveText="Delete"
             onCancel={closeLastOwnerDeleteModalOpen}
             cancelButtonProps={{ disabled: isLoading }}
@@ -200,7 +200,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
           <ActionButtons
             onSave={onDeleteCollection}
-            saveButtonProps={{ disabled: isLoading, color: "error" }}
+            saveButtonProps={{ disabled: isLoading }}
             saveText="Remove From My Collections"
             onCancel={closeRemovingOwnerFromListModalOpen}
             cancelButtonProps={{ disabled: isLoading }}

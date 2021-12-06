@@ -11,7 +11,7 @@ export interface CreateGroupArgs {
   name: string;
   onGroupCreated?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
-  onError?: (error: Error) => void;
+  onError?: (error: string) => void;
 }
 
 export function useCreateGroup() {
@@ -46,9 +46,9 @@ export function useCreateGroup() {
           onGroupCreated();
         }
       })
-      .catch((error: Error) => {
-        // TODO: Better error handling
-        console.log("create group error: ", error);
+      .catch(({ response }) => {
+        const error = response?.data?.error;
+
         if (onError) {
           onError(error);
         }

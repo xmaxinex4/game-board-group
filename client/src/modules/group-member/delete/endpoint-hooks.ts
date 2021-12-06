@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 import { UserMembershipResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
 import { deleteMemberInActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
+import { useGetLibrary } from "../../library/endpoint-hooks";
 
 export interface DeleteGroupMemberArgs {
-  memberGroupMembershipId: string,
+  groupMembershipId: string,
   onDeleted?: () => void;
   setIsLoading?: (value: React.SetStateAction<boolean>) => void;
   onError?: (error: Error) => void;
@@ -17,10 +18,11 @@ export interface DeleteGroupMemberArgs {
 export function useDeleteGroupMember() {
   const { apiPost } = useApi();
   const dispatch = useDispatch();
+  const { getLibrary } = useGetLibrary();
 
   function deleteGroupMember(args: DeleteGroupMemberArgs): void {
     const {
-      memberGroupMembershipId,
+      groupMembershipId,
       onDeleted,
       setIsLoading,
       onError,
@@ -31,12 +33,14 @@ export function useDeleteGroupMember() {
     }
 
     apiPost<UserMembershipResponse>("/group/delete-member", {
-      groupMembershipId: memberGroupMembershipId,
+      groupMembershipId,
     })
       .then(({ data }) => {
         dispatch(deleteMemberInActiveUserGroupMembership({
-          memberGroupMembershipId: data.id,
+          groupMembershipId: data.id,
         }));
+
+        getLibrary({}); // refreshes group library in the background
 
         if (onDeleted) {
           onDeleted();

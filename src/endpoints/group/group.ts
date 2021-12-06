@@ -3,8 +3,18 @@ import { Express } from "express";
 
 import { PrismaClient } from ".prisma/client";
 
-import { getCurrentUserId } from "../utils/get-current-user-id";
-import { GroupMembershipResponse, GroupMembershipResponsePrismaSelect, GroupResponse, GroupResponsePrismaSelect, UserGroupMembershipResponsePrismaSelect, UserMembershipResponse } from "../types/types";
+import { getCurrentUserId } from "../../utils/get-current-user-id";
+
+import {
+  GroupMembershipResponse,
+  GroupMembershipResponsePrismaSelect,
+  GroupResponse,
+  GroupResponsePrismaSelect,
+  UserGroupMembershipResponsePrismaSelect,
+  UserMembershipResponse,
+} from "../../types/types";
+
+import { lookupGroupMembership, getIsGroupAdmin, getIsAdminInGroup } from "./helpers";
 
 export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
@@ -14,6 +24,19 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
 
     if (!name) {
       return res.status(400).json({ error: `Missing name` });
+    }
+
+    // limits each user to 2 groups
+    const groupsOwnedByCurrentUser = await prisma.group.findMany({
+      where: {
+        ownedByUserId: {
+          equals: userId,
+        },
+      },
+    });
+
+    if (groupsOwnedByCurrentUser && groupsOwnedByCurrentUser.length >= 2) {
+      return res.status(401).json({ error: `Users are limited to 2 groups` });
     }
 
     try {
@@ -27,7 +50,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
           group: {
             create: {
               name,
-              createdByUser: {
+              ownedByUser: {
                 connect: {
                   id: userId,
                 },
@@ -62,26 +85,9 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
     }
 
     try {
-      const userGroupMembership = await prisma.groupMember.findFirst({
-        where: {
-          AND: [
-            {
-              id: { equals: groupMembershipId },
-            },
-            {
-              user: {
-                id: { equals: userId }
-              }
-            }
-          ]
+      const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId);
 
-        },
-        select: {
-          isAdmin: true,
-        }
-      });
-
-      if (!userGroupMembership || !userGroupMembership.isAdmin) {
+      if (!isAdmin) {
         return res.status(401).json({ error: `You do not have permission to edit this group.` });
       }
 
@@ -113,26 +119,9 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(400).json({ error: `Missing Group Membership id.` });
     }
 
-    const userGroupMembership = await prisma.groupMember.findFirst({
-      where: {
-        AND: [
-          {
-            id: { equals: groupMembershipId },
-          },
-          {
-            user: {
-              id: { equals: userId }
-            }
-          }
-        ]
+    const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId);
 
-      },
-      select: {
-        isAdmin: true,
-      }
-    });
-
-    if (!userGroupMembership || !userGroupMembership.isAdmin) {
+    if (!isAdmin) {
       return res.status(401).json({ error: `You do not have permission to generate an invite link for this group.` });
     }
 
@@ -284,63 +273,22 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
     }
 
     try {
-      const groupLookup = await prisma.groupMember.findUnique({
-        where: {
-          id: groupMembershipId
-        },
-        select: {
-          group: {
-            select: {
-              id: true,
-              members: {
-                select: {
-                  isAdmin: true,
-                },
-              },
-            },
-          },
-        },
-      });
+      const groupMembershipLookup = await lookupGroupMembership(prisma, groupMembershipId);
 
-      if (!groupLookup) {
+      if (!groupMembershipLookup) {
         return res.status(400).json({ error: `Group membership not found.` });
       }
 
+      if (groupMembershipLookup.group.ownedByUserId === groupMembershipLookup.user.id) {
+        return res.status(400).json({ error: `Cannot change group admin status of group owner.` });
+      }
+
       // if we are revoking admin status but this is the last admin, return error
-      if (!isAdmin && groupLookup.group.members.filter((member) => member.isAdmin).length < 2) {
+      if (!isAdmin && groupMembershipLookup.group.members.filter((member) => member.isAdmin).length < 2) {
         return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
       }
 
-      const isAdminInGroup = await prisma.group.findFirst({
-        where: {
-          AND: [
-            {
-              id: { equals: groupLookup.group.id },
-            },
-            {
-              members: {
-                some: {
-                  AND: [
-                    {
-                      userId: {
-                        equals: userId
-                      }
-                    },
-                    {
-                      isAdmin: {
-                        equals: true,
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-          ],
-        },
-        select: {
-          id: true,
-        }
-      });
+      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId);
 
       if (!isAdminInGroup) {
         return res.status(401).json({ error: `You do not have permission to change group members' admin status.` });
@@ -375,71 +323,24 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
     }
 
     try {
-      const groupLookup = await prisma.groupMember.findUnique({
-        where: {
-          id: groupMembershipId
-        },
-        select: {
-          isAdmin: true,
-          user: {
-            select: {
-              id: true,
-            },
-          },
-          group: {
-            select: {
-              id: true,
-              members: {
-                select: {
-                  isAdmin: true,
-                },
-              },
-            },
-          },
-        },
-      });
+      const groupMembershipLookup = await lookupGroupMembership(prisma, groupMembershipId);
 
-      if (!groupLookup) {
+      if (!groupMembershipLookup) {
         return res.status(400).json({ error: `Group membership not found.` });
       }
 
-      if (groupLookup.isAdmin && groupLookup.group.members.filter((member) => member.isAdmin).length < 2) {
+      if (groupMembershipLookup.group.ownedByUserId === groupMembershipLookup.user.id) {
+        return res.status(400).json({ error: `Cannot delete group owner.` });
+      }
+
+      if (groupMembershipLookup.isAdmin && groupMembershipLookup.group.members.filter((member) => member.isAdmin).length < 2) {
         return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
       }
 
-      const isAdminInGroup = await prisma.group.findFirst({
-        where: {
-          AND: [
-            {
-              id: { equals: groupLookup.group.id },
-            },
-            {
-              members: {
-                some: {
-                  AND: [
-                    {
-                      userId: {
-                        equals: userId
-                      }
-                    },
-                    {
-                      isAdmin: {
-                        equals: true,
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-          ],
-        },
-        select: {
-          id: true,
-        }
-      });
+      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId);
 
       // you can leave the group, so you can delete yourself without being an admin
-      if (groupLookup.user.id !== userId && !isAdminInGroup) {
+      if (groupMembershipLookup.user.id !== userId && !isAdminInGroup) {
         return res.status(401).json({ error: `You do not have permission to delete group members.` });
       }
 
@@ -455,6 +356,68 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
       return res.status(200).json(result);
     } catch (error) {
       console.error("Error deleting group member: ", error);
+      return res.status(500).json({ error: `Something went wrong. Please try again.` });
+    }
+  });
+
+  app.post('/api/group/transfer-ownership', async (req, res, next) => {
+    const userId = getCurrentUserId(req, res);
+
+    const { groupMembershipId } = req.body;
+
+    if (!groupMembershipId) {
+      return res.status(400).json({ error: `Missing groupMembershipId.` });
+    }
+
+    try {
+      const groupMembershipLookup = await lookupGroupMembership(prisma, groupMembershipId);
+
+      if (!groupMembershipLookup) {
+        return res.status(400).json({ error: `Group membership not found.` });
+      }
+
+      if (groupMembershipLookup.group.ownedByUserId !== userId) {
+        return res.status(400).json({ error: `Cannot transfer ownership of a group you do not own.` });
+      }
+
+      const groupsOwnedByUser = await prisma.group.findMany({
+        where: {
+          ownedByUser: {
+            id: {
+              equals: groupMembershipLookup.user.id,
+            },
+          },
+        },
+      });
+
+      if (groupsOwnedByUser?.length >= 2) {
+        return res.status(400).json({ error: `Users can only have 2 groups and this user already has 2.` });
+      }
+
+      const result = await prisma.groupMember.update({
+        where: {
+          id: groupMembershipId,
+        },
+        data: {
+          isAdmin: true,
+          group: {
+            update: {
+              ownedByUser: {
+                connect: {
+                  id: groupMembershipLookup.user.id,
+                },
+              },
+            },
+          },
+        },
+        select: {
+          ...UserGroupMembershipResponsePrismaSelect
+        }
+      }) as UserMembershipResponse;
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Error transffering group ownership: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });

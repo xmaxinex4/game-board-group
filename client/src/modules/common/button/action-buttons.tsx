@@ -60,7 +60,7 @@ export function ActionButtons(props: FormProps): React.ReactElement {
             type={formButtons ? "submit" : "button"}
             disabled={disabled}
             variant="contained"
-            onClick={onHandleSave}
+            onClick={formButtons ? undefined : onHandleSave}
             {...saveButtonProps}
           >
             {saveText || "Save"}

@@ -16,6 +16,7 @@ import { UserMembershipResponse } from "../../../../../src/types/types";
 import { ActionButtons } from "../../common/button/action-buttons";
 import { useDeleteGroupMember } from "./endpoint-hooks";
 import { selectedActiveUserGroupMembership } from "../../../redux/active-user-group-memberships-slice";
+import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
 export interface DeleteMemberButtonProps {
   membership: UserMembershipResponse;
@@ -34,7 +35,7 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
 
   const deleteMember = useCallback(() => {
     deleteGroupMember({
-      memberGroupMembershipId: membership.id,
+      groupMembershipId: membership.id,
       setIsLoading: setRemovingMember,
     });
   }, [setRemovingMember, activeUserGroupMembership]);
@@ -66,7 +67,7 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
           aria-label="remove group member"
           component="span"
         >
-          <DeleteIcon />
+          <DeleteIcon sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
         </IconButton>
       </Tooltip>
       <Dialog
@@ -97,11 +98,11 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
           <ActionButtons
             onSave={deleteMember}
-            saveButtonProps={{ disabled: removingMember, color: "error" }}
-            saveText="Remove Group Member"
+            saveButtonProps={{ disabled: removingMember }}
+            saveText="Remove Member"
             onCancel={closeVerificationMessage}
             cancelButtonProps={{ disabled: removingMember }}
-            saveButtonSize={7}
+            saveButtonSize={6}
             cancelButtonSize={3}
           />
         </DialogActions>

@@ -35,13 +35,9 @@ export function ActiveGroupSelector(): React.ReactElement {
   }, []);
 
   const onActiveGroupChanged = useCallback((event: any) => {
-    if (event.target.value === "Add Group") {
-      console.log("open add group form");
-    } else {
-      dispatch(setSelectedActiveUserGroupMembershipId({
-        id: event.target.value,
-      }));
-    }
+    dispatch(setSelectedActiveUserGroupMembershipId({
+      id: event.target.value,
+    }));
   }, []);
 
   return (

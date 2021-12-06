@@ -8,7 +8,7 @@ function validateEmail(email: string) {
 }
 
 function validatePassword(password: string) {
-  const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#%&$])(?=.{8,})");
+  const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
   return regex.test(String(password));
 }
 
@@ -54,7 +54,7 @@ export function validateCreateUserForm(
     errors = {
       ...errors,
       password:
-        "Password must contain lowercase, uppercase, numeric, and special characters. Password must be at least 8 characters long",
+        "Password must contain lowercase, uppercase, and numeric. Password must be at least 8 characters long",
     };
     formIsValid = false;
   }

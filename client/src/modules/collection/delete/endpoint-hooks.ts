@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { useApi } from "../../../hooks/useApi";
 import { deleteActiveUserCollection } from "../../../redux/active-user-collections-slice";
+import { useGetLibrary } from "../../library/endpoint-hooks";
 
 export interface DeleteCollectionArgs {
   collectionId: string;
@@ -16,6 +17,7 @@ export interface DeleteCollectionArgs {
 export function useDeleteCollection() {
   const { apiPost } = useApi();
   const dispatch = useDispatch();
+  const { getLibrary } = useGetLibrary();
 
   function deleteCollection(args: DeleteCollectionArgs): void {
     const {
@@ -33,8 +35,10 @@ export function useDeleteCollection() {
       collectionId,
     })
       .then(({ data }) => {
+        dispatch(deleteActiveUserCollection({ collectionId: data.deletedCollectionId }));
+        getLibrary({}); // refreshes group library in the background
+
         if (onCollectionDeleted) {
-          dispatch(deleteActiveUserCollection({ collectionId: data.deletedCollectionId }));
           onCollectionDeleted();
         }
       })

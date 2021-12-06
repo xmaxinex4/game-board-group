@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { CollectionResponse, GameResponse, UserResponse } from "../../../../../src/types/types";
 import { useApi } from "../../../hooks/useApi";
 import { addActiveUserCollection, updateActiveUserCollection } from "../../../redux/active-user-collections-slice";
+import { useGetLibrary } from "../../library/endpoint-hooks";
 
 export interface UpsertCollectionArgs {
   collectionId?: string;
@@ -19,6 +20,7 @@ export interface UpsertCollectionArgs {
 
 export function useUpsertCollection() {
   const { apiPost } = useApi();
+  const { getLibrary } = useGetLibrary();
   const dispatch = useDispatch();
 
   function upsertCollection(args: UpsertCollectionArgs): void {
@@ -48,6 +50,8 @@ export function useUpsertCollection() {
         } else {
           dispatch(addActiveUserCollection({ collection: data.collection }));
         }
+
+        getLibrary({}); // refreshes group library in the background
 
         if (onCollectionUpserted) {
           onCollectionUpserted();

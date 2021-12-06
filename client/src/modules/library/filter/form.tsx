@@ -1,81 +1,109 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-props-no-spreading,no-unused-vars */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { union } from "lodash";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   Autocomplete,
+  Checkbox,
+  FormControlLabel,
   Grid,
+  IconButton,
   TextField,
+  Typography,
 } from "@mui/material";
 
-import { ActionButtons } from "../../common/button/action-buttons";
-import { BggCategories, BggMechanics, LibraryGameFilters } from "./model";
+import { selectActiveUserGroupLibraryCurrentFilters, setCurrentLibaryFilters } from "../../../redux/active-user-group-library-slice";
+
+import { BggCategories, BggMechanics } from "./model";
 import { SliderFilter } from "./slider-filter";
+import { ComplexityFilter } from "./complexity-filter";
 
 export interface FilterFormProps {
-  initialFilters?: LibraryGameFilters;
-  setFilters: React.Dispatch<React.SetStateAction<LibraryGameFilters | undefined>>;
-  onCancel: () => void;
+  onClose?: () => void;
 }
 
 export function FilterForm(props: FilterFormProps): React.ReactElement {
-  const { onCancel, setFilters, initialFilters } = props;
+  const { onClose } = props;
+  const dispatch = useDispatch();
+  const currentLibaryFilters = useSelector(selectActiveUserGroupLibraryCurrentFilters);
 
-  // const [errors, setErrors] = useState<{ playerCount: string; }>({
-  //   playerCount: "",
-  // });
+  const onPlayerCountChange = useCallback((event: Event, value: number | number[]) => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        minPlayers: typeof value === "number" ? value : value[0],
+        maxPlayers: typeof value === "number" ? value : value[1],
+      },
+    }));
+  }, [currentLibaryFilters]);
 
-  const [localFilters, setLocalFilters] = useState<LibraryGameFilters>({
-    complexityRange: [0, 5],
-    excludeExpansions: false,
-  });
-
-  const handleSubmit = () => {
-    setFilters(localFilters);
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleSubmit();
-  };
-
-  const onPlayCountChange = useCallback((event: Event, value: number | number[]) => {
-    setLocalFilters({
-      ...localFilters,
-      minPlayers: typeof value === "number" ? value : value[0],
-      maxPlayers: typeof value === "number" ? value : value[1],
-    });
-  }, [setLocalFilters, localFilters]);
-
-  const onComplexityChange = useCallback((event: Event, value: number | number[]) => {
-    setLocalFilters({ ...localFilters, complexityRange: typeof value === "number" ? [value] : value });
-  }, [setLocalFilters, localFilters]);
+  const onComplexityChange = useCallback((value: number[]) => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        complexityRange: value,
+      },
+    }));
+  }, [currentLibaryFilters]);
 
   const onNameChange = useCallback((e) => {
-    setLocalFilters({ ...localFilters, name: e.target.value });
-  }, [setLocalFilters]);
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        name: e.target.value,
+      },
+    }));
+  }, [currentLibaryFilters]);
 
-  const onMinAgeChange = useCallback((e) => {
-    setLocalFilters({ ...localFilters, minAge: e.target.value });
-  }, [setLocalFilters]);
+  const onMinAgeChange = useCallback((e, value: number | number[]) => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        minAge: typeof value === "number" ? value : value[0],
+        maxAge: typeof value === "number" ? value : value[1],
+      },
+    }));
+  }, [currentLibaryFilters]);
 
-  const onYearChange = useCallback((e) => {
-    setLocalFilters({ ...localFilters, minYearPublished: e.target.value });
-  }, [setLocalFilters]);
+  const onTimeChange = useCallback((e: Event, value: number | number[]) => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        minPlayTime: typeof value === "number" ? value : value[0],
+        maxPlayTime: typeof value === "number" ? value : value[1],
+      },
+    }));
+  }, [currentLibaryFilters]);
 
-  const onTimeChange = useCallback((event: Event, value: number | number[]) => {
-    setLocalFilters({
-      ...localFilters,
-      minPlayTime: typeof value === "number" ? value : value[0],
-      maxPlayTime: typeof value === "number" ? value : value[1],
-    });
-  }, [setLocalFilters]);
+  const onExpansionChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {
+        ...currentLibaryFilters,
+        excludeExpansions: checked,
+      },
+    }));
+  }, [currentLibaryFilters]);
 
-  const complexityMarks = [
-    {
-      value: 0,
-      label: "0",
+  const onCategoryAndMechanicsChange = useCallback(
+    (
+      event: React.SyntheticEvent<Element, Event>,
+      value: string[],
+    ) => {
+      dispatch(setCurrentLibaryFilters({
+        newFilters: {
+          ...currentLibaryFilters,
+          categoriesOrMechanics: value,
+        },
+      }));
     },
+    [currentLibaryFilters],
+  );
+
+  const baseMarks = [
     {
       value: 1,
       label: "1",
@@ -99,7 +127,7 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
   ];
 
   const playerCountMarks = [
-    ...complexityMarks,
+    ...baseMarks,
     {
       value: 6,
       label: "6",
@@ -107,6 +135,25 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
     {
       value: 7,
       label: "7+",
+    },
+  ];
+
+  const minAgeMarks = [
+    {
+      value: 0,
+      label: "0",
+    },
+    {
+      value: 8,
+      label: "8",
+    },
+    {
+      value: 13,
+      label: "13",
+    },
+    {
+      value: 21,
+      label: "21+",
     },
   ];
 
@@ -126,11 +173,18 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
   ];
 
   return (
-    <form noValidate onSubmit={handleFormSubmit}>
-      <Grid sx={{ paddingTop: "20px" }} container direction="column" spacing={4}>
-        <Grid item>
+    <Grid container direction="column" spacing={2}>
+      {onClose && (
+        <Grid item sx={{ marginTop: "-8px", marginLeft: { xs: "auto" } }}>
+          <IconButton size="small" onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </Grid>
+      )}
+      <Grid item container spacing={3} alignItems="center">
+        <Grid item xs={12} sm={6}>
           <TextField
-            sx={{ width: { xs: "100%", md: "350px" } }}
+            sx={{ width: { xs: "100%" } }}
             id="name-filter"
             label="Name Contains"
             variant="outlined"
@@ -138,36 +192,51 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
             autoComplete="none"
             size="small"
             inputProps={{ maxLength: 50 }}
-            defaultValue={initialFilters?.name || ""}
+            value={currentLibaryFilters.name}
           />
         </Grid>
-        <Grid item>
-          <TextField
-            sx={{ width: "112px" }}
-            id="min-age-filter"
-            label="Min Age"
-            variant="outlined"
-            onChange={onMinAgeChange}
-            autoComplete="none"
-            size="small"
-            type="number"
-            inputProps={{ min: 0, max: 200 }}
-            defaultValue={initialFilters?.minAge || ""}
+
+        <Grid item xs={12} sm={6}>
+          <FormControlLabel
+            label={<Typography variant="subtitle2">Exclude Expansions</Typography>}
+            control={
+              <Checkbox checked={currentLibaryFilters.excludeExpansions} onChange={onExpansionChange} />
+            }
           />
         </Grid>
-        <Grid item>
+      </Grid>
+      <Grid item container spacing={2}>
+        <Grid item xs={12} sm={6}>
           <SliderFilter
-            initialValues={[0, 7]}
-            onSliderValueChange={onPlayCountChange}
-            label="Player Count"
+            onSliderValueChange={onMinAgeChange}
+            label="Age"
             min={0}
+            max={21}
+            marks={minAgeMarks}
+            filterValue={[currentLibaryFilters.minAge || 0, currentLibaryFilters.maxAge || 21]}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <ComplexityFilter
+            onComplexityChange={onComplexityChange}
+            filterValues={[currentLibaryFilters.complexityRange?.[0] || 0, currentLibaryFilters.complexityRange?.[1] || 5]}
+          />
+        </Grid>
+      </Grid>
+      <Grid container item>
+        <Grid item xs={12} sm={6}>
+          <SliderFilter
+            onSliderValueChange={onPlayerCountChange}
+            label="Player Count"
+            min={1}
             max={7}
             marks={playerCountMarks}
+            filterValue={[currentLibaryFilters.minPlayers || 1, currentLibaryFilters.maxPlayers || 7]}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={12} sm={6}>
           <SliderFilter
-            initialValues={[0, 8]}
+            filterValue={[currentLibaryFilters.minPlayTime || 0, currentLibaryFilters.maxPlayTime || 8]}
             onSliderValueChange={onTimeChange}
             label="Time"
             min={0}
@@ -176,72 +245,26 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
             marks={timeMarks}
           />
         </Grid>
-        <Grid item>
-          <SliderFilter
-            initialValues={[0, 5]}
-            onSliderValueChange={onComplexityChange}
-            label="Complexity"
-            min={0}
-            max={5}
-            marks={complexityMarks}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            sx={{ width: "112px" }}
-            id="year-filter"
-            label="Year"
-            variant="outlined"
-            onChange={onYearChange}
-            autoComplete="none"
-            size="small"
-            type="number"
-            inputProps={{ min: 1800, max: 3000 }}
-            defaultValue={initialFilters?.minYearPublished || ""}
-          />
-        </Grid>
-        <Grid item>
-          <Autocomplete
-            sx={{ width: "100%" }}
-            multiple
-            id="category-filter"
-            options={BggCategories}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Categories"
-                placeholder="Categories"
-                size="small"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item>
-          <Autocomplete
-            sx={{ width: "100%" }}
-            multiple
-            id="mechanic-filterd"
-            options={BggMechanics}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Mechanics"
-                placeholder="Mechanics"
-                size="small"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item>
-          <ActionButtons
-            formButtons
-            onSave={handleSubmit}
-            onCancel={onCancel}
-          />
-        </Grid>
       </Grid>
-    </form>
+      <Grid item>
+        <Autocomplete
+          sx={{ width: "100%" }}
+          multiple
+          id="category-filter"
+          options={union(BggCategories, BggMechanics)}
+          filterSelectedOptions
+          onChange={onCategoryAndMechanicsChange}
+          value={currentLibaryFilters.categoriesOrMechanics}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Categories & Mechanics"
+              placeholder="Categories"
+              size="small"
+            />
+          )}
+        />
+      </Grid>
+    </Grid>
   );
 }

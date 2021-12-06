@@ -7,8 +7,8 @@ import { LibraryGame, LibraryReponse } from "../../../../src/types/types";
 import { setActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { useApi } from "../../hooks/useApi";
-import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
 import { useBggApi } from "../../hooks/useBggApi";
+import { getExpandedGameDetailsFromBggXmlResult } from "../../helpers/bgg-game-details-xml-to-json";
 
 export interface GetLibraryArgs {
   onLibraryRetrieved?: () => void;

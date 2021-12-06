@@ -9,8 +9,8 @@ export type LibraryGameFilters = {
   minPlayTime?: number;
   maxPlayTime?: number;
   minAge?: number;
-  categories?: string[];
-  mechanics?: string[];
+  maxAge?: number;
+  categoriesOrMechanics?: string[];
 };
 
 export const BggCategories = [

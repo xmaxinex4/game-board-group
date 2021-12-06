@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { isEmpty } from "lodash";
@@ -19,8 +19,6 @@ export function Library(): React.ReactElement {
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeLibrary = useSelector(selectActiveUserGroupLibrary);
 
-  const [refreshingLibrary, setRefreshingLibrary] = useState(false);
-
   const { getLibrary } = useGetLibrary();
   const history = useHistory();
 
@@ -34,14 +32,6 @@ export function Library(): React.ReactElement {
     }
   }, [activeGroupMembership]);
 
-  const refreshLibrary = useCallback(() => {
-    if (activeGroupMembership?.group.id) {
-      getLibrary({
-        setIsLoading: setRefreshingLibrary,
-      });
-    }
-  }, [setRefreshingLibrary, activeGroupMembership]);
-
   const goToGameCollections = () => history.push("/my-game-collections");
 
   return (
@@ -51,8 +41,6 @@ export function Library(): React.ReactElement {
       )}
       {!loadingLibrary && !isEmpty(activeLibrary.activeUserGroupLibrary) && (
         <LibraryCardList
-          refreshingLibrary={refreshingLibrary}
-          onRefresh={refreshLibrary}
           games={activeLibrary.activeUserGroupLibrary}
         />
       )}

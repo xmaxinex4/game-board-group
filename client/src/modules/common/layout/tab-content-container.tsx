@@ -38,9 +38,7 @@ export function TabContentContainer(props: TabContentContainerProps & { children
               </Typography>
             </Grid>
             {titleAction && (
-              <Grid item>
-                {titleAction}
-              </Grid>
+              titleAction
             )}
           </Grid>
         )}

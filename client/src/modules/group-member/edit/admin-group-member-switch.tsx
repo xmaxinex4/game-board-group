@@ -8,12 +8,15 @@ import {
   FormControlLabel,
   Switch,
   Typography,
+  useTheme,
+  alpha,
 } from "@mui/material";
 
 import { UserMembershipResponse } from "../../../../../src/types/types";
 import { selectActiveUser } from "../../../redux/active-user-slice";
 import { ActionButtons } from "../../common/button/action-buttons";
 import { useEditGroupMember } from "./endpoint-hooks";
+import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
 export interface AdminGroupMemberSwitchProps {
   membership: UserMembershipResponse;
@@ -23,6 +26,8 @@ export interface AdminGroupMemberSwitchProps {
 export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): React.ReactElement {
   const { membership, activeGroupMemberships } = props;
   const activeUser = useSelector(selectActiveUser);
+
+  const theme = useTheme();
 
   const isCurrentUser = useMemo(() => membership.user.id === activeUser?.id, [activeUser, membership]);
 
@@ -34,14 +39,25 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
   const { editAdminStatusOfGroupMember } = useEditGroupMember();
   const toggleIsAdmin = useCallback(() => setIsAdmin(!isAdmin), [isAdmin, setIsAdmin]);
 
+  const closeForbiddenMessage = useCallback(() => {
+    setShowForbiddenMessage(false);
+  }, [setShowForbiddenMessage]);
+
+  const closeVerificationMessage = useCallback(() => {
+    setShowVerificationMessage(false);
+  }, [setShowVerificationMessage]);
+
   const onChange = useCallback(() => {
     editAdminStatusOfGroupMember({
-      memberGroupMembershipId: membership.id,
+      groupMembershipId: membership.id,
       isAdmin: !isAdmin,
-      onAdminStatusUpdated: toggleIsAdmin,
+      onAdminStatusUpdated: () => {
+        toggleIsAdmin();
+        closeVerificationMessage();
+      },
       setIsLoading: setIsEditingAdminStatus,
     });
-  }, [setIsEditingAdminStatus, toggleIsAdmin]);
+  }, [setIsEditingAdminStatus, toggleIsAdmin, closeVerificationMessage]);
 
   const verifyChangeOfAdminStatus = useCallback(() => {
     const isLastAdmin = isAdmin && activeGroupMemberships.filter((member) => member.isAdmin).length < 2;
@@ -54,18 +70,30 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
     }
   }, [onChange, setShowVerificationMessage, setShowForbiddenMessage, activeGroupMemberships]);
 
-  const closeForbiddenMessage = useCallback(() => {
-    setShowForbiddenMessage(false);
-  }, [setShowForbiddenMessage]);
-
-  const closeVerificationMessage = useCallback(() => {
-    setShowVerificationMessage(false);
-  }, [setShowVerificationMessage]);
-
   return (
     <>
       <FormControlLabel
-        control={<Switch disabled={editingAdminStatus} checked={isAdmin} onClick={verifyChangeOfAdminStatus} />}
+        control={(
+          <Switch
+            sx={{
+              "& .MuiSwitch-switchBase.Mui-checked": {
+                color: MeeplePaletteColors[membership.user.color].main,
+                "&:hover": {
+                  backgroundColor: alpha(MeeplePaletteColors[membership.user.color].main, theme.palette.action.hoverOpacity),
+                },
+              },
+              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                backgroundColor: MeeplePaletteColors[membership.user.color].main,
+              },
+              "& .Mui-disabled + .MuiSwitch-track": {
+                backgroundColor: MeeplePaletteColors[membership.user.color].main,
+              },
+            }}
+            disabled={editingAdminStatus}
+            checked={isAdmin}
+            onClick={verifyChangeOfAdminStatus}
+          />
+        )}
         label="Admin"
       />
       <Dialog

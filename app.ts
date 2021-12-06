@@ -5,7 +5,7 @@ import { promisify } from "util";
 
 import { PrismaClient } from ".prisma/client";
 import { initializeUserApi } from "./src/endpoints/user";
-import { initializeGroupApi } from "./src/endpoints/group";
+import { initializeGroupApi } from "./src/endpoints/group/group";
 import { initializeCollectionApi } from "./src/endpoints/collection";
 import { initializeLibraryApi } from "./src/endpoints/library";
 import { initializeAccountApi } from "./src/endpoints/account";

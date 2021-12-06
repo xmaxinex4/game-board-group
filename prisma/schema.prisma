@@ -81,8 +81,8 @@ model Group {
   members             GroupMember[]
   polls               Poll[]
   plays               Play[]
-  createdByUser       User     @relation(fields: [createdByUserId], references: [id])
-  createdByUserId     String
+  ownedByUser         User     @relation(fields: [ownedByUserId], references: [id])
+  ownedByUserId       String
 }
 
 model GroupMember {
@@ -170,7 +170,7 @@ model User {
   scores           Score[]
   userVotes        UserVote[]
   playPreferences  UserPlayPreference[]
-  createdGroups    Group[]
+  ownedGroups    Group[]
 }
 
 model UserPlayPreference {

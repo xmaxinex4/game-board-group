@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { sortBy } from "lodash";
 
 import CircleIcon from "@mui/icons-material/Circle";
-import Shield from "@mui/icons-material/ShieldTwoTone";
+import AdminIcon from "@mui/icons-material/ShieldTwoTone";
+import OwnerIcon from "@mui/icons-material/FlagTwoTone";
 
 import {
   Avatar,
@@ -30,6 +31,7 @@ import { UserMembershipResponse } from "../../../../src/types/types";
 import { AdminGroupMemberSwitch } from "./edit/admin-group-member-switch";
 import { DeleteMemberButton } from "./delete/delete-member-button";
 import { LeaveGroupButton } from "./delete/leave-group-button";
+import { TransferActiveGroupOwnershipButton } from "./transfer-ownership/transfer-active-group-ownership-button";
 
 const useStyles = makeStyles(() => ({
   meeple: {
@@ -108,26 +110,57 @@ export function ActiveGroupMembershipTable(): React.ReactElement {
                 <Grid container direction={isXsDown ? "column" : "row"} alignItems={isXsDown ? "flex-end" : "center"} justifyContent="flex-end">
                   {activeUserGroupMembership?.isAdmin && (
                     <>
-                      <Grid item>
-                        <AdminGroupMemberSwitch membership={membership} activeGroupMemberships={activeGroupMemberships} />
-                      </Grid>
-                      {activeUser && membership.user.id !== activeUser.id && (
+                      {activeUserGroupMembership?.group?.ownedByUser.id === membership?.user?.id && (
                         <Grid item>
-                          <DeleteMemberButton membership={membership} activeGroupMemberships={activeGroupMemberships} />
+                          <Grid container alignItems="center" justifyContent="center" spacing={2}>
+                            <Grid item>
+                              <Tooltip title="Owner" aria-label="owner">
+                                <OwnerIcon
+                                  sx={{
+                                    paddingRight: activeUser?.id === membership.user.id ? "" : "8px",
+                                    color: MeeplePaletteColors[membership.user.color].main,
+                                  }}
+                                />
+                              </Tooltip>
+                            </Grid>
+                            {activeUser?.id === membership.user.id && (
+                              <Grid item>
+                                <TransferActiveGroupOwnershipButton currentOwnerGroupMembership={membership} />
+                              </Grid>
+                            )}
+                          </Grid>
                         </Grid>
+                      )}
+                      {activeUserGroupMembership?.group?.ownedByUser.id !== membership?.user?.id && (
+                        <>
+                          <Grid item>
+                            <AdminGroupMemberSwitch membership={membership} activeGroupMemberships={activeGroupMemberships} />
+                          </Grid>
+                          {activeUser && membership.user.id !== activeUser.id && (
+                            <Grid item>
+                              <DeleteMemberButton membership={membership} activeGroupMemberships={activeGroupMemberships} />
+                            </Grid>
+                          )}
+                        </>
                       )}
                     </>
                   )}
                   {!activeUserGroupMembership?.isAdmin && (
                     <Grid item>
-                      {membership.isAdmin && (
-                        <Tooltip title="Admin" aria-label="admin">
-                          <Shield sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
-                        </Tooltip>
-                      )}
+                      {activeUserGroupMembership?.group?.ownedByUser.id === membership?.user?.id
+                        ? (
+                          <Tooltip title="Owner" aria-label="owner">
+                            <OwnerIcon sx={{ paddingRight: "8px", color: MeeplePaletteColors[membership.user.color].main }} />
+                          </Tooltip>
+                        )
+                        : membership.isAdmin && (
+                          <Tooltip title="Admin" aria-label="admin">
+                            <AdminIcon sx={{ color: MeeplePaletteColors[membership.user.color].main }} />
+                          </Tooltip>
+                        )}
                     </Grid>
                   )}
-                  {activeUser && membership.user.id === activeUser.id && (
+                  {activeUser && membership.user.id === activeUser.id && activeUserGroupMembership?.group?.ownedByUser.id !== activeUser?.id && (
                     <Grid item>
                       <LeaveGroupButton membership={membership} activeGroupMemberships={activeGroupMemberships} />
                     </Grid>

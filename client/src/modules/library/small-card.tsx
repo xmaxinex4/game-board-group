@@ -24,16 +24,6 @@ export interface SmallLibraryCardProps {
 }
 
 const useStyles = makeStyles(() => ({
-  card: {
-    maxWidth: "150px",
-    minWidth: "150px",
-    minHeight: "100px",
-    boxShadow: "10px 10px 10px rgb(95, 77, 99)",
-    cursor: "pointer",
-  },
-  cardTextContainer: {
-    paddingRight: "24px",
-  },
   cardText: {
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -50,9 +40,7 @@ export function SmallLibraryCard(props: SmallLibraryCardProps): React.ReactEleme
   const { game, openGameDetails } = props;
 
   const {
-    card,
     cardText,
-    cardTextContainer,
     root,
   } = useStyles();
 
@@ -63,7 +51,19 @@ export function SmallLibraryCard(props: SmallLibraryCardProps): React.ReactEleme
   return (
     <Card
       onClick={openGameDetailsDisplay}
-      className={card}
+      sx={{
+        maxWidth: {
+          xs: "115px",
+          sm: "150px",
+        },
+        minWidth: {
+          xs: "115px",
+          sm: "150px",
+        },
+        minHeight: "100px",
+        boxShadow: "10px 10px 10px rgb(95, 77, 99)",
+        cursor: "pointer",
+      }}
     >
       {game.urlThumb
         ? (
@@ -79,7 +79,7 @@ export function SmallLibraryCard(props: SmallLibraryCardProps): React.ReactEleme
           container
           justifyContent="center"
           alignItems="center"
-          className={cardTextContainer}
+          sx={{ paddingRight: "24px" }}
         >
           <Grid item xs={11}>
             <Typography noWrap variant="body2" className={cardText}>{game.name}</Typography>

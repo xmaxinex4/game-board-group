@@ -49,7 +49,7 @@ export interface GroupResponse {
   id: string;
   name: string;
   members: UserMembershipResponse[];
-  createdByUser: UserResponse;
+  ownedByUser: UserResponse;
 }
 
 export interface UserMembershipResponse {
@@ -71,7 +71,11 @@ export const UserGroupMembershipResponsePrismaSelect: Prisma.GroupMemberSelect =
 export const GroupResponsePrismaSelect: Prisma.GroupSelect = {
   id: true,
   name: true,
-  createdByUser: true,
+  ownedByUser: {
+    select: {
+      ...UserResponsePrismaSelect,
+    }
+  },
   members: {
     select: {
       ...UserGroupMembershipResponsePrismaSelect,
