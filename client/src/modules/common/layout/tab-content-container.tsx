@@ -6,6 +6,7 @@ import {
   Grid,
   Theme,
   Typography,
+  TypographyProps,
 } from "@mui/material";
 
 const useStyles = makeStyles<Theme, { hasTitle: boolean; }>((theme) => ({
@@ -19,11 +20,17 @@ const useStyles = makeStyles<Theme, { hasTitle: boolean; }>((theme) => ({
 
 export interface TabContentContainerProps {
   title?: string,
+  titleTypographyVariant?: TypographyProps["variant"];
   titleAction?: React.ReactNode;
 }
 
 export function TabContentContainer(props: TabContentContainerProps & { children: ReactNode; }): React.ReactElement {
-  const { children, title, titleAction } = props;
+  const {
+    children,
+    title,
+    titleAction,
+    titleTypographyVariant,
+  } = props;
 
   const { gridContainerPadding, titlePadding } = useStyles({ hasTitle: (!!title) });
 
@@ -33,7 +40,7 @@ export function TabContentContainer(props: TabContentContainerProps & { children
         {title && (
           <Grid container item className={titlePadding} alignItems="flex-end" justifyContent="center" spacing={1}>
             <Grid item>
-              <Typography align="center" variant="h6">
+              <Typography align="center" variant={titleTypographyVariant || "h5"}>
                 {title}
               </Typography>
             </Grid>
