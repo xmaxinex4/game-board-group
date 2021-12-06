@@ -10,11 +10,11 @@ import Tab from "@mui/material/Tab";
 import { Grid } from "@mui/material";
 
 import HomeIcon from "@mui/icons-material/HomeTwoTone";
-import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
 import GroupIcon from "@mui/icons-material/GroupsTwoTone";
 import GamesIcon from "@mui/icons-material/CasinoTwoTone";
-import StatsIcon from "@mui/icons-material/PollTwoTone";
 import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
+// import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
+// import StatsIcon from "@mui/icons-material/PollTwoTone";
 
 import Logo from "../../../images/png/logo-sm.png";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
@@ -40,26 +40,31 @@ export function DesktopTabs(): React.ReactElement {
   // The last 2 digits on a hex represent the alpha value
   const { root, logo } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}4B` : "" });
 
-  const isPollsRoute = useRouteMatch("/polls");
   const isLibraryRoute = useRouteMatch("/library");
-  const isStatsRoute = useRouteMatch("/stats");
   const isMyGamesRoute = useRouteMatch("/my-game-collections");
   const isGroupManageRoute = useRouteMatch("/manage-group");
+  // const isPollsRoute = useRouteMatch("/polls");
+  // const isStatsRoute = useRouteMatch("/stats");
 
-  const pollsTabIndex = 1;
-  const libraryTabIndex = 2;
-  const statsTabIndex = 3;
-  const myGamesTabIndex = 4;
-  const groupManageTabIndex = 5;
+  const libraryTabIndex = 1;
+  const myGamesTabIndex = 2;
+  const groupManageTabIndex = 3;
+  // const pollsTabIndex = 4;
+  // const statsTabIndex = 5;
 
   const currentTab = useMemo(() => {
-    if (isPollsRoute?.isExact) return pollsTabIndex;
-    if (isStatsRoute?.isExact) return statsTabIndex;
     if (isLibraryRoute?.isExact) return libraryTabIndex;
     if (isGroupManageRoute?.isExact) return groupManageTabIndex;
     if (isMyGamesRoute?.isExact) return myGamesTabIndex;
+    // if (isPollsRoute?.isExact) return pollsTabIndex;
+    // if (isStatsRoute?.isExact) return statsTabIndex;
     return 0;
-  }, [isPollsRoute, isStatsRoute, isLibraryRoute, isGroupManageRoute]);
+  }, [
+    isLibraryRoute,
+    isGroupManageRoute,
+    //  isPollsRoute,
+    //  isStatsRoute,
+  ]);
 
   return (
     <Grid container direction="column" className={root}>
@@ -95,36 +100,12 @@ export function DesktopTabs(): React.ReactElement {
             label={(
               <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
                 <Grid item>
-                  <PollIcon />
-                </Grid>
-                <Grid item>Polls</Grid>
-              </Grid>
-            )}
-            to="/polls"
-          />
-          <Tab
-            component={Link}
-            label={(
-              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
-                <Grid item>
                   <LibraryIcon />
                 </Grid>
                 <Grid item>Library</Grid>
               </Grid>
             )}
             to="/library"
-          />
-          <Tab
-            component={Link}
-            label={(
-              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
-                <Grid item>
-                  <StatsIcon />
-                </Grid>
-                <Grid item>Stats</Grid>
-              </Grid>
-            )}
-            to="/stats"
           />
           <Tab
             component={Link}
@@ -150,6 +131,30 @@ export function DesktopTabs(): React.ReactElement {
             )}
             to="/manage-group"
           />
+          {/* <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
+                <Grid item>
+                  <PollIcon />
+                </Grid>
+                <Grid item>Polls</Grid>
+              </Grid>
+            )}
+            to="/polls"
+          />
+          <Tab
+            component={Link}
+            label={(
+              <Grid container alignItems="center" justifyContent="flex-end" spacing={1}>
+                <Grid item>
+                  <StatsIcon />
+                </Grid>
+                <Grid item>Stats</Grid>
+              </Grid>
+            )}
+            to="/stats"
+          /> */}
         </Tabs>
       </Grid>
     </Grid>

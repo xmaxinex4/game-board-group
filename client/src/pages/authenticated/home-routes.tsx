@@ -14,8 +14,8 @@ import { NavFooter } from "../../modules/common/navigation/nav-footer";
 
 import { NotFound } from "../error/not-found";
 
-import { Polls } from "./polls";
-import { Stats } from "./stats";
+// import { Polls } from "./polls";
+// import { Stats } from "./stats";
 import { Library } from "./library";
 import { ManageGroup } from "./manage-group";
 import { Home } from "./home";
@@ -108,12 +108,12 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                           <Grid item style={{ width: "100%" }}>
                             <Switch>
                               <Route exact path="/" component={Home} />
-                              <Route path="/polls" component={Polls} />
                               <Route path="/library" component={Library} />
-                              <Route path="/stats" component={Stats} />
                               <Route path="/my-game-collections" component={MyCollections} />
                               <Route path="/account" component={AccountSettings} />
                               <Route path="/manage-group" component={ManageGroup} />
+                              {/* <Route path="/polls" component={Polls} />
+                              <Route path="/stats" component={Stats} /> */}
                               <Route path="/invite/:inviteCode" component={GroupInvite} />
                               <Route exact path="/terms-of-service" component={TermsOfService} />
                               <Route exact path="/privacy-policy" component={PrivacyPolicy} />

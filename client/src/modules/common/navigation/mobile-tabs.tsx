@@ -10,7 +10,7 @@ import Tab from "@mui/material/Tab";
 import { Grid } from "@mui/material";
 
 import HomeIcon from "@mui/icons-material/HomeTwoTone";
-import PollIcon from "@mui/icons-material/HowToVoteTwoTone";
+import GamesIcon from "@mui/icons-material/CasinoTwoTone";
 import LibraryIcon from "@mui/icons-material/MenuBookTwoTone";
 
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
@@ -32,17 +32,17 @@ export function MobileTabs(): React.ReactElement {
   // The last 2 digits on a hex represent the alpha value
   const { root } = useStyles({ activeUserColor: activeUser ? `${MeeplePaletteColors[activeUser?.color].main}1E` : "" });
 
-  const isPollsRoute = useRouteMatch("/polls");
+  const isGamesRoute = useRouteMatch("/my-game-collections");
   const isLibraryRoute = useRouteMatch("/library");
 
-  const pollsTabIndex = 1;
+  const gamesTabIndex = 1;
   const libraryTabIndex = 2;
 
   const currentTab = useMemo(() => {
-    if (isPollsRoute?.isExact) return pollsTabIndex;
+    if (isGamesRoute?.isExact) return gamesTabIndex;
     if (isLibraryRoute?.isExact) return libraryTabIndex;
     return 0;
-  }, [isPollsRoute, isLibraryRoute]);
+  }, [isGamesRoute, isLibraryRoute]);
 
   return (
     <Grid container direction="column">
@@ -73,11 +73,11 @@ export function MobileTabs(): React.ReactElement {
             label={(
               <Grid container alignItems="center" justifyContent="center" spacing={1}>
                 <Grid item>
-                  <PollIcon />
+                  <GamesIcon />
                 </Grid>
               </Grid>
             )}
-            to="/polls"
+            to="/my-game-collections"
           />
           <Tab
             component={Link}

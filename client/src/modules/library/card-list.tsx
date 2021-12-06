@@ -23,6 +23,7 @@ import { SmallLibraryCard } from "./small-card";
 import { LibraryFiltersAndSort } from "./library-filters-and-sort";
 import { useGetLibrary } from "./endpoint-hooks";
 import { getFilteredLibraryGames } from "../../redux/active-user-group-library-slice";
+import { NoFilteredGamesResultDisplay } from "./filter/no-filtered-games-result-display";
 
 export interface LibraryCardListProps {
   games: LibraryGame[];
@@ -142,7 +143,12 @@ export function LibraryCardList(props: LibraryCardListProps): React.ReactElement
                   </Grid>
                 )}
                 <Grid container spacing={3} sx={{ justifyContent: "center" }}>
-                  {(noFilters ? games : filteredLibraryGames).map((game) => (
+                  {!noFilters && filteredLibraryGames?.length < 1 && (
+                    <Grid item>
+                      <NoFilteredGamesResultDisplay />
+                    </Grid>
+                  )}
+                  {(noFilters || filteredLibraryGames?.length > 0) && (noFilters ? games : filteredLibraryGames).map((game) => (
                     size === "small" || isMdDown ? (
                       <Grid key={`library-card-game-bgg-id-${game.bggId}`} item>
                         <SmallLibraryCard openGameDetails={openGameDetails} game={game} />

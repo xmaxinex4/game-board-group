@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import {
   Autocomplete,
+  Button,
   Checkbox,
   FormControlLabel,
   Grid,
@@ -265,6 +266,13 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
           )}
         />
       </Grid>
+      {onClose && (
+        <Grid item>
+          <Button fullWidth variant="outlined" onClick={onClose}>
+            Apply
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 }

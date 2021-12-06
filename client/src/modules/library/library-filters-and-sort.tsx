@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FilterIcon from "@mui/icons-material/FilterAltTwoTone";
 import ChevronUp from "@mui/icons-material/KeyboardArrowUp";
 import ChevronDown from "@mui/icons-material/KeyboardArrowDown";
+import ClearFiltersIcon from "@mui/icons-material/FilterAltOffTwoTone";
 
 import {
   Grid,
@@ -21,7 +22,13 @@ import {
 
 import { LibraryGame } from "../../../../src/types/types";
 
-import { getActiveFilterCount, selectActiveUserGroupLibraryCurrentSort, setCurrentLibarySort } from "../../redux/active-user-group-library-slice";
+import {
+  getActiveFilterCount,
+  selectActiveUserGroupLibraryCurrentSort,
+  setCurrentLibaryFilters,
+  setCurrentLibarySort,
+} from "../../redux/active-user-group-library-slice";
+
 import { FilterForm } from "./filter/form";
 import { FilterFormCard } from "./filter/form-card";
 
@@ -58,19 +65,25 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
     setFilterOpen(false);
   }, [setFilterOpen, filterOpen]);
 
+  const clearFilters = () => {
+    dispatch(setCurrentLibaryFilters({
+      newFilters: {},
+    }));
+  };
+
   return (
     <Grid container spacing={2} direction="column" alignItems="center" justifyContent="center" sx={{ paddingBottom: "24px" }}>
       <Grid item>
         <Grid container alignItems="center" justifyContent="center" spacing={2}>
-          <Grid item xs={12} sm="auto">
+          <Grid item xs={12} md="auto">
             <FormControl
               sx={{
                 width: {
                   xs: "100%",
-                  sm: "unset",
+                  md: "unset",
                 },
                 maxWidth: {
-                  xs: "400px",
+                  xs: "600px",
                 },
                 minWidth: {
                   xs: "200px",
@@ -111,7 +124,7 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm="auto">
+          <Grid item xs={6} md="auto">
             <Button
               variant="outlined"
               color="primary"
@@ -122,6 +135,18 @@ export function LibraryFiltersAndSort(props: LibraryFiltersAndSortProps): React.
               endIcon={filterOpen ? <ChevronUp /> : <ChevronDown />}
             >
               {`Filters (${filterCount})`}
+            </Button>
+          </Grid>
+          <Grid item xs={6} md="auto">
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{ paddingTop: "8px", paddingBottom: "8px", width: "100%" }}
+              onClick={clearFilters}
+              aria-label="Open Filters"
+              startIcon={<ClearFiltersIcon />}
+            >
+              Clear Filters
             </Button>
           </Grid>
         </Grid>
