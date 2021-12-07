@@ -8,6 +8,9 @@ import {
   IconButton,
   Tooltip,
   Typography,
+  Theme,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
@@ -26,6 +29,9 @@ export interface DeleteMemberButtonProps {
 export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactElement {
   const { membership, activeGroupMemberships } = props;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
+
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const [removingMember, setRemovingMember] = useState(false);
   const [showForbiddenMessage, setShowForbiddenMessage] = useState(false);
@@ -73,7 +79,7 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
       <Dialog
         onClose={closeForbiddenMessage}
         open={showForbiddenMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>
@@ -90,7 +96,7 @@ export function DeleteMemberButton(props: DeleteMemberButtonProps): React.ReactE
       <Dialog
         onClose={closeVerificationMessage}
         open={showVerificationMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>Are you sure you want to remove this user from the group?</Typography>

@@ -10,6 +10,8 @@ import {
   Typography,
   useTheme,
   alpha,
+  Theme,
+  useMediaQuery,
 } from "@mui/material";
 
 import { UserMembershipResponse } from "../../../../../src/types/types";
@@ -27,7 +29,8 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
   const { membership, activeGroupMemberships } = props;
   const activeUser = useSelector(selectActiveUser);
 
-  const theme = useTheme();
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const isCurrentUser = useMemo(() => membership.user.id === activeUser?.id, [activeUser, membership]);
 
@@ -99,7 +102,7 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
       <Dialog
         onClose={closeForbiddenMessage}
         open={showForbiddenMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>
@@ -116,7 +119,7 @@ export function AdminGroupMemberSwitch(props: AdminGroupMemberSwitchProps): Reac
       <Dialog
         onClose={closeVerificationMessage}
         open={showVerificationMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>

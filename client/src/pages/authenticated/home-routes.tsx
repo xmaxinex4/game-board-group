@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router";
 import { useSelector } from "react-redux";
 
@@ -42,6 +42,10 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Box sx={{ display: "flex" }}>

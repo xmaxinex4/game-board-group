@@ -39,18 +39,6 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
       scroll="paper"
       onClose={onCloseGameDialog}
       open={open}
-      sx={{
-        ".MuiDialog-container": {
-          marginTop: "32px",
-          height: "unset",
-        },
-        ".MuiDialog-paper": {
-          maxHeight: {
-            xs: "475px",
-            md: "750px",
-          },
-        },
-      }}
     >
       <DialogTitle>
         <Grid container alignItems="center" justifyContent="space-between">
@@ -69,7 +57,7 @@ export function GameDetailDialog(props: GameDetailDialogProps): React.ReactEleme
                   label="Expansion"
                 />
               </Grid>
-              <Grid item xs={6} sm={8} md={9}>
+              <Grid item xs={6} sm={7} md={9}>
                 <Typography noWrap variant={isSmDown ? "body1" : "h6"}>{game?.name}</Typography>
               </Grid>
             </>

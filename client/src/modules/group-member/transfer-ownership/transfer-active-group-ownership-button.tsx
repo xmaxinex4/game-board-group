@@ -15,6 +15,9 @@ import {
   Select,
   Tooltip,
   Typography,
+  Theme,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import TransferIcon from "@mui/icons-material/CompareArrowsTwoTone";
@@ -35,6 +38,9 @@ export function TransferActiveGroupOwnershipButton(props: TransferGroupOwnership
   const { currentOwnerGroupMembership } = props;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeUser = useSelector(selectActiveUser);
+
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const [newOwnerGroupMembershipId, setNewOwnerGroupMembershipId] = useState("");
   const [transfferingOwnership, setTransfferingOwnership] = useState(false);
@@ -90,7 +96,7 @@ export function TransferActiveGroupOwnershipButton(props: TransferGroupOwnership
       <Dialog
         onClose={closeTranferDialog}
         open={showTranferDialog}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogTitle>
           <Typography>{`Tranfer Ownership of ${activeUserGroupMembership?.group.name}`}</Typography>

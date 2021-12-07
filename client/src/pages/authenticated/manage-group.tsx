@@ -24,6 +24,9 @@ import {
   SelectChangeEvent,
   Tooltip,
   TooltipProps,
+  Theme,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
@@ -41,6 +44,9 @@ import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-s
 export function ManageGroup(): React.ReactElement {
   const { apiPost } = useApi();
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
+
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const [editingGroup, setEditingGroup] = useState(false);
   const [loadingGroupMembers, setLoadingGroupMembers] = useState(false);
@@ -246,7 +252,7 @@ export function ManageGroup(): React.ReactElement {
             <Dialog
               onClose={closeGenerateInviteLinkDialog}
               open={generateLinkDialogOpen}
-              sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+              sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
             >
               <DialogContent>
                 <Grid container alignItems="center" justifyContent="center" spacing={4}>

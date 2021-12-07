@@ -166,7 +166,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       <Dialog
         onClose={closeLastOwnerDeleteModalOpen}
         open={lastOwnerDeleteModalOpen}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>
@@ -188,7 +188,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       <Dialog
         onClose={closeRemovingOwnerFromListModalOpen}
         open={removingOwnerFromListModalOpen}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>

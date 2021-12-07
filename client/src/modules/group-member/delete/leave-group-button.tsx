@@ -8,6 +8,9 @@ import {
   IconButton,
   Tooltip,
   Typography,
+  Theme,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import LeaveIcon from "@mui/icons-material/MeetingRoomTwoTone";
@@ -25,6 +28,9 @@ export interface LeaveGroupButtonProps {
 export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactElement {
   const { membership, activeGroupMemberships } = props;
   const activeUserGroupMembership = useSelector(selectedActiveUserGroupMembership);
+
+  const theme = useTheme<Theme>();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   const [deletingCurrentUserFromGroup, setDeletingCurrentUserFromGroup] = useState(false);
   const [showForbiddenMessage, setShowForbiddenMessage] = useState(false);
@@ -75,7 +81,7 @@ export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactEleme
       <Dialog
         onClose={closeForbiddenMessage}
         open={showForbiddenMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>
@@ -92,7 +98,7 @@ export function LeaveGroupButton(props: LeaveGroupButtonProps): React.ReactEleme
       <Dialog
         onClose={closeVerificationMessage}
         open={showVerificationMessage}
-        sx={{ ".MuiDialog-container": { marginTop: "64px", height: "unset" } }}
+        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
       >
         <DialogContent>
           <Typography>Are you sure you want to leave this group?</Typography>

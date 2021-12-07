@@ -1,8 +1,12 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Redirect,
+  useRouteMatch,
+} from "react-router-dom";
 
 import { Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
 import { MeepleCircleSiteNameInline } from "../../images/components/meeple-circle-site-name-inline";
 
@@ -14,17 +18,9 @@ import { TermsOfService } from "../authenticated/terms-of-service";
 import { PrivacyPolicy } from "../authenticated/privacy-policy";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
 
-const useStyles = makeStyles(() => ({
-  gridContainer: {
-    maxWidth: "500px",
-  },
-  logo: {
-    maxWidth: "400px",
-  },
-}));
-
 export function UnAuthenticatedRoutes(): React.ReactElement {
-  const { gridContainer, logo } = useStyles();
+  const isPrivacyPolicyRoute = useRouteMatch("/privacy-policy");
+  const isTermsOfServiceRoute = useRouteMatch("/terms-of-service");
 
   return (
     <Grid container justifyContent="center">
@@ -35,12 +31,12 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
         xs={12}
         item
         container
-        className={gridContainer}
+        sx={{ maxWidth: (isPrivacyPolicyRoute || isTermsOfServiceRoute) ? "1000px" : "500px" }}
         alignItems="center"
         justifyContent="center"
         spacing={2}
       >
-        <Grid onClick={() => null} xs={12} className={logo} item>
+        <Grid onClick={() => null} xs={12} sx={{ maxWidth: "400px" }} item>
           <MeepleCircleSiteNameInline />
         </Grid>
         <Grid xs={12} item sx={{ minHeight: "calc(100vh - 380px)" }}>
