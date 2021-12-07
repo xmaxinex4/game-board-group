@@ -38,7 +38,7 @@ export function PrivacyPolicy(): React.ReactElement {
               <Grid container spacing={0.5}>
                 <Grid item>This Privacy Policy has been created with the help of the</Grid>
                 <Grid item>
-                  <Link href="https://www.privacypolicies.com/privacy-policy-generator/" color={activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main}>Privacy Policy Generator</Link>
+                  <Link href="https://www.privacypolicies.com/privacy-policy-generator" color={activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main}>Privacy Policy Generator</Link>
                 </Grid>
               </Grid>
             </Typography>
