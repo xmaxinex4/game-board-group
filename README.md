@@ -113,7 +113,7 @@ check running apps on http(80): netstat -na | grep ':80.*LISTEN'
 pm2 start app:
 become root user: sudo su -
 
-### CertBot COmmands
+### CertBot Commands
 sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo yum-config-manager --enable epel
 sudo yum install certbot
@@ -122,3 +122,6 @@ sudo certbot certonly --standalone -d yourdomain.com
 Renewal (must stop nginx:  sudo systemctl stop nginx)
 sudo certbot renew --force-renewal
 Then restart nginx (sudo systemctl start nginx)
+
+### Redis (Memurai)
+memurai.exe --service-start

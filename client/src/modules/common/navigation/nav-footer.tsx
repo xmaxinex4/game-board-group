@@ -49,8 +49,8 @@ export function NavFooter(): React.ReactElement {
             </Grid>
             <Grid item>
               <SiteLink
-                to="/terms-of-service"
-                text="Terms of Service"
+                to="/terms-and-conditions"
+                text="Terms and Conditions"
                 typographyProps={{
                   variant: "subtitle2",
                   color: activeUser ? MeeplePaletteColors[activeUser.color].dark : theme.palette.primary.main,

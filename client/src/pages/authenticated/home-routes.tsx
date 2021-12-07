@@ -11,6 +11,7 @@ import { DesktopTabs } from "../../modules/common/navigation/desktop-tabs";
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
+import { ScrollToTopButton } from "../../modules/common/navigation/scroll-to-top-button";
 
 import { NotFound } from "../error/not-found";
 
@@ -20,12 +21,11 @@ import { Library } from "./library";
 import { ManageGroup } from "./manage-group";
 import { Home } from "./home";
 import { GroupInvite } from "./group-invite";
-import { TermsOfService } from "./terms-of-service";
 import { PrivacyPolicy } from "./privacy-policy";
 import { AddGroup } from "./add-group";
 import { MyCollections } from "./my-collections";
 import { AccountSettings } from "./account-settings";
-import { ScrollToTopButton } from "../../modules/common/navigation/scroll-to-top-button";
+import { TermsAndConditions } from "./terms-and-conditions";
 
 export interface AuthenticatedHomeRoutesProps {
   isActiveGroupLoading?: boolean;
@@ -119,7 +119,7 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                               {/* <Route path="/polls" component={Polls} />
                               <Route path="/stats" component={Stats} /> */}
                               <Route path="/invite/:inviteCode" component={GroupInvite} />
-                              <Route exact path="/terms-of-service" component={TermsOfService} />
+                              <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
                               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
                               <Route exact path="/add-group" component={AddGroup} />
                               <Route path="*" component={NotFound} />
@@ -137,7 +137,7 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
                               <Switch>
                                 <Route exact path="/account" component={AccountSettings} />
                                 <Route path="/invite/:inviteCode" component={GroupInvite} />
-                                <Route exact path="/terms-of-service" component={TermsOfService} />
+                                <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
                                 <Route exact path="/privacy-policy" component={PrivacyPolicy} />
                                 <Route exact path="/add-group" component={() => <AddGroup noGroup />} />
                                 <Route path="*" component={() => <Redirect to="/add-group" />} />

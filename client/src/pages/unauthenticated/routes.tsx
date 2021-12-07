@@ -14,13 +14,13 @@ import { Login } from "./login";
 import { CreateAccount } from "./create-account";
 import { ForgotPassword } from "./forgot-password";
 import { UnauthenticatedNavBar } from "../../modules/common/navigation/unauthenticated-nav-bar";
-import { TermsOfService } from "../authenticated/terms-of-service";
+import { TermsAndConditions } from "../authenticated/terms-and-conditions";
 import { PrivacyPolicy } from "../authenticated/privacy-policy";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
 
 export function UnAuthenticatedRoutes(): React.ReactElement {
   const isPrivacyPolicyRoute = useRouteMatch("/privacy-policy");
-  const isTermsOfServiceRoute = useRouteMatch("/terms-of-service");
+  const isTermsAndConditionsRoute = useRouteMatch("/terms-and-conditions");
 
   return (
     <Grid container justifyContent="center">
@@ -31,7 +31,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
         xs={12}
         item
         container
-        sx={{ maxWidth: (isPrivacyPolicyRoute || isTermsOfServiceRoute) ? "1000px" : "500px" }}
+        sx={{ maxWidth: (isPrivacyPolicyRoute || isTermsAndConditionsRoute) ? "1000px" : "500px" }}
         alignItems="center"
         justifyContent="center"
         spacing={2}
@@ -44,7 +44,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/create-account" component={CreateAccount} />
             <Route path="/login" component={Login} />
-            <Route exact path="/terms-of-service" component={TermsOfService} />
+            <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
             <Route exact path="/privacy-policy" component={PrivacyPolicy} />
             <Route exact path="*" component={() => <Redirect to="/login" />} />
           </Switch>
