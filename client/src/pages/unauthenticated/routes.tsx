@@ -17,6 +17,7 @@ import { UnauthenticatedNavBar } from "../../modules/common/navigation/unauthent
 import { TermsAndConditions } from "../authenticated/terms-and-conditions";
 import { PrivacyPolicy } from "../authenticated/privacy-policy";
 import { NavFooter } from "../../modules/common/navigation/nav-footer";
+import { ActivateAccount } from "./activate-account";
 
 export function UnAuthenticatedRoutes(): React.ReactElement {
   const isPrivacyPolicyRoute = useRouteMatch("/privacy-policy");
@@ -43,6 +44,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
           <Switch>
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/create-account" component={CreateAccount} />
+            <Route path="/activate-account" component={ActivateAccount} />
             <Route path="/login" component={Login} />
             <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
             <Route exact path="/privacy-policy" component={PrivacyPolicy} />

@@ -6,7 +6,7 @@ import { CollectionGameResponse, CollectionGameResponsePrismaSelect, GameRespons
 
 export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/library", async (req, res) => {
-    getCurrentUserId(req, res); // check authorization
+    const userId = await getCurrentUserId(req, res, prisma); // check authorization
 
     const { groupId } = req.query;
 

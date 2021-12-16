@@ -7,7 +7,7 @@ import { CollectionResponse, CollectionResponsePrismaSelect, GameResponse, UserR
 
 export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/collection/get/:id", async (req, res) => {
-    getCurrentUserId(req, res);
+    await getCurrentUserId(req, res, prisma); // verify auth
     const collectionId = req.params.id;
 
     if (!collectionId) {
@@ -31,7 +31,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   });
 
   app.get("/api/collection/my-collections", async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const result = await prisma.collection.findMany({
       where: {
@@ -52,7 +52,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   });
 
   app.post("/api/collection/upsert", async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { collectionId, name, ownerIds, games } = req.body;
 
@@ -217,7 +217,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   });
 
   app.post("/api/collection/delete", async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { collectionId } = req.body;
 

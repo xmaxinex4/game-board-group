@@ -18,7 +18,7 @@ import { lookupGroupMembership, getIsGroupAdmin, getIsAdminInGroup } from "./hel
 
 export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete) => {
   app.post('/api/group/create', async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { name } = req.body;
 
@@ -72,7 +72,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/edit', async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { groupId, name, groupMembershipId } = req.body;
 
@@ -111,7 +111,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/generate-invitation-link', async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { groupMembershipId, timeout } = req.body;
 
@@ -180,7 +180,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/add-user', async (req, res, next) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { guid } = req.body;
 
@@ -260,7 +260,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/update-admin-status-of-member', async (req, res, next) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { groupMembershipId, isAdmin } = req.body;
 
@@ -314,7 +314,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/delete-member', async (req, res, next) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { groupMembershipId } = req.body;
 
@@ -361,7 +361,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   });
 
   app.post('/api/group/transfer-ownership', async (req, res, next) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { groupMembershipId } = req.body;
 

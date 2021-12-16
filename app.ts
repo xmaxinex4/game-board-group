@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import redis from "redis";
+import sgMail from "@sendgrid/mail";
+
 import { promisify } from "util";
 
 import { PrismaClient } from ".prisma/client";
@@ -15,6 +17,9 @@ const redisClient = redis.createClient();
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
 const redisDelete = promisify(redisClient.del).bind(redisClient);
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 const app = express();
 var cors = require("cors");
 
@@ -43,11 +48,11 @@ redisClient.on('connect', function () {
   console.log('Connected to Redis!');
 });
 
-initializeUserApi(app, prisma, redisGet);
+initializeUserApi(app, prisma, redisGet, redisSet, redisDelete, sgMail);
 initializeGroupApi(app, prisma, redisGet, redisSet, redisDelete);
 initializeCollectionApi(app, prisma);
 initializeLibraryApi(app, prisma);
-initializeAccountApi(app, prisma);
+initializeAccountApi(app, prisma, redisGet, redisSet, redisDelete, sgMail);
 
 // Redirect back to index.html if urls do not match
 if (process.env.NODE_ENV === 'production') {

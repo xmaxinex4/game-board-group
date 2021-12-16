@@ -25,7 +25,6 @@ export function GroupInvite(): React.ReactElement {
 
   const [progress, setProgress] = React.useState(0);
   const [simulatingProgress, setSimulatingProgress] = useState(false);
-  const [error, setError] = useState("");
 
   const simulateProgressThenRedirect = useCallback(() => {
     setSimulatingProgress(true);
@@ -56,7 +55,10 @@ export function GroupInvite(): React.ReactElement {
         simulateProgressThenRedirect();
       })
       .catch(() => {
-        setError("Oops! Something went wrong.");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       })
       .finally(() => {
         setLoadingAddUser(false);
@@ -91,16 +93,9 @@ export function GroupInvite(): React.ReactElement {
               <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
             </Grid>
             <Grid item>
-              {error ? (
-                <Typography>
-                  {error}
-                </Typography>
-              )
-                : (
-                  <Typography>
-                    The link you followed has expired.
-                  </Typography>
-                )}
+              <Typography>
+                The link you followed has expired.
+              </Typography>
             </Grid>
           </Grid>
         )}

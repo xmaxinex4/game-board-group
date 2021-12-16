@@ -1,16 +1,18 @@
 import { Express } from "express";
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
 
 import { PrismaClient } from ".prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 import { ActiveUserGroupMembershipsResponse, ActiveUserResponsePrismaSelect, GroupMembershipResponsePrismaSelect, UserPlayPreferenceResponse, UserPlayPreferenceResponsePrismaSelect } from "../types/types";
+import { MailService } from "@sendgrid/mail";
 
-export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) => {
+export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, redisSet, redisDelete, sgMail: MailService) => {
   app.get("/api/user/active-user", async (req, res) => {
     try {
-      const userId = getCurrentUserId(req, res);
+      const userId = await getCurrentUserId(req, res, prisma);
       const result = await prisma.user.findUnique({
         where: {
           id: userId
@@ -29,7 +31,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
 
   app.get("/api/user/active-user-group-memberships", async (req, res) => {
     try {
-      const userId = getCurrentUserId(req, res);
+      const userId = await getCurrentUserId(req, res, prisma);
       const result = await prisma.user.findUnique({
         where: {
           id: userId
@@ -120,8 +122,53 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
         },
       });
 
-      const token = sign({ userId: user.id }, process.env.APP_SECRET);
-      return res.status(201).json({ token });
+      if (!user) {
+        return res.status(500).json({ error: `Something went wrong, unable to create user. Please try again.` });
+      }
+
+      // save link in redis
+      let uniqueKeyFound = false;
+      let accountActivationCode = "";
+
+      while (!uniqueKeyFound) {
+        let possibleKey = uuidv4().split("-")[0];
+        let keyInRedis = await redisGet(possibleKey);
+        if (!keyInRedis) { // making sure key is unique
+          accountActivationCode = possibleKey;
+          uniqueKeyFound = true;
+        }
+      }
+
+      const oneDayTtl = 24 * 60 * 60;
+
+      const setAccountActivationCode = await redisSet(accountActivationCode, `account-verification-${user.email}`, "EX", oneDayTtl);
+
+      if (!setAccountActivationCode) {
+        console.log("Error setting redis key for account activation");
+        return res.status(400).json({ error: `Unable to send account activation link.` });
+      }
+
+      // send email using send grid with link code
+      const msg = {
+        to: user.email,
+        from: "gameboardgroup@gameboardgroup.com",
+        template_id: "d-af84d37dfa06434a9b711b814ef6334d",
+        html: "", // todo: might break things, test email
+        dynamicTemplateData: {
+          name: user.username,
+          code: accountActivationCode,
+        },
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          return res.status(201).json();
+        })
+        .catch((error) => {
+          return res.status(500).json({ error: `Something went wrong. Please try again.` });
+        });
+
+      return res.status(201).json();
     } catch (error) {
       console.error("Error on user create: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
@@ -168,7 +215,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
 
   app.get("/api/user/active-user-play-preferences", async (req, res) => {
     try {
-      const userId = getCurrentUserId(req, res);
+      const userId = await getCurrentUserId(req, res, prisma);
       const result = await prisma.user.findUnique({
         where: {
           id: userId
@@ -190,7 +237,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
   });
 
   app.post("/api/user/play-preference/upsert", async (req, res) => {
-    const userId = getCurrentUserId(req, res);
+    const userId = await getCurrentUserId(req, res, prisma);
 
     const { id, preference, bggId } = req.body;
 
@@ -232,7 +279,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet) 
   });
 
   app.post("/api/user/play-preference/delete", async (req, res) => {
-    getCurrentUserId(req, res);
+    await getCurrentUserId(req, res, prisma); // verify auth
 
     const { id } = req.body;
 

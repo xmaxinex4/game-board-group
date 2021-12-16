@@ -125,3 +125,6 @@ Then restart nginx (sudo systemctl start nginx)
 
 ### Redis (Memurai)
 memurai.exe --service-start
+
+### Links:
+Code Deployment Tutorial: https://afourtech.com/complete-guide-to-deploying-github-project-on-amazon-ec2-using-aws-codedeploy-service-and-github-actions/
