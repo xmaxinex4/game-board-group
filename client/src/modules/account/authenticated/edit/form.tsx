@@ -9,9 +9,9 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import { Color } from ".prisma/client";
 
-import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-input";
-import { MeepleColorPicker } from "../../common/meeple-color-picker";
-import { ActionButtons } from "../../common/button/action-buttons";
+import { FullWidthGridItemInput } from "../../../common/input/full-width-grid-item-input";
+import { MeepleColorPicker } from "../../../common/meeple-color-picker";
+import { ActionButtons } from "../../../common/button/action-buttons";
 
 import { EditAccountFormModel } from "./model";
 import { validateEditAccountForm } from "./validator";

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars, max-len */
 
-function validateEmail(email: string) {
+function isEmailValid(email: string) {
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regex.test(String(email).toLowerCase());
 }
 
-export function validateSendEmailVerificationForm(
+export function validateEmail(
   email: string,
   setErrors: (errorState: { email: string; }) => void,
 ): boolean {
@@ -19,7 +19,7 @@ export function validateSendEmailVerificationForm(
     formIsValid = false;
   }
 
-  if (email && !validateEmail(email)) {
+  if (email && !isEmailValid(email)) {
     errors = { ...errors, email: "Invalid Email Address" };
     formIsValid = false;
   }

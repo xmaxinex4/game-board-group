@@ -12,12 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
+import { TabContentContainer } from "../../../modules/common/layout/tab-content-container";
 
 import { useAccountActivate } from "./endpoint-hooks";
-import { FullWidthGridItemInput } from "../../modules/common/input/full-width-grid-item-input";
-import { ActionButtons } from "../../modules/common/button/action-buttons";
-import { validateSendEmailVerificationForm } from "../../modules/account/email-verifications/validator";
+import { FullWidthGridItemInput } from "../../../modules/common/input/full-width-grid-item-input";
+import { ActionButtons } from "../../../modules/common/button/action-buttons";
+import { validateEmail } from "../../../modules/account/email-validator";
 
 export function ActivateAccount(): React.ReactElement {
   const { code: activationCode } = useParams<{ code: string; }>();
@@ -54,7 +54,7 @@ export function ActivateAccount(): React.ReactElement {
     });
   }, []);
 
-  const goToLogin = () => history.push("/library");
+  const goToLogin = () => history.push("/login");
 
   const clearErrorFields = (e: React.ChangeEvent) => {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
@@ -62,7 +62,7 @@ export function ActivateAccount(): React.ReactElement {
 
   // check for valid email
   const handleSubmit = () => {
-    const isFormValid = validateSendEmailVerificationForm(email, setErrors);
+    const isFormValid = validateEmail(email, setErrors);
 
     // resend verify account email
     if (isFormValid) {

@@ -2,8 +2,8 @@
 
 import React from "react";
 
-import { ActiveUserResponse } from "../../../../../src/types/types";
-import { useApi } from "../../../hooks/useApi";
+import { ActiveUserResponse } from "../../../../../../src/types/types";
+import { useApi } from "../../../../hooks/useApi";
 
 export interface ChangePasswordArgs {
   currentPassword: string;

@@ -197,6 +197,10 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         return res.status(401).json({ error: `Invalid email or password` });
       }
 
+      if (!user.isActive) {
+        return res.status(401).json({ error: `User is not active` });
+      }
+
       const passwordValid = await compare(password, user.password);
 
       if (!passwordValid) {

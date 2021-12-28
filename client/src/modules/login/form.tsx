@@ -14,6 +14,7 @@ import { SiteLink } from "../common/navigation/site-link";
 import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-input";
 import { LoginFormModel } from "./model";
 import { validateLoginForm } from "./validator";
+import { ActionButtons } from "../common/button/action-buttons";
 
 export function LoginForm(): React.ReactElement {
   const [email, setEmail] = useState("");
@@ -58,43 +59,78 @@ export function LoginForm(): React.ReactElement {
     <form noValidate onSubmit={handleSubmit}>
       <Grid container direction="column" spacing={8}>
         <Grid container item direction="column" spacing={4}>
-          {serverError && (
-            <Grid item>
-              <Alert severity="error">{serverError}</Alert>
+          {serverError && serverError === "User is not active" ? (
+            <Grid container direction="column" spacing={2}>
+              {/* <Grid item>This account has not been activated. Resend an activation link to your email below.</Grid>
+              <Grid item>
+                <form noValidate onSubmit={handleFormSubmit}>
+                  <Grid container item direction="column" spacing={8}>
+                    <FullWidthGridItemInput
+                      formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+                      outerEndAdornmentIcon={EmailIcon}
+                      input={email}
+                      inputProps={{ maxLength: 50 }}
+                      outlinedInputProps={{ id: "email" }}
+                      inputLabel="Email"
+                      setInputState={setEmail}
+                      error={errors.email}
+                      onInputChange={clearErrorFields}
+                    />
+                    <Grid item>
+                      <ActionButtons
+                        formButtons
+                        onSave={handleSubmit}
+                        saveText="Resend Activation Email"
+                        onCancel={goToLogin}
+                        cancelText="Go to Login"
+                        disabled={isLoading}
+                      />
+                    </Grid>
+                  </Grid>
+                </form>
+              </Grid> */}
             </Grid>
+          ) : (
+            <>
+              {serverError && (
+                <Grid item>
+                  <Alert severity="error">{serverError}</Alert>
+                </Grid>
+              )}
+              <FullWidthGridItemInput
+                formControlProps={{ disabled: isLoading, fullWidth: true }}
+                outerEndAdornmentIcon={EmailIcon}
+                input={email}
+                inputProps={{ maxLength: 50 }}
+                outlinedInputProps={{ id: "email" }}
+                inputLabel="Email"
+                setInputState={setEmail}
+                error={errors.email}
+                onInputChange={clearErrorFields}
+              />
+
+              <Grid container item spacing={1}>
+                <FullWidthGridItemPasswordInput
+                  formControlProps={{ disabled: isLoading, fullWidth: true }}
+                  input={password}
+                  setInputState={setPassword}
+                  error={errors.password}
+                  onInputChange={clearErrorFields}
+                />
+                <Grid container item justifyContent="flex-end">
+                  <Typography>
+                    <SiteLink text="Forgot Password?" to="/forgot-password" />
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid item>
+                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">
+                  Login
+                </Button>
+              </Grid>
+            </>
           )}
-          <FullWidthGridItemInput
-            formControlProps={{ disabled: isLoading, fullWidth: true }}
-            outerEndAdornmentIcon={EmailIcon}
-            input={email}
-            inputProps={{ maxLength: 50 }}
-            outlinedInputProps={{ id: "email" }}
-            inputLabel="Email"
-            setInputState={setEmail}
-            error={errors.email}
-            onInputChange={clearErrorFields}
-          />
-
-          <Grid container item spacing={1}>
-            <FullWidthGridItemPasswordInput
-              formControlProps={{ disabled: isLoading, fullWidth: true }}
-              input={password}
-              setInputState={setPassword}
-              error={errors.password}
-              onInputChange={clearErrorFields}
-            />
-            <Grid container item justifyContent="flex-end">
-              <Typography>
-                <SiteLink text="Forgot Password?" to="/forgot-password" />
-              </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid item>
-            <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">
-              Login
-            </Button>
-          </Grid>
         </Grid>
 
         <Grid container item justifyContent="center" spacing={1}>
@@ -110,6 +146,6 @@ export function LoginForm(): React.ReactElement {
           </Grid>
         </Grid>
       </Grid>
-    </form>
+    </form >
   );
 }

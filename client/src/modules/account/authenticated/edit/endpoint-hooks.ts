@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 
 import { Color } from ".prisma/client";
 
-import { ActiveUserResponse } from "../../../../../src/types/types";
-import { useApi } from "../../../hooks/useApi";
-import { setActiveUser } from "../../../redux/active-user-slice";
+import { ActiveUserResponse } from "../../../../../../src/types/types";
+import { useApi } from "../../../../hooks/useApi";
+import { setActiveUser } from "../../../../redux/active-user-slice";
 
 export interface EditAccountArgs {
   color: Color;

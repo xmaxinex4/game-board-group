@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { Grid } from "@mui/material";
 
-import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
-import { ActionButtons } from "../../common/button/action-buttons";
+import { FullWidthGridItemPasswordInput } from "../../../common/input/full-width-grid-item-password-input";
+import { ActionButtons } from "../../../common/button/action-buttons";
 
 import { ChangePasswordFormModel } from "./model";
 import { validateChangePasswordForm } from "./validator";
