@@ -1,5 +1,11 @@
 # Prod deployment steps
 
+auto deployed through aws code deploy
+deployment files: 
+.appspec.yml
+application_start.sh
+application_stop.sh
+
 git fetch and pull latest
 npm run build that runs prisma generate
 root npm install -> will autorun postinstall
