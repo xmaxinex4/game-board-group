@@ -25,7 +25,7 @@ jobs:
           id: deploy
           run: |
             aws deploy create-deployment \
-            -–application-name GameBoardGroup_Application \
-            -–deployment-group-name gameboardgroup_deployment \
-            -–deployment-config-name CodeDeployDefault.OneAtATime \
-            -–github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+            -application-name GameBoardGroup_Application \
+            –deployment-group-name gameboardgroup_deployment \
+            –deployment-config-name CodeDeployDefault.OneAtATime \
+            –github-location repository=${{ github.repository }},commitId=${{ github.sha }}
