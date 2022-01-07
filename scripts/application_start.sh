@@ -9,6 +9,9 @@ sudo chmod -R 777 /home/ec2-user/gbg_app
 
 cd /home/ec2-user/gbg_app
 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+nvm install node
+
 npm run build 
 npm install
 cd client 
