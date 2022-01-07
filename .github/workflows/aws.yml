@@ -28,4 +28,4 @@ jobs:
               --application-name GameBoardGroup_Application \
               --deployment-group-name gameboardgroup_deployment \
               --deployment-config-name CodeDeployDefault.OneAtATime \
-              
+              --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
