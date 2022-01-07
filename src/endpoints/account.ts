@@ -101,7 +101,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     }
 
     let userEmail = await redisGet(activationCode.toString());
-    userEmail = userEmail?.toString() && userEmail.toString().replace("account-verification-", "");;
+    userEmail = userEmail?.toString() && userEmail.toString().toLowerCase().replace("account-verification-", "");;
 
     if (!userEmail) {
       console.log("Failed to get redis key for activation code; code not found in Redis.");
@@ -111,7 +111,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const activatedUser = await prisma.user.update({
         where: {
-          email: userEmail,
+          email: userEmail.toLowerCase(),
         },
         data: {
           isActive: true,
@@ -145,7 +145,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email,
+          email: email.toLowerCase(),
         },
       });
 
@@ -155,7 +155,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         return res.status(201).json();
       }
 
-      const existingLinkForEmail = await redisGet(`account-verification-${email}`);
+      const existingLinkForEmail = await redisGet(`account-verification-${email.toLowerCase()}`);
 
       if (existingLinkForEmail) {
         await redisDelete(existingLinkForEmail);
@@ -176,7 +176,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
 
       const oneDayTtl = 24 * 60 * 60;
 
-      const setAccountActivationCode = await redisSet(accountActivationCode, `account-verification-${user.email}`, "EX", oneDayTtl);
+      const setAccountActivationCode = await redisSet(accountActivationCode, `account-verification-${user.email.toLowerCase()}`, "EX", oneDayTtl);
 
       if (!setAccountActivationCode) {
         console.log("Error setting redis key for account activation");
@@ -218,7 +218,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     }
 
     let userEmail = await redisGet(resetPasswordCode.toString());
-    userEmail = userEmail?.toString() && userEmail.toString().replace("reset-password-", "");
+    userEmail = userEmail?.toString() && userEmail.toString().toLowerCase().replace("reset-password-", "");
 
     if (!userEmail) {
       console.log("Failed to get redis key for reset password code; code not found in Redis.");
@@ -240,7 +240,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     }
 
     let userEmail = await redisGet(resetPasswordCode.toString());
-    userEmail = userEmail?.toString() && userEmail.toString().replace("reset-password-", "");
+    userEmail = userEmail?.toString() && userEmail.toString().toLowerCase().replace("reset-password-", "");
 
     if (!userEmail) {
       console.log("Failed to get redis key for reset password code; code not found in Redis.");
@@ -250,7 +250,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email: userEmail,
+          email: userEmail.toLowerCase(),
         },
       });
 
@@ -293,7 +293,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email,
+          email: email.toLowerCase()
         },
       });
 
@@ -303,7 +303,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         return res.status(201).json();
       }
 
-      const existingLinkForEmail = await redisGet(`reset-password-${email}`);
+      const existingLinkForEmail = await redisGet(`reset-password-${email.toLowerCase()}`);
 
       if (existingLinkForEmail) {
         await redisDelete(existingLinkForEmail);
@@ -324,7 +324,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
 
       const oneDayTtl = 24 * 60 * 60;
 
-      const setResetPasswordCode = await redisSet(resetPasswordCode, `reset-password-${user.email}`, "EX", oneDayTtl);
+      const setResetPasswordCode = await redisSet(resetPasswordCode, `reset-password-${user.email.toLowerCase()}`, "EX", oneDayTtl);
 
       if (!setResetPasswordCode) {
         console.log("Error setting redis key for reset password");

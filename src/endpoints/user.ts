@@ -100,18 +100,28 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
 
     const existingEmail = await prisma.user.findUnique({
       where: {
-        email,
+        email: email.toLowerCase(),
       },
       select: {
         id: true,
+        isActive: true,
       },
     });
 
-    if (existingEmail) {
+    if (existingEmail && existingEmail.isActive) {
       return res.status(400).json({ error: `Email taken` });
     }
 
     try {
+      // un-verified accounts should not block emails and should be deleted so the email is free
+      if (existingEmail && !existingEmail.isActive) {
+        await prisma.user.delete({
+          where: {
+            email: email.toLowerCase(),
+          },
+        });
+      }
+
       const hashedPassword = await hash(password, 10);
       const user = await prisma.user.create({
         data: {
@@ -141,7 +151,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
 
       const oneDayTtl = 24 * 60 * 60;
 
-      const setAccountActivationCode = await redisSet(accountActivationCode, `account-verification-${user.email}`, "EX", oneDayTtl);
+      const setAccountActivationCode = await redisSet(accountActivationCode, `account-verification-${user.email.toLowerCase()}`, "EX", oneDayTtl);
 
       if (!setAccountActivationCode) {
         console.log("Error setting redis key for account activation");
@@ -189,7 +199,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
     try {
       const user = await prisma.user.findUnique({
         where: {
-          email
+          email: email.toLowerCase()
         },
       });
 
