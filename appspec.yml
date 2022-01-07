@@ -5,10 +5,10 @@ files:
     destination: /home/ec2-user/gbg_app
 
 hooks:
-  ApplicationStop:
-    - location: scripts/application_stop.sh
-      timeout: 300
-      runas: ec2-user
+  # ApplicationStop:
+  #   - location: scripts/application_stop.sh
+  #     timeout: 300
+  #     runas: ec2-user
 
   ApplicationStart:
     - location: scripts/application_start.sh
