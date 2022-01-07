@@ -2,7 +2,7 @@
 
 # give permission to the files inside /secure_docs directory
 
-sudo su ec2-user
+# sudo su ec2-user
 sudo chmod -R 777 /home/ec2-user/gbg_app
 
 # navigate into current working directory
