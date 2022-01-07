@@ -9,15 +9,11 @@ sudo chmod -R 777 /home/ec2-user/gbg_app
 
 cd /home/ec2-user/gbg_app
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-nvm install node
-
-npm run build 
-npm install
+sudo /usr/bin/npm run build 
+/usr/bin/npm install
 cd client 
-npm install
+/usr/bin/npm install
 cd ..
 
 # start our node app in the background using pm2
-npm install pm2
-sudo pm2 start dist/app.js -i max
+sudo /usr/bin/pm2 start dist/app.js -i max
