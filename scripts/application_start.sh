@@ -16,5 +16,5 @@ npm install
 cd ..
 
 # start our node app in the background using pm2
-# npm install pm2
-# sudo pm2 start dist/app.js -i max
+npm install pm2
+sudo pm2 start dist/app.js -i max
