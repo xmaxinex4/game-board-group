@@ -9,10 +9,10 @@ sudo chmod -R 777 /home/ec2-user/gbg_app
 
 cd /home/ec2-user/gbg_app
 
+sudo /usr/bin/npm install
 sudo /usr/bin/npm run build 
-/usr/bin/npm install
 cd client 
-/usr/bin/npm install
+sudo /usr/bin/npm install
 cd ..
 
 # start our node app in the background using pm2

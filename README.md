@@ -6,9 +6,8 @@ deployment files:
 application_start.sh
 application_stop.sh
 
-git fetch and pull latest
-npm run build that runs prisma generate
 root npm install -> will autorun postinstall
+npm run build that runs prisma generate
 cd to client and run npm install
 pm2 start dist/app.js -i max
 
