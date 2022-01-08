@@ -11,6 +11,13 @@ export interface ActivateAccountArgs {
   onError?: (error: string) => void;
 }
 
+export interface ResendActivationEmailArgs {
+  email: string;
+  onActivationEmailSent?: () => void;
+  setIsLoading?: (value: React.SetStateAction<boolean>) => void;
+  onError?: (error: string) => void;
+}
+
 export function useAccountActivate() {
   const { apiPost } = useApi();
 
@@ -51,4 +58,44 @@ export function useAccountActivate() {
   }
 
   return { activateAccount };
+}
+
+export function useResendActivationEmail() {
+  const { apiPost } = useApi();
+
+  function resendActivationEmail(props: ResendActivationEmailArgs): void {
+    const {
+      email,
+      onActivationEmailSent,
+      setIsLoading,
+      onError,
+    } = props;
+
+    if (setIsLoading) {
+      setIsLoading(true);
+    }
+
+    apiPost("/account/resend-verification-email", {
+      email,
+    })
+      .then(() => {
+        if (onActivationEmailSent) {
+          onActivationEmailSent();
+        }
+      })
+      .catch(({ response }) => {
+        const error = response?.data?.error;
+
+        if (onError) {
+          onError(error);
+        }
+      })
+      .finally(() => {
+        if (setIsLoading) {
+          setIsLoading(false);
+        }
+      });
+  }
+
+  return { resendActivationEmail };
 }

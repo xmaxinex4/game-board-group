@@ -27,7 +27,7 @@ export function useSendForgotPasswordEmail() {
     }
 
     apiPost("/account/send-reset-password-email", {
-      email
+      email,
     })
       .then(() => {
         if (onEmailSent) {

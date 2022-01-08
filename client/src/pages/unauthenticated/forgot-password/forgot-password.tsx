@@ -55,8 +55,8 @@ export function ForgotPassword(): React.ReactElement {
             <MoodHappyIcon color="primary" sx={{ fontSize: 80 }} />
           </Grid>
           <Grid item>
-            <Typography>
-              A reset password link was sent to your email. Please check your inbox.
+            <Typography textAlign="center">
+              Success! A reset password link was sent to your email. Please check your inbox.
             </Typography>
           </Grid>
         </Grid>
@@ -65,6 +65,11 @@ export function ForgotPassword(): React.ReactElement {
         <form noValidate onSubmit={handleSubmit}>
           <Grid container direction="column" spacing={8}>
             <Grid container item direction="column" spacing={4}>
+              <Grid item>
+                <Typography textAlign="center">
+                  Enter your email and we&apos;ll send you a link to reset your password.
+                </Typography>
+              </Grid>
               <FullWidthGridItemInput
                 formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
                 outerEndAdornmentIcon={EmailIcon}
@@ -78,7 +83,7 @@ export function ForgotPassword(): React.ReactElement {
               />
 
               <Grid container item alignItems="stretch">
-                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Request Reset Link</Button>
+                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Reset Password</Button>
               </Grid>
             </Grid>
 

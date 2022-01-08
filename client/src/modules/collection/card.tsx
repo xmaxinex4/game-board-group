@@ -171,7 +171,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
         <DialogContent>
           <Typography>
             You are the last owner of this collection.
-            Removing this collection will completely delete it and cannot be undone.
+            This will completely delete it and cannot be undone.
             Are you sure you want to delete this collection?
           </Typography>
         </DialogContent>
@@ -192,9 +192,7 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       >
         <DialogContent>
           <Typography>
-            There are other owners in this collection.
-            You will be removed from the collection, but the collection will not be completely deleted.
-            Are you sure you want to be removed from this collection?
+            Are you sure you want to remove this collection?
           </Typography>
         </DialogContent>
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>

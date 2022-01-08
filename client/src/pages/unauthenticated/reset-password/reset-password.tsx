@@ -68,7 +68,7 @@ export function ResetPassword(): React.ReactElement {
       newPassword: password,
       onPasswordReset: simulateProgressThenRedirect,
       setIsLoading,
-      onError: (error) => {
+      onError: () => {
         window.scrollTo({
           top: 0,
           behavior: "smooth",
@@ -99,7 +99,7 @@ export function ResetPassword(): React.ReactElement {
           <Grid container sx={{ padding: "100px" }} justifyContent="center" alignItems="center">
             <CircularProgress size={72} />
           </Grid>
-        ) :
+        ) : (
           <>
             {((!passwordIsActive && !simulatingProgress) || (!passwordIsActive && simulatingProgress)) && (
               <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
@@ -128,9 +128,7 @@ export function ResetPassword(): React.ReactElement {
             {simulatingProgress && passwordIsActive && (
               <Grid container sx={{ padding: "100px" }} direction="column" alignItems="center" justifyContent="center" spacing={4}>
                 <Grid item>
-                  <Typography>
-                    {`Password reset, Redirecting to login...`}
-                  </Typography>
+                  <Typography> Password reset, Redirecting to login...</Typography>
                 </Grid>
                 <Grid item>
                   <Box sx={{ width: "100%" }}>
@@ -180,7 +178,7 @@ export function ResetPassword(): React.ReactElement {
               </Grid>
             )}
           </>
-        }
+        )}
       </Grid>
     </TabContentContainer>
   );

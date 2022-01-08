@@ -9,12 +9,14 @@ import {
 import EmailIcon from "@mui/icons-material/Email";
 
 import { useApi } from "../../hooks/useApi";
+import { ResendActivationForm } from "../../pages/unauthenticated/activate-account/resend-activation-form";
+
 import { FullWidthGridItemPasswordInput } from "../common/input/full-width-grid-item-password-input";
 import { SiteLink } from "../common/navigation/site-link";
 import { FullWidthGridItemInput } from "../common/input/full-width-grid-item-input";
+
 import { LoginFormModel } from "./model";
 import { validateLoginForm } from "./validator";
-import { ActionButtons } from "../common/button/action-buttons";
 
 export function LoginForm(): React.ReactElement {
   const [email, setEmail] = useState("");
@@ -61,34 +63,12 @@ export function LoginForm(): React.ReactElement {
         <Grid container item direction="column" spacing={4}>
           {serverError && serverError === "User is not active" ? (
             <Grid container direction="column" spacing={2}>
-              {/* <Grid item>This account has not been activated. Resend an activation link to your email below.</Grid>
               <Grid item>
-                <form noValidate onSubmit={handleFormSubmit}>
-                  <Grid container item direction="column" spacing={8}>
-                    <FullWidthGridItemInput
-                      formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
-                      outerEndAdornmentIcon={EmailIcon}
-                      input={email}
-                      inputProps={{ maxLength: 50 }}
-                      outlinedInputProps={{ id: "email" }}
-                      inputLabel="Email"
-                      setInputState={setEmail}
-                      error={errors.email}
-                      onInputChange={clearErrorFields}
-                    />
-                    <Grid item>
-                      <ActionButtons
-                        formButtons
-                        onSave={handleSubmit}
-                        saveText="Resend Activation Email"
-                        onCancel={goToLogin}
-                        cancelText="Go to Login"
-                        disabled={isLoading}
-                      />
-                    </Grid>
-                  </Grid>
-                </form>
-              </Grid> */}
+                <Alert severity="error">This account has not been activated. Resend an activation link to your email below.</Alert>
+              </Grid>
+              <Grid item>
+                <ResendActivationForm />
+              </Grid>
             </Grid>
           ) : (
             <>
@@ -146,6 +126,6 @@ export function LoginForm(): React.ReactElement {
           </Grid>
         </Grid>
       </Grid>
-    </form >
+    </form>
   );
 }

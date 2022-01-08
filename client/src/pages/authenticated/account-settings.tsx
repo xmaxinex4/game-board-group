@@ -18,9 +18,9 @@ import { useTheme } from "@mui/styles";
 
 import { selectActiveUser } from "../../redux/active-user-slice";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
-import { EditAccountForm } from "../../modules/account/edit/form";
 import { ActiveUserInfoDisplay } from "../../modules/user/active-user-info-display";
-import { ChangePasswordForm } from "../../modules/account/change-password/form";
+import { EditAccountForm } from "../../modules/account/authenticated/edit/form";
+import { ChangePasswordForm } from "../../modules/account/authenticated/change-password/form";
 
 export function AccountSettings(): React.ReactElement {
   const theme = useTheme<Theme>();
