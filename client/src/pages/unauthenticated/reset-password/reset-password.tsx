@@ -15,9 +15,9 @@ import { TabContentContainer } from "../../../modules/common/layout/tab-content-
 import { ActionButtons } from "../../../modules/common/button/action-buttons";
 import { FullWidthGridItemPasswordInput } from "../../../modules/common/input/full-width-grid-item-password-input";
 import { validatePassword } from "../../../modules/account/password-validator";
+import { SiteLink } from "../../../modules/common/navigation/site-link";
 
 import { useResetPassword } from "./endpoint-hooks";
-import { SiteLink } from "../../../modules/common/navigation/site-link";
 
 export function ResetPassword(): React.ReactElement {
   const { code: resetPasswordCode } = useParams<{ code: string; }>();
@@ -111,17 +111,8 @@ export function ResetPassword(): React.ReactElement {
                     The link you followed has expired.
                   </Typography>
                 </Grid>
-                <Grid container item justifyContent="center" spacing={1}>
-                  <Grid item>
-                    <Typography>
-                      Back to Login
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography>
-                      <SiteLink to="/login" text="Login" />
-                    </Typography>
-                  </Grid>
+                <Grid item>
+                  <SiteLink text="Back to Login" to="/login" />
                 </Grid>
               </Grid>
             )}

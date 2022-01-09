@@ -12,6 +12,11 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
   // authenticated
   app.post("/api/account/edit", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { username, color } = req.body;
 
     if (!username) {
@@ -25,7 +30,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const result = await prisma.user.update({
         where: {
-          id: userId
+          id: userId.id
         },
         data: {
           username,
@@ -46,6 +51,11 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
   // authenticated
   app.post("/api/account/change-password", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword) {
@@ -59,7 +69,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     try {
       const currentPasswordInDb = await prisma.user.findUnique({
         where: {
-          id: userId
+          id: userId.id
         },
         select: {
           password: true
@@ -76,7 +86,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
 
       const result = await prisma.user.update({
         where: {
-          id: userId
+          id: userId.id
         },
         data: {
           password: newHashedPassword

@@ -8,6 +8,10 @@ export const initializeLibraryApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/library", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma); // check authorization
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { groupId } = req.query;
 
     if (!groupId || !groupId.toString()) {

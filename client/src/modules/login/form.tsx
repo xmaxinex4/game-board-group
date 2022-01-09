@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import {
   Grid,
@@ -24,6 +24,7 @@ export function LoginForm(): React.ReactElement {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<LoginFormModel>({ email: "", password: "" });
   const [serverError, setServerError] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
 
   const clearErrorFields = (e: React.ChangeEvent) => {
     setServerError("");
@@ -31,6 +32,12 @@ export function LoginForm(): React.ReactElement {
   };
 
   const { apiPost } = useApi();
+
+  const clearServerError = useCallback(() => {
+    setServerError("");
+  }, [setServerError]);
+
+  const onEmailSent = () => setEmailSent(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,20 +64,22 @@ export function LoginForm(): React.ReactElement {
     }
   };
 
-  return (
-    <form noValidate onSubmit={handleSubmit}>
-      <Grid container direction="column" spacing={8}>
-        <Grid container item direction="column" spacing={4}>
-          {serverError && serverError === "User is not active" ? (
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
-                <Alert severity="error">This account has not been activated. Resend an activation link to your email below.</Alert>
-              </Grid>
-              <Grid item>
-                <ResendActivationForm />
-              </Grid>
-            </Grid>
-          ) : (
+  return serverError && serverError === "User is not active"
+    ? (
+      <Grid container direction="column" spacing={2}>
+        {!emailSent && (
+          <Grid item>
+            <Alert severity="error">This account has not been activated. Resend an activation link to your email below.</Alert>
+          </Grid>
+        )}
+        <Grid item>
+          <ResendActivationForm onCancel={clearServerError} onSend={onEmailSent} />
+        </Grid>
+      </Grid>
+    ) : (
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container direction="column" spacing={8}>
+          <Grid container item direction="column" spacing={4}>
             <>
               {serverError && (
                 <Grid item>
@@ -110,22 +119,21 @@ export function LoginForm(): React.ReactElement {
                 </Button>
               </Grid>
             </>
-          )}
-        </Grid>
+          </Grid>
 
-        <Grid container item justifyContent="center" spacing={1}>
-          <Grid item>
-            <Typography>
-              Don&apos;t have an account?
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>
-              <SiteLink text="Signup" to="/create-account" />
-            </Typography>
+          <Grid container item justifyContent="center" spacing={1}>
+            <Grid item>
+              <Typography>
+                Don&apos;t have an account?
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography>
+                <SiteLink text="Signup" to="/create-account" />
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </form>
-  );
+      </form>
+    );
 }

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 import {
   Alert,
-  Button,
   Grid,
   InputLabel,
   Typography,
@@ -22,10 +22,12 @@ import { FullWidthGridItemInput } from "../../common/input/full-width-grid-item-
 import { FullWidthGridItemPasswordInput } from "../../common/input/full-width-grid-item-password-input";
 import { MeepleColorPicker } from "../../common/meeple-color-picker";
 import { SiteLink } from "../../common/navigation/site-link";
+import { PageLoadingSpinner } from "../../common/progress/page-loading-spinner";
+import { ActionButtons } from "../../common/button/action-buttons";
+
 import { CreateUserFormModel } from "./model";
 import { validateCreateUserForm } from "./validator";
 import { useCreateUser } from "./endpoint-hooks";
-import { PageLoadingSpinner } from "../../common/progress/page-loading-spinner";
 
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
   loginLink: ({
@@ -55,6 +57,8 @@ export function CreateUserForm(): React.ReactElement {
     color: "",
   });
 
+  const history = useHistory();
+
   const { loginLink } = useStyles();
   const { createUser } = useCreateUser();
 
@@ -69,9 +73,7 @@ export function CreateUserForm(): React.ReactElement {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const isFormValid = validateCreateUserForm({
       username,
       email,
@@ -93,6 +95,13 @@ export function CreateUserForm(): React.ReactElement {
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
+  const goToLogin = () => history.push("/login");
+
   return (
     <>
       {isLoading && (
@@ -107,15 +116,18 @@ export function CreateUserForm(): React.ReactElement {
             <MoodHappyIcon color="primary" sx={{ fontSize: 80 }} />
           </Grid>
           <Grid item>
-            <Typography>
-              Thank you! An activation link was sent, please check your email to confirm.
+            <Typography textAlign="center">
+              Success! Your account has been created and an activation link was sent, please check your email to activate your account.
             </Typography>
+          </Grid>
+          <Grid item>
+            <SiteLink text="Login" to="/login" />
           </Grid>
         </Grid>
       )}
       {!isLoading && !emailSent && (serverError === "Email taken" || !serverError) && (
-        <form noValidate onSubmit={handleSubmit}>
-          <Grid container direction="column" spacing={8}>
+        <form noValidate onSubmit={handleFormSubmit}>
+          <Grid container direction="column" spacing={6}>
             <Grid container item direction="column" spacing={4}>
               {serverError && (
                 <Grid item>
@@ -182,10 +194,19 @@ export function CreateUserForm(): React.ReactElement {
                   <MeepleColorPicker color={color} setColor={setColor} />
                 </Grid>
               </Grid>
+            </Grid>
 
-              <Grid container item alignItems="stretch">
-                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Create User</Button>
-              </Grid>
+            <Grid item>
+              <ActionButtons
+                formButtons
+                onSave={handleSubmit}
+                saveText="Create User"
+                onCancel={goToLogin}
+                cancelText="Cancel"
+                disabled={isLoading}
+                saveButtonSize={4}
+                cancelButtonSize={3}
+              />
             </Grid>
 
             <Grid container item justifyContent="center" spacing={1}>

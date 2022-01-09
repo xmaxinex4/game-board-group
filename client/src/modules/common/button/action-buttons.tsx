@@ -7,6 +7,9 @@ import {
   Button,
   ButtonProps,
   GridSize,
+  useMediaQuery,
+  Theme,
+  useTheme,
 } from "@mui/material";
 
 export interface FormProps {
@@ -36,6 +39,9 @@ export function ActionButtons(props: FormProps): React.ReactElement {
     cancelButtonSize,
   } = props;
 
+  const theme = useTheme<Theme>();
+  const isMdDown = useMediaQuery(theme.breakpoints.down("md"));
+
   const onHandleSave = () => {
     if (onSave) {
       onSave();
@@ -47,7 +53,7 @@ export function ActionButtons(props: FormProps): React.ReactElement {
   };
 
   return (
-    <Grid container justifyContent="right" spacing={2}>
+    <Grid container direction={isMdDown ? "column-reverse" : "row"} justifyContent="right" spacing={2}>
       <Grid item xs={12} sm={cancelButtonSize || 3}>
         <Button disabled={disabled} fullWidth variant="outlined" onClick={onHandleCancel} {...cancelButtonProps}>
           {cancelText || "Cancel"}

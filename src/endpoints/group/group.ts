@@ -20,6 +20,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/create', async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { name } = req.body;
 
     if (!name) {
@@ -30,7 +34,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
     const groupsOwnedByCurrentUser = await prisma.group.findMany({
       where: {
         ownedByUserId: {
-          equals: userId,
+          equals: userId.id,
         },
       },
     });
@@ -44,7 +48,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         data: {
           user: {
             connect: {
-              id: userId,
+              id: userId.id,
             }
           },
           group: {
@@ -52,7 +56,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
               name,
               ownedByUser: {
                 connect: {
-                  id: userId,
+                  id: userId.id,
                 },
               }
             }
@@ -74,6 +78,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/edit', async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { groupId, name, groupMembershipId } = req.body;
 
     if (!groupId) {
@@ -85,7 +93,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
     }
 
     try {
-      const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId);
+      const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId.id);
 
       if (!isAdmin) {
         return res.status(401).json({ error: `You do not have permission to edit this group.` });
@@ -113,13 +121,17 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/generate-invitation-link', async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { groupMembershipId, timeout } = req.body;
 
     if (!groupMembershipId) {
       return res.status(400).json({ error: `Missing Group Membership id.` });
     }
 
-    const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId);
+    const isAdmin = await getIsGroupAdmin(prisma, groupMembershipId, userId.id);
 
     if (!isAdmin) {
       return res.status(401).json({ error: `You do not have permission to generate an invite link for this group.` });
@@ -182,6 +194,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/add-user', async (req, res, next) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { guid } = req.body;
 
     if (!guid || !guid.toString()) {
@@ -213,7 +229,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         AND: [
           {
             userId: {
-              equals: userId,
+              equals: userId.id,
             }
           },
           {
@@ -237,7 +253,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         data: {
           user: {
             connect: {
-              id: userId,
+              id: userId.id,
             }
           },
           group: {
@@ -261,6 +277,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
 
   app.post('/api/group/update-admin-status-of-member', async (req, res, next) => {
     const userId = await getCurrentUserId(req, res, prisma);
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
 
     const { groupMembershipId, isAdmin } = req.body;
 
@@ -288,7 +308,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
       }
 
-      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId);
+      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId.id);
 
       if (!isAdminInGroup) {
         return res.status(401).json({ error: `You do not have permission to change group members' admin status.` });
@@ -316,6 +336,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/delete-member', async (req, res, next) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { groupMembershipId } = req.body;
 
     if (!groupMembershipId) {
@@ -337,10 +361,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         return res.status(400).json({ error: `Cannot delete the last admin in the group.` });
       }
 
-      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId);
+      const isAdminInGroup = await getIsAdminInGroup(prisma, groupMembershipLookup.group.id, userId.id);
 
       // you can leave the group, so you can delete yourself without being an admin
-      if (groupMembershipLookup.user.id !== userId && !isAdminInGroup) {
+      if (groupMembershipLookup.user.id !== userId.id && !isAdminInGroup) {
         return res.status(401).json({ error: `You do not have permission to delete group members.` });
       }
 
@@ -363,6 +387,10 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
   app.post('/api/group/transfer-ownership', async (req, res, next) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { groupMembershipId } = req.body;
 
     if (!groupMembershipId) {
@@ -376,7 +404,7 @@ export const initializeGroupApi = (app: Express, prisma: PrismaClient, redisGet,
         return res.status(400).json({ error: `Group membership not found.` });
       }
 
-      if (groupMembershipLookup.group.ownedByUserId !== userId) {
+      if (groupMembershipLookup.group.ownedByUserId !== userId.id) {
         return res.status(400).json({ error: `Cannot transfer ownership of a group you do not own.` });
       }
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 
 import {
-  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -13,9 +13,12 @@ import { useSendForgotPasswordEmail } from "./endpoint-hooks";
 import { validateEmail } from "../../../modules/account/email-validator";
 import { PageLoadingSpinner } from "../../../modules/common/progress/page-loading-spinner";
 import { FullWidthGridItemInput } from "../../../modules/common/input/full-width-grid-item-input";
+import { ActionButtons } from "../../../modules/common/button/action-buttons";
 import { SiteLink } from "../../../modules/common/navigation/site-link";
 
 export function ForgotPassword(): React.ReactElement {
+  const history = useHistory();
+
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +33,7 @@ export function ForgotPassword(): React.ReactElement {
     setErrors({ ...errors, [e.currentTarget.id]: "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const isFormValid = validateEmail(email, setErrors);
 
     if (isFormValid) {
@@ -43,6 +44,13 @@ export function ForgotPassword(): React.ReactElement {
       });
     }
   };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
+  const goToLogin = () => history.push("/login");
 
   return (
     <>
@@ -59,10 +67,13 @@ export function ForgotPassword(): React.ReactElement {
               Success! A reset password link was sent to your email. Please check your inbox.
             </Typography>
           </Grid>
+          <Grid item>
+            <SiteLink text="Back to Login" to="/login" />
+          </Grid>
         </Grid>
       )}
       {!isLoading && !emailSent && (
-        <form noValidate onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleFormSubmit}>
           <Grid container direction="column" spacing={8}>
             <Grid container item direction="column" spacing={4}>
               <Grid item>
@@ -82,21 +93,17 @@ export function ForgotPassword(): React.ReactElement {
                 onInputChange={clearErrorFields}
               />
 
-              <Grid container item alignItems="stretch">
-                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">Reset Password</Button>
-              </Grid>
-            </Grid>
-
-            <Grid container item justifyContent="center" spacing={1}>
               <Grid item>
-                <Typography>
-                  Back to Login
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography>
-                  <SiteLink to="/login" text="Login" />
-                </Typography>
+                <ActionButtons
+                  formButtons
+                  onSave={handleSubmit}
+                  saveText="Reset Password"
+                  onCancel={goToLogin}
+                  cancelText="Cancel"
+                  disabled={isLoading}
+                  saveButtonSize={5}
+                  cancelButtonSize={3}
+                />
               </Grid>
             </Grid>
           </Grid>

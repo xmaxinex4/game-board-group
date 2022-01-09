@@ -13,9 +13,14 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
   app.get("/api/user/active-user", async (req, res) => {
     try {
       const userId = await getCurrentUserId(req, res, prisma);
+
+      if (userId.error) {
+        return res.status(401).json({ error: userId.error });
+      }
+
       const result = await prisma.user.findUnique({
         where: {
-          id: userId
+          id: userId.id
         },
         select: {
           ...ActiveUserResponsePrismaSelect
@@ -25,6 +30,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
       return res.status(200).json(result);
     } catch (error) {
       console.error("Error getting current user: ", error);
+
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
@@ -32,9 +38,14 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
   app.get("/api/user/active-user-group-memberships", async (req, res) => {
     try {
       const userId = await getCurrentUserId(req, res, prisma);
+
+      if (userId.error) {
+        return res.status(401).json({ error: userId.error });
+      }
+
       const result = await prisma.user.findUnique({
         where: {
-          id: userId
+          id: userId.id
         },
         select: {
           groupMemberships: { // my memberships
@@ -49,7 +60,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
 
 
       await Promise.all(
-        result.groupMemberships?.map(async (membership) => {
+        result?.groupMemberships?.map(async (membership) => {
           let activeInviteLink = "";
 
           if (membership.isAdmin) {
@@ -207,14 +218,14 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         return res.status(401).json({ error: `Invalid email or password` });
       }
 
-      if (!user.isActive) {
-        return res.status(401).json({ error: `User is not active` });
-      }
-
       const passwordValid = await compare(password, user.password);
 
       if (!passwordValid) {
         return res.status(401).json({ error: `Invalid email or password` });
+      }
+
+      if (!user.isActive) {
+        return res.status(401).json({ error: `User is not active` });
       }
 
       // TODO: Might not be secure storing email and id in public jwt token, look into that
@@ -230,9 +241,14 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
   app.get("/api/user/active-user-play-preferences", async (req, res) => {
     try {
       const userId = await getCurrentUserId(req, res, prisma);
+
+      if (userId.error) {
+        return res.status(401).json({ error: userId.error });
+      }
+
       const result = await prisma.user.findUnique({
         where: {
-          id: userId
+          id: userId.id
         },
         select: {
           playPreferences: {
@@ -243,7 +259,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         }
       }) as { playPreferences: UserPlayPreferenceResponse[]; };
 
-      return res.status(200).json(result.playPreferences);
+      return res.status(200).json(result?.playPreferences);
     } catch (error) {
       console.error("Error getting current user play preferences: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
@@ -252,6 +268,10 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
 
   app.post("/api/user/play-preference/upsert", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
 
     const { id, preference, bggId } = req.body;
 
@@ -273,7 +293,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
           },
           user: {
             connect: {
-              id: userId,
+              id: userId.id,
             },
           },
         },
@@ -293,7 +313,11 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
   });
 
   app.post("/api/user/play-preference/delete", async (req, res) => {
-    await getCurrentUserId(req, res, prisma); // verify auth
+    const userId = await getCurrentUserId(req, res, prisma); // verify auth
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
 
     const { id } = req.body;
 

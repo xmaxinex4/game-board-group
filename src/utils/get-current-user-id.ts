@@ -16,7 +16,7 @@ export async function getCurrentUserId(req: Request, res: Response, prisma: Pris
     const verifiedToken = verify(token, process.env.APP_SECRET || "") as Token;
 
     if (!verifiedToken || !verifiedToken?.userId) {
-      res.status(401).json({ error: `You are currently not logged in` });
+      return { error: `You are currently not logged in`, id: "" };
     }
 
     const currentUser = await prisma.user.findUnique({
@@ -26,15 +26,15 @@ export async function getCurrentUserId(req: Request, res: Response, prisma: Pris
     });
 
     if (!currentUser) {
-      res.status(401).json({ error: `User not found` });
+      return { error: `User not found`, id: "" };
     }
 
     if (!currentUser.isActive) {
-      res.status(401).json({ error: `Email needs confirmation to activate` });
+      return { error: `Email needs confirmation to activate`, id: "" };
     }
 
-    return verifiedToken && verifiedToken.userId;
+    return verifiedToken && { id: verifiedToken.userId };
   } else {
-    res.status(401).json({ error: `You are currently not logged in` });
+    return { error: `You are currently not logged in`, id: "" };
   }
 }

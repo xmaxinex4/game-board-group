@@ -7,7 +7,12 @@ import { CollectionResponse, CollectionResponsePrismaSelect, GameResponse, UserR
 
 export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/collection/get/:id", async (req, res) => {
-    await getCurrentUserId(req, res, prisma); // verify auth
+    const userId = await getCurrentUserId(req, res, prisma); // verify auth
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const collectionId = req.params.id;
 
     if (!collectionId) {
@@ -33,12 +38,16 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   app.get("/api/collection/my-collections", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const result = await prisma.collection.findMany({
       where: {
         owners: {
           some: {
             id: {
-              equals: userId,
+              equals: userId.id,
             }
           }
         }
@@ -53,6 +62,10 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
 
   app.post("/api/collection/upsert", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
+
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
 
     const { collectionId, name, ownerIds, games } = req.body;
 
@@ -97,7 +110,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     const owners = (ownerIds || []).concat(userId);
     const currentOwners = currentCollection.owners;
 
-    if (collectionId && !currentOwners.some(owner => owner.id === userId)) {
+    if (collectionId && !currentOwners.some(owner => owner.id === userId.id)) {
       return res.status(401).json({ error: `You are not an owner of this collection` });
     }
 
@@ -219,6 +232,10 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
   app.post("/api/collection/delete", async (req, res) => {
     const userId = await getCurrentUserId(req, res, prisma);
 
+    if (userId.error) {
+      return res.status(401).json({ error: userId.error });
+    }
+
     const { collectionId } = req.body;
 
     if (!collectionId) {
@@ -237,7 +254,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       });
 
       const collectionOwners = collection.owners;
-      const isValidOwner = collectionOwners.some(owner => owner.id === userId);
+      const isValidOwner = collectionOwners.some(owner => owner.id === userId.id);
 
       if (!isValidOwner) {
         return res.status(401).json({ error: `You are not an owner of this collection` });
@@ -272,7 +289,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
         data: {
           owners: {
             disconnect: [
-              { id: userId }
+              { id: userId.id }
             ]
           }
         }
