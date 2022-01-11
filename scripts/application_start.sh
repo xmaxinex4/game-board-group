@@ -5,24 +5,6 @@
 sudo su ec2-user
 sudo chmod -R 777 /home/ec2-user/gbg_app
 
-# install and run redis
-
-sudo yum -y install gcc make # install GCC compiler
-cd /usr/local/src 
-sudo wget http://download.redis.io/redis-stable.tar.gz
-sudo tar xvzf redis-stable.tar.gz
-sudo rm -f redis-stable.tar.gz
-cd redis-stable
-sudo yum groupinstall -y "Development Tools"
-sudo make distclean
-sudo make
-sudo yum install -y tcl
-
-sudo cp src/redis-server /usr/local/bin/
-sudo cp src/redis-cli /usr/local/bin/
-
-redis-server
-
 # navigate into current working directory
 
 cd /home/ec2-user/gbg_app
