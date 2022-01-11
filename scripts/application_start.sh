@@ -21,7 +21,7 @@ sudo yum install -y tcl
 sudo cp src/redis-server /usr/local/bin/
 sudo cp src/redis-cli /usr/local/bin/
 
-sudo /usr/bin/pm2 start redis-server
+redis-server
 
 # navigate into current working directory
 
