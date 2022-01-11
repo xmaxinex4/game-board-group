@@ -13,7 +13,7 @@ sudo wget http://download.redis.io/redis-stable.tar.gz
 sudo tar xvzf redis-stable.tar.gz
 sudo rm -f redis-stable.tar.gz
 cd redis-stable
-sudo yum groupinstall "Development Tools"
+sudo yum groupinstall -y "Development Tools"
 sudo make distclean
 sudo make
 sudo yum install -y tcl
@@ -27,7 +27,7 @@ redis-server
 
 cd /home/ec2-user/gbg_app
 
-sudo /usr/bin/npm install
+sudo /usr/bin/npm -y install
 sudo /usr/bin/npm run build
 
 # set environment variables
