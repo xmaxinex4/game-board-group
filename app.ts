@@ -20,8 +20,6 @@ const redisDelete = promisify(redisClient.del).bind(redisClient);
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-console.log("sg: ", process.env.SENDGRID_API_KEY);
-
 const app = express();
 var cors = require("cors");
 
