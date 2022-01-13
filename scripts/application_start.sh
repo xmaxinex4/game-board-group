@@ -11,6 +11,7 @@ cd /home/ec2-user/gbg_app
 
 sudo /usr/bin/npm -y install
 sudo /usr/bin/npm run build
+sudo /usr/bin/npm run migrate
 
 # set environment variables
 sudo yum update -y
