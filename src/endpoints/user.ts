@@ -182,11 +182,8 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
       };
       sgMail
         .send(msg)
-        .then(() => {
-          return res.status(201).json();
-        })
         .catch((error) => {
-          return res.status(500).json({ error: `Something went wrong. Please try again.` });
+          throw error;
         });
 
       return res.status(201).json();
