@@ -199,9 +199,6 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
   app.post("/api/user/login", async (req, res) => {
     const { email, password } = req.body;
 
-    console.log("got to login with email: ", email);
-
-
     if (!email) {
       return res.status(400).json({ error: `Missing email` });
     }
