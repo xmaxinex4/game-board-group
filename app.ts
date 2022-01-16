@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import redis from "redis";
+// import redisClustr from "redis-cl clustr";
 import sgMail from "@sendgrid/mail";
 
 import { promisify } from "util";
@@ -14,6 +15,20 @@ import { initializeAccountApi } from "./src/endpoints/account";
 
 const prisma = new PrismaClient();
 const redisClient = redis.createClient();
+
+// var redis = new RedisClustr({
+//     servers: [
+//         {
+//             host: process.env.REDIS_CLUSTER_HOST,
+//             port: process.env.REDIS_CLUSTER_PORT
+//         }
+//     ],
+//     createClient: function (port, host) {
+//         // this is the default behaviour
+//         return RedisClient.createClient(port, host);
+//     }
+// });
+
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
 const redisDelete = promisify(redisClient.del).bind(redisClient);
