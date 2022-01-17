@@ -5,6 +5,7 @@ import {
   Button,
   Typography,
   Alert,
+  // Card,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -78,62 +79,73 @@ export function LoginForm(): React.ReactElement {
       </Grid>
     ) : (
       <form noValidate onSubmit={handleSubmit}>
-        <Grid container direction="column" spacing={8}>
-          <Grid container item direction="column" spacing={4}>
-            <>
-              {serverError && (
-                <Grid item>
-                  <Alert severity="error">{serverError}</Alert>
-                </Grid>
-              )}
-              <FullWidthGridItemInput
-                formControlProps={{ disabled: isLoading, fullWidth: true }}
-                outerEndAdornmentIcon={EmailIcon}
-                input={email}
-                inputProps={{ maxLength: 50 }}
-                outlinedInputProps={{ id: "email" }}
-                inputLabel="Email"
-                setInputState={setEmail}
-                error={errors.email}
-                onInputChange={clearErrorFields}
-              />
+        {/* <Card sx={{ padding: "16px" }}> */}
+        <Grid container alignItems="center" justifyContent="center">
+          <Grid item xs={8}>
+            <Grid container direction="column" spacing={8}>
+              <Grid container item direction="column" spacing={4}>
+                <>
+                  {serverError && (
+                    <Grid item>
+                      <Alert severity="error">{serverError}</Alert>
+                    </Grid>
+                  )}
+                  <FullWidthGridItemInput
+                    formControlProps={{ disabled: isLoading, fullWidth: true }}
+                    outerEndAdornmentIcon={EmailIcon}
+                    input={email}
+                    inputProps={{ maxLength: 50 }}
+                    outlinedInputProps={{ id: "email" }}
+                    inputLabel="Email"
+                    setInputState={setEmail}
+                    error={errors.email}
+                    onInputChange={clearErrorFields}
+                  />
 
-              <Grid container item spacing={1}>
-                <FullWidthGridItemPasswordInput
-                  formControlProps={{ disabled: isLoading, fullWidth: true }}
-                  input={password}
-                  setInputState={setPassword}
-                  error={errors.password}
-                  onInputChange={clearErrorFields}
-                />
-                <Grid container item justifyContent="flex-end">
+                  <Grid container item spacing={1}>
+                    <FullWidthGridItemPasswordInput
+                      formControlProps={{ disabled: isLoading, fullWidth: true }}
+                      input={password}
+                      setInputState={setPassword}
+                      error={errors.password}
+                      onInputChange={clearErrorFields}
+                    />
+                    <Grid container item justifyContent="flex-end">
+                      <Typography>
+                        <SiteLink text="Forgot Password?" to="/forgot-password" />
+                      </Typography>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item>
+                    <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">
+                      Login
+                    </Button>
+                  </Grid>
+                </>
+              </Grid>
+
+              <Grid container item justifyContent="center" spacing={1}>
+                <Grid item>
                   <Typography>
-                    <SiteLink text="Forgot Password?" to="/forgot-password" />
+                    Don&apos;t have an account?
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography>
+                    <SiteLink text="Signup" to="/create-account" />
                   </Typography>
                 </Grid>
               </Grid>
-
-              <Grid item>
-                <Button fullWidth variant="contained" color="primary" disabled={isLoading} type="submit">
-                  Login
-                </Button>
-              </Grid>
-            </>
-          </Grid>
-
-          <Grid container item justifyContent="center" spacing={1}>
-            <Grid item>
-              <Typography>
-                Don&apos;t have an account?
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography>
-                <SiteLink text="Signup" to="/create-account" />
-              </Typography>
             </Grid>
           </Grid>
+          {/* <Grid item xs={4}>
+            <Typography textAlign="center">
+              About
+            </Typography>
+          </Grid> */}
         </Grid>
+        {/* </Card> */}
       </form>
     );
 }

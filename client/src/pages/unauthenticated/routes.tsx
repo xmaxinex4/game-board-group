@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Switch,
   Route,
@@ -23,6 +23,19 @@ import { ResetPassword } from "./reset-password/reset-password";
 export function UnAuthenticatedRoutes(): React.ReactElement {
   const isPrivacyPolicyRoute = useRouteMatch("/privacy-policy");
   const isTermsAndConditionsRoute = useRouteMatch("/terms-and-conditions");
+  const isLoginRoute = useRouteMatch("/login");
+
+  const maxWidth = useMemo(() => {
+    if (isPrivacyPolicyRoute || isTermsAndConditionsRoute) {
+      return "1000px";
+    }
+
+    if (isLoginRoute) {
+      return "800px";
+    }
+
+    return "500px";
+  }, [isPrivacyPolicyRoute, isTermsAndConditionsRoute, isLoginRoute]);
 
   return (
     <Grid container justifyContent="center">
@@ -33,7 +46,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
         xs={12}
         item
         container
-        sx={{ maxWidth: (isPrivacyPolicyRoute || isTermsAndConditionsRoute) ? "1000px" : "500px" }}
+        sx={{ maxWidth }}
         alignItems="center"
         justifyContent="center"
         spacing={2}

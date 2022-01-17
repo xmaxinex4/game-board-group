@@ -38,6 +38,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
+    "redis-clustr": "^1.7.0",
     "typescript": "^4.2.3"
   },
   "engines": {
