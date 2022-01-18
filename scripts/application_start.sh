@@ -26,6 +26,8 @@ echo BASEURL=$(aws secretsmanager get-secret-value --region us-west-2 --secret-i
 echo APP_SECRET=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id APP_SECRET --query SecretString --output text | jq -r .APP_SECRET) >> .env
 echo DATABASE_URL=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id DATABASE_URL --query SecretString --output text | jq -r .DATABASE_URL) >> .env
 echo SENDGRID_API_KEY=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id SENDGRID_API_KEY --query SecretString --output text | jq -r .SENDGRID_API_KEY) >> .env
+echo REDIS_CLUSTER_HOST=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id REDIS_CLUSTER_HOST --query SecretString --output text | jq -r .REDIS_CLUSTER_HOST) >> .env
+echo REDIS_CLUSTER_PORT=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id REDIS_CLUSTER_PORT --query SecretString --output text | jq -r .REDIS_CLUSTER_PORT) >> .env
 
 # start our node app in the background using pm2
 pm2 describe app > /dev/null
