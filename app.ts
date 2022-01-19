@@ -23,6 +23,9 @@ var redisClient = new RedisClustr({
   ],
 });
 
+console.log("REDIS_CLUSTER_HOST: ", process.env.REDIS_CLUSTER_HOST);
+console.log("REDIS_CLUSTER_PORT: ", process.env.REDIS_CLUSTER_PORT);
+
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
 const redisDelete = promisify(redisClient.del).bind(redisClient);
