@@ -17,8 +17,8 @@ const prisma = new PrismaClient();
 var redisClient = new RedisClustr({
   servers: [
     {
+      port: process.env.REDIS_CLUSTER_PORT,
       host: process.env.REDIS_CLUSTER_HOST,
-      port: process.env.REDIS_CLUSTER_PORT
     }
   ],
 });
