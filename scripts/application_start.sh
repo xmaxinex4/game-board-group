@@ -9,14 +9,6 @@ sudo chmod -R 777 /home/ec2-user/gbg_app
 
 cd /home/ec2-user/gbg_app
 
-sudo /usr/bin/npm -y install
-sudo /usr/bin/npm run build
-sudo /usr/bin/npm run migrate
-
-# set environment variables
-sudo yum update -y
-sudo yum install -y jq
-
 rm -f -- .env
 > .env
 
@@ -28,6 +20,14 @@ echo DATABASE_URL=$(aws secretsmanager get-secret-value --region us-west-2 --sec
 echo SENDGRID_API_KEY=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id SENDGRID_API_KEY --query SecretString --output text | jq -r .SENDGRID_API_KEY) >> .env
 echo REDIS_CLUSTER_HOST=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id REDIS_CLUSTER_HOST --query SecretString --output text | jq -r .REDIS_CLUSTER_HOST) >> .env
 echo REDIS_CLUSTER_PORT=$(aws secretsmanager get-secret-value --region us-west-2 --secret-id REDIS_CLUSTER_PORT --query SecretString --output text | jq -r .REDIS_CLUSTER_PORT) >> .env
+
+sudo /usr/bin/npm -y install
+sudo /usr/bin/npm run build
+sudo /usr/bin/npm run migrate
+
+# set environment variables
+sudo yum update -y
+sudo yum install -y jq
 
 # start our node app in the background using pm2
 pm2 describe app > /dev/null
