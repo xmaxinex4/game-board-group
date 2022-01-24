@@ -198,7 +198,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         to: user.email,
         from: "gameboardgroup@gameboardgroup.com",
         template_id: "d-af84d37dfa06434a9b711b814ef6334d",
-        html: "", // todo: might break things, test email
+        html: "test", // todo: might break things, test email
         dynamicTemplateData: {
           name: user.username,
           code: accountActivationCode,
@@ -346,7 +346,7 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         to: user.email,
         from: "gameboardgroup@gameboardgroup.com",
         template_id: "d-cbb98967e2004d05b0774c5c1f6ed180",
-        html: "", // todo: might break things, test email
+        html: "test", // todo: might break things, test email
         dynamicTemplateData: {
           name: user.username,
           code: resetPasswordCode,

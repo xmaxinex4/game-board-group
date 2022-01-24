@@ -176,7 +176,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         to: user.email,
         from: "gameboardgroup@gameboardgroup.com",
         template_id: "d-af84d37dfa06434a9b711b814ef6334d",
-        html: "", // todo: might break things, test email
+        html: "test", // todo: might break things, test email
         dynamicTemplateData: {
           name: user.username,
           code: accountActivationCode,
