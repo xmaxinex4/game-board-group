@@ -169,6 +169,8 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         return res.status(400).json({ error: `Unable to send account activation link.` });
       }
 
+      console.log("Sending sendgrid message to: ", user.email);
+
       // send email using send grid with link code
       const msg = {
         to: user.email,
@@ -183,6 +185,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
       sgMail
         .send(msg)
         .catch((error) => {
+          console.log("Error with sendgrid: ", error);
           throw error;
         });
 
