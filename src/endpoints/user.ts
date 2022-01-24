@@ -185,7 +185,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
       sgMail
         .send(msg)
         .catch((error) => {
-          console.log("Error with sendgrid: ", error);
+          console.log("Errors: ", error?.response?.body?.errors);
           throw error;
         });
 
