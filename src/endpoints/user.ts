@@ -176,9 +176,9 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         to: user.email,
         from: "gameboardgroup@gameboardgroup.com",
         template_id: "d-af84d37dfa06434a9b711b814ef6334d",
-        html: "test", // todo: might break things, test email
+        html: "test",
         dynamicTemplateData: {
-          name: user.username,
+          username: user.username,
           code: accountActivationCode,
         },
       };
@@ -213,8 +213,6 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
           email: email.toLowerCase()
         },
       });
-
-      console.log("user: ", user);
 
       if (!user) {
         return res.status(401).json({ error: `Invalid email or password` });

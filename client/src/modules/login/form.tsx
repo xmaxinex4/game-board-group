@@ -5,7 +5,6 @@ import {
   Button,
   Typography,
   Alert,
-  // Card,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 
@@ -54,6 +53,7 @@ export function LoginForm(): React.ReactElement {
         })
         .catch(({ response }) => {
           const error = response?.data?.error;
+          console.log("FE error: ", error);
           setServerError(error || "Something went wrong. Please try again.");
 
           window.scrollTo({
@@ -64,6 +64,13 @@ export function LoginForm(): React.ReactElement {
         .finally(() => setIsLoading(false));
     }
   };
+
+  const aboutText = `
+  Start organizing your gaming group! Log your own game collections and
+  view your group's collective library with a clean UI display. 
+  Store your own collections and manage ownership between members of the group. 
+  Sign in below or create a new account to get started!
+  `;
 
   return serverError && serverError === "User is not active"
     ? (
@@ -79,9 +86,11 @@ export function LoginForm(): React.ReactElement {
       </Grid>
     ) : (
       <form noValidate onSubmit={handleSubmit}>
-        {/* <Card sx={{ padding: "16px" }}> */}
-        <Grid container alignItems="center" justifyContent="center">
-          <Grid item xs={8}>
+        <Grid container direction="column" alignItems="center" justifyContent="center" spacing={4}>
+          <Grid item sx={{ width: "75%" }}>
+            <Typography textAlign="center">{aboutText}</Typography>
+          </Grid>
+          <Grid item>
             <Grid container direction="column" spacing={8}>
               <Grid container item direction="column" spacing={4}>
                 <>
@@ -139,13 +148,7 @@ export function LoginForm(): React.ReactElement {
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid item xs={4}>
-            <Typography textAlign="center">
-              About
-            </Typography>
-          </Grid> */}
         </Grid>
-        {/* </Card> */}
       </form>
     );
 }
