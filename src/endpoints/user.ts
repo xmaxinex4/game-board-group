@@ -169,7 +169,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         return res.status(400).json({ error: `Unable to send account activation link.` });
       }
 
-      console.log("Sending sendgrid message to: ", user.email);
+      console.log("sending with code: ", accountActivationCode);
 
       // send email using send grid with link code
       const msg = {
@@ -214,6 +214,8 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         },
       });
 
+      console.log("user: ", user);
+
       if (!user) {
         return res.status(401).json({ error: `Invalid email or password` });
       }
@@ -233,7 +235,7 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
 
       return res.status(200).json({ token });
     } catch (error) {
-      console.error("Error on sign in: ", error);
+      console.log("Error on sign in: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });
     }
   });
