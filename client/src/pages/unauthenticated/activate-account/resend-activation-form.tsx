@@ -86,6 +86,11 @@ export function ResendActivationForm(props: ResendActivationFormProps): React.Re
         )}
         {!emailSent && (
           <>
+            <Grid item>
+              <Typography textAlign="center">
+                Provide your email below and we will send a new activation link.
+              </Typography>
+            </Grid>
             <FullWidthGridItemInput
               formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
               outerEndAdornmentIcon={EmailIcon}
@@ -105,6 +110,8 @@ export function ResendActivationForm(props: ResendActivationFormProps): React.Re
                 onCancel={onResendActivationCancel}
                 cancelText="Cancel"
                 disabled={isLoading}
+                cancelButtonSize={5}
+                saveButtonSize={4}
               />
             </Grid>
           </>

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { TabContentContainer } from "../../../modules/common/layout/tab-content-container";
+// import { TabContentContainer } from "../../../modules/common/layout/tab-content-container";
 
 import { useAccountActivate } from "./endpoint-hooks";
 import { ResendActivationForm } from "./resend-activation-form";
@@ -49,41 +49,41 @@ export function ActivateAccount(): React.ReactElement {
   }, []);
 
   return (
-    <TabContentContainer>
-      <Grid container direction="column" alignItems="center" justifyContent="center" spacing={4}>
-        {isLoading && !simulatingProgress && (
-          <Grid container sx={{ padding: "100px" }} justifyContent="center" alignItems="center">
-            <CircularProgress size={72} />
+    // <TabContentContainer>
+    <Grid container direction="column" alignItems="center" justifyContent="center" spacing={4}>
+      {isLoading && !simulatingProgress && (
+        <Grid container sx={{ padding: "100px" }} justifyContent="center" alignItems="center">
+          <CircularProgress size={72} />
+        </Grid>
+      )}
+      {simulatingProgress && !isLoading && (
+        <Grid container sx={{ padding: "100px" }} direction="column" alignItems="center" justifyContent="center" spacing={4}>
+          <Grid item>
+            <Typography>Welcome to GameBoardGroup! Redirecting to homepage...</Typography>
           </Grid>
-        )}
-        {simulatingProgress && !isLoading && (
-          <Grid container sx={{ padding: "100px" }} direction="column" alignItems="center" justifyContent="center" spacing={4}>
-            <Grid item>
-              <Typography>Welcome to GameBoardGroup! Redirecting to homepage...</Typography>
-            </Grid>
-            <Grid item>
-              <Box sx={{ width: "100%" }}>
-                <LinearProgress sx={{ width: "500px" }} />
-              </Box>
-            </Grid>
+          <Grid item>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress sx={{ width: "500px" }} />
+            </Box>
           </Grid>
-        )}
-        {!isLoading && !simulatingProgress && (
-          <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
-            <Grid item>
-              <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
-            </Grid>
-            <Grid item>
-              <Typography>
-                The link you followed has expired.
-              </Typography>
-            </Grid>
-            <Grid item>
-              <ResendActivationForm />
-            </Grid>
+        </Grid>
+      )}
+      {!isLoading && !simulatingProgress && (
+        <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
+          <Grid item>
+            <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
           </Grid>
-        )}
-      </Grid>
-    </TabContentContainer>
+          <Grid item>
+            <Typography textAlign="center">
+              The link you followed has expired.
+            </Typography>
+          </Grid>
+          <Grid item>
+            <ResendActivationForm />
+          </Grid>
+        </Grid>
+      )}
+    </Grid>
+    // </TabContentContainer>
   );
 }

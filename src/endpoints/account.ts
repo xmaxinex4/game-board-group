@@ -106,6 +106,8 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
   app.post("/api/account/activate", async (req, res) => {
     const { activationCode } = req.body;
 
+    console.log("activationCode: ", activationCode);
+
     if (!activationCode || !activationCode.toString()) {
       return res.status(400).json({ error: `Missing activation code.` });
     }
