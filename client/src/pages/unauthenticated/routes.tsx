@@ -59,7 +59,7 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/create-account" component={CreateAccount} />
-            <Route path="/activate-account" component={ActivateAccount} />
+            <Route path="/activate-account/:activationCode" component={ActivateAccount} />
             <Route path="/login" component={Login} />
             <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
             <Route exact path="/privacy-policy" component={PrivacyPolicy} />

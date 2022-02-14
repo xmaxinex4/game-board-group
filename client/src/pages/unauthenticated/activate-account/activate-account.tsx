@@ -17,7 +17,7 @@ import { useAccountActivate } from "./endpoint-hooks";
 import { ResendActivationForm } from "./resend-activation-form";
 
 export function ActivateAccount(): React.ReactElement {
-  const { code: activationCode } = useParams<{ code: string; }>();
+  const { activationCode } = useParams<{ activationCode: string; }>();
 
   const [progress, setProgress] = React.useState(0);
   const [simulatingProgress, setSimulatingProgress] = useState(false);
@@ -47,6 +47,8 @@ export function ActivateAccount(): React.ReactElement {
       },
     });
   }, []);
+
+  console.log("activationCode: ", activationCode);
 
   return (
     // <TabContentContainer>
