@@ -48,8 +48,6 @@ export function ActivateAccount(): React.ReactElement {
     });
   }, []);
 
-  console.log("activationCode: ", activationCode);
-
   return (
     // <TabContentContainer>
     <Grid container direction="column" alignItems="center" justifyContent="center" spacing={4}>

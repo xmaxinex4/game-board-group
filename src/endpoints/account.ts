@@ -106,16 +106,12 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
   app.post("/api/account/activate", async (req, res) => {
     const { activationCode } = req.body;
 
-    console.log("activationCode: ", activationCode);
-
     if (!activationCode || !activationCode.toString()) {
       return res.status(400).json({ error: `Missing activation code.` });
     }
 
     let userEmail = await redisGet(activationCode.toString());
     userEmail = userEmail?.toString() && userEmail.toString().toLowerCase().replace("account-verification-", "");;
-
-    console.log("User email from Redis: ", userEmail);
 
     if (!userEmail) {
       console.log("Failed to get redis key for activation code; code not found in Redis.");
