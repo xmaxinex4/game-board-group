@@ -113,10 +113,14 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
     let userEmail = await redisGet(activationCode.toString());
     userEmail = userEmail?.toString() && userEmail.toString().toLowerCase().replace("account-verification-", "");;
 
+    console.log("userEmail from email: ", userEmail);
+
     if (!userEmail) {
       console.log("Failed to get redis key for activation code; code not found in Redis.");
       return res.status(400).json({ error: `Link Expired` });
     };
+
+    console.log("email translated: ", userEmail);
 
     try {
       const activatedUser = await prisma.user.update({
