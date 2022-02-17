@@ -34,7 +34,9 @@ var cors = require("cors");
 
 require("dotenv").config();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
+}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static("public"));
@@ -45,6 +47,8 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", ["Origin", "X-Requested-With", "Content-Type", "Accept", "content-type", "application/json"]);
   next();
 });
+
+console.log("process.env.ACCESS_CONTROL_ALLOW_ORIGIN", process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "client/build")));
