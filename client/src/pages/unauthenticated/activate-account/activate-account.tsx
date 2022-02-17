@@ -73,15 +73,17 @@ export function ActivateAccount(): React.ReactElement {
       )}
       {!isLoading && !simulatingProgress && (
         <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
-            <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
-          </Grid>
           {emailSent && (
-            <Grid item>
-              <Typography textAlign="center">
-                The link you followed has expired.
-              </Typography>
-            </Grid>
+            <>
+              <Grid item>
+                <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
+              </Grid>
+              <Grid item>
+                <Typography textAlign="center">
+                  The link you followed has expired.
+                </Typography>
+              </Grid>
+            </>
           )}
           <Grid item>
             <ResendActivationForm onSend={onResendEmailSent} />
