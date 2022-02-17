@@ -73,7 +73,7 @@ export function ActivateAccount(): React.ReactElement {
       )}
       {!isLoading && !simulatingProgress && (
         <Grid container direction="column" sx={{ padding: "100px" }} justifyContent="center" alignItems="center" spacing={2}>
-          {emailSent && (
+          {!emailSent && (
             <>
               <Grid item>
                 <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
