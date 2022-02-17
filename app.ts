@@ -51,13 +51,13 @@ app.use(function (req, res, next) {
 // Serve static files
 app.use(express.static(path.join(__dirname, "client/build")));
 
-app.options('/api', cors());
+app.options('/api/*', cors());
 
-app.get(`/api`, async (req, res) => {
+app.get(`/api/*`, async (req, res) => {
   res.json({ up: true });
 });
 
-app.post(`/api`, async (req, res) => {
+app.post(`/api/*`, async (req, res) => {
   res.json({ up: true });
 });
 
