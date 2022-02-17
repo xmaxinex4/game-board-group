@@ -132,13 +132,14 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         }
       }) as ActiveUserResponse;
 
-      console.log("activatedUser: ", activatedUser);
-
       if (!activatedUser) {
         return res.status(400).json({ error: `Failed to activate user.` });
       };
 
       await redisDelete(activationCode.toString());
+
+      console.log("activatedUser: ", activatedUser);
+      console.log("process.env.APP_SECRET: ", process.env.APP_SECRET);
 
       const token = sign({ userId: activatedUser.id }, process.env.APP_SECRET);
       return res.status(200).json({ token });
