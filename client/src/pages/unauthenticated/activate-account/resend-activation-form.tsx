@@ -16,12 +16,13 @@ import { SiteLink } from "../../../modules/common/navigation/site-link";
 export interface ResendActivationFormProps {
   onCancel?: () => void;
   onSend?: () => void;
+  onError?: () => void;
 }
 
 export function ResendActivationForm(props: ResendActivationFormProps): React.ReactElement {
   const history = useHistory();
 
-  const { onCancel, onSend } = props;
+  const { onCancel, onSend, onError } = props;
   const { resendActivationEmail } = useResendActivationEmail();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +57,13 @@ export function ResendActivationForm(props: ResendActivationFormProps): React.Re
             onSend();
           }
         },
-        onError: () => setEmailSent(true), // set true even on error for security to not reveal extra info to the user
+        onError: () => {
+          if (onError) {
+            onError();
+          }
+
+          setEmailSent(true); // set true even on error for security to not reveal extra info to the user
+        },
       });
     }
   };
