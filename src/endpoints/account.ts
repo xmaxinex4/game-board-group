@@ -151,6 +151,8 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
   app.post("/api/account/resend-verification-email", async (req, res) => {
     const { email } = req.body;
 
+    console.log("email to resend to: ", email);
+
     if (!email) {
       return res.status(400).json({ error: `Missing email` });
     }
@@ -195,6 +197,8 @@ export const initializeAccountApi = (app: Express, prisma: PrismaClient, redisGe
         console.log("Error setting redis key for account activation");
         return res.status(400).json({ error: `Unable to send account activation link.` });
       }
+
+      console.log("sending email: ", email);
 
       // send email using send grid with link code
       const msg = {

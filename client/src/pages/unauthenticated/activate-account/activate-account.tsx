@@ -30,6 +30,7 @@ export function ActivateAccount(): React.ReactElement {
   }, [setProgress, progress]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const { activateAccount } = useAccountActivate();
 
@@ -47,6 +48,8 @@ export function ActivateAccount(): React.ReactElement {
       },
     });
   }, []);
+
+  const onResendEmailSent = useCallback(() => setEmailSent(true), [setEmailSent]);
 
   return (
     // <TabContentContainer>
@@ -73,13 +76,15 @@ export function ActivateAccount(): React.ReactElement {
           <Grid item>
             <MoodBadTwoToneIcon color="primary" sx={{ fontSize: 80 }} />
           </Grid>
+          {emailSent && (
+            <Grid item>
+              <Typography textAlign="center">
+                The link you followed has expired.
+              </Typography>
+            </Grid>
+          )}
           <Grid item>
-            <Typography textAlign="center">
-              The link you followed has expired.
-            </Typography>
-          </Grid>
-          <Grid item>
-            <ResendActivationForm />
+            <ResendActivationForm onSend={onResendEmailSent} />
           </Grid>
         </Grid>
       )}
