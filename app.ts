@@ -48,12 +48,16 @@ app.use(function (req, res, next) {
   next();
 });
 
-console.log("process.env.ACCESS_CONTROL_ALLOW_ORIGIN", process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
-
 // Serve static files
 app.use(express.static(path.join(__dirname, "client/build")));
 
+app.options('/api', cors());
+
 app.get(`/api`, async (req, res) => {
+  res.json({ up: true });
+});
+
+app.post(`/api`, async (req, res) => {
   res.json({ up: true });
 });
 

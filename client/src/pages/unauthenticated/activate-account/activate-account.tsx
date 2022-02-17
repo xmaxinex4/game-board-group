@@ -86,7 +86,7 @@ export function ActivateAccount(): React.ReactElement {
             </>
           )}
           <Grid item>
-            <ResendActivationForm onSend={onResendEmailSent} />
+            <ResendActivationForm onSend={onResendEmailSent} onError={onResendEmailSent} />
           </Grid>
         </Grid>
       )}
