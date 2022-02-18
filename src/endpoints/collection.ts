@@ -128,11 +128,15 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
       }
     });
 
+    console.log("ownersSet 1: ", ownersSet);
+
     ownersSet.forEach((id => {
       ownersConnect.push({
         id
       });
     }));
+
+    console.log("ownersSet 2: ", ownersSet);
 
     // Gather games info and ids in current collection
     const currentCollectionGames = currentCollection.games;
