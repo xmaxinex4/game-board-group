@@ -34,9 +34,7 @@ var cors = require("cors");
 
 require("dotenv").config();
 
-app.use(cors({
-  origin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN,
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static("public"));
@@ -51,13 +49,11 @@ app.use(function (req, res, next) {
 // Serve static files
 app.use(express.static(path.join(__dirname, "client/build")));
 
-app.options('/api/*', cors());
-
-app.get(`/api/*`, async (req, res) => {
+app.get(`/api/activate-account/:id`, async (req, res) => {
   res.json({ up: true });
 });
 
-app.post(`/api/*`, async (req, res) => {
+app.post(`/api/activate-account/:id`, async (req, res) => {
   res.json({ up: true });
 });
 
