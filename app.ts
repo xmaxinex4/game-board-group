@@ -40,7 +40,7 @@ app.use(express.urlencoded());
 app.use(express.static("public"));
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", `${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}/*`);
+  res.header("Access-Control-Allow-Origin", `${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}`);
   res.header("Access-Control-Allow-Methods", ["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
   res.header("Access-Control-Allow-Headers", ["Origin", "X-Requested-With", "Content-Type", "Accept", "content-type", "application/json"]);
   next();
