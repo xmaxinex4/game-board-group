@@ -107,7 +107,7 @@ export const initializeCollectionApi = (app: Express, prisma: PrismaClient) => {
     }
 
     // Gather owner ids with logged in user listed as owner
-    const owners = (ownerIds || []).concat(userId);
+    const owners = (ownerIds || []).concat(userId.id);
     const currentOwners = currentCollection.owners;
 
     if (collectionId && !currentOwners.some(owner => owner.id === userId.id)) {
