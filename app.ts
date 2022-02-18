@@ -40,7 +40,7 @@ app.use(express.urlencoded());
 app.use(express.static("public"));
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", process.env.ACCESS_CONTROL_ALLOW_ORIGIN);
+  res.header("Access-Control-Allow-Origin", `${process.env.ACCESS_CONTROL_ALLOW_ORIGIN}/*`);
   res.header("Access-Control-Allow-Methods", ["GET", "PUT", "POST", "DELETE", "OPTIONS"]);
   res.header("Access-Control-Allow-Headers", ["Origin", "X-Requested-With", "Content-Type", "Accept", "content-type", "application/json"]);
   next();
@@ -49,11 +49,11 @@ app.use(function (req, res, next) {
 // Serve static files
 app.use(express.static(path.join(__dirname, "client/build")));
 
-app.get(`/api/activate-account/:id`, async (req, res) => {
+app.get(`/api`, async (req, res) => {
   res.json({ up: true });
 });
 
-app.post(`/api/activate-account/:id`, async (req, res) => {
+app.post(`/api`, async (req, res) => {
   res.json({ up: true });
 });
 
