@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { isEmpty } from "lodash";
@@ -9,7 +9,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForwardTwoTone";
 import { Button, Grid, Typography } from "@mui/material";
 
 import { selectedActiveUserGroupMembership } from "../../redux/active-user-group-memberships-slice";
-import { selectActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
+import { getFilteredLibraryGames, selectActiveUserGroupLibrary } from "../../redux/active-user-group-library-slice";
 import { TabContentContainer } from "../../modules/common/layout/tab-content-container";
 import { PageLoadingSpinner } from "../../modules/common/progress/page-loading-spinner";
 import { LibraryCardList } from "../../modules/library/card-list";
@@ -18,6 +18,7 @@ import { useGetLibrary } from "../../modules/library/endpoint-hooks";
 export function Library(): React.ReactElement {
   const activeGroupMembership = useSelector(selectedActiveUserGroupMembership);
   const activeLibrary = useSelector(selectActiveUserGroupLibrary);
+  const filteredLibraryGames = useSelector(getFilteredLibraryGames);
 
   const { getLibrary } = useGetLibrary();
   const history = useHistory();
@@ -32,10 +33,20 @@ export function Library(): React.ReactElement {
     }
   }, [activeGroupMembership]);
 
+  const libraryTitle = useMemo(() => {
+    let title = "Group Library";
+
+    if (filteredLibraryGames) {
+      title += ` (${filteredLibraryGames.length})`;
+    }
+
+    return title;
+  }, [filteredLibraryGames]);
+
   const goToGameCollections = () => history.push("/my-game-collections");
 
   return (
-    <TabContentContainer title="Group Library">
+    <TabContentContainer title={libraryTitle}>
       {loadingLibrary && (
         <PageLoadingSpinner />
       )}

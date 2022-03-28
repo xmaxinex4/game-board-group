@@ -193,7 +193,7 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
             autoComplete="none"
             size="small"
             inputProps={{ maxLength: 50 }}
-            value={currentLibaryFilters.name}
+            value={currentLibaryFilters.name || ""}
           />
         </Grid>
 
@@ -201,7 +201,7 @@ export function FilterForm(props: FilterFormProps): React.ReactElement {
           <FormControlLabel
             label={<Typography variant="subtitle2">Exclude Expansions</Typography>}
             control={
-              <Checkbox checked={currentLibaryFilters.excludeExpansions} onChange={onExpansionChange} />
+              <Checkbox checked={currentLibaryFilters.excludeExpansions || false} onChange={onExpansionChange} />
             }
           />
         </Grid>
