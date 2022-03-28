@@ -116,7 +116,7 @@ export const MeeplePaletteColors: MeeplePaletteColorTheme = {
     light: "#5078c3",
     dark: "#002664",
     main: "#0e4d92",
-    contrastText: "",
+    contrastText: "#ffffff",
   },
   Navy: {
     light: "#49449a",

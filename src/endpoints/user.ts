@@ -42,7 +42,6 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
       if (userId.error) {
         return res.status(401).json({ error: userId.error });
       }
-
       const result = await prisma.user.findUnique({
         where: {
           id: userId.id
@@ -56,25 +55,29 @@ export const initializeUserApi = (app: Express, prisma: PrismaClient, redisGet, 
         }
       }) as ActiveUserGroupMembershipsResponse;
 
-      const groupMembershipsWithActiveInviteLinks = [];
+      const groupMemberships = [];
 
-
-      await Promise.all(
-        result?.groupMemberships?.map(async (membership) => {
+      await Promise.all(result?.groupMemberships?.map(async (membership) => {
+        if (membership.isAdmin) {
           let activeInviteLink = "";
+          let codeFromRedis = null;
 
-          if (membership.isAdmin) {
-            const codeFromRedis = await redisGet(membership.id);
-            if (codeFromRedis) {
-              activeInviteLink = `${process.env.BASEURL}invite/${codeFromRedis}`;
-            }
+          try {
+            codeFromRedis = await redisGet(membership.id);
+          } catch (e) {
+            codeFromRedis = null;
           }
 
-          groupMembershipsWithActiveInviteLinks.push({ ...membership, activeInvitationLink: activeInviteLink });
-        })
-      );
+          if (codeFromRedis) {
+            activeInviteLink = `${process.env.BASEURL}invite/${codeFromRedis}`;
+            groupMemberships.push({ ...membership, activeInvitationLink: activeInviteLink });
+          } else {
+            groupMemberships.push({ ...membership });
+          }
+        }
+      }));
 
-      return res.status(200).json({ groupMemberships: groupMembershipsWithActiveInviteLinks });
+      return res.status(200).json({ groupMemberships });
     } catch (error) {
       console.error("Error getting current user: ", error);
       return res.status(500).json({ error: `Something went wrong. Please try again.` });

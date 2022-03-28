@@ -21,6 +21,7 @@ var redisClient = new RedisClustr({
       host: process.env.REDIS_CLUSTER_HOST,
     }
   ],
+  wait: 5000,
 });
 
 const redisGet = promisify(redisClient.get).bind(redisClient);
