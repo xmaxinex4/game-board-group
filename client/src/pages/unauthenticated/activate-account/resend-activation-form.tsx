@@ -19,7 +19,9 @@ export interface ResendActivationFormProps {
   onError?: () => void;
 }
 
-export function ResendActivationForm(props: ResendActivationFormProps): React.ReactElement {
+export function ResendActivationForm(
+  props: ResendActivationFormProps,
+): React.ReactElement {
   const history = useHistory();
 
   const { onCancel, onSend, onError } = props;
@@ -77,13 +79,21 @@ export function ResendActivationForm(props: ResendActivationFormProps): React.Re
     <form noValidate onSubmit={handleFormSubmit}>
       <Grid container item direction="column" spacing={2}>
         {emailSent && (
-          <Grid container item direction="column" justifyContent="center" alignItems="center" spacing={2}>
+          <Grid
+            container
+            item
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
             <Grid item>
               <MoodHappyIcon color="primary" sx={{ fontSize: 80 }} />
             </Grid>
             <Grid item>
               <Typography textAlign="center">
-                Thank you! An activation link was sent, please check your email to confirm.
+                Thank you! An activation link was sent, please check your email
+                to confirm.
               </Typography>
             </Grid>
             <Grid item>
@@ -99,7 +109,11 @@ export function ResendActivationForm(props: ResendActivationFormProps): React.Re
               </Typography>
             </Grid>
             <FullWidthGridItemInput
-              formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+              formControlProps={{
+                required: true,
+                disabled: isLoading,
+                fullWidth: true,
+              }}
               outerEndAdornmentIcon={EmailIcon}
               input={email}
               inputProps={{ maxLength: 50 }}

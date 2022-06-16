@@ -5,7 +5,7 @@ import sgMail from "@sendgrid/mail";
 
 import { promisify } from "util";
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { initializeUserApi } from "./src/endpoints/user";
 import { initializeGroupApi } from "./src/endpoints/group/group";
 import { initializeCollectionApi } from "./src/endpoints/collection";

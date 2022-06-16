@@ -1,6 +1,6 @@
 import { Express } from "express";
 
-import { Game, PrismaClient } from ".prisma/client";
+import { Game, PrismaClient } from "@prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 import { CollectionResponse, CollectionResponsePrismaSelect, GameResponse, UserResponse } from "../types/types";

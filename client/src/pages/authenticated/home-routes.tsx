@@ -47,6 +47,9 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
     window.scrollTo(0, 0);
   }, []);
 
+  const noGroupRouteComponent = () => <AddGroup noGroup />;
+  const addGroupDefaultRouteComponent = () => <Redirect to="/add-group" />;
+
   return (
     <Box sx={{ display: "flex" }}>
       <Box
@@ -73,7 +76,10 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
           variant="permanent"
           sx={{
             display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -82,80 +88,109 @@ export function AuthenticatedHomeRoutes(props: AuthenticatedHomeRoutesProps): Re
       </Box>
       <Box
         component="main"
-        sx={
-          {
-            flexGrow: 1,
-            p: 3,
-            width: { xs: `calc(100% - ${drawerWidth}px)` },
-            marginTop: { md: "unset", xs: "72px" },
-            padding: { md: "24px", xs: "unset" },
-          }
-        }
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { xs: `calc(100% - ${drawerWidth}px)` },
+          marginTop: { md: "unset", xs: "72px" },
+          padding: { md: "24px", xs: "unset" },
+        }}
       >
-        <>
-          {
-            activeUser && (
-              <Grid container>
-                <Grid
-                  container
-                  item
-                  direction="column"
-                  alignItems="center"
-                  sx={{ minHeight: { xs: "calc(100vh - 232px)", md: "calc(100vh - 188px)" } }}
-                >
-                  <div id="back-to-top-anchor" />
-                  <NavBar />
-                  {
-                    activeUserGroupMembership
-                      ? (
-                        <Grid container>
-                          <Grid item style={{ width: "100%" }}>
-                            <Switch>
-                              <Route exact path="/" component={Home} />
-                              <Route path="/library" component={Library} />
-                              <Route path="/my-game-collections" component={MyCollections} />
-                              <Route path="/account" component={AccountSettings} />
-                              <Route path="/manage-group" component={ManageGroup} />
-                              {/* <Route path="/polls" component={Polls} />
+        {activeUser && (
+          <Grid container>
+            <Grid
+              container
+              item
+              direction="column"
+              alignItems="center"
+              sx={{
+                minHeight: {
+                  xs: "calc(100vh - 232px)",
+                  md: "calc(100vh - 188px)",
+                },
+              }}
+            >
+              <div id="back-to-top-anchor" />
+              <NavBar />
+              {activeUserGroupMembership ? (
+                <Grid container>
+                  <Grid item style={{ width: "100%" }}>
+                    <Switch>
+                      <Route exact path="/" component={Home} />
+                      <Route path="/library" component={Library} />
+                      <Route
+                        path="/my-game-collections"
+                        component={MyCollections}
+                      />
+                      <Route path="/account" component={AccountSettings} />
+                      <Route path="/manage-group" component={ManageGroup} />
+                      {/* <Route path="/polls" component={Polls} />
                               <Route path="/stats" component={Stats} /> */}
-                              <Route path="/invite/:inviteCode" component={GroupInvite} />
-                              <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
-                              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-                              <Route exact path="/add-group" component={AddGroup} />
-                              <Route path="*" component={NotFound} />
-                            </Switch>
-                          </Grid>
-                        </Grid>
-                      )
-                      : (
-                        <Grid container>
-                          <Grid item style={{ width: "100%" }}>
-                            {isActiveGroupLoading && (
-                              <PageLoadingSpinner />
-                            )}
-                            {!isActiveGroupLoading && (
-                              <Switch>
-                                <Route exact path="/account" component={AccountSettings} />
-                                <Route path="/invite/:inviteCode" component={GroupInvite} />
-                                <Route exact path="/terms-and-conditions" component={TermsAndConditions} />
-                                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-                                <Route exact path="/add-group" component={() => <AddGroup noGroup />} />
-                                <Route path="*" component={() => <Redirect to="/add-group" />} />
-                              </Switch>
-                            )}
-                          </Grid>
-                        </Grid>
-                      )
-                  }
-                  <Grid item>
-                    <ScrollToTopButton />
+                      <Route
+                        path="/invite/:inviteCode"
+                        component={GroupInvite}
+                      />
+                      <Route
+                        exact
+                        path="/terms-and-conditions"
+                        component={TermsAndConditions}
+                      />
+                      <Route
+                        exact
+                        path="/privacy-policy"
+                        component={PrivacyPolicy}
+                      />
+                      <Route exact path="/add-group" component={AddGroup} />
+                      <Route path="*" component={NotFound} />
+                    </Switch>
                   </Grid>
                 </Grid>
-                <NavFooter />
+              ) : (
+                <Grid container>
+                  <Grid item style={{ width: "100%" }}>
+                    {isActiveGroupLoading && <PageLoadingSpinner />}
+                    {!isActiveGroupLoading && (
+                      <Switch>
+                        <Route
+                          exact
+                          path="/account"
+                          component={AccountSettings}
+                        />
+                        <Route
+                          path="/invite/:inviteCode"
+                          component={GroupInvite}
+                        />
+                        <Route
+                          exact
+                          path="/terms-and-conditions"
+                          component={TermsAndConditions}
+                        />
+                        <Route
+                          exact
+                          path="/privacy-policy"
+                          component={PrivacyPolicy}
+                        />
+                        <Route
+                          exact
+                          path="/add-group"
+                          component={noGroupRouteComponent}
+                        />
+                        <Route
+                          path="*"
+                          component={addGroupDefaultRouteComponent}
+                        />
+                      </Switch>
+                    )}
+                  </Grid>
+                </Grid>
+              )}
+              <Grid item>
+                <ScrollToTopButton />
               </Grid>
-            )
-          }
-        </>
+            </Grid>
+            <NavFooter />
+          </Grid>
+        )}
       </Box>
     </Box>
   );

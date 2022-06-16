@@ -1,6 +1,6 @@
 import { Express } from "express";
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export const initializeGameApi = (app: Express, prisma: PrismaClient) => {
   app.get('/api/game/:bggid', async (req, res) => {

@@ -4,6 +4,7 @@ import React, {
   lazy,
   Suspense,
   useCallback,
+  useMemo,
   useState,
 } from "react";
 
@@ -95,18 +96,43 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
     onEdit(collection);
   }, [onEdit]);
 
+  const gameAndUserProviderValue = useMemo(
+    () => ({
+      games: collection.games.map((collectionGame) => collectionGame.game),
+      setGames: undefined,
+    }),
+    [collection],
+  );
+
   return (
     <>
       <PaddedCard styleProps={{ innerPadding: 3 }}>
         <Grid container spacing={2}>
-          <Grid container item alignItems="center" justifyContent="space-between">
+          <Grid
+            container
+            item
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Grid item>
               <Typography variant="subtitle1">{collection.name}</Typography>
             </Grid>
             {isMdUp && (
-              <Grid container alignItems="flex-end" justifyContent="space-between" item xs={3}>
+              <Grid
+                container
+                alignItems="flex-end"
+                justifyContent="space-between"
+                item
+                xs={3}
+              >
                 <Grid item>
-                  <IconButton onClick={editCollection} disabled={isLoading} color="primary" aria-label="edit collection" component="span">
+                  <IconButton
+                    onClick={editCollection}
+                    disabled={isLoading}
+                    color="primary"
+                    aria-label="edit collection"
+                    component="span"
+                  >
                     <EditIcon />
                   </IconButton>
                 </Grid>
@@ -122,20 +148,29 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                   </IconButton>
                 </Grid>
                 <Grid item>
-                  <IconButton onClick={verifyDelete} disabled={isLoading} color="primary" aria-label="delete collection" component="span">
+                  <IconButton
+                    onClick={verifyDelete}
+                    disabled={isLoading}
+                    color="primary"
+                    aria-label="delete collection"
+                    component="span"
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </Grid>
               </Grid>
             )}
             {!isMdUp && (
-              <MobileMoreActionsButton isLoading={isLoading} onEdit={editCollection} onRefresh={onRefreshCollection} onDelete={verifyDelete} />
+              <MobileMoreActionsButton
+                isLoading={isLoading}
+                onEdit={editCollection}
+                onRefresh={onRefreshCollection}
+                onDelete={verifyDelete}
+              />
             )}
           </Grid>
           <Grid container item spacing={4}>
-            {isLoading && (
-              <PageLoadingSpinner />
-            )}
+            {isLoading && <PageLoadingSpinner />}
             {!isLoading && (
               <Suspense fallback={<PageLoadingSpinner />}>
                 <Grid container item alignItems="center" spacing={2}>
@@ -143,7 +178,9 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                     <Typography variant="subtitle2">Games:</Typography>
                   </Grid>
                   <Grid item>
-                    <GamesStateContext.Provider value={{ games: collection.games.map((collectionGame) => collectionGame.game), setGames: undefined }}>
+                    <GamesStateContext.Provider
+                      value={gameAndUserProviderValue}
+                    >
                       <GameCircleListDisplay />
                     </GamesStateContext.Provider>
                   </Grid>
@@ -153,7 +190,9 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
                     <Typography variant="subtitle2">Owners:</Typography>
                   </Grid>
                   <Grid item>
-                    <GamesStateContext.Provider value={{ games: collection.games.map((collectionGame) => collectionGame.game), setGames: undefined }}>
+                    <GamesStateContext.Provider
+                      value={gameAndUserProviderValue}
+                    >
                       <UserCircleListDisplay users={collection.owners} />
                     </GamesStateContext.Provider>
                   </Grid>
@@ -166,13 +205,17 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       <Dialog
         onClose={closeLastOwnerDeleteModalOpen}
         open={lastOwnerDeleteModalOpen}
-        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
+        sx={{
+          ".MuiDialog-container": isMdUp
+            ? { marginTop: "64px", height: "unset" }
+            : {},
+        }}
       >
         <DialogContent>
           <Typography>
-            You are the last owner of this collection.
-            This will completely delete it and cannot be undone.
-            Are you sure you want to delete this collection?
+            You are the last owner of this collection. This will completely
+            delete it and cannot be undone. Are you sure you want to delete this
+            collection?
           </Typography>
         </DialogContent>
         <DialogActions sx={{ padding: "24px", paddingTop: "16px" }}>
@@ -188,7 +231,11 @@ export function CollectionCard(props: CollectionCardProps): React.ReactElement {
       <Dialog
         onClose={closeRemovingOwnerFromListModalOpen}
         open={removingOwnerFromListModalOpen}
-        sx={{ ".MuiDialog-container": isMdUp ? { marginTop: "64px", height: "unset" } : {} }}
+        sx={{
+          ".MuiDialog-container": isMdUp
+            ? { marginTop: "64px", height: "unset" }
+            : {},
+        }}
       >
         <DialogContent>
           <Typography>

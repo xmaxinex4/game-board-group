@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -24,11 +25,13 @@ module.exports = {
     // note you must disable the base rule as it can report incorrect errors
     "no-underscore-dangle": "off",
     "no-use-before-define": "off",
-    "quotes": [2, "double"],
+    quotes: [2, "double"],
+    "import/no-relative-packages": "off",
     "max-len": [2, 150],
     "import/prefer-default-export": [0],
     "@typescript-eslint/no-use-before-define": ["error"],
     "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/require-default-props": "off",
     "linebreak-style": 0,
     "import/extensions": [
       "error",

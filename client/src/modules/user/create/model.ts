@@ -1,4 +1,4 @@
-import { Color } from ".prisma/client";
+import { Color } from "@prisma/client";
 
 export type CreateUserFormModel = {
   email: string;

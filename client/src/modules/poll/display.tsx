@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Grid } from "@mui/material";
 
-import { Poll } from ".prisma/client";
+import { Poll } from "@prisma/client";
 
 export interface PollDisplayProps {
   poll: Poll;
@@ -18,8 +18,8 @@ export function PollDisplay(props: PollDisplayProps): React.ReactElement {
         className="w-100"
         style={{
           // backgroundImage: `url(${this.props.poll.imageUrl})`,
-          backgroundSize: 'cover',
-          paddingBottom: '100%',
+          backgroundSize: "cover",
+          paddingBottom: "100%",
         }}
       />
       <div className="pt3">
@@ -30,4 +30,4 @@ export function PollDisplay(props: PollDisplayProps): React.ReactElement {
       </div>
     </Grid>
   );
-};
+}

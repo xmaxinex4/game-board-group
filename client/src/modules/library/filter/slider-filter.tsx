@@ -5,7 +5,6 @@ import React, { useCallback } from "react";
 import {
   Box,
   Grid,
-  Mark,
   Slider,
   Typography,
 } from "@mui/material";
@@ -13,7 +12,7 @@ import {
 export interface SliderFilterProps {
   filterValue?: number | number[];
   onSliderValueChange: (event: Event, value: number | number[]) => void;
-  marks: boolean | Mark[] | undefined;
+  marks: boolean | any[] | undefined; // TODO: Fix Any type for now bc Marks[] is erroring
   min?: number;
   max?: number;
   label: string;

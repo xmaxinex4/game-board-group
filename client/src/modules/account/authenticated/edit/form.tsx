@@ -7,7 +7,7 @@ import {
 
 import PersonIcon from "@mui/icons-material/Person";
 
-import { Color } from ".prisma/client";
+import { Color } from "@prisma/client";
 
 import { FullWidthGridItemInput } from "../../../common/input/full-width-grid-item-input";
 import { MeepleColorPicker } from "../../../common/meeple-color-picker";

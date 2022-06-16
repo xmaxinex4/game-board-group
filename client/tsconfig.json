@@ -8,6 +8,7 @@
     "**/*.spec.ts"
   ],
   "compilerOptions": {
+    "jsx": "react",
     "noEmit": true,
     "outDir": "build",
     "skipLibCheck": true,

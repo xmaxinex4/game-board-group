@@ -24,6 +24,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import { isString } from "lodash";
 import { CollectionResponse, UserMembershipResponse, UserResponse } from "../../../../../src/types/types";
 import { Meeple } from "../../../images/components/meeple";
 import { GamesStateContext } from "../../../contexts/upsert-games-state-context";
@@ -167,7 +168,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
             options={ownerOptions}
             disableCloseOnSelect
             onChange={onOwnerSelected}
-            getOptionLabel={(option) => option.username}
+            getOptionLabel={(option) => (isString(option) ? option : option.username)}
             value={owners}
             isOptionEqualToValue={isOptionEqualToValue}
             getOptionDisabled={(option) => option.id === activeUser?.id}
@@ -207,7 +208,7 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
                 );
               }
 
-              return <></>;
+              return null;
             }}
             renderInput={(params) => (
               <TextField

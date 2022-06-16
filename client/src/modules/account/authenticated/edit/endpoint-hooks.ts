@@ -2,7 +2,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import { Color } from ".prisma/client";
+import { Color } from "@prisma/client";
 
 import { ActiveUserResponse } from "../../../../../../src/types/types";
 import { useApi } from "../../../../hooks/useApi";

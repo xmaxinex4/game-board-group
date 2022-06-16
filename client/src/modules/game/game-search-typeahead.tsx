@@ -24,8 +24,9 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
-import { Game } from ".prisma/client";
+import { Game } from "@prisma/client";
 
+import { isString } from "lodash";
 import useDebounce from "../../hooks/useDebounce";
 import { useBggApi } from "../../hooks/useBggApi";
 import { getGameDetailsFromBggXmlResult, getGamesFromBggXmlResult } from "../../helpers/bgg-search-xml-to-json";
@@ -86,51 +87,49 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
     }
   }, [games, setGames]);
 
-  React.useEffect(
-    () => {
-      if (debouncedSearchTerm) {
-        setIsSearching(true);
+  React.useEffect(() => {
+    if (debouncedSearchTerm) {
+      setIsSearching(true);
 
-        // BGG does not let you return a specified number of results, so it takes a long time for searches with short query lengths
-        // For performance improvement, set exact match to true for queries length < 4 to avoid long load times
-        let optimizedExactMatch = exactMatch;
+      // BGG does not let you return a specified number of results, so it takes a long time for searches with short query lengths
+      // For performance improvement, set exact match to true for queries length < 4 to avoid long load times
+      let optimizedExactMatch = exactMatch;
 
-        if (debouncedSearchTerm as string && (debouncedSearchTerm as string).split("")?.length < 4) {
-          optimizedExactMatch = true;
-        }
-
-        // Cancel active requests no longer relevent
-        if (activeRequestCancelToken) {
-          activeRequestCancelToken.cancel();
-        }
-
-        const newCancelToken = CancelToken.source();
-        setActiveRequestCancelToken(newCancelToken);
-
-        bggApiGet(
-          `/search?query=${debouncedSearchTerm}&exact=${optimizedExactMatch ? 1 : 0}&type=boardgame`,
-          newCancelToken?.token,
-        ).then(({ data }) => {
-          if (data as string) {
-            setActiveRequestCancelToken(undefined);
-            const result = getGamesFromBggXmlResult(data as string);
-            setOptions(result);
-            setIsSearching(false);
-          }
-        }).catch((thrown) => {
-          if (axios.isCancel(thrown)) {
-            console.log("Request canceled", thrown.message);
-          } else {
-            setActiveRequestCancelToken(undefined);
-            console.log("Request failed", thrown.message);
-            setIsSearching(false);
-          }
-        });
-      } else {
-        setOptions([]);
+      if (debouncedSearchTerm as string && (debouncedSearchTerm as string).split("")?.length < 4) {
+        optimizedExactMatch = true;
       }
-    }, [debouncedSearchTerm, exactMatch],
-  );
+
+      // Cancel active requests no longer relevent
+      if (activeRequestCancelToken) {
+        activeRequestCancelToken.cancel();
+      }
+
+      const newCancelToken = CancelToken.source();
+      setActiveRequestCancelToken(newCancelToken);
+
+      bggApiGet(
+        `/search?query=${debouncedSearchTerm}&exact=${optimizedExactMatch ? 1 : 0}&type=boardgame`,
+        newCancelToken?.token,
+      ).then(({ data }) => {
+        if (data as string) {
+          setActiveRequestCancelToken(undefined);
+          const result = getGamesFromBggXmlResult(data as string);
+          setOptions(result);
+          setIsSearching(false);
+        }
+      }).catch((thrown) => {
+        if (axios.isCancel(thrown)) {
+          console.log("Request canceled", thrown.message);
+        } else {
+          setActiveRequestCancelToken(undefined);
+          console.log("Request failed", thrown.message);
+          setIsSearching(false);
+        }
+      });
+    } else {
+      setOptions([]);
+    }
+  }, [debouncedSearchTerm, exactMatch]);
 
   const handleChange = (event: React.ChangeEvent<{}>, value: string, reason: AutocompleteInputChangeReason) => {
     if (reason !== "reset") {
@@ -200,7 +199,7 @@ export function GameSearchTypeahead(props: GameSearchTypeaheadProps): React.Reac
           selectOnFocus={false}
           inputValue={searchTerm}
           onInputChange={handleChange}
-          onChange={(e, option) => { if (option) onGameSelect(e, option?.bggId); }}
+          onChange={(e, option) => { if (option && !isString(option)) onGameSelect(e, option?.bggId); }}
           isOptionEqualToValue={isOptionEqualToValue}
           renderInput={(params) => (
             <Grid container direction="column">

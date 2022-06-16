@@ -16,10 +16,13 @@ export interface AuthenticatedRoutesProps {
 export function AuthenticatedRoutes(props: AuthenticatedRoutesProps): React.ReactElement {
   const { isActiveGroupLoading } = props;
 
+  const loginRedirectRouteComponent = () => <Redirect to="/" />;
+  const authenticatedHomeRouteComponent = () => <AuthenticatedHomeRoutes isActiveGroupLoading={isActiveGroupLoading} />;
+
   return (
     <Switch>
-      <Route exact path="/login" component={() => <Redirect to="/" />} />
-      <Route path="/" component={() => <AuthenticatedHomeRoutes isActiveGroupLoading={isActiveGroupLoading} />} />
+      <Route exact path="/login" component={loginRedirectRouteComponent} />
+      <Route path="/" component={authenticatedHomeRouteComponent} />
       <Route path="*" component={NotFound} />
     </Switch>
   );

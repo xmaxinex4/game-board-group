@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Express } from "express";
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import { getCurrentUserId } from "../../utils/get-current-user-id";
 

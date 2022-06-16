@@ -8,7 +8,7 @@ function validateEmail(email: string) {
 }
 
 function validatePassword(password: string) {
-  const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
   return regex.test(String(password));
 }
 

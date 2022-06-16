@@ -1,9 +1,11 @@
 import React from "react";
 
-import { Grid, Card, CardContent, Typography } from "@mui/material";
+import {
+  Grid, Card, CardContent, Typography,
+} from "@mui/material";
 
 // import { PollOptionDisplay } from "../poll-option/poll-option-display";
-import { Poll } from ".prisma/client";
+import { Poll } from "@prisma/client";
 
 export interface PollDisplayProps {
   poll: Poll;
@@ -36,7 +38,7 @@ export function PollCard(props: PollDisplayProps): React.ReactElement {
             )}
           </Grid> */}
         </Grid>
-      </CardContent >
+      </CardContent>
     </Card>
   );
 }

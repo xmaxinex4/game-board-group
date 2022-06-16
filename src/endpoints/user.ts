@@ -3,7 +3,7 @@ import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 import { ActiveUserGroupMembershipsResponse, ActiveUserResponsePrismaSelect, GroupMembershipResponsePrismaSelect, UserPlayPreferenceResponse, UserPlayPreferenceResponsePrismaSelect } from "../types/types";

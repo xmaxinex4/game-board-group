@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid } from "@mui/material";
 
-import { PollOption } from ".prisma/client";
+import { PollOption } from "@prisma/client";
 
 export interface PollOptionDisplayProps {
   option: PollOption;

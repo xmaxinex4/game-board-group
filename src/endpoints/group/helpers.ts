@@ -1,5 +1,5 @@
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export async function getIsGroupAdmin(prisma: PrismaClient, groupMembershipId: string, userId: string) {
   const userGroupMembership = await prisma.groupMember.findFirst({

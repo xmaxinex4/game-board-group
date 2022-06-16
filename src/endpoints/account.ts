@@ -2,7 +2,7 @@ import { Express } from "express";
 import { sign } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
-import { PrismaClient } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import { getCurrentUserId } from "../utils/get-current-user-id";
 import { ActiveUserResponse, ActiveUserResponsePrismaSelect } from "../types/types";

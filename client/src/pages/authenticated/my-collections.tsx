@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from "react";
 import { useSelector } from "react-redux";
 
 import GameIcon from "@mui/icons-material/CasinoTwoTone";
@@ -75,6 +77,10 @@ export function MyCollections(): React.ReactElement {
     hideForm();
   }, [setInitialDataCollection, setFormGames, hideForm]);
 
+  const gameStateProviderValue = useMemo(() => ({
+    games: formGames, setGames: setFormGames,
+  }), [formGames, setFormGames]);
+
   return (
     <TabContentContainer title={showUpsertCollectionForm ? "" : "My Game Collections"}>
       {
@@ -90,7 +96,7 @@ export function MyCollections(): React.ReactElement {
                 <Grid item sx={{ width: "100%" }}>
                   <Card sx={{ margin: "auto", maxWidth: "600px", minWidth: "275px" }}>
                     <CardContent>
-                      <GamesStateContext.Provider value={{ games: formGames, setGames: setFormGames }}>
+                      <GamesStateContext.Provider value={gameStateProviderValue}>
                         <UpsertCollectionForm initialData={initialCollectionData} onSave={hideForm} onCancel={onCollectionUpsertCancel} />
                       </GamesStateContext.Provider>
                     </CardContent>
