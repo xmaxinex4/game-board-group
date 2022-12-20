@@ -27,14 +27,14 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
 
   const maxWidth = useMemo(() => {
     if (isPrivacyPolicyRoute || isTermsAndConditionsRoute) {
-      return "1000px";
+      return "1000px !important";
     }
 
     if (isLoginRoute) {
-      return "800px";
+      return "800px !important";
     }
 
-    return "500px";
+    return "500px !important";
   }, [isPrivacyPolicyRoute, isTermsAndConditionsRoute, isLoginRoute]);
 
   const loginRedirectRouteComponent = () => <Redirect to="/login" />;
@@ -53,10 +53,21 @@ export function UnAuthenticatedRoutes(): React.ReactElement {
         justifyContent="center"
         spacing={2}
       >
-        <Grid onClick={() => null} xs={12} sx={{ maxWidth: "400px" }} item>
+        <Grid
+          onClick={() => null}
+          xs={12}
+          sx={{ maxWidth: "400px !important" }}
+          item
+        >
           <MeepleCircleSiteNameInline />
         </Grid>
-        <Grid xs={12} item sx={{ minHeight: "calc(100vh - 380px)" }}>
+        <Grid
+          xs={12}
+          item
+          sx={{
+            minHeight: "calc(100vh - 380px)",
+          }}
+        >
           <Switch>
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/reset-password" component={ResetPassword} />

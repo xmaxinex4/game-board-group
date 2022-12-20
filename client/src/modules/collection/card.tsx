@@ -26,7 +26,7 @@ import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
 
 import { CollectionResponse } from "../../../../src/types/types";
 
-import { GamesStateContext } from "../../contexts/upsert-games-state-context";
+import { GamesStateContext } from "../../contexts/games-state-context";
 import { PaddedCard } from "../common/layout/padded-card";
 import { UserCircleListDisplay } from "../user/user-circle-list-display";
 import { ActionButtons } from "../common/button/action-buttons";

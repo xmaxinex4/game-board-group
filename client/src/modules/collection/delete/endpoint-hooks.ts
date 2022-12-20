@@ -44,7 +44,7 @@ export function useDeleteCollection() {
       })
       .catch((error: Error) => {
         // TODO: Better error handling
-        console.log("create collection error: ", error);
+        console.log("delete collection error: ", error);
         if (onError) {
           onError(error);
         }

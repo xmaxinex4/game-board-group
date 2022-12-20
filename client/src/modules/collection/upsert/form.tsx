@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import { useSelector } from "react-redux";
+import { DropzoneDialog } from "react-mui-dropzone";
 
 import PersonIcon from "@mui/icons-material/Person";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlankTwoTone";
@@ -17,6 +18,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import {
   Autocomplete,
   Box,
+  Button,
   Checkbox,
   Chip,
   Grid,
@@ -27,7 +29,7 @@ import {
 import { isString } from "lodash";
 import { CollectionResponse, UserMembershipResponse, UserResponse } from "../../../../../src/types/types";
 import { Meeple } from "../../../images/components/meeple";
-import { GamesStateContext } from "../../../contexts/upsert-games-state-context";
+import { GamesStateContext } from "../../../contexts/games-state-context";
 import { activeUserGroupMemberships } from "../../../redux/active-user-group-memberships-slice";
 import { MeeplePaletteColors } from "../../../theme/meeple-palettes";
 
@@ -48,7 +50,9 @@ export interface UpsertCollectionFormProps {
 export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.ReactElement {
   const { onSave, onCancel, initialData } = props;
   const { upsertCollection } = useUpsertCollection();
-  const { games } = useContext(GamesStateContext);
+  const { games, setGames } = useContext(GamesStateContext);
+
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
 
   const userGroupMemberships = useSelector(activeUserGroupMemberships);
   const activeUser = useSelector(selectActiveUser);
@@ -126,7 +130,13 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
 
   return (
     <form noValidate onSubmit={handleFormSubmit}>
-      <Grid container direction="column" justifyContent="center" alignItems="stretch" spacing={4}>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={4}
+      >
         <Grid item xs={12}>
           <Typography align="center" variant="h5" component="h2">
             {initialData?.id ? "Edit Collection" : "Create Collection"}
@@ -135,7 +145,11 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
 
         <Grid item>
           <FullWidthGridItemInput
-            formControlProps={{ required: true, disabled: isLoading, fullWidth: true }}
+            formControlProps={{
+              required: true,
+              disabled: isLoading,
+              fullWidth: true,
+            }}
             outerEndAdornmentIcon={PersonIcon}
             input={name}
             inputProps={{ maxLength: 50 }}
@@ -145,19 +159,6 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
             error={errors.name}
             onInputChange={clearErrorField}
           />
-        </Grid>
-
-        <Grid item sx={{ width: "100%" }}>
-          <Box sx={{
-            border: addGamesFormIsActive ? 2 : 1,
-            borderRadius: "4px",
-            borderColor: addGamesFormIsActive ? "primary.main" : "grey.400",
-            padding: "24px",
-            minHeight: "250px",
-          }}
-          >
-            <GamesFormBody isActive={addGamesFormIsActive} setIsActive={setAddGamesFormIsActive} />
-          </Box>
         </Grid>
 
         <Grid item sx={{ width: "100%" }}>
@@ -194,11 +195,25 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
                       </Grid>
                       <Grid item>
                         <Grid container spacing={2} alignItems="center">
-                          <Grid item sx={{ display: { xs: "none", md: "block" } }}>
-                            <Meeple fill={MeeplePaletteColors[option.color].main} size="icon" />
+                          <Grid
+                            item
+                            sx={{ display: { xs: "none", md: "block" } }}
+                          >
+                            <Meeple
+                              fill={MeeplePaletteColors[option.color].main}
+                              size="icon"
+                            />
                           </Grid>
-                          <Grid item sx={{ display: { xs: "block", md: "none" } }}>
-                            <CircleIcon sx={{ color: MeeplePaletteColors[option.color].main, fontSize: 24 }} />
+                          <Grid
+                            item
+                            sx={{ display: { xs: "block", md: "none" } }}
+                          >
+                            <CircleIcon
+                              sx={{
+                                color: MeeplePaletteColors[option.color].main,
+                                fontSize: 24,
+                              }}
+                            />
                           </Grid>
                           <Grid item>{option.username}</Grid>
                         </Grid>
@@ -220,6 +235,125 @@ export function UpsertCollectionForm(props: UpsertCollectionFormProps): React.Re
               />
             )}
           />
+        </Grid>
+
+        <Grid item sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              border: addGamesFormIsActive ? 2 : 1,
+              borderRadius: "4px",
+              borderColor: addGamesFormIsActive ? "primary.main" : "grey.400",
+              padding: "24px",
+              minHeight: "250px",
+            }}
+          >
+            <GamesFormBody
+              isActive={addGamesFormIsActive}
+              setIsActive={setAddGamesFormIsActive}
+            />
+          </Box>
+        </Grid>
+
+        <Grid item sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              border: addGamesFormIsActive ? 2 : 1,
+              borderRadius: "4px",
+              borderColor: addGamesFormIsActive ? "primary.main" : "grey.400",
+              padding: "24px",
+              minHeight: "250px",
+            }}
+          >
+            <Grid container direction="column" spacing={2}>
+              <Grid container item alignItems="center">
+                <Grid item xs={11}>
+                  <Typography variant="subtitle1">Import Games</Typography>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ width: "100%" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setImportDialogOpen(true)}
+                >
+                  Import Games
+                </Button>
+
+                <DropzoneDialog
+                  dialogTitle={(
+                    <Grid container item xs={11} spacing={1}>
+                      <Grid item>
+                        <Typography variant="body1">
+                          Import games from a json file with object format
+                          containing a list of games as shown
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="caption">
+                          {`{
+                      "games": [
+                        {
+                          "urlThumb" : "thumb.jpg",
+                          "urlImage" : "image.jpg",
+                          "bggId" : 129622,
+                          "bggName" : "Love Letter",
+                          "bggYear" : 2012,
+                        },
+                      ]
+                    }`}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  )}
+                  filesLimit={1}
+                  acceptedFiles={[".json"]}
+                  cancelButtonText="Cancel"
+                  submitButtonText="Add"
+                  open={importDialogOpen}
+                  onClose={() => setImportDialogOpen(false)}
+                  onSave={(files) => {
+                    const reader = new FileReader();
+                    reader.readAsText(files[0]);
+                    reader.onload = (event) => {
+                      const parsedJson = JSON.parse(event.target.result as string);
+                      if (!parsedJson && !parsedJson?.games) {
+                        throw Error("Could not read imported file");
+                      }
+
+                      const importedGames = Array.from(parsedJson?.games);
+                      const newGamesState = games;
+
+                      importedGames.forEach(
+                        (game: {
+                          urlImage: string;
+                          urlThumb: string;
+                          bggId: string;
+                          bggName: string;
+                          bggYear: string;
+                          copies: { statusOwned: string}[];
+                        }) => {
+                          if (game.copies?.length > 0) {
+                            newGamesState.push({
+                              bggId: game.bggId,
+                              name: game.bggName,
+                              urlImage: game.urlImage,
+                              urlThumb: game.urlThumb,
+                              year: game.bggYear,
+                            });
+                          }
+                        },
+                      );
+
+                      setGames(newGamesState);
+                      setImportDialogOpen(false);
+                    };
+                  }}
+                  showPreviews
+                  showFileNamesInPreview
+                />
+              </Grid>
+            </Grid>
+          </Box>
         </Grid>
 
         <Grid item>
